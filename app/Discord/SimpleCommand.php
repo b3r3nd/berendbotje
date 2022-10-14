@@ -31,7 +31,7 @@ class SimpleCommand
                 return;
             }
             if (strtolower($message->content) == strtolower($trigger)) {
-                $message->reply($response);
+                $message->channel->sendMessage($response);
             }
         });
     }
