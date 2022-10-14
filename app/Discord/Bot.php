@@ -3,6 +3,7 @@
 namespace App\Discord;
 
 use App\Models\Command;
+use App\Models\Reaction;
 use Discord\Discord;
 use Discord\Exceptions\IntentException;
 use Discord\WebSockets\Intents;
@@ -40,7 +41,12 @@ class Bot
             SimpleCommand::create($this->discord, $command->trigger, $command->response);
         }
 
+        foreach (Reaction::all() as $command) {
+            SimpleReaction::create($this->discord, $command->trigger, $command->reaction);
+        }
+
         new SimpleCommandCRUD($this->discord, $this);
+        new SimpleReactionsCRUD($this->discord, $this);
     }
 
     /**
