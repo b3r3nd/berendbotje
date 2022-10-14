@@ -2,6 +2,7 @@
 
 namespace App\Discord;
 
+use App\Models\Command;
 use Discord\Discord;
 use Discord\Exceptions\IntentException;
 use Discord\WebSockets\Intents;
@@ -33,9 +34,9 @@ class Bot
 
     private function loadCommands(): void
     {
-        SimpleCommand::create($this->discord, 'ping', 'pong');
-        SimpleCommand::create($this->discord, 'test', 'success');
-
+        foreach (Command::all() as $command) {
+            SimpleCommand::create($this->discord, $command->trigger, $command->response);
+        }
     }
 
     /**
