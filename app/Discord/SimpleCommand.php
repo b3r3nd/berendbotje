@@ -30,7 +30,7 @@ class SimpleCommand
             if ($message->author->bot) {
                 return;
             }
-            if ($message->content == $trigger) {
+            if (strtolower($message->content) == strtolower($trigger)) {
                 $message->reply($response);
             }
         });

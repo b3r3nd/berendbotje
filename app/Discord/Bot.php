@@ -10,6 +10,8 @@ use Discord\WebSockets\Intents;
 class Bot
 {
     private Discord $discord;
+    private string $prefix = '$';
+
 
     /**
      * @throws IntentException
@@ -37,6 +39,8 @@ class Bot
         foreach (Command::all() as $command) {
             SimpleCommand::create($this->discord, $command->trigger, $command->response);
         }
+
+        new SimpleCommandCRUD($this->discord, $this);
     }
 
     /**
@@ -45,6 +49,14 @@ class Bot
     public function discord(): Discord
     {
         return $this->discord;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPrefix(): string
+    {
+        return $this->prefix;
     }
 
 }
