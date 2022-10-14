@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Discord\Bot;
 use Discord\Builders\MessageBuilder;
 use Discord\Discord;
 use Discord\Interaction;
@@ -24,7 +25,7 @@ class RunBot extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'SimpleCommand description';
 
     /**
      * Execute the console command.
@@ -33,29 +34,8 @@ class RunBot extends Command
      */
     public function handle()
     {
-        $discord = new Discord([
-                'token' => config('discord.token'),
-                'loadAllMembers' => true,
-                'intents' => Intents::getDefaultIntents() | Intents::GUILD_MEMBERS | Intents::MESSAGE_CONTENT
-            ]
-        );
-
-
-        $discord->on('ready', function (Discord $discord) {
-            $discord->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) {
-                if ($message->author->bot) {
-                    return;
-                }
-                dump($message->content);
-                if ($message->content == 'ping') {
-
-                    $message->reply('pong');
-                }
-            });
-        });
-
+        $discord = Bot::setup();
         $discord->run();
-
         return Command::SUCCESS;
     }
 }
