@@ -41,7 +41,7 @@ class SimpleReactionsCRUD
                     $message->channel->sendMessage("Provide arguments noob");
                 } else {
                     Reaction::where(['trigger' => $parameters[1]])->delete();
-                    $message->channel->sendMessage("Command deleted");
+                    $message->channel->sendMessage("Reaction deleted");
                 }
             }
 

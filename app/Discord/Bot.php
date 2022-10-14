@@ -47,6 +47,7 @@ class Bot
 
         new SimpleCommandCRUD($this->discord, $this);
         new SimpleReactionsCRUD($this->discord, $this);
+        new Test($this->discord);
     }
 
     /**
