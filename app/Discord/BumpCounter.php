@@ -9,7 +9,6 @@ use Discord\WebSockets\Event;
 
 class BumpCounter
 {
-
     public function __construct(Discord $discord)
     {
         $discord->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) {
@@ -27,11 +26,8 @@ class BumpCounter
                         'count' => 1
                     ]);
                 }
-
                 $message->channel->sendMessage($message->interaction->user->username . ' heeft ' . $bumper->count . ' x de discord gebumped!');
             }
-
-
         });
     }
 }

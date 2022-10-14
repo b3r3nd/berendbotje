@@ -49,6 +49,7 @@ class Bot
         new SimpleReactionsCRUD($this->discord, $this);
         new BumpCounter($this->discord);
         new BumpStatistics($this->discord, $this);
+        new CringeCounter($this->discord, $this);
     }
 
     /**
