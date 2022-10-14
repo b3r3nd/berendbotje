@@ -47,7 +47,8 @@ class Bot
 
         new SimpleCommandCRUD($this->discord, $this);
         new SimpleReactionsCRUD($this->discord, $this);
-        new Test($this->discord);
+        new BumpCounter($this->discord);
+        new BumpStatistics($this->discord, $this);
     }
 
     /**

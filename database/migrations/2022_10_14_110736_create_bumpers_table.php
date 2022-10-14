@@ -16,6 +16,8 @@ return new class extends Migration
         Schema::create('bumpers', function (Blueprint $table) {
             $table->id();
             $table->string('discord_id');
+            $table->string('discord_tag');
+            $table->string('discord_username');
             $table->integer('count');
             $table->timestamps();
         });
