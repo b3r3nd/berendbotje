@@ -51,7 +51,6 @@ class RunBot extends Command
 
                     $message->reply('pong');
                 }
-
             });
         });
 
