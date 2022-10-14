@@ -17,6 +17,13 @@ class CringeCounter
             if ($message->author->bot) {
                 return;
             }
+
+            if (str_starts_with($message->content, $bot->getPrefix() . 'cringestats')) {
+                foreach (\App\Models\CringeCounter::orderBy('count', 'desc')->limit(10)->get() as $cringeCounter) {
+                    $message->channel->sendMessage($cringeCounter->discord_username . ' -> ' . $cringeCounter->count);
+                }
+            }
+
             if (str_starts_with($message->content, $bot->getPrefix() . 'cringe ')) {
                 $parameters = explode(' ', $message->content);
                 if (!isset($parameters[1])) {
