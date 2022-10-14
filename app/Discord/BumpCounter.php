@@ -13,7 +13,7 @@ class BumpCounter
     public function __construct(Discord $discord)
     {
         $discord->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) {
-            if ($message->type == 20 && $message->interaction->name == 'alert') {
+            if ($message->type == 20 && $message->interaction->name == 'bump') {
                 $bumper = Bumper::where(['discord_id' => $message->interaction->user->id])->first();
                 if ($bumper) {
                     $bumper->count = $bumper->count + 1;
