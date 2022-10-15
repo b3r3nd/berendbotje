@@ -2,6 +2,7 @@
 
 namespace App\Discord;
 
+use App\Models\Admin;
 use App\Models\Bumper;
 use Discord\Discord;
 use Discord\Parts\Channel\Message;
@@ -14,6 +15,9 @@ class Timeout
     {
         $discord->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) use ($bot) {
             if ($message->author->bot) {
+                return;
+            }
+            if (!Admin::hasLevel($message->author->id, AccessLevels::MOD->value)) {
                 return;
             }
 

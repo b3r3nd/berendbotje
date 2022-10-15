@@ -50,6 +50,8 @@ class SimpleReactionsCRUD
                 $embed->setFooter('usage: addreaction, delreaction, reactions');
                 $embed->setDescription('Basic reactions');
                 $embed->setTitle("Reactions");
+                $embed->setColor(2067276);
+
 
                 foreach (Reaction::all() as $reaction) {
                     $embed->addField(['name' => $reaction->trigger, 'value' => $reaction->reaction, 'inline' => true]);

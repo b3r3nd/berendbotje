@@ -28,6 +28,8 @@ class AdminManagement
                 $embed->setFooter('Usage: admins, addadmin, deladmin, clvladmin');
                 $embed->setDescription('List of bot administrators');
                 $embed->setTitle('Admins');
+                $embed->setColor(2067276);
+
 
                 foreach (Admin::orderBy('level', 'desc')->get() as $admin) {
                     $embed->addField(['name' => $admin->discord_username, 'value' => $admin->level]);

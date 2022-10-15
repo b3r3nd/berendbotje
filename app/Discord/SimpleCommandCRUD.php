@@ -47,6 +47,8 @@ class SimpleCommandCRUD
                 $embed->setFooter('usage: addcmd, delcmd, commands');
                 $embed->setDescription('Basic text commands');
                 $embed->setTitle("Commands");
+                $embed->setColor(2067276);
+
 
                 foreach (Command::all() as $command) {
                     $embed->addField(['name' => $command->trigger, 'value' => $command->response]);

@@ -24,9 +24,11 @@ class BumpStatistics
                 $embed->setFooter('Use /bump in #botspam');
                 $embed->setDescription('Bump counter');
                 $embed->setTitle('Bumper Elites');
+                $embed->setColor(2067276);
+
 
                 foreach (Bumper::orderBy('count', 'desc')->limit(10)->get() as $bumper) {
-                    $embed->addField(['name' => $bumper->discord_username, 'value' => $bumper->count, 'inline' => true]);
+                    $embed->addField(['name' => $bumper->discord_username, 'value' => $bumper->count]);
                 }
 
                 $message->channel->sendEmbed($embed);
