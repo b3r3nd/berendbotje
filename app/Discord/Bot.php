@@ -51,7 +51,10 @@ class Bot
         new BumpStatistics($this->discord, $this);
         new CringeCounter($this->discord, $this);
         new AdminManagement($this->discord, $this);
-        new Test($this->discord, $this);
+        new Timeout($this->discord, $this);
+
+        // DetectTimeouts
+        new DetectTimeouts($this->discord, $this);
     }
 
     /**
