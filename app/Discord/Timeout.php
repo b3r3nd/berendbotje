@@ -59,9 +59,9 @@ class Timeout
         $length = $timeout->length;
         if ($length >= 60) {
             $length = $length / 60;
-            $embed->addField(['name' => $timeout->discord_username, 'value' => round($length) . ' hours']);
+            $embed->addField(['name' => $timeout->discord_username . ' - ' . round($length) . ' hours ', 'value' => $timeout->reason]);
         } else {
-            $embed->addField(['name' => $timeout->discord_username, 'value' => $length . ' minutes']);
+            $embed->addField(['name' => $timeout->discord_username . ' - ' . round($length) . ' minutes ', 'value' => $timeout->reason]);
         }
 
         return $embed;
