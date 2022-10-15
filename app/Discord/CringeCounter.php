@@ -26,7 +26,7 @@ class CringeCounter
                 $embed->setDescription('Most cringe people in our discord');
                 $embed->setTitle('Cringe Counter');
                 foreach (\App\Models\CringeCounter::orderBy('count', 'desc')->limit(10)->get() as $cringeCounter) {
-                    $embed->addField(['name' => $cringeCounter->discord_username, 'value' => $cringeCounter->count]);
+                    $embed->addField(['name' => $cringeCounter->discord_username, 'value' => $cringeCounter->count, 'inline' => true]);
                 }
                 $message->channel->sendEmbed($embed);
             }

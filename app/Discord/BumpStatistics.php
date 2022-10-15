@@ -26,7 +26,7 @@ class BumpStatistics
                 $embed->setTitle('Bumper Elites');
 
                 foreach (Bumper::orderBy('count', 'desc')->limit(10)->get() as $bumper) {
-                    $embed->addField(['name' => $bumper->discord_username, 'value' => $bumper->count]);
+                    $embed->addField(['name' => $bumper->discord_username, 'value' => $bumper->count, 'inline' => true]);
                 }
 
                 $message->channel->sendEmbed($embed);
