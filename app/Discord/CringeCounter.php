@@ -29,12 +29,14 @@ class CringeCounter
                 if (!isset($parameters[1])) {
                     $message->channel->sendMessage("Provide arguments noob");
                 }
-                $cringeCounter = \App\Models\CringeCounter::where(['discord_tag' => $parameters[1]])->first();
+                foreach ($message->mentions as $mention) {
+                    $cringeCounter = \App\Models\CringeCounter::where(['discord_id' => $mention->id])->first();
 
-                if ($cringeCounter) {
-                    $message->channel->sendMessage("Cringe counter for " . $cringeCounter->discord_tag . " is " . $cringeCounter->count);
-                } else {
-                    $message->channel->sendMessage($parameters[1] . " isn't cringe..");
+                    if ($cringeCounter) {
+                        $message->channel->sendMessage("Cringe counter for " . $cringeCounter->discord_username . " is " . $cringeCounter->count);
+                    } else {
+                        $message->channel->sendMessage($parameters[1] . " isn't cringe..");
+                    }
                 }
 
             }
@@ -47,28 +49,24 @@ class CringeCounter
                 if (!isset($parameters[1])) {
                     $message->channel->sendMessage("Provide arguments noob");
                 } else {
-                    $cringeCounter = \App\Models\CringeCounter::where(['discord_tag' => $parameters[1]])->first();
+                    foreach ($message->mentions as $mention) {
+                        $cringeCounter = \App\Models\CringeCounter::where(['discord_id' => $mention->id])->first();
 
-                    if ($cringeCounter) {
-                        $cringeCounter->count = $cringeCounter->count + 1;
-                        $cringeCounter->save();
-                    } else {
-                        $cringeCounter = \App\Models\CringeCounter::create([
-                            'discord_tag' => $parameters[1],
-                            'discord_id' => $parameters[1],
-                            'discord_username' => $parameters[1],
-                            'count' => 1
-                        ]);
+                        if ($cringeCounter) {
+                            $cringeCounter->count = $cringeCounter->count + 1;
+                            $cringeCounter->save();
+                        } else {
+                            $cringeCounter = \App\Models\CringeCounter::create([
+                                'discord_tag' => $mention,
+                                'discord_id' => $mention->id,
+                                'discord_username' => $mention->username,
+                                'count' => 1
+                            ]);
+                        }
+                        $message->channel->sendMessage("Cringe counter for " . $cringeCounter->discord_tag . " increased to " . $cringeCounter->count);
                     }
-
-
-                    $message->channel->sendMessage("Cringe counter for " . $cringeCounter->discord_tag . " increased to " . $cringeCounter->count);
-
-
                 }
             }
-
-
         });
     }
 
