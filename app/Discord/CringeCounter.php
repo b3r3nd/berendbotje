@@ -19,7 +19,7 @@ class CringeCounter
                 return;
             }
 
-            if (str_starts_with($message->content, $bot->getPrefix() . 'cringestats')) {
+            if (str_starts_with($message->content, $bot->getPrefix() . 'cringestats') || str_starts_with($message->content, $bot->getPrefix() . 'cringecounter')) {
                 $embed = new Embed($discord);
                 $embed->setType('rich');
                 $embed->setFooter('usage: addcringe');
