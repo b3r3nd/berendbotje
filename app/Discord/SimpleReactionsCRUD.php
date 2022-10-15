@@ -17,6 +17,9 @@ class SimpleReactionsCRUD
             if ($message->author->bot) {
                 return;
             }
+            if (!Admin::hasLevel($message->author->id, AccessLevels::MOD->value)) {
+                return;
+            }
             if (str_starts_with($message->content, $bot->getPrefix() . 'addreaction ')) {
                 if (!Admin::isAdmin($message->author->id)) {
                     return;

@@ -22,4 +22,33 @@ class Admin extends Model
     {
         return !Admin::where(['discord_id' => $id])->get()->isEmpty();
     }
+
+    /**
+     * @param string $id
+     * @param int $level
+     * @return bool
+     */
+    public static function hasLevel(string $id, int $level)
+    {
+        $admin = Admin::where(['discord_id' => $id])->first();
+        if (!$admin) {
+            return false;
+        }
+        return $admin->level >= $level;
+    }
+
+    /**
+     * @param string $id
+     * @param int $level
+     * @return bool
+     */
+    public static function hasHigherLevel(string $id, int $level)
+    {
+        $admin = Admin::where(['discord_id' => $id])->first();
+        if (!$admin) {
+            return false;
+        }
+        return $admin->level > $level;
+    }
+
 }

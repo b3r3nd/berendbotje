@@ -17,12 +17,12 @@ class AdminManagement
                 return;
             }
 
-            if (!Admin::isAdmin($message->author->id)) {
+            if (!Admin::hasLevel($message->author->id, AccessLevels::GOD->value)) {
                 return;
             }
 
             if (str_starts_with($message->content, $bot->getPrefix() . 'admins')) {
-                foreach (Admin::all() as $admin) {
+                foreach (Admin::orderBy('level', 'desc')->get() as $admin) {
                     $message->channel->sendMessage($admin->discord_username . ' -> ' . $admin->level);
                 }
             }
@@ -42,6 +42,11 @@ class AdminManagement
                         return;
                     }
 
+                    if(!Admin::hasHigherLevel($message->author->id, $parameters[2])) {
+                        $message->channel->sendMessage("Can't give more access than you have yourself..");
+                        return;
+                    }
+
                     Admin::create([
                         'discord_id' => $mention->id,
                         'discord_username' => $mention->username,
@@ -50,14 +55,20 @@ class AdminManagement
                     $message->channel->sendMessage("User added");
                 }
             }
-
             if (str_starts_with($message->content, $bot->getPrefix() . 'deladmin ')) {
+
                 foreach ($message->mentions as $mention) {
                     $admin = Admin::where(['discord_id' => $mention->id])->first();
                     if (!$admin) {
                         $message->channel->sendMessage("User does not exist");
                         return;
                     }
+
+                    if(!Admin::hasHigherLevel($message->author->id, $admin->level)) {
+                        $message->channel->sendMessage($admin->discord_username . ' is to powerfull for you.');
+                        return;
+                    }
+
                     $admin->delete();
                     $message->channel->sendMessage("User deleted");
                 }
@@ -74,13 +85,15 @@ class AdminManagement
                         $message->channel->sendMessage("Provide access level..");
                         return;
                     }
+                    if(!Admin::hasHigherLevel($message->author->id, $admin->level)) {
+                        $message->channel->sendMessage($admin->discord_username . ' is to powerfull for you.');
+                        return;
+                    }
 
                     $admin->update(['level' => $parameters[2]]);
                     $message->channel->sendMessage("User level changed");
                 }
             }
-
-
         });
     }
 }

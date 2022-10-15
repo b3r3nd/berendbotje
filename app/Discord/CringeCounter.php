@@ -42,7 +42,7 @@ class CringeCounter
             }
 
             if (str_starts_with($message->content, $bot->getPrefix() . 'addcringe ')) {
-                if (!Admin::isAdmin($message->author->id)) {
+                if (!Admin::hasLevel($message->author->id, AccessLevels::USER->value)) {
                     return;
                 }
                 $parameters = explode(' ', $message->content);

@@ -16,10 +16,10 @@ class SimpleCommandCRUD
             if ($message->author->bot) {
                 return;
             }
+            if (!Admin::hasLevel($message->author->id, AccessLevels::MOD->value)) {
+                return;
+            }
             if (str_starts_with($message->content, $bot->getPrefix() . 'addcmd ')) {
-                if (!Admin::isAdmin($message->author->id)) {
-                    return;
-                }
                 $parameters = explode(' ', $message->content);
                 if (!isset($parameters[1]) || !isset($parameters[2])) {
                     $message->channel->sendMessage("Provide arguments noob");
@@ -30,11 +30,7 @@ class SimpleCommandCRUD
                     new SimpleCommand($discord, $parameters[1], $parameters[2]);
                 }
             }
-
             if (str_starts_with($message->content, $bot->getPrefix() . 'delcmd ')) {
-                if (!Admin::isAdmin($message->author->id)) {
-                    return;
-                }
                 $parameters = explode(' ', $message->content);
                 if (!isset($parameters[1])) {
                     $message->channel->sendMessage("Provide arguments noob");
@@ -44,18 +40,13 @@ class SimpleCommandCRUD
                 }
 
             }
-
             if ($message->content == $bot->getPrefix() . 'commands') {
-                if (!Admin::isAdmin($message->author->id)) {
-                    return;
-                }
                 $commands = '';
                 foreach (Command::all() as $command) {
                     $commands .= $command->trigger . ' ';
                 }
                 $message->channel->sendMessage($commands);
             }
-
         });
     }
 }
