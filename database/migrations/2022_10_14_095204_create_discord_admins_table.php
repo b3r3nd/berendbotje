@@ -16,6 +16,8 @@ return new class extends Migration
         Schema::create('discord_admins', function (Blueprint $table) {
             $table->id();
             $table->string('discord_id');
+            $table->string('discord_username');
+            $table->integer('level');
             $table->timestamps();
         });
     }

@@ -50,6 +50,7 @@ class Bot
         new BumpCounter($this->discord);
         new BumpStatistics($this->discord, $this);
         new CringeCounter($this->discord, $this);
+        new AdminManagement($this->discord, $this);
     }
 
     /**

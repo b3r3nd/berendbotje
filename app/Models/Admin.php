@@ -10,6 +10,8 @@ class Admin extends Model
 
     protected $fillable = [
         'discord_id',
+        'discord_username',
+        'level'
     ];
 
     /**
