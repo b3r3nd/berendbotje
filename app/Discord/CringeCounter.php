@@ -7,6 +7,7 @@ use App\Models\Bumper;
 use App\Models\Reaction;
 use Discord\Discord;
 use Discord\Parts\Channel\Message;
+use Discord\Parts\Embed\Embed;
 use Discord\WebSockets\Event;
 
 class CringeCounter
@@ -19,9 +20,15 @@ class CringeCounter
             }
 
             if (str_starts_with($message->content, $bot->getPrefix() . 'cringestats')) {
+                $embed = new Embed($discord);
+                $embed->setType('rich');
+                $embed->setFooter('usage: addcringe');
+                $embed->setDescription('Most cringe people in our discord');
+                $embed->setTitle('Cringe Counter');
                 foreach (\App\Models\CringeCounter::orderBy('count', 'desc')->limit(10)->get() as $cringeCounter) {
-                    $message->channel->sendMessage($cringeCounter->discord_username . ' -> ' . $cringeCounter->count);
+                    $embed->addField(['name' => $cringeCounter->discord_username, 'value' => $cringeCounter->count]);
                 }
+                $message->channel->sendEmbed($embed);
             }
 
             if (str_starts_with($message->content, $bot->getPrefix() . 'cringe ')) {

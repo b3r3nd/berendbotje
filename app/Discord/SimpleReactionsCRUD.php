@@ -7,6 +7,7 @@ use App\Models\Command;
 use App\Models\Reaction;
 use Discord\Discord;
 use Discord\Parts\Channel\Message;
+use Discord\Parts\Embed\Embed;
 use Discord\WebSockets\Event;
 
 class SimpleReactionsCRUD
@@ -21,9 +22,6 @@ class SimpleReactionsCRUD
                 return;
             }
             if (str_starts_with($message->content, $bot->getPrefix() . 'addreaction ')) {
-                if (!Admin::isAdmin($message->author->id)) {
-                    return;
-                }
                 $parameters = explode(' ', $message->content);
                 if (!isset($parameters[1]) || !isset($parameters[2])) {
                     $message->channel->sendMessage("Provide arguments noob");
@@ -36,9 +34,6 @@ class SimpleReactionsCRUD
             }
 
             if (str_starts_with($message->content, $bot->getPrefix() . 'delreaction ')) {
-                if (!Admin::isAdmin($message->author->id)) {
-                    return;
-                }
                 $parameters = explode(' ', $message->content);
                 if (!isset($parameters[1])) {
                     $message->channel->sendMessage("Provide arguments noob");
@@ -49,14 +44,18 @@ class SimpleReactionsCRUD
             }
 
             if ($message->content == $bot->getPrefix() . 'reactions') {
-                if (!Admin::isAdmin($message->author->id)) {
-                    return;
-                }
-                $reactions = '';
+
+                $embed = new Embed($discord);
+                $embed->setType('rich');
+                $embed->setFooter('usage: addcmd, delcmd, commands');
+                $embed->setDescription('Basic text commands');
+                $embed->setTitle("Commands");
+
                 foreach (Reaction::all() as $reaction) {
-                    $reactions .= $reaction->trigger . ' ';
+                    $embed->addField(['name' => $reaction->trigger, 'value' => $reaction->reaction]);
                 }
-                $message->channel->sendMessage($reactions);
+                $message->channel->sendEmbed($embed);
+
             }
 
         });

@@ -6,6 +6,7 @@ use App\Models\Command;
 use App\Models\Admin;
 use Discord\Discord;
 use Discord\Parts\Channel\Message;
+use Discord\Parts\Embed\Embed;
 use Discord\WebSockets\Event;
 
 class SimpleCommandCRUD
@@ -41,11 +42,16 @@ class SimpleCommandCRUD
 
             }
             if ($message->content == $bot->getPrefix() . 'commands') {
-                $commands = '';
+                $embed = new Embed($discord);
+                $embed->setType('rich');
+                $embed->setFooter('usage: addcmd, delcmd, commands');
+                $embed->setDescription('Basic text commands');
+                $embed->setTitle("Commands");
+
                 foreach (Command::all() as $command) {
-                    $commands .= $command->trigger . ' ';
+                    $embed->addField(['name' => $command->trigger, 'value' => $command->response]);
                 }
-                $message->channel->sendMessage($commands);
+                $message->channel->sendEmbed($embed);
             }
         });
     }

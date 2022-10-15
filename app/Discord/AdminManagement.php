@@ -5,6 +5,7 @@ namespace App\Discord;
 use App\Models\Admin;
 use Discord\Discord;
 use Discord\Parts\Channel\Message;
+use Discord\Parts\Embed\Embed;
 use Discord\WebSockets\Event;
 
 class AdminManagement
@@ -22,9 +23,18 @@ class AdminManagement
             }
 
             if (str_starts_with($message->content, $bot->getPrefix() . 'admins')) {
+                $embed = new Embed($discord);
+                $embed->setType('rich');
+                $embed->setFooter('Usage: admins, addadmin, deladmin, clvladmin');
+                $embed->setDescription('List of bot administrators');
+                $embed->setTitle('Admins');
+
                 foreach (Admin::orderBy('level', 'desc')->get() as $admin) {
-                    $message->channel->sendMessage($admin->discord_username . ' -> ' . $admin->level);
+                    $embed->addField(['name' => $admin->discord_username, 'value' => $admin->level]);
                 }
+
+
+                $message->channel->sendEmbed($embed);
             }
 
             if (str_starts_with($message->content, $bot->getPrefix() . 'addadmin ')) {
