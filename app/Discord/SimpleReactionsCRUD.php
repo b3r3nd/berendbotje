@@ -47,12 +47,12 @@ class SimpleReactionsCRUD
 
                 $embed = new Embed($discord);
                 $embed->setType('rich');
-                $embed->setFooter('usage: addcmd, delcmd, commands');
-                $embed->setDescription('Basic text commands');
-                $embed->setTitle("Commands");
+                $embed->setFooter('usage: addreaction, delreaction, reactions');
+                $embed->setDescription('Basic reactions');
+                $embed->setTitle("Reactions");
 
                 foreach (Reaction::all() as $reaction) {
-                    $embed->addField(['name' => $reaction->trigger, 'value' => $reaction->reaction]);
+                    $embed->addField(['name' => $reaction->trigger, 'value' => $reaction->reaction, 'inline' => true]);
                 }
                 $message->channel->sendEmbed($embed);
 
