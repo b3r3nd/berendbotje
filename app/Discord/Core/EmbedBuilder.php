@@ -29,4 +29,7 @@ class EmbedBuilder
         return $this->embed;
     }
 
+    public function setDescription($description) {
+        $this->embed->setDescription($description);
+    }
 }

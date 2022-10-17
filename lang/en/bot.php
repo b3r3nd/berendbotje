@@ -11,6 +11,8 @@ return [
     | and index pages!
     */
 
+    'provide-args' => 'Provide arguments noOo0Oo0Ob',
+
     'admins' => [
         'index' => 'Admins',
         'title' => 'Admins',
@@ -41,5 +43,31 @@ return [
         'count' => "Cringe counter for :name is :count",
         'change' => "Cringe counter for :name is now :count",
         'not-cringe' => ":name is not cringe",
+    ],
+
+    'cmd' => [
+        'saved' => 'Command saved',
+        'deleted' => 'Command deleted',
+        'footer' => 'usage: addcmd, delcmd, commands',
+        'title' => 'Commands',
+        'description' => "Basic text commands. \n\n :cmds",
+    ],
+
+    'reactions' => [
+        'saved' => 'Reaction saved',
+        'deleted' => 'Reaction deleted',
+        'footer' => 'usage: addreaction, delreaction, reactions',
+        'title' => 'Reactions',
+        'description' => "Basic reactions. \n\n :reactions",
+    ],
+
+    'timeout' => [
+        'footer' => 'Timeouts given through discord are automatically added',
+        'title' => 'Timeouts',
+        'count' => "Total timeouts: :count"
     ]
+
+
+
+
 ];

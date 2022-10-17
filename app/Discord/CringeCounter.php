@@ -4,11 +4,8 @@ namespace App\Discord;
 
 use App\Discord\Core\EmbedBuilder;
 use App\Models\Admin;
-use App\Models\Bumper;
-use App\Models\Reaction;
 use Discord\Discord;
 use Discord\Parts\Channel\Message;
-use Discord\Parts\Embed\Embed;
 use Discord\WebSockets\Event;
 
 class CringeCounter

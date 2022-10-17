@@ -2,11 +2,10 @@
 
 namespace App\Discord;
 
+use App\Discord\Core\EmbedBuilder;
 use App\Models\Admin;
-use App\Models\Bumper;
 use Discord\Discord;
 use Discord\Parts\Channel\Message;
-use Discord\Parts\Embed\Embed;
 use Discord\WebSockets\Event;
 
 class Timeout
@@ -21,29 +20,30 @@ class Timeout
                 return;
             }
 
-            $embed = new Embed($discord);
-            $embed->setType('rich');
-            $embed->setFooter('Timeouts given through discord are automatically added');
-            $embed->setTitle('Timeouts');
-            $embed->setColor(15548997);
-
             if ((str_starts_with($message->content, $bot->getPrefix() . 'timeouts '))) {
 
-                foreach ($message->mentions as $mention) {
-                    $count = \App\Models\Timeout::where(['discord_id' => $mention->id])->count();
-                    $embed->setDescription('Total timeouts: ' . $count);
+                $embed = EmbedBuilder::create($discord,
+                    __('bot.timeout.title'),
+                    __('bot.timeout.footer'),
+                    '');
 
+                foreach ($message->mentions as $mention) {
+                    $embed->setDescription(__('bot.timeout.count', ['count' => \App\Models\Timeout::where(['discord_id' => $mention->id])->count()]));
                     foreach (\App\Models\Timeout::where(['discord_id' => $mention->id])->orderBy('created_at', 'desc')->get() as $timeout) {
                         $embed = $this->timeoutLength($embed, $timeout);
                     }
                 }
-
                 $message->channel->sendEmbed($embed);
                 return;
             }
 
             if ((str_starts_with($message->content, $bot->getPrefix() . 'timeouts'))) {
-                $embed->setDescription('Total timeouts: ' . \App\Models\Timeout::count());
+                $embed = EmbedBuilder::create($discord,
+                    __('bot.timeout.title'),
+                    __('bot.timeout.footer'),
+                    '');
+
+                $embed->setDescription(__('bot.timeout.count', ['count' => \App\Models\Timeout::count()]));
                 foreach (\App\Models\Timeout::limit(10)->orderBy('created_at', 'desc')->get() as $timeout) {
                     $embed = $this->timeoutLength($embed, $timeout);
                 }

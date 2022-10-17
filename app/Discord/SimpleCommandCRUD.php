@@ -2,11 +2,11 @@
 
 namespace App\Discord;
 
+use App\Discord\Core\EmbedBuilder;
 use App\Models\Command;
 use App\Models\Admin;
 use Discord\Discord;
 use Discord\Parts\Channel\Message;
-use Discord\Parts\Embed\Embed;
 use Discord\WebSockets\Event;
 
 class SimpleCommandCRUD
@@ -23,36 +23,34 @@ class SimpleCommandCRUD
             if (str_starts_with($message->content, $bot->getPrefix() . 'addcmd ')) {
                 $parameters = explode(' ', $message->content);
                 if (!isset($parameters[1]) || !isset($parameters[2])) {
-                    $message->channel->sendMessage("Provide arguments noob");
+                    $message->channel->sendMessage(__('bot.provide-args'));
                 } else {
-                    $message->channel->sendMessage("Command saved");
+                    $message->channel->sendMessage(__('bot.cmd.saved'));
                     $command = Command::create(['trigger' => $parameters[1], 'response' => $parameters[2]]);
                     $command->save();
-                    new SimpleCommand($discord, $parameters[1], $parameters[2]);
+                    new SimpleCommand($bot, $parameters[1], $parameters[2]);
                 }
             }
             if (str_starts_with($message->content, $bot->getPrefix() . 'delcmd ')) {
                 $parameters = explode(' ', $message->content);
                 if (!isset($parameters[1])) {
-                    $message->channel->sendMessage("Provide arguments noob");
+                    $message->channel->sendMessage(__('bot.provide-args'));
                 } else {
                     Command::where(['trigger' => $parameters[1]])->delete();
-                    $message->channel->sendMessage("Command deleted");
+                    $message->channel->sendMessage(__('bot.cmd.deleted'));
                 }
 
             }
             if ($message->content == $bot->getPrefix() . 'commands') {
-                $embed = new Embed($discord);
-                $embed->setType('rich');
-                $embed->setFooter('usage: addcmd, delcmd, commands');
-                $embed->setDescription('Basic text commands');
-                $embed->setTitle("Commands");
-                $embed->setColor(2067276);
-
-
+                $commands = "";
                 foreach (Command::all() as $command) {
-                    $embed->addField(['name' => $command->trigger, 'value' => $command->response]);
+                    $commands .= '**' . $command->trigger . '** - ' . $command->response . "\n";
                 }
+                $embed = EmbedBuilder::create($discord,
+                    __('bot.cmd.title'),
+                    __('bot.cmd.footer'),
+                    __('bot.cmd.description', ['cmds' => $commands]));
+
                 $message->channel->sendEmbed($embed);
             }
         });

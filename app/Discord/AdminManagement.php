@@ -6,7 +6,6 @@ use App\Discord\Core\EmbedBuilder;
 use App\Models\Admin;
 use Discord\Discord;
 use Discord\Parts\Channel\Message;
-use Discord\Parts\Embed\Embed;
 use Discord\WebSockets\Event;
 
 class AdminManagement

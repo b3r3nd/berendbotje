@@ -2,11 +2,8 @@
 
 namespace App\Discord;
 
-use App\Models\Admin;
 use Carbon\Carbon;
 use Discord\Discord;
-use Discord\Parts\Channel\Message;
-use Discord\Parts\Embed\Embed;
 use Discord\Parts\Guild\AuditLog\AuditLog;
 use Discord\Parts\Guild\Guild;
 use Discord\Parts\User\Member;
@@ -14,7 +11,6 @@ use Discord\WebSockets\Event;
 
 class DetectTimeouts
 {
-
     public function __construct(Bot $bot)
     {
         $bot->discord()->on(Event::GUILD_MEMBER_UPDATE, function (Member $member, Discord $discord) use ($bot) {

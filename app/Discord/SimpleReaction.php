@@ -13,11 +13,6 @@ class SimpleReaction
         new self($bot, $trigger, $reaction);
     }
 
-    /**
-     * @param Discord $discord
-     * @param string $trigger
-     * @param string $reaction
-     */
     public function __construct(Bot $bot, string $trigger, string $reaction)
     {
         $bot->discord()->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) use ($trigger, $reaction) {

@@ -2,12 +2,11 @@
 
 namespace App\Discord;
 
+use App\Discord\Core\EmbedBuilder;
 use App\Models\Admin;
-use App\Models\Command;
 use App\Models\Reaction;
 use Discord\Discord;
 use Discord\Parts\Channel\Message;
-use Discord\Parts\Embed\Embed;
 use Discord\WebSockets\Event;
 
 class SimpleReactionsCRUD
@@ -24,42 +23,36 @@ class SimpleReactionsCRUD
             if (str_starts_with($message->content, $bot->getPrefix() . 'addreaction ')) {
                 $parameters = explode(' ', $message->content);
                 if (!isset($parameters[1]) || !isset($parameters[2])) {
-                    $message->channel->sendMessage("Provide arguments noob");
+                    $message->channel->sendMessage(__('bot.provide-args'));
                 } else {
-                    $message->channel->sendMessage("Reaction saved");
+                    $message->channel->sendMessage(__('bot.reactions.saved'));
                     $command = Reaction::create(['trigger' => $parameters[1], 'reaction' => $parameters[2]]);
                     $command->save();
-                    new SimpleReaction($discord, $parameters[1], $parameters[2]);
+                    new SimpleReaction($bot, $parameters[1], $parameters[2]);
                 }
             }
 
             if (str_starts_with($message->content, $bot->getPrefix() . 'delreaction ')) {
                 $parameters = explode(' ', $message->content);
                 if (!isset($parameters[1])) {
-                    $message->channel->sendMessage("Provide arguments noob");
+                    $message->channel->sendMessage(__('bot.provide-args'));
                 } else {
                     Reaction::where(['trigger' => $parameters[1]])->delete();
-                    $message->channel->sendMessage("Reaction deleted");
+                    $message->channel->sendMessage(__('bot.reactions.deleted'));
                 }
             }
 
             if ($message->content == $bot->getPrefix() . 'reactions') {
-
-                $embed = new Embed($discord);
-                $embed->setType('rich');
-                $embed->setFooter('usage: addreaction, delreaction, reactions');
-                $embed->setDescription('Basic reactions');
-                $embed->setTitle("Reactions");
-                $embed->setColor(2067276);
-
+                $embed = EmbedBuilder::create($discord,
+                    __('bot.reactions.title'),
+                    __('bot.reactions.footer'),
+                    __('bot.reactions.description'));
 
                 foreach (Reaction::all() as $reaction) {
-                    $embed->addField(['name' => $reaction->trigger, 'value' => $reaction->reaction, 'inline' => true]);
+                    $embed->addField(['name' =>  $reaction->trigger, 'value' => $reaction->reaction, 'inline' => true]);
                 }
                 $message->channel->sendEmbed($embed);
-
             }
-
         });
     }
 
