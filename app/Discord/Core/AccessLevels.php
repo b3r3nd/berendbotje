@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Discord;
+namespace App\Discord\Core;
 
 enum AccessLevels: int
 {
