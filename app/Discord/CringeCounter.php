@@ -20,7 +20,7 @@ class CringeCounter
             if (str_starts_with($message->content, $bot->getPrefix() . 'cringestats') || str_starts_with($message->content, $bot->getPrefix() . 'cringecounter')) {
                 $description = "";
                 foreach (\App\Models\CringeCounter::orderBy('count', 'desc')->limit(10)->get() as $cringeCounter) {
-                    $description .= '**' . $cringeCounter->discord_username . '** - ' . $cringeCounter->count . "\n";
+                    $description .= "**{$cringeCounter->discord_username}** - {$cringeCounter->count} \n";
                 }
 
                 $embed = EmbedBuilder::create($discord,
@@ -94,7 +94,7 @@ class CringeCounter
                                 $cringeCounter->save();
                             }
                         } else {
-                            $message->channel->sendMessage($parameters[1] . " isn't cringe..");
+                            $message->channel->sendMessage(__('bot.cringe.not-cringe', ['name' => $parameters[1]]));
                         }
                         $message->channel->sendMessage((__('bot.cringe.change', ['name' => $cringeCounter->discord_username, 'count' => $cringeCounter->count])));
                     }

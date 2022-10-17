@@ -26,7 +26,7 @@ class AdminManagement
             if (str_starts_with($message->content, $bot->getPrefix() . 'admins')) {
                 $description = "";
                 foreach (Admin::orderBy('level', 'desc')->get() as $admin) {
-                    $description .= '**' . $admin->discord_username . '** - ' . $admin->level . "\n";
+                    $description .= "** {$admin->discord_username} ** - {$admin->level} \n";
                 }
                 $embed = EmbedBuilder::create($discord,
                     __('bot.admins.title'),

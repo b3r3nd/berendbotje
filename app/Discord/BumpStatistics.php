@@ -19,7 +19,7 @@ class BumpStatistics
             if ((str_starts_with($message->content, $bot->getPrefix() . 'bumpstats'))) {
                 $description = "";
                 foreach (Bumper::orderBy('count', 'desc')->limit(10)->get() as $bumper) {
-                    $description .= '**' . $bumper->discord_username . '** - ' .  $bumper->count . "\n";
+                    $description .= "**{$bumper->discord_username}** - {$bumper->count}\n";
                 }
                 $embed = EmbedBuilder::create($discord,
                     __('bot.bump.title'),

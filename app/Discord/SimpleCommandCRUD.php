@@ -44,7 +44,7 @@ class SimpleCommandCRUD
             if ($message->content == $bot->getPrefix() . 'commands') {
                 $commands = "";
                 foreach (Command::all() as $command) {
-                    $commands .= '**' . $command->trigger . '** - ' . $command->response . "\n";
+                    $commands .= "** {$command->trigger} ** - {$command->response}\n";
                 }
                 $embed = EmbedBuilder::create($discord,
                     __('bot.cmd.title'),
