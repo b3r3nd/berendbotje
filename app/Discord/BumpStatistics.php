@@ -22,15 +22,15 @@ class BumpStatistics
                 $embed = new Embed($discord);
                 $embed->setType('rich');
                 $embed->setFooter('Use /bump in #botspam');
-                $embed->setDescription('Bump counter');
                 $embed->setTitle('Bumper Elites');
                 $embed->setColor(2067276);
 
+                $description ="Bump counter\n\n";
 
                 foreach (Bumper::orderBy('count', 'desc')->limit(10)->get() as $bumper) {
-                    $embed->addField(['name' => $bumper->discord_username, 'value' => $bumper->count]);
+                    $description .= '**' . $bumper->discord_username . '** - ' .  $bumper->count . "\n";
                 }
-
+                $embed->setDescription($description);
                 $message->channel->sendEmbed($embed);
             }
         });

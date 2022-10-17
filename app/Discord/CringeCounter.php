@@ -22,13 +22,17 @@ class CringeCounter
             if (str_starts_with($message->content, $bot->getPrefix() . 'cringestats') || str_starts_with($message->content, $bot->getPrefix() . 'cringecounter')) {
                 $embed = new Embed($discord);
                 $embed->setType('rich');
-                $embed->setFooter('usage: addcringe');
-                $embed->setDescription('Most cringe people in our discord');
+                $embed->setFooter('usage: addcringe, delcringe, cringecounter');
                 $embed->setTitle('Cringe Counter');
                 $embed->setColor(2067276);
+
+                $description = "List of the most cringe people in our discord! \n\n";
                 foreach (\App\Models\CringeCounter::orderBy('count', 'desc')->limit(10)->get() as $cringeCounter) {
-                    $embed->addField(['name' => $cringeCounter->discord_username, 'value' => $cringeCounter->count]);
+                    $description .= '**' . $cringeCounter->discord_username . '** - ' . $cringeCounter->count . "\n";
                 }
+
+
+                $embed->setDescription($description);
                 $message->channel->sendEmbed($embed);
             }
 

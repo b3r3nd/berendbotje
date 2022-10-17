@@ -26,15 +26,15 @@ class AdminManagement
                 $embed = new Embed($discord);
                 $embed->setType('rich');
                 $embed->setFooter('Usage: admins, addadmin, deladmin, clvladmin');
-                $embed->setDescription('List of bot administrators');
                 $embed->setTitle('Admins');
                 $embed->setColor(2067276);
+                $description = "List of bot administrators\n\n";
 
                 foreach (Admin::orderBy('level', 'desc')->get() as $admin) {
-                    $embed->addField(['name' => $admin->discord_username, 'value' => $admin->level]);
+                    $description .= '**' . $admin->discord_username . '** - ' .  $admin->level . "\n";
                 }
 
-
+                $embed->setDescription($description);
                 $message->channel->sendEmbed($embed);
             }
 
