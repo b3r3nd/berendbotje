@@ -2,6 +2,7 @@
 
 namespace App\Discord;
 
+use App\Discord\Core\Bot;
 use App\Models\Bumper;
 use Discord\Discord;
 use Discord\Parts\Channel\Message;

@@ -3,6 +3,7 @@
 namespace App\Discord;
 
 use App\Discord\Core\AccessLevels;
+use App\Discord\Core\Bot;
 use App\Discord\Core\EmbedBuilder;
 use App\Models\Admin;
 use App\Models\Command;

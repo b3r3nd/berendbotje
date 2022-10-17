@@ -2,13 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Discord\Bot;
-use Discord\Builders\MessageBuilder;
-use Discord\Discord;
-use Discord\Interaction;
-use Discord\Parts\Channel\Message;
-use Discord\WebSockets\Event;
-use Discord\WebSockets\Intents;
+use App\Discord\Core\Bot;
 use Illuminate\Console\Command;
 
 class RunBot extends Command

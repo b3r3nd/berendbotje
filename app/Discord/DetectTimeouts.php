@@ -2,6 +2,7 @@
 
 namespace App\Discord;
 
+use App\Discord\Core\Bot;
 use Carbon\Carbon;
 use Discord\Discord;
 use Discord\Parts\Guild\AuditLog\AuditLog;

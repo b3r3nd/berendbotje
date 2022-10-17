@@ -1,7 +1,17 @@
 <?php
 
-namespace App\Discord;
+namespace App\Discord\Core;
 
+use App\Discord\AdminManagement;
+use App\Discord\BumpCounter;
+use App\Discord\BumpStatistics;
+use App\Discord\CringeCounter;
+use App\Discord\DetectTimeouts;
+use App\Discord\SimpleCommand;
+use App\Discord\SimpleCommandCRUD;
+use App\Discord\SimpleReaction;
+use App\Discord\SimpleReactionsCRUD;
+use App\Discord\Timeout;
 use App\Models\Command;
 use App\Models\Reaction;
 use Discord\Discord;
