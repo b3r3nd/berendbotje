@@ -7,6 +7,7 @@ use App\Discord\BumpCounter;
 use App\Discord\BumpStatistics;
 use App\Discord\CringeCounter;
 use App\Discord\DetectTimeouts;
+use App\Discord\Music\Music;
 use App\Discord\SimpleCommand;
 use App\Discord\SimpleCommandCRUD;
 use App\Discord\SimpleReaction;
@@ -65,6 +66,8 @@ class Bot
         new CringeCounter($this);
         new Timeout($this);
         new DetectTimeouts($this);
+
+        new Music($this);
     }
 
     public function getDeletedReactions(): array
