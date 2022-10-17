@@ -31,7 +31,7 @@ class Music
             if ($message->author->bot) {
                 return;
             }
-            if ((str_starts_with($message->content, "{$bot->getPrefix()}jingle"))) {
+            if ((str_starts_with($message->content, "{$bot->getPrefix()}play"))) {
                 $parameters = explode(' ', $message->content);
                 if (!isset($parameters[1])) {
                     $message->channel->sendMessage(__('bot.provide-args'));
@@ -41,10 +41,9 @@ class Music
                 foreach ($voiceStates as $voiceState) {
                     if ($voiceState->user_id === $userId) {
                         $channel = $discord->getChannel($voiceState->channel_id);
-                        $message->channel->sendMessage($voiceState->channel_id);
-                        $message->channel->sendMessage($channel->name);
+
                         $discord->joinVoiceChannel($channel)->then(function (VoiceClient $voice) use ($parameters) {
-                            return $voice->playFile(public_path("veronica/{$parameters[1]}"))->done(function () use ($voice) {
+                            $voice->playFile(public_path("veronica/{$parameters[1]}"))->done(function () use ($voice) {
                                 $voice->close();
                             });
                         });
