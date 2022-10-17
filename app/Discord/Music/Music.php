@@ -44,7 +44,7 @@ class Music
                         $message->channel->sendMessage($voiceState->channel_id);
                         $message->channel->sendMessage($channel->name);
                         $discord->joinVoiceChannel($channel)->then(function (VoiceClient $voice) use ($parameters) {
-                            return $voice->playFile(public_path("veronica/{$parameters[1]}.mp3"))->done(function () use ($voice) {
+                            return $voice->playFile(public_path("veronica/{$parameters[1]}"))->done(function () use ($voice) {
                                 $voice->close();
                             });
                         });
