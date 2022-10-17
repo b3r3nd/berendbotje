@@ -38,23 +38,21 @@ class Bot
     private function loadCommands(): void
     {
         foreach (Command::all() as $command) {
-            SimpleCommand::create($this->discord, $command->trigger, $command->response);
+            SimpleCommand::create($this, $command->trigger, $command->response);
         }
 
         foreach (Reaction::all() as $command) {
-            SimpleReaction::create($this->discord, $command->trigger, $command->reaction);
+            SimpleReaction::create($this, $command->trigger, $command->reaction);
         }
 
-        new SimpleCommandCRUD($this->discord, $this);
-        new SimpleReactionsCRUD($this->discord, $this);
-        new BumpCounter($this->discord);
-        new BumpStatistics($this->discord, $this);
-        new CringeCounter($this->discord, $this);
-        new AdminManagement($this->discord, $this);
-        new Timeout($this->discord, $this);
-
-        // DetectTimeouts
-        new DetectTimeouts($this->discord, $this);
+        new SimpleCommandCRUD($this);
+        new AdminManagement($this);
+        new SimpleReactionsCRUD($this);
+        new BumpCounter($this);
+        new BumpStatistics($this);
+        new CringeCounter($this);
+        new Timeout($this);
+        new DetectTimeouts($this);
     }
 
     /**

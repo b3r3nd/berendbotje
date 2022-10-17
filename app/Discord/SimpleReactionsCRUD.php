@@ -12,9 +12,9 @@ use Discord\WebSockets\Event;
 
 class SimpleReactionsCRUD
 {
-    public function __construct(Discord $discord, Bot $bot)
+    public function __construct(Bot $bot)
     {
-        $discord->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) use ($bot) {
+        $bot->discord()->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) use ($bot) {
             if ($message->author->bot) {
                 return;
             }

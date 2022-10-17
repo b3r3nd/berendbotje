@@ -8,9 +8,9 @@ use Discord\WebSockets\Event;
 
 class SimpleReaction
 {
-    public static function create(Discord $discord, string $trigger, string $reaction)
+    public static function create(Bot $bot, string $trigger, string $reaction)
     {
-        new self($discord, $trigger, $reaction);
+        new self($bot, $trigger, $reaction);
     }
 
     /**
@@ -18,9 +18,9 @@ class SimpleReaction
      * @param string $trigger
      * @param string $reaction
      */
-    public function __construct(Discord $discord, string $trigger, string $reaction)
+    public function __construct(Bot $bot, string $trigger, string $reaction)
     {
-        $discord->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) use ($trigger, $reaction) {
+        $bot->discord()->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) use ($trigger, $reaction) {
             if ($message->author->bot) {
                 return;
             }

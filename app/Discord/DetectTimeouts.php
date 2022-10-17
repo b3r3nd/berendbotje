@@ -15,9 +15,9 @@ use Discord\WebSockets\Event;
 class DetectTimeouts
 {
 
-    public function __construct(Discord $discord, Bot $bot)
+    public function __construct(Bot $bot)
     {
-        $discord->on(Event::GUILD_MEMBER_UPDATE, function (Member $member, Discord $discord) use ($bot) {
+        $bot->discord()->on(Event::GUILD_MEMBER_UPDATE, function (Member $member, Discord $discord) use ($bot) {
             $discord->guilds->fetch('590941503917129743')->done(function (Guild $guild) use ($member) {
                 $guild->getAuditLog(['limit' => 1])->done(function (AuditLog $auditLog) use ($member) {
                     foreach ($auditLog->audit_log_entries as $entry) {
