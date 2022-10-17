@@ -20,7 +20,7 @@ class SimpleCommandCRUD
             if (!Admin::hasLevel($message->author->id, AccessLevels::MOD->value)) {
                 return;
             }
-            if (str_starts_with($message->content, $bot->getPrefix() . 'addcmd ')) {
+            if (str_starts_with($message->content, "{$bot->getPrefix()}addcmd")) {
                 $parameters = explode(' ', $message->content);
                 if (!isset($parameters[1]) || !isset($parameters[2])) {
                     $message->channel->sendMessage(__('bot.provide-args'));
@@ -31,7 +31,7 @@ class SimpleCommandCRUD
                     new SimpleCommand($bot, $parameters[1], $parameters[2]);
                 }
             }
-            if (str_starts_with($message->content, $bot->getPrefix() . 'delcmd ')) {
+            if (str_starts_with($message->content,"{$bot->getPrefix()}delcmd")) {
                 $parameters = explode(' ', $message->content);
                 if (!isset($parameters[1])) {
                     $message->channel->sendMessage(__('bot.provide-args'));
@@ -39,9 +39,8 @@ class SimpleCommandCRUD
                     Command::where(['trigger' => $parameters[1]])->delete();
                     $message->channel->sendMessage(__('bot.cmd.deleted'));
                 }
-
             }
-            if ($message->content == $bot->getPrefix() . 'commands') {
+            if ($message->content == "{$bot->getPrefix()}commands") {
                 $commands = "";
                 foreach (Command::all() as $command) {
                     $commands .= "** {$command->trigger} ** - {$command->response}\n";
@@ -50,7 +49,6 @@ class SimpleCommandCRUD
                     __('bot.cmd.title'),
                     __('bot.cmd.footer'),
                     __('bot.cmd.description', ['cmds' => $commands]));
-
                 $message->channel->sendEmbed($embed);
             }
         });

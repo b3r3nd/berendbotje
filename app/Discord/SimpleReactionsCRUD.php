@@ -20,7 +20,7 @@ class SimpleReactionsCRUD
             if (!Admin::hasLevel($message->author->id, AccessLevels::MOD->value)) {
                 return;
             }
-            if (str_starts_with($message->content, $bot->getPrefix() . 'addreaction ')) {
+            if (str_starts_with($message->content, "{$bot->getPrefix()}addreaction")) {
                 $parameters = explode(' ', $message->content);
                 if (!isset($parameters[1]) || !isset($parameters[2])) {
                     $message->channel->sendMessage(__('bot.provide-args'));
@@ -31,8 +31,7 @@ class SimpleReactionsCRUD
                     new SimpleReaction($bot, $parameters[1], $parameters[2]);
                 }
             }
-
-            if (str_starts_with($message->content, $bot->getPrefix() . 'delreaction ')) {
+            if (str_starts_with($message->content, "{$bot->getPrefix()}delreaction")) {
                 $parameters = explode(' ', $message->content);
                 if (!isset($parameters[1])) {
                     $message->channel->sendMessage(__('bot.provide-args'));
@@ -41,13 +40,11 @@ class SimpleReactionsCRUD
                     $message->channel->sendMessage(__('bot.reactions.deleted'));
                 }
             }
-
-            if ($message->content == $bot->getPrefix() . 'reactions') {
+            if ($message->content == "{$bot->getPrefix()}reactions") {
                 $embed = EmbedBuilder::create($discord,
                     __('bot.reactions.title'),
                     __('bot.reactions.footer'),
                     __('bot.reactions.description'));
-
                 foreach (Reaction::all() as $reaction) {
                     $embed->addField(['name' =>  $reaction->trigger, 'value' => $reaction->reaction, 'inline' => true]);
                 }
