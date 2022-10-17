@@ -35,7 +35,8 @@ class Bot
         $this->discord = new Discord([
                 'token' => config('discord.token'),
                 'loadAllMembers' => true,
-                'intents' => Intents::getDefaultIntents() | Intents::GUILD_MEMBERS | Intents::MESSAGE_CONTENT
+                'intents' => Intents::getDefaultIntents() | Intents::GUILD_VOICE_STATES | Intents::GUILD_MEMBERS |
+                Intents::MESSAGE_CONTENT | Intents::GUILDS
             ]
         );
     }
