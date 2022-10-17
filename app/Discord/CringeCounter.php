@@ -75,6 +75,32 @@ class CringeCounter
                     }
                 }
             }
+
+            if (str_starts_with($message->content, $bot->getPrefix() . 'delcringe ')) {
+                if (!Admin::hasLevel($message->author->id, AccessLevels::USER->value)) {
+                    return;
+                }
+                $parameters = explode(' ', $message->content);
+                if (!isset($parameters[1])) {
+                    $message->channel->sendMessage("Provide arguments noob");
+                } else {
+                    foreach ($message->mentions as $mention) {
+                        $cringeCounter = \App\Models\CringeCounter::where(['discord_id' => $mention->id])->first();
+
+                        if ($cringeCounter) {
+                            $cringeCounter->count = $cringeCounter->count - 1;
+                            if ($cringeCounter->count == 0) {
+                                $cringeCounter->delete();
+                            } else {
+                                $cringeCounter->save();
+                            }
+                        } else {
+                            $message->channel->sendMessage($parameters[1] . " isn't cringe..");
+                        }
+                        $message->channel->sendMessage("Cringe counter for " . $cringeCounter->discord_tag . " decreased to " . $cringeCounter->count);
+                    }
+                }
+            }
         });
     }
 
