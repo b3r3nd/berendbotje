@@ -2,11 +2,10 @@
 
 namespace App\Discord;
 
-use App\Models\Admin;
+use App\Discord\Core\EmbedBuilder;
 use App\Models\Bumper;
 use Discord\Discord;
 use Discord\Parts\Channel\Message;
-use Discord\Parts\Embed\Embed;
 use Discord\WebSockets\Event;
 
 class BumpStatistics
@@ -18,19 +17,15 @@ class BumpStatistics
                 return;
             }
             if ((str_starts_with($message->content, $bot->getPrefix() . 'bumpstats'))) {
-
-                $embed = new Embed($discord);
-                $embed->setType('rich');
-                $embed->setFooter('Use /bump in #botspam');
-                $embed->setTitle('Bumper Elites');
-                $embed->setColor(2067276);
-
-                $description ="Bump counter\n\n";
-
+                $description = "";
                 foreach (Bumper::orderBy('count', 'desc')->limit(10)->get() as $bumper) {
                     $description .= '**' . $bumper->discord_username . '** - ' .  $bumper->count . "\n";
                 }
-                $embed->setDescription($description);
+                $embed = EmbedBuilder::create($discord,
+                    __('bot.bump.title'),
+                    __('bot.bump.footer'),
+                    __('bot.bump.description', ['bumpers' => $description]));
+
                 $message->channel->sendEmbed($embed);
             }
         });

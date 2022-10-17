@@ -24,7 +24,12 @@ return [
         'powerful' => ':name is to powerful for you',
         'deleted' => 'User Deleted',
         'changed' => 'User level changed'
-
     ],
 
+    'bump' => [
+        'inc' => ":name heeft :count x de discord gebumped!",
+        'footer' => 'Use /bump in #botspam',
+        'title' => 'Bumper Elites',
+        'description' => "Bump counter\n\n :bumpers"
+    ]
 ];

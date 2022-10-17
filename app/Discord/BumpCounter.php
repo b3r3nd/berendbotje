@@ -26,7 +26,7 @@ class BumpCounter
                         'count' => 1
                     ]);
                 }
-                $message->channel->sendMessage($message->interaction->user->username . ' heeft ' . $bumper->count . ' x de discord gebumped!');
+                $message->channel->sendMessage(__('bot.bump.inc', ['name' => $message->interaction->user->username, 'count' => $bumper->count]));
             }
         });
     }
