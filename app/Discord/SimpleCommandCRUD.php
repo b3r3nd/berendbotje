@@ -39,6 +39,7 @@ class SimpleCommandCRUD
                     $message->channel->sendMessage(__('bot.provide-args'));
                 } else {
                     Command::where(['trigger' => $parameters[1]])->delete();
+                    $bot->deleteCommand($parameters[1]);
                     $message->channel->sendMessage(__('bot.cmd.deleted'));
                 }
             }

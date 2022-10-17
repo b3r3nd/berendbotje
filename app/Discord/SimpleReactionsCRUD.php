@@ -39,6 +39,7 @@ class SimpleReactionsCRUD
                     $message->channel->sendMessage(__('bot.provide-args'));
                 } else {
                     Reaction::where(['trigger' => $parameters[1]])->delete();
+                    $bot->deleteReaction($parameters[1]);
                     $message->channel->sendMessage(__('bot.reactions.deleted'));
                 }
             }

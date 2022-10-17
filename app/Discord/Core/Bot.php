@@ -22,6 +22,8 @@ class Bot
 {
     private Discord $discord;
     private string $prefix = '$';
+    private array $deletedCommands = [];
+    private array $deletedReactions = [];
 
 
     /**
@@ -63,6 +65,26 @@ class Bot
         new CringeCounter($this);
         new Timeout($this);
         new DetectTimeouts($this);
+    }
+
+    public function getDeletedReactions(): array
+    {
+        return $this->deletedReactions;
+    }
+
+    public function deleteReaction(string $command): void
+    {
+        $this->deletedReactions[] = $command;
+    }
+
+    public function getDeletedCommands(): array
+    {
+        return $this->deletedCommands;
+    }
+
+    public function deleteCommand(string $command): void
+    {
+        $this->deletedCommands[] = $command;
     }
 
     /**

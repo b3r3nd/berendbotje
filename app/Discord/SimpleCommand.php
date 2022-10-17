@@ -17,12 +17,14 @@ class SimpleCommand
 
     public function __construct(Bot $bot, string $trigger, string $response)
     {
-        $bot->discord()->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) use ($trigger, $response) {
+        $bot->discord()->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) use ($trigger, $response, $bot) {
             if ($message->author->bot) {
                 return;
             }
             if (strtolower($message->content) == strtolower($trigger)) {
-                $message->channel->sendMessage($response);
+                if (!in_array(strtolower($message->content), $bot->getDeletedCommands())) {
+                    $message->channel->sendMessage($response);
+                }
             }
         });
     }

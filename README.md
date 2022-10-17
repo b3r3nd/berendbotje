@@ -67,7 +67,8 @@ For now the following commands are implemented
 * bumpstats
 * addcringe
 * cringe
-* cringestats
+* cringestats / cringecounter
+* delcringe
 
 Custom commands added with the addcmd which only gives text responses are 
 dynamic and thus not added to the list.

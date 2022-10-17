@@ -97,7 +97,6 @@ class AdminManagement
                         $message->channel->sendMessage(__('bot.admins.powerful', ['name' => $admin->discord_username]));
                         return;
                     }
-
                     if (!Admin::hasHigherLevel($message->author->id, $parameters[2])) {
                         $message->channel->sendMessage(__('bot.admins.lack-access'));
                         return;
