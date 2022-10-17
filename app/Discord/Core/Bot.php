@@ -34,9 +34,10 @@ class Bot
     {
         $this->discord = new Discord([
                 'token' => config('discord.token'),
-                'loadAllMembers' => true,
+               // 'loadAllMembers' => true,
+//                'intents' => 131071,
                 'intents' => Intents::getDefaultIntents() | Intents::GUILD_VOICE_STATES | Intents::GUILD_MEMBERS |
-                Intents::MESSAGE_CONTENT | Intents::GUILDS
+                    Intents::MESSAGE_CONTENT | Intents::GUILDS
             ]
         );
     }
@@ -44,7 +45,10 @@ class Bot
     public static function setup(): Discord
     {
         $bot = new self();
-        $bot->loadCommands();
+
+        $bot->discord->on('ready', function (Discord $discord) use ($bot) {
+            $bot->loadCommands();
+        });
 
         return $bot->discord;
     }
