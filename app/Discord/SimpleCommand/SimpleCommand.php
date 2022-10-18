@@ -9,7 +9,6 @@ use Discord\WebSockets\Event;
 
 class SimpleCommand
 {
-
     public static function create(Bot $bot, string $trigger, string $response)
     {
         new self($bot, $trigger, $response);

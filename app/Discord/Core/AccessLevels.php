@@ -2,7 +2,7 @@
 
 namespace App\Discord\Core;
 /**
- * Preset few access levels before we completely make it danmic in the future.
+ * Preset few access levels before we completely make it dynamic in the future.
  */
 enum AccessLevels: int
 {

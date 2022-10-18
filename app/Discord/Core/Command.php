@@ -9,7 +9,8 @@ use Discord\WebSockets\Event;
 
 /**
  * All commands are single classes. They will all extend this class! It will handle some basic filters so the
- * child only has to worry about the actual custom code required for the command.
+ * child only has to worry about the actual custom code required for the command instead of rewriting the same
+ * 20 lines of code each time.
  */
 abstract class Command
 {

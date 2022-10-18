@@ -4,6 +4,9 @@ namespace App\Discord\Admin;
 
 use App\Models\Admin;
 
+/**
+ * Helper functions for Admin, helps abstract some code :)
+ */
 class AdminHelper
 {
     public static function validateAdmin($adminId, $userId) {

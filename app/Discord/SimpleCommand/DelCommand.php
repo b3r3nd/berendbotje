@@ -9,7 +9,6 @@ use Discord\Http\Exceptions\NoPermissionsException;
 
 class DelCommand extends Command
 {
-
     public function accessLevel(): AccessLevels
     {
         return AccessLevels::MOD;

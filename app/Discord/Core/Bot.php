@@ -29,8 +29,12 @@ use Discord\Exceptions\IntentException;
 use Discord\WebSockets\Intents;
 
 /**
- * Singleton so we only ever have 1 instance and can easily access it everywhere without passing the varibale through
- * every class and function.
+ * We only ever have one instance of this class, you could call it a singleton however it isn't really. This class
+ * will always be instantiated when the bot boots. We do not need to check whether that is the case
+ * on static function calls. If the instance is not there, everything is broken already.
+ *
+ * I could pass this as an argument to literally every class constructor (which I did at first) but it became
+ * cumbersome rather quick, hence this implementation.
  */
 class Bot
 {

@@ -8,6 +8,9 @@ use Discord\Discord;
 use Discord\Parts\Channel\Message;
 use Discord\WebSockets\Event;
 
+/**
+ * @TODO Use Command class. Currently the command class does not support a message type and interaction name check.
+ */
 class BumpCounter
 {
     public function __construct()

@@ -9,7 +9,6 @@ use Discord\Http\Exceptions\NoPermissionsException;
 
 class AddCommand extends Command
 {
-
     public function accessLevel(): AccessLevels
     {
         return AccessLevels::MOD;

@@ -9,7 +9,6 @@ use Discord\Http\Exceptions\NoPermissionsException;
 
 class DelCringe extends Command
 {
-
     public function accessLevel(): AccessLevels
     {
         return AccessLevels::MOD;

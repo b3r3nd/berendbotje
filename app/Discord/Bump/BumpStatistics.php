@@ -10,7 +10,6 @@ use App\Models\Bumper;
 
 class BumpStatistics extends Command
 {
-
     public function accessLevel(): AccessLevels
     {
         return AccessLevels::NONE;

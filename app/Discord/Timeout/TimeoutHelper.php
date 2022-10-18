@@ -2,6 +2,9 @@
 
 namespace App\Discord\Timeout;
 
+/**
+ * Helper class for Timeouts to abstract some code.
+ */
 class TimeoutHelper
 {
     public static function timeoutLength($embed, $timeout)
