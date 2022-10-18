@@ -17,7 +17,7 @@ class PlayLocalFile extends Command
 
     public function trigger(): string
     {
-        return 'play';
+        return 'lc';
     }
 
     public function __construct()

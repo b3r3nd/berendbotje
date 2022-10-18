@@ -67,6 +67,21 @@ return [
         'footer' => 'Timeouts given through discord are automatically added',
         'title' => 'Timeouts',
         'count' => "Total timeouts: :count"
+    ],
+
+    'music' => [
+        'title' => 'Music Queue',
+        'footer' => 'Usage: play, pause, stop, queue',
+        'player-status' => 'Player is :status',
+        'add-to-queue' => 'Music is playing.. adding to queue..',
+        'starting' => 'Starting player..',
+        'resuming' => 'Resuming player..',
+        'already-playing' => 'Player already playing',
+        'pausing' => 'Pausing player..',
+        'already-paused' => 'Player already paused',
+        'stopping' => 'Stopping player..',
+        'already-stopped' => 'Player already stopped'
+
     ]
 
 
