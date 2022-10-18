@@ -33,17 +33,13 @@ class UpdateAdmin extends Command
     public function action(): void
     {
         foreach ($this->message->mentions as $mention) {
-            $admin = Admin::where(['discord_id' => $mention->id])->first();
-            if (!$admin) {
-                $this->message->channel->sendMessage(__('bot.admins.not-exist'));
-                return;
+            $admin = AdminHelper::validateAdmin($mention->id, $this->message->author->id);
+            if ($admin instanceof Admin) {
+                $admin->update(['level' => $this->arguments[1]]);
+                $this->message->channel->sendMessage(__('bot.admins.changed'));
+            } else {
+                $this->message->channel->sendMessage($admin);
             }
-            if (!Admin::hasHigherLevel($this->message->author->id, $admin->level)) {
-                $this->message->channel->sendMessage(__('bot.admins.powerful', ['name' => $admin->discord_username]));
-                return;
-            }
-            $admin->update(['level' => $this->arguments[1]]);
-            $this->message->channel->sendMessage(__('bot.admins.changed'));
         }
     }
 }

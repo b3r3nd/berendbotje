@@ -11,7 +11,7 @@ class PlayLocalFile extends Command
 {
     public function accessLevel(): AccessLevels
     {
-        return AccessLevels::USER;
+        return AccessLevels::GOD;
     }
 
     public function trigger(): string
