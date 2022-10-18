@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Discord;
+namespace App\Discord\Timeout;
 
 use App\Discord\Core\Bot;
 use Carbon\Carbon;
@@ -12,9 +12,9 @@ use Discord\WebSockets\Event;
 
 class DetectTimeouts
 {
-    public function __construct(Bot $bot)
+    public function __construct()
     {
-        $bot->discord()->on(Event::GUILD_MEMBER_UPDATE, function (Member $member, Discord $discord) use ($bot) {
+        Bot::getDiscord()->on(Event::GUILD_MEMBER_UPDATE, function (Member $member, Discord $discord) {
             $discord->guilds->fetch('590941503917129743')->done(function (Guild $guild) use ($member) {
                 $guild->getAuditLog(['limit' => 1])->done(function (AuditLog $auditLog) use ($member) {
                     foreach ($auditLog->audit_log_entries as $entry) {

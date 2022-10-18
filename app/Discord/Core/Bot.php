@@ -2,30 +2,57 @@
 
 namespace App\Discord\Core;
 
-use App\Discord\AdminManagement;
-use App\Discord\BumpCounter;
-use App\Discord\BumpStatistics;
-use App\Discord\CringeCounter;
-use App\Discord\DetectTimeouts;
-use App\Discord\Music\Music;
-use App\Discord\SimpleCommand;
-use App\Discord\SimpleCommandCRUD;
-use App\Discord\SimpleReaction;
-use App\Discord\SimpleReactionsCRUD;
-use App\Discord\Timeout;
-use App\Models\Command;
+use App\Discord\Admin\AddAdmin;
+use App\Discord\Admin\AdminIndex;
+use App\Discord\Admin\DelAdmin;
+use App\Discord\Admin\UpdateAdmin;
+use App\Discord\Bump\BumpCounter;
+use App\Discord\Bump\BumpStatistics;
+use App\Discord\Cringe\AddCringe;
+use App\Discord\Cringe\CringeIndex;
+use App\Discord\Cringe\DelCringe;
+use App\Discord\Music\PlayLocalFile;
+use App\Discord\SimpleCommand\AddCommand;
+use App\Discord\SimpleCommand\CommandIndex;
+use App\Discord\SimpleCommand\DelCommand;
+use App\Discord\SimpleCommand\SimpleCommand;
+use App\Discord\SimpleReaction\AddReaction;
+use App\Discord\SimpleReaction\DelReaction;
+use App\Discord\SimpleReaction\ReactionsIndex;
+use App\Discord\SimpleReaction\SimpleReaction;
+use App\Discord\Timeout\AllTimeouts;
+use App\Discord\Timeout\DetectTimeouts;
+use App\Discord\Timeout\SingleUserTimeouts;
 use App\Models\Reaction;
 use Discord\Discord;
 use Discord\Exceptions\IntentException;
 use Discord\WebSockets\Intents;
 
+/**
+ * Singleton so we only ever have 1 instance and can easily access it everywhere without passing the varibale through
+ * every class and function.
+ */
 class Bot
 {
     private Discord $discord;
     private string $prefix = '$';
     private array $deletedCommands = [];
     private array $deletedReactions = [];
+    private static self $instance;
 
+
+    /**
+     * @return Bot|static
+     */
+    public static function get(): Bot|static
+    {
+        return self::$instance;
+    }
+
+    public static function getDiscord(): Discord
+    {
+        return self::$instance->discord;
+    }
 
     /**
      * @throws IntentException
@@ -39,56 +66,85 @@ class Bot
                     Intents::MESSAGE_CONTENT | Intents::GUILDS
             ]
         );
-    }
 
-    public static function setup(): Discord
-    {
-        $bot = new self();
-
-        $bot->discord->on('ready', function (Discord $discord) use ($bot) {
-            $bot->loadCommands();
+        $this->discord->on('ready', function (Discord $discord) {
+            $this->loadCommands();
         });
 
-        return $bot->discord;
+        self::$instance = $this;
+        return $this;
     }
 
+
+    /**
+     * @return void
+     */
     private function loadCommands(): void
     {
-        foreach (Command::all() as $command) {
+        new VoiceStateUpdate();
+        new DetectTimeouts();
+
+        (new AdminIndex())->register();
+        (new AddAdmin())->register();
+        (new DelAdmin())->register();
+        (new UpdateAdmin())->register();
+
+        (new BumpStatistics())->register();
+        new BumpCounter();
+
+        (new AddCringe())->register();
+        (new DelCringe())->register();
+        (new CringeIndex())->register();
+
+        (new AddCommand())->register();
+        (new DelCommand())->register();
+        (new CommandIndex())->register();
+
+        foreach (\App\Models\Command::all() as $command) {
             SimpleCommand::create($this, $command->trigger, $command->response);
         }
+
+        (new ReactionsIndex())->register();
+        (new AddReaction())->register();
+        (new DelReaction())->register();
 
         foreach (Reaction::all() as $command) {
             SimpleReaction::create($this, $command->trigger, $command->reaction);
         }
 
-        new SimpleCommandCRUD($this);
-        new AdminManagement($this);
-        new SimpleReactionsCRUD($this);
-        new BumpCounter($this);
-        new BumpStatistics($this);
-        new CringeCounter($this);
-        new Timeout($this);
-        new DetectTimeouts($this);
-
-        new Music($this);
+        (new AllTimeouts())->register();
+        (new SingleUserTimeouts())->register();
     }
 
+    /**
+     * @return array
+     */
     public function getDeletedReactions(): array
     {
         return $this->deletedReactions;
     }
 
+    /**
+     * @param string $command
+     * @return void
+     */
     public function deleteReaction(string $command): void
     {
         $this->deletedReactions[] = $command;
     }
 
+    /**
+     * @return array
+     */
     public function getDeletedCommands(): array
     {
         return $this->deletedCommands;
     }
 
+    /**
+     * @param string $command
+     * @return void
+     */
     public function deleteCommand(string $command): void
     {
         $this->deletedCommands[] = $command;

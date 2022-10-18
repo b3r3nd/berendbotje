@@ -11,23 +11,11 @@ use Discord\Repository\GuildRepository;
 use Discord\Voice\VoiceClient;
 use Discord\WebSockets\Event;
 
-class Music
+class PlayLocalFile
 {
-    public function __construct(Bot $bot)
+    public function __construct()
     {
-
-        $bot->discord()->on(Event::VOICE_STATE_UPDATE, function (VoiceStateUpdate $state, Discord $discord, $oldstate) {
-            if ($state->channel) {
-                foreach ($state->channel->guild->voice_states as $voiceState) {
-                    if ($voiceState->user_id === $state->user_id) {
-                        $voiceState->channel_id = $state->channel_id;
-                    }
-                }
-            }
-        });
-
-
-        $bot->discord()->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) use ($bot) {
+        Bot::getDiscord()->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) use ($bot) {
             if ($message->author->bot) {
                 return;
             }

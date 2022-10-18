@@ -28,9 +28,9 @@ class RunBot extends Command
      */
     public function handle()
     {
-
-        $discord = Bot::setup();
+        $discord = (new Bot())->discord();
         $discord->run();
+
         return Command::SUCCESS;
     }
 }

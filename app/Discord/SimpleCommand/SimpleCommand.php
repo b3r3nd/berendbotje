@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Discord;
+namespace App\Discord\SimpleCommand;
 
 use App\Discord\Core\Bot;
 use Discord\Discord;
