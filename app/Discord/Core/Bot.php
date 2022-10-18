@@ -114,6 +114,8 @@ class Bot
 
         (new AllTimeouts())->register();
         (new SingleUserTimeouts())->register();
+
+        (new PlayLocalFile())->register();
     }
 
     /**

@@ -2,42 +2,40 @@
 
 namespace App\Discord\Music;
 
+use App\Discord\Core\AccessLevels;
 use App\Discord\Core\Bot;
-use Discord\Discord;
-use Discord\Parts\Channel\Message;
-use Discord\Parts\Guild\Guild;
-use Discord\Parts\WebSockets\VoiceStateUpdate;
-use Discord\Repository\GuildRepository;
+use App\Discord\Core\Command;
 use Discord\Voice\VoiceClient;
-use Discord\WebSockets\Event;
 
-class PlayLocalFile
+class PlayLocalFile extends Command
 {
+    public function accessLevel(): AccessLevels
+    {
+        return AccessLevels::USER;
+    }
+
+    public function trigger(): string
+    {
+        return 'play';
+    }
+
     public function __construct()
     {
-        Bot::getDiscord()->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) use ($bot) {
-            if ($message->author->bot) {
-                return;
-            }
-            if ((str_starts_with($message->content, "{$bot->getPrefix()}play"))) {
-                $parameters = explode(' ', $message->content);
-                if (!isset($parameters[1])) {
-                    $message->channel->sendMessage(__('bot.provide-args'));
-                }
-                $voiceStates = $message->channel->guild->voice_states;
-                $userId = $message->author->id;
-                foreach ($voiceStates as $voiceState) {
-                    if ($voiceState->user_id === $userId) {
-                        $channel = $discord->getChannel($voiceState->channel_id);
+        parent::__construct();
+        $this->requiredArguments = 1;
+    }
 
-                        $discord->joinVoiceChannel($channel)->then(function (VoiceClient $voice) use ($parameters) {
-                            $voice->playFile(public_path("veronica/{$parameters[1]}"))->done(function () use ($voice) {
-                                $voice->close();
-                            });
-                        });
-                    }
-                }
+    public function action(): void
+    {
+        foreach ($this->message->channel->guild->voice_states as $voiceState) {
+            if ($voiceState->user_id === $this->message->author->id) {
+                $channel = Bot::getDiscord()->getChannel($voiceState->channel_id);
+                Bot::getDiscord()->joinVoiceChannel($channel)->then(function (VoiceClient $voice) {
+                    $voice->playFile(public_path("veronica/{$this->arguments[0]}"))->done(function () use ($voice) {
+                        $voice->close();
+                    });
+                });
             }
-        });
+        }
     }
 }
