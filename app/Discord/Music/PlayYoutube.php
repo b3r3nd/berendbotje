@@ -34,11 +34,11 @@ class PlayYoutube extends Command
             if ($voiceState->user_id === $this->message->author->id) {
                 $channel = Bot::getDiscord()->getChannel($voiceState->channel_id);
 
-                $filename = 'tmp.m4a';
+                $filename = 'tmp.mp3';
                 $tmpFileLocation = Storage::path($filename);
 
                 $this->message->channel->sendMessage("Downloading audio as {$tmpFileLocation}...");
-                system("youtube-dl -x -o {$tmpFileLocation} {$this->arguments[0]}");
+                system("youtube-dl -x -o {$tmpFileLocation} --audio-format mp3 {$this->arguments[0]}");
 
                 $this->message->channel->sendMessage("Audio stored on hard disk, joining voice call");
                 Bot::getDiscord()->joinVoiceChannel($channel)->then(function (VoiceClient $voice) use ($tmpFileLocation, $filename) {
