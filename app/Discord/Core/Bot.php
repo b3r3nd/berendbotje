@@ -12,6 +12,7 @@ use App\Discord\Cringe\AddCringe;
 use App\Discord\Cringe\CringeIndex;
 use App\Discord\Cringe\DelCringe;
 use App\Discord\Music\PlayLocalFile;
+use App\Discord\Say;
 use App\Discord\SimpleCommand\AddCommand;
 use App\Discord\SimpleCommand\CommandIndex;
 use App\Discord\SimpleCommand\DelCommand;
@@ -118,6 +119,8 @@ class Bot
 
         (new AllTimeouts())->register();
         (new SingleUserTimeouts())->register();
+
+        (new Say())->register();
 
         (new PlayLocalFile())->register();
     }

@@ -21,6 +21,7 @@ abstract class Command
     protected bool $requiresMention = false;
     protected int $requiredArguments = 0;
     protected array $arguments = [];
+    protected string $messageString = '';
 
     public abstract function accessLevel(): AccessLevels;
 
@@ -62,6 +63,7 @@ abstract class Command
                     } else {
                         array_shift($parameters);
                         $this->arguments = $parameters;
+                        $this->messageString = join(' ', $this->arguments);
                     }
                 }
 

@@ -51,7 +51,8 @@ class EmbedBuilder
      * @param $description
      * @return void
      */
-    public function setDescription($description) {
+    public function setDescription($description): void
+    {
         $this->embed->setDescription($description);
     }
 }
