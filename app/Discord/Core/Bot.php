@@ -12,6 +12,7 @@ use App\Discord\Cringe\AddCringe;
 use App\Discord\Cringe\CringeIndex;
 use App\Discord\Cringe\DelCringe;
 use App\Discord\Music\PlayLocalFile;
+use App\Discord\Music\PlayYoutube;
 use App\Discord\Say;
 use App\Discord\SimpleCommand\AddCommand;
 use App\Discord\SimpleCommand\CommandIndex;
@@ -123,6 +124,7 @@ class Bot
         (new Say())->register();
 
         (new PlayLocalFile())->register();
+        (new PlayYoutube())->register();
     }
 
     /**
