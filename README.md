@@ -1,6 +1,8 @@
 # Introdcution
-Discord bot written in Laravel using Discord offical PHP library
-http://discord-php.github.io/DiscordPHP
+Discord bot written in Laravel using:
+* Offical PHP library http://discord-php.github.io/DiscordPHP
+* To download from youtube https://github.com/ytdl-org/youtube-dl
+* Play audio https://ffmpeg.org/
 
 Create for our discord server at http://discord.gg/netherlands.
 
