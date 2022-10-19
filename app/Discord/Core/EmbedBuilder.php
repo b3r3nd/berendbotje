@@ -17,7 +17,7 @@ class EmbedBuilder
      * @param string $title
      * @param string $footer
      * @param string $description
-     * @return Embed
+     * @return EmbedBuilder
      */
     public static function create(Discord $discord, string $title = '', string $footer = '', string $description = ''): EmbedBuilder
     {
