@@ -25,10 +25,13 @@ class CommandIndex extends Command
         foreach (\App\Models\Command::all() as $command) {
             $commands .= "** {$command->trigger} ** - {$command->response}\n";
         }
-        $embed = EmbedBuilder::create(Bot::getDiscord(),
-            __('bot.cmd.title'),
-            __('bot.cmd.footer'),
-            __('bot.cmd.description', ['cmds' => $commands]));
+
+        $embed = EmbedBuilder::make(Bot::getDiscord())
+            ->setTitle(__('bot.cmd.title'))
+            ->setFooter(__('bot.cmd.footer'))
+            ->setDescription(__('bot.cmd.description', ['cmds' => $commands]))
+            ->getEmbed();
+
         $this->message->channel->sendEmbed($embed);
     }
 }

@@ -30,6 +30,7 @@ class Admin extends Model
      */
     public static function hasLevel(string $id, int $level)
     {
+        if($level == 0) { return true; }
         $admin = Admin::where(['discord_id' => $id])->first();
         if (!$admin) {
             return false;

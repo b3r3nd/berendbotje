@@ -6,6 +6,7 @@ use App\Discord\Core\AccessLevels;
 use App\Discord\Core\Bot;
 use App\Discord\Core\Command;
 use Discord\Http\Exceptions\NoPermissionsException;
+use Illuminate\Support\Facades\DB;
 
 class AddCommand extends Command
 {

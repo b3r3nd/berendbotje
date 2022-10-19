@@ -2,6 +2,7 @@
 
 namespace App\Discord\Core;
 
+use Discord\Discord;
 use Discord\Parts\Embed\Embed;
 
 /**
@@ -18,9 +19,18 @@ class EmbedBuilder
      * @param string $description
      * @return Embed
      */
-    public static function create($discord, string $title,  string $footer, string $description): Embed
+    public static function create($discord, string $title, string $footer, string $description): Embed
     {
         return (new self($discord, $title, $footer, $description))->getEmbed();
+    }
+
+    /**
+     * @param Discord $discord
+     * @return EmbedBuilder
+     */
+    public static function make(Discord $discord): EmbedBuilder
+    {
+        return (new self($discord));
     }
 
     /**
@@ -29,7 +39,7 @@ class EmbedBuilder
      * @param string $footer
      * @param string $description
      */
-    public function __construct($discord, string $title, string $footer, string $description)
+    public function __construct($discord, string $title = '', string $footer = '', string $description = '')
     {
         $this->embed = new Embed($discord);
         $this->embed->setType('rich');
@@ -37,6 +47,26 @@ class EmbedBuilder
         $this->embed->setDescription($description);
         $this->embed->setTitle($title);
         $this->embed->setFooter($footer);
+    }
+
+    /**
+     * @param string $title
+     * @return $this
+     */
+    public function setTitle(string $title): self
+    {
+        $this->embed->setTitle($title);
+        return $this;
+    }
+
+    /**
+     * @param string $footer
+     * @return $this
+     */
+    public function setFooter(string $footer): self
+    {
+        $this->embed->setFooter($footer);
+        return $this;
     }
 
     /**
@@ -51,8 +81,9 @@ class EmbedBuilder
      * @param $description
      * @return void
      */
-    public function setDescription($description): void
+    public function setDescription($description): self
     {
         $this->embed->setDescription($description);
+        return $this;
     }
 }
