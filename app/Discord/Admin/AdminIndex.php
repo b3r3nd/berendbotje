@@ -26,12 +26,12 @@ class AdminIndex extends Command
         foreach (Admin::orderBy('level', 'desc')->get() as $admin) {
             $description .= "** {$admin->discord_username} ** - {$admin->level} \n";
         }
-        $embed = EmbedBuilder::create(Bot::get()->discord(),
-            __('bot.admins.title'),
-            __('bot.admins.footer'),
-            __('bot.admins.description', ['admins' => $description]));
+        $embedBuilder = EmbedBuilder::create(Bot::get()->discord())
+            ->setTitle(__('bot.admins.title'))
+            ->setFooter(__('bot.admins.footer'))
+            ->setDescription(__('bot.admins.description', ['admins' => $description]));
 
-        $this->message->channel->sendEmbed($embed);
+        $this->message->channel->sendEmbed($embedBuilder->getEmbed());
     }
 
 }

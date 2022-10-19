@@ -27,12 +27,13 @@ class Queue extends Command
         foreach (MusicPlayer::getPlayer()->getQueue() as $song) {
             $description .= "{$song} \n";
         }
-        $embed = EmbedBuilder::create(Bot::getDiscord(),
-            __('bot.music.title'),
-            __('bot.music.footer'),
-            $description
-        );
-        $this->message->channel->sendEmbed($embed);
+
+        $embedBuilder = EmbedBuilder::create(Bot::getDiscord())
+            ->setTitle(__('bot.music.title'))
+            ->setFooter(__('bot.music.footer'))
+            ->setDescription($description);
+
+        $this->message->channel->sendEmbed($embedBuilder->getEmbed());
 
 
     }

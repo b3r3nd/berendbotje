@@ -22,13 +22,13 @@ class ReactionsIndex extends Command
 
     public function action(): void
     {
-        $embed = EmbedBuilder::create(Bot::getDiscord(),
-            __('bot.reactions.title'),
-            __('bot.reactions.footer'),
-            __('bot.reactions.description'));
+        $embedBuilder = EmbedBuilder::create(Bot::getDiscord())
+            ->setTitle(__('bot.reactions.title'))
+            ->setFooter(__('bot.reactions.footer'))
+            ->setDescription(__('bot.reactions.description'));
         foreach (Reaction::all() as $reaction) {
-            $embed->addField(['name' => $reaction->trigger, 'value' => $reaction->reaction, 'inline' => true]);
+            $embedBuilder->getEmbed()->addField(['name' => $reaction->trigger, 'value' => $reaction->reaction, 'inline' => true]);
         }
-        $this->message->channel->sendEmbed($embed);
+        $this->message->channel->sendEmbed($embedBuilder->getEmbed());
     }
 }

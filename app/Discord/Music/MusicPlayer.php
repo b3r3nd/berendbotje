@@ -64,6 +64,7 @@ class MusicPlayer
         return $this->queue;
     }
 
+
     public function getStatus(): string
     {
         if (!$this->playing && $this->queue->isEmpty()) {

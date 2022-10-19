@@ -71,7 +71,7 @@ return [
 
     'music' => [
         'title' => 'Music Queue',
-        'footer' => 'Usage: play, pause, stop, queue',
+        'footer' => 'Usage: play, pause, resume, stop, queue, status',
         'player-status' => 'Player is :status',
         'add-to-queue' => 'Music is playing.. adding to queue..',
         'starting' => 'Starting player..',
@@ -81,7 +81,6 @@ return [
         'already-paused' => 'Player already paused',
         'stopping' => 'Stopping player..',
         'already-stopped' => 'Player already stopped'
-
     ]
 
 

@@ -22,10 +22,11 @@ class AllTimeouts extends Command
 
     public function action(): void
     {
-        $embed = EmbedBuilder::create(Bot::getDiscord(),
-            __('bot.timeout.title'),
-            __('bot.timeout.footer'),
-            '');
+        $embedBuilder = EmbedBuilder::create(Bot::getDiscord())
+            ->setTitle(__('bot.timeout.title'))
+            ->setFooter(__('bot.timeout.footer'));
+
+        $embed = $embedBuilder->getEmbed();
         $embed->setDescription(__('bot.timeout.count', ['count' => Timeout::count()]));
         foreach (Timeout::limit(10)->orderBy('created_at', 'desc')->get() as $timeout) {
             $embed = TimeoutHelper::timeoutLength($embed, $timeout);

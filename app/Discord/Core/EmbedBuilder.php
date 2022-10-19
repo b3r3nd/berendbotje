@@ -13,33 +13,24 @@ class EmbedBuilder
     private Embed $embed;
 
     /**
-     * @param $discord
+     * @param Discord $discord
      * @param string $title
      * @param string $footer
      * @param string $description
      * @return Embed
      */
-    public static function create($discord, string $title, string $footer, string $description): Embed
+    public static function create(Discord $discord, string $title = '', string $footer = '', string $description = ''): EmbedBuilder
     {
-        return (new self($discord, $title, $footer, $description))->getEmbed();
+        return (new self($discord, $title, $footer, $description));
     }
 
     /**
      * @param Discord $discord
-     * @return EmbedBuilder
-     */
-    public static function make(Discord $discord): EmbedBuilder
-    {
-        return (new self($discord));
-    }
-
-    /**
-     * @param $discord
      * @param string $title
      * @param string $footer
      * @param string $description
      */
-    public function __construct($discord, string $title = '', string $footer = '', string $description = '')
+    public function __construct(Discord $discord, string $title = '', string $footer = '', string $description = '')
     {
         $this->embed = new Embed($discord);
         $this->embed->setType('rich');
@@ -48,6 +39,7 @@ class EmbedBuilder
         $this->embed->setTitle($title);
         $this->embed->setFooter($footer);
     }
+
 
     /**
      * @param string $title
@@ -75,6 +67,16 @@ class EmbedBuilder
     public function getEmbed(): Embed
     {
         return $this->embed;
+    }
+
+    /**
+     * @param Embed $embed
+     * @return void
+     */
+    public function setEmbed(Embed $embed): self
+    {
+        $this->embed = $embed;
+        return $this;
     }
 
     /**

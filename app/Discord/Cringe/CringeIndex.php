@@ -26,11 +26,10 @@ class CringeIndex extends Command
         foreach (CringeCounter::orderBy('count', 'desc')->limit(10)->get() as $cringeCounter) {
             $description .= "**{$cringeCounter->discord_username}** - {$cringeCounter->count} \n";
         }
-        $embed = EmbedBuilder::create(Bot::getDiscord(),
-            __('bot.cringe.title'),
-            __('bot.cringe.footer'),
-            __('bot.cringe.description', ['users' => $description])
-        );
-        $this->message->channel->sendEmbed($embed);
+        $embedBuilder = EmbedBuilder::create(Bot::getDiscord())
+            ->setTitle(__('bot.cringe.title'))
+            ->setFooter(__('bot.cringe.footer'))
+            ->setDescription(__('bot.cringe.description', ['users' => $description]));
+        $this->message->channel->sendEmbed($embedBuilder->getEmbed());
     }
 }

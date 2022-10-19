@@ -29,10 +29,11 @@ class SingleUserTimeouts extends Command
 
     public function action(): void
     {
-        $embed = EmbedBuilder::create(Bot::getDiscord(),
-            __('bot.timeout.title'),
-            __('bot.timeout.footer'),
-            '');
+        $embedBuilder = EmbedBuilder::create(Bot::getDiscord())
+            ->setTitle(__('bot.timeout.title'))
+            ->setFooter(__('bot.timeout.footer'));
+
+        $embed = $embedBuilder->getEmbed();
         foreach ($this->message->mentions as $mention) {
             $embed->setDescription(__('bot.timeout.count', ['count' => Timeout::where(['discord_id' => $mention->id])->count()]));
             foreach (Timeout::where(['discord_id' => $mention->id])->orderBy('created_at', 'desc')->get() as $timeout) {

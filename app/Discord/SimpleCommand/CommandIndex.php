@@ -26,12 +26,11 @@ class CommandIndex extends Command
             $commands .= "** {$command->trigger} ** - {$command->response}\n";
         }
 
-        $embed = EmbedBuilder::make(Bot::getDiscord())
+        $embedBuilder = EmbedBuilder::create(Bot::getDiscord())
             ->setTitle(__('bot.cmd.title'))
             ->setFooter(__('bot.cmd.footer'))
-            ->setDescription(__('bot.cmd.description', ['cmds' => $commands]))
-            ->getEmbed();
+            ->setDescription(__('bot.cmd.description', ['cmds' => $commands]));
 
-        $this->message->channel->sendEmbed($embed);
+        $this->message->channel->sendEmbed($embedBuilder->getEmbed());
     }
 }

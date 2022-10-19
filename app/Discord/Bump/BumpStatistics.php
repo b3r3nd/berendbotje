@@ -26,10 +26,13 @@ class BumpStatistics extends Command
         foreach (Bumper::orderBy('count', 'desc')->limit(10)->get() as $bumper) {
             $description .= "**{$bumper->discord_username}** - {$bumper->count}\n";
         }
-        $embed = EmbedBuilder::create(Bot::get()->discord(),
-            __('bot.bump.title'),
-            __('bot.bump.footer'),
-            __('bot.bump.description', ['bumpers' => $description]));
-        $this->message->channel->sendEmbed($embed);
+
+        $embedBuilder = EmbedBuilder::create(Bot::get()->discord())
+            ->setTitle(__('bot.bump.title'))
+            ->setFooter(__('bot.bump.footer'))
+            ->setDescription(__('bot.bump.description', ['bumpers' => $description]));
+
+        $this->message->channel->sendEmbed($embedBuilder->getEmbed());
+
     }
 }
