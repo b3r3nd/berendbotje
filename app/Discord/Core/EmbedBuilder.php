@@ -71,7 +71,7 @@ class EmbedBuilder
 
     /**
      * @param Embed $embed
-     * @return void
+     * @return $this
      */
     public function setEmbed(Embed $embed): self
     {
@@ -81,7 +81,7 @@ class EmbedBuilder
 
     /**
      * @param $description
-     * @return void
+     * @return $this
      */
     public function setDescription($description): self
     {
