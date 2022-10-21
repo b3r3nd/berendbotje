@@ -23,6 +23,9 @@ class DetectTimeouts
     public function __construct()
     {
         Bot::getDiscord()->on(Event::GUILD_MEMBER_UPDATE, function (Member $member, Discord $discord) {
+            if ($member->communication_disabled_until == NULL) {
+                return;
+            }
             $discord->guilds->fetch('590941503917129743')->done(function (Guild $guild) use ($member) {
                 $guild->getAuditLog(['limit' => 1])->done(function (AuditLog $auditLog) use ($member) {
                     foreach ($auditLog->audit_log_entries as $entry) {
