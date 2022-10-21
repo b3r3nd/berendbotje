@@ -38,7 +38,7 @@ class MusicPlayer
      */
     public function play(string $song): self
     {
-        ProcessYoutubeDownload::dispatch($song, MusicPlayer::getPlayer());
+        ProcessYoutubeDownload::dispatch($song, $this);
         return $this;
     }
 
@@ -50,8 +50,7 @@ class MusicPlayer
     {
         foreach ($message->channel->guild->voice_states as $voiceState) {
             if ($voiceState->user_id === $message->author->id) {
-                $channel = Bot::getDiscord()->getChannel($voiceState->channel_id);
-                Bot::getDiscord()->joinVoiceChannel($channel)->done(function (VoiceClient $voice) use ($message) {
+                Bot::getDiscord()->joinVoiceChannel(Bot::getDiscord()->getChannel($voiceState->channel_id))->done(function (VoiceClient $voice) use ($message) {
                     $message->channel->sendMessage("Joined voice call, playing audio");
                     $song = Song::orderBy('created_at')->first();
                     $this->playFile($song, $voice, $message);
@@ -69,8 +68,6 @@ class MusicPlayer
     private function playFile($song, $voice, $message): void
     {
         $voice->playFile(Storage::path($song->filename))->then(function () use ($song, $voice, $message) {
-            $message->channel->sendMessage("Finished playing audio, leaving voice call");
-            $message->channel->sendMessage("Deleting audio from disk");
             Storage::delete($song->filename);
             $song->delete();
             $message->channel->sendMessage("Playing next song");
