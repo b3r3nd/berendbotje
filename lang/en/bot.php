@@ -84,7 +84,10 @@ return [
         'stopping' => 'Stopping player..',
         'already-stopped' => 'Player already stopped',
         'no-music' => 'No music in queue to play, use addsong to add songs',
-    ]
+    ],
 
-
+    'help' => [
+        'title' => 'BerendBotje Commands',
+        'footer' => 'Bot written in PHP using DiscordPHP.',
+    ],
 ];

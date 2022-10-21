@@ -11,6 +11,7 @@ use App\Discord\Bump\BumpStatistics;
 use App\Discord\Cringe\AddCringe;
 use App\Discord\Cringe\CringeIndex;
 use App\Discord\Cringe\DelCringe;
+use App\Discord\Help;
 use App\Discord\Music\Pause;
 use App\Discord\Music\AddSong;
 use App\Discord\Music\Play;
@@ -102,6 +103,8 @@ class Bot
      */
     private function loadCommands(): void
     {
+        (new Help())->register();
+
         new VoiceStateUpdate();
         new DetectTimeouts();
 
