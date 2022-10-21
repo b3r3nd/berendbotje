@@ -27,7 +27,7 @@ class AddSong extends Command
     public function action(): void
     {
         $musicPlayer = MusicPlayer::getPlayer();
-        $musicPlayer->setChannel($this->message->channel_id);
-        $musicPlayer->play($this->arguments[0]);
+        $musicPlayer->addToQueue($this->arguments[0]);
+        $this->message->channel->sendMessage(__('bot.music.added'));
     }
 }

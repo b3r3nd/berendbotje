@@ -5,7 +5,6 @@ namespace App\Discord\Music;
 use App\Discord\Core\Bot;
 use App\Jobs\ProcessYoutubeDownload;
 use App\Models\Song;
-use Discord\Parts\Channel\Channel;
 use Discord\Parts\Channel\Message;
 use Discord\Voice\VoiceClient;
 use Illuminate\Support\Facades\Storage;
@@ -14,7 +13,6 @@ class MusicPlayer
 {
     private bool $playing;
     private static ?MusicPlayer $musicPlayer;
-    private int $channelId;
 
     private function __construct()
     {
@@ -36,7 +34,7 @@ class MusicPlayer
      * @param string $song
      * @return $this
      */
-    public function play(string $song): self
+    public function addToQueue(string $song): self
     {
         ProcessYoutubeDownload::dispatch($song, $this);
         return $this;
@@ -78,23 +76,6 @@ class MusicPlayer
                 $voice->close();
             }
         });
-    }
-
-    /**
-     * @return int
-     */
-    public function getChannel(): int
-    {
-        return $this->channelId;
-    }
-
-    /**
-     * @param int $channelId
-     * @return void
-     */
-    public function setChannel(int $channelId): void
-    {
-        $this->channelId = $channelId;
     }
 
     /**

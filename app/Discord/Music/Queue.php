@@ -6,6 +6,7 @@ use App\Discord\Core\AccessLevels;
 use App\Discord\Core\Bot;
 use App\Discord\Core\Command;
 use App\Discord\Core\EmbedBuilder;
+use App\Models\Song;
 
 class Queue extends Command
 {
@@ -22,10 +23,9 @@ class Queue extends Command
 
     public function action(): void
     {
-
         $description = "";
-        foreach (MusicPlayer::getPlayer()->getQueue() as $song) {
-            $description .= "{$song} \n";
+        foreach (Song::all() as $song) {
+            $description .= "{$song->youtube_url} \n";
         }
 
         $embedBuilder = EmbedBuilder::create(Bot::getDiscord())
