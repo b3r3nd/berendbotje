@@ -35,6 +35,7 @@ use App\Discord\Timeout\SingleUserTimeouts;
 use App\Models\Reaction;
 use Discord\Discord;
 use Discord\Exceptions\IntentException;
+use Discord\Parts\User\Activity;
 use Discord\WebSockets\Intents;
 
 /**
@@ -82,6 +83,13 @@ class Bot
 
         $this->discord->on('ready', function (Discord $discord) {
             $this->loadCommands();
+
+            $activity = new Activity($this->discord, [
+                'type' => Activity::TYPE_WATCHING,
+                'name' => __('bot.status'),
+            ]);
+
+            $discord->updatePresence($activity);
         });
 
         self::$instance = $this;

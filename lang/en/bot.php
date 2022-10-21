@@ -11,6 +11,7 @@ return [
     | and index pages!
     */
 
+    'status' => 'All of you...',
     'provide-args' => 'Provide arguments noOo0Oo0Ob',
     'provide-arguments' => 'This command requires :count arguments to be given',
     'provide-mention' => 'This command requires a user to be mentioned',
