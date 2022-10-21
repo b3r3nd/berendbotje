@@ -137,7 +137,6 @@ class Bot
         (new Pause())->register();
         (new Stop())->register();
         (new Queue())->register();
-        (new PlayerStatus())->register();
         (new Resume())->register();
         (new Play())->register();
     }

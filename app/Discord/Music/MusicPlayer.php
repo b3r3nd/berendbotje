@@ -68,11 +68,12 @@ class MusicPlayer
         $voice->playFile(Storage::path($song->filename))->then(function () use ($song, $voice, $message) {
             Storage::delete($song->filename);
             $song->delete();
-            $message->channel->sendMessage("Playing next song");
             $song = Song::orderBy('created_at')->first();
             if ($song) {
+                $message->channel->sendMessage("Playing next song");
                 $this->playFile($song, $voice, $message);
             } else {
+                $message->channel->sendMessage("Queue finished, leaving voice call");
                 $voice->close();
             }
         });
