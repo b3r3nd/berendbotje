@@ -88,6 +88,6 @@ return [
 
     'help' => [
         'title' => 'BerendBotje Commands',
-        'footer' => 'Bot written in PHP using DiscordPHP.',
+        'footer' => 'Bot written by berend using DiscordPHP.',
     ],
 ];
