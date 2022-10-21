@@ -80,7 +80,8 @@ return [
         'pausing' => 'Pausing player..',
         'already-paused' => 'Player already paused',
         'stopping' => 'Stopping player..',
-        'already-stopped' => 'Player already stopped'
+        'already-stopped' => 'Player already stopped',
+        'no-music' => 'No music in queue to play, use addsong to add songs',
     ]
 
 

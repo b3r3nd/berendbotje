@@ -12,6 +12,7 @@ use App\Discord\Cringe\AddCringe;
 use App\Discord\Cringe\CringeIndex;
 use App\Discord\Cringe\DelCringe;
 use App\Discord\Music\Pause;
+use App\Discord\Music\AddSong;
 use App\Discord\Music\Play;
 use App\Discord\Music\PlayerStatus;
 use App\Discord\Music\PlayLocalFile;
@@ -132,12 +133,13 @@ class Bot
         (new PlayLocalFile())->register();
         (new PlayYoutube())->register();
 
-        (new Play())->register();
+        (new AddSong())->register();
         (new Pause())->register();
         (new Stop())->register();
         (new Queue())->register();
         (new PlayerStatus())->register();
         (new Resume())->register();
+        (new Play())->register();
     }
 
     /**

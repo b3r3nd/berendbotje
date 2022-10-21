@@ -10,6 +10,7 @@
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
+        "predis/predis": "~1.0",
         "team-reflex/discord-php": "^7.3"
     },
     "require-dev": {

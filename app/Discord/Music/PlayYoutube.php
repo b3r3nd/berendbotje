@@ -5,6 +5,7 @@ namespace App\Discord\Music;
 use App\Discord\Core\AccessLevels;
 use App\Discord\Core\Bot;
 use App\Discord\Core\Command;
+use App\Jobs\ProcessYoutubeDownload;
 use Discord\Voice\VoiceClient;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Storage;
@@ -30,6 +31,11 @@ class PlayYoutube extends Command
 
     public function action(): void
     {
+
+
+        ProcessYoutubeDownload::dispatch($this->arguments[0])->delay(now()->addSeconds(5));
+
+
         foreach ($this->message->channel->guild->voice_states as $voiceState) {
             if ($voiceState->user_id === $this->message->author->id) {
                 $channel = Bot::getDiscord()->getChannel($voiceState->channel_id);
