@@ -24,6 +24,8 @@ class AddCringe extends Command
         parent::__construct();
         $this->requiredArguments = 1;
         $this->requiresMention = true;
+        $this->usageString = __('bot.cringe.usage-addcringe');
+
     }
 
     /**

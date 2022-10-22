@@ -29,7 +29,10 @@ return [
         'not-exist' => 'User does not exist',
         'powerful' => ':name is to powerful for you',
         'deleted' => 'User Deleted',
-        'changed' => 'User level changed'
+        'changed' => 'User level changed',
+        'usage-addadmin' => 'Useage: addadmin `user_mention` `user_level`',
+        'usage-deladmin' => 'Usage: deladmin `user_mention`',
+        'usage-clvladmin' => 'Usage: clvladmin `user_mention` `new_access_level`',
     ],
 
     'bump' => [
@@ -46,6 +49,8 @@ return [
         'count' => "Cringe counter for :name is :count",
         'change' => "Cringe counter for :name is now :count",
         'not-cringe' => ":name is not cringe",
+        'usage-delcringe' => "Usage: delcringe `user_mention`",
+        'usage-addcringe' => "Usage: addcringe `user_mention`",
     ],
 
     'cmd' => [
@@ -54,6 +59,8 @@ return [
         'footer' => 'usage: addcmd, delcmd, commands',
         'title' => 'Commands',
         'description' => "Basic text commands. \n\n :cmds",
+        'usage-addcmd' => "Usage: addcmd `command_trigger` `response`",
+        'usage-delcmd' => "Usage: addcmd `command_trigger`",
     ],
 
     'reactions' => [
@@ -62,12 +69,15 @@ return [
         'footer' => 'usage: addreaction, delreaction, reactions',
         'title' => 'Reactions',
         'description' => "Basic reactions. \n\n :reactions",
+        'usage-addreaction' => 'Usage: addreaction `reaction_trigger` `reaction_emote`',
+        'usage-delreaction' => 'Usage: delreaction `reaction_trigger`',
     ],
 
     'timeout' => [
         'footer' => 'Timeouts given through discord are automatically added',
         'title' => 'Timeouts',
-        'count' => "Total timeouts: :count"
+        'count' => "Total timeouts: :count",
+        'usage-timeouts' => 'Usage: usertimeouts `user_mention`',
     ],
 
     'music' => [
@@ -84,10 +94,13 @@ return [
         'stopping' => 'Stopping player..',
         'already-stopped' => 'Player already stopped',
         'no-music' => 'No music in queue to play, use addsong to add songs',
+        'usage-addsong' => "Usage: addsong `youtube_url`",
     ],
 
     'help' => [
         'title' => 'BerendBotje Commands',
         'footer' => 'Bot written by berend using DiscordPHP.',
     ],
+
+    'say-usage' => "Usage: say `text_string`",
 ];

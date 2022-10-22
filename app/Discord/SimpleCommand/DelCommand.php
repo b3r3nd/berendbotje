@@ -23,6 +23,7 @@ class DelCommand extends Command
     {
         parent::__construct();
         $this->requiredArguments = 1;
+        $this->usageString = __('bot.cmd.usage-delcmd');
     }
 
     /**

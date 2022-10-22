@@ -24,6 +24,7 @@ class DelAdmin extends Command
         parent::__construct();
         $this->requiresMention = true;
         $this->requiredArguments = 1;
+        $this->usageString = __('bot.admins.usage-deladmin');
     }
 
     /**

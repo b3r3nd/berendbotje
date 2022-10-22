@@ -25,6 +25,7 @@ class SingleUserTimeouts extends Command
         parent::__construct();
         $this->requiresMention = true;
         $this->requiredArguments = 1;
+        $this->usageString = __('bot.timeout.usage-timeouts');
     }
 
     public function action(): void

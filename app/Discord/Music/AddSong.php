@@ -21,7 +21,7 @@ class AddSong extends Command
     {
         parent::__construct();
         $this->requiredArguments = 1;
-
+        $this->usageString = __('bot.music.usage-addsong');
     }
 
     public function action(): void

@@ -24,6 +24,7 @@ class UpdateAdmin extends Command
         parent::__construct();
         $this->requiresMention = true;
         $this->requiredArguments = 2;
+        $this->usageString = __('bot.admins.usage-clvladmin');
     }
 
     /**

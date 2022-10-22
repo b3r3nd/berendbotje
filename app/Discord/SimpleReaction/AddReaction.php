@@ -24,6 +24,7 @@ class AddReaction extends Command
     {
         parent::__construct();
         $this->requiredArguments = 2;
+        $this->usageString = __('bot.reactions.usage-addreaction');
     }
 
     /**

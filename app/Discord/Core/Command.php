@@ -22,6 +22,7 @@ abstract class Command
     protected int $requiredArguments = 0;
     protected array $arguments = [];
     protected string $messageString = '';
+    protected string $usageString;
 
     public abstract function accessLevel(): AccessLevels;
 
@@ -48,9 +49,15 @@ abstract class Command
                     return;
                 }
 
+
                 if ($this->requiresMention) {
                     if ($message->mentions->count() == 0) {
-                        $message->channel->sendMessage(__('bot.provide-mention'));
+
+                        if (isset($this->usageString)) {
+                            $message->channel->sendMessage($this->usageString);
+                        } else {
+                            $message->channel->sendMessage(__('bot.provide-mention'));
+                        }
                         return;
                     }
                 }
@@ -58,7 +65,11 @@ abstract class Command
                 if ($this->requiredArguments > 0) {
                     $parameters = explode(' ', $message->content);
                     if (!isset($parameters[$this->requiredArguments])) {
-                        $message->channel->sendMessage(__('bot.provide-arguments', ['count' => $this->requiredArguments]));
+                        if (isset($this->usageString)) {
+                            $message->channel->sendMessage($this->usageString);
+                        } else {
+                            $message->channel->sendMessage(__('bot.provide-arguments', ['count' => $this->requiredArguments]));
+                        }
                         return;
                     } else {
                         array_shift($parameters);

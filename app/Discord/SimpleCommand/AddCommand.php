@@ -24,6 +24,7 @@ class AddCommand extends Command
     {
         parent::__construct();
         $this->requiredArguments = 2;
+        $this->usageString = __('bot.cmd.usage-addcmd');
     }
 
     /**

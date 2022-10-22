@@ -24,6 +24,7 @@ class DelReaction extends Command
     {
         parent::__construct();
         $this->requiredArguments = 1;
+        $this->usageString = __('bot.reactions.usage-delreaction');
     }
 
     /**
