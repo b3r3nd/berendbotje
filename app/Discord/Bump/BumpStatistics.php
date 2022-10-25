@@ -6,9 +6,11 @@ use App\Discord\Core\AccessLevels;
 use App\Discord\Core\Bot;
 use App\Discord\Core\Command;
 use App\Discord\Core\EmbedBuilder;
+use App\Discord\Core\SlashCommand;
 use App\Models\Bumper;
+use Discord\Builders\MessageBuilder;
 
-class BumpStatistics extends Command
+class BumpStatistics extends SlashCommand
 {
     public function accessLevel(): AccessLevels
     {
@@ -20,7 +22,7 @@ class BumpStatistics extends Command
         return 'bumpstats';
     }
 
-    public function action(): void
+    public function action(): MessageBuilder
     {
         $description = "";
         foreach (Bumper::orderBy('count', 'desc')->limit(20)->get() as $bumper) {
@@ -30,6 +32,7 @@ class BumpStatistics extends Command
             ->setTitle(__('bot.bump.title'))
             ->setFooter(__('bot.bump.footer'))
             ->setDescription(__('bot.bump.description', ['bumpers' => $description]));
-        $this->message->channel->sendEmbed($embedBuilder->getEmbed());
+
+        return MessageBuilder::new()->addEmbed($embedBuilder->getEmbed());
     }
 }

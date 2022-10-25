@@ -93,6 +93,10 @@ class Bot
             DelAdmin::class,
             UpdateAdmin::class,
             AdminIndex::class,
+            BumpStatistics::class,
+            AddCringe::class,
+            DelCringe::class,
+            CringeIndex::class,
         ];
 
         $this->discord->on('ready', function (Discord $discord) {
@@ -140,11 +144,6 @@ class Bot
 
         (new Help())->register();
 
-        (new BumpStatistics())->register();
-
-        (new AddCringe())->register();
-        (new DelCringe())->register();
-        (new CringeIndex())->register();
 
         (new AddCommand())->register();
         (new DelCommand())->register();

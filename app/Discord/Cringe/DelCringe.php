@@ -3,12 +3,15 @@
 namespace App\Discord\Cringe;
 
 use App\Discord\Core\AccessLevels;
-use App\Discord\Core\Command;
-use App\Models\CringeCounter;
+use App\Discord\Core\EmbedFactory;
+use App\Discord\Core\SlashCommand;
 use App\Models\DiscordUser;
+use Discord\Builders\MessageBuilder;
 use Discord\Http\Exceptions\NoPermissionsException;
+use Discord\Parts\Embed\Embed;
+use Discord\Parts\Interactions\Command\Option;
 
-class DelCringe extends Command
+class DelCringe extends SlashCommand
 {
     public function accessLevel(): AccessLevels
     {
@@ -22,31 +25,38 @@ class DelCringe extends Command
 
     public function __construct()
     {
-        parent::__construct();
         $this->requiredArguments = 1;
         $this->requiresMention = true;
         $this->usageString = __('bot.cringe.usage-delcringe');
+        $this->slashCommandOptions = [
+            [
+                'name' => 'user_mention',
+                'description' => 'Mention',
+                'type' => Option::USER,
+                'required' => true,
+            ],
+        ];
+
+        parent::__construct();
     }
 
     /**
      * @throws NoPermissionsException
      */
-    public function action(): void
+    public function action(): MessageBuilder
     {
-        foreach ($this->message->mentions as $mention) {
-            $user = DiscordUser::where(['discord_id' => $mention->id])->first();
+        $user = DiscordUser::where(['discord_id' => $this->arguments[0]])->first();
 
-            if (!$user->has('cringeCounter')->get()->isEmpty()) {
-                $user->cringeCounter->count = $user->cringeCounter->count - 1;
-                if ($user->cringeCounter->count == 0) {
-                    $user->cringeCounter->delete();
-                } else {
-                    $user->cringeCounter->save();
-                }
+        if (!$user->has('cringeCounter')->get()->isEmpty()) {
+            $user->cringeCounter->count = $user->cringeCounter->count - 1;
+            if ($user->cringeCounter->count == 0) {
+                $user->cringeCounter->delete();
             } else {
-                $this->message->channel->sendMessage(__('bot.cringe.not-cringe', ['name' => $this->arguments[0]]));
+                $user->cringeCounter->save();
             }
-            $this->message->channel->sendMessage((__('bot.cringe.change', ['name' => $user->discord_tga, 'count' => $user->cringeCounter->count])));
+        } else {
+            return EmbedFactory::failedEmbed(__('bot.cringe.not-cringe', ['name' => $this->arguments[0]]));
         }
+        return EmbedFactory::successEmbed(__('bot.cringe.change', ['name' => $user->discord_tga, 'count' => $user->cringeCounter->count]));
     }
 }

@@ -55,7 +55,7 @@ abstract class SlashCommand
         Bot::getDiscord()->listenCommand($this->trigger, function (Interaction $interaction) {
             $this->arguments = [];
             if (!DiscordUser::hasLevel($interaction->member->id, $this->accessLevel->value)) {
-                return EmbedFactory::failedEmbed(__("bot.lack-access"));
+                return $interaction->respondWithMessage(EmbedFactory::failedEmbed(__("bot.lack-access")));
             }
             foreach ($interaction->data->options as $option) {
                 $this->arguments[] = $option->value;

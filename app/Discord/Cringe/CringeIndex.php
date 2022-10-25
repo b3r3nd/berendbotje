@@ -4,11 +4,12 @@ namespace App\Discord\Cringe;
 
 use App\Discord\Core\AccessLevels;
 use App\Discord\Core\Bot;
-use App\Discord\Core\Command;
 use App\Discord\Core\EmbedBuilder;
+use App\Discord\Core\SlashCommand;
 use App\Models\CringeCounter;
+use Discord\Builders\MessageBuilder;
 
-class CringeIndex extends Command
+class CringeIndex extends SlashCommand
 {
     public function accessLevel(): AccessLevels
     {
@@ -20,7 +21,7 @@ class CringeIndex extends Command
         return 'cringecounter';
     }
 
-    public function action(): void
+    public function action(): MessageBuilder
     {
         $description = "";
         foreach (CringeCounter::orderBy('count', 'desc')->limit(20)->get() as $cringeCounter) {
@@ -30,6 +31,7 @@ class CringeIndex extends Command
             ->setTitle(__('bot.cringe.title'))
             ->setFooter(__('bot.cringe.footer'))
             ->setDescription(__('bot.cringe.description', ['users' => $description]));
-        $this->message->channel->sendEmbed($embedBuilder->getEmbed());
+
+        return MessageBuilder::new()->addEmbed($embedBuilder->getEmbed());
     }
 }
