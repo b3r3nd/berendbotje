@@ -23,7 +23,7 @@ class BumpCounter
                     'discord_tag' => $message->interaction->user,
                 ]);
 
-                if (!$user->has('bumper')->get()->isEmpty()) {
+                if ($user->bumper) {
                     $user->bumper()->update(['count' => $user->bumper->count + 1]);
                 } else {
                     $user->bumper()->save(new Bumper(['count' => 1]));

@@ -40,7 +40,7 @@ class AddCringe extends Command
                 'discord_id' => $mention->id,
                 'discord_tag' => $mention,
             ]);
-            if (!$user->has('cringeCounter')->get()->isEmpty()) {
+            if ($user->cringeCounter) {
                 $user->cringeCounter()->update(['count' => $user->cringeCounter->count + 1]);
             } else {
                 $user->cringeCounter()->save(new CringeCounter(['count' => 1]));
