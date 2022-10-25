@@ -58,8 +58,8 @@ return [
     ],
 
     'cmd' => [
-        'saved' => 'Command saved',
-        'deleted' => 'Command deleted',
+        'saved' => 'Command :trigger saved with response :response',
+        'deleted' => 'Command :trigger deleted',
         'footer' => 'usage: addcmd, delcmd, commands',
         'title' => 'Commands',
         'description' => "Basic text commands. \n\n :cmds",
@@ -68,8 +68,8 @@ return [
     ],
 
     'reactions' => [
-        'saved' => 'Reaction saved',
-        'deleted' => 'Reaction deleted',
+        'saved' => 'Reaction :reaction on :name saved',
+        'deleted' => 'Reaction for :name deleted',
         'footer' => 'usage: addreaction, delreaction, reactions',
         'title' => 'Reactions',
         'description' => "Basic reactions. \n\n :reactions",

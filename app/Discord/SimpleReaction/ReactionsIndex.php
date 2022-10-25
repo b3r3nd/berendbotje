@@ -6,9 +6,11 @@ use App\Discord\Core\AccessLevels;
 use App\Discord\Core\Bot;
 use App\Discord\Core\Command;
 use App\Discord\Core\EmbedBuilder;
+use App\Discord\Core\SlashCommand;
 use App\Models\Reaction;
+use Discord\Builders\MessageBuilder;
 
-class ReactionsIndex extends Command
+class ReactionsIndex extends SlashCommand
 {
     public function accessLevel(): AccessLevels
     {
@@ -20,7 +22,7 @@ class ReactionsIndex extends Command
         return 'reactions';
     }
 
-    public function action(): void
+    public function action(): MessageBuilder
     {
         $embedBuilder = EmbedBuilder::create(Bot::getDiscord())
             ->setTitle(__('bot.reactions.title'))
@@ -29,6 +31,7 @@ class ReactionsIndex extends Command
         foreach (Reaction::all() as $reaction) {
             $embedBuilder->getEmbed()->addField(['name' => $reaction->trigger, 'value' => $reaction->reaction, 'inline' => true]);
         }
-        $this->message->channel->sendEmbed($embedBuilder->getEmbed());
+
+        return MessageBuilder::new()->addEmbed($embedBuilder->getEmbed());
     }
 }

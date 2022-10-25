@@ -5,9 +5,13 @@ namespace App\Discord\SimpleCommand;
 use App\Discord\Core\AccessLevels;
 use App\Discord\Core\Bot;
 use App\Discord\Core\Command;
+use App\Discord\Core\EmbedFactory;
+use App\Discord\Core\SlashCommand;
+use Discord\Builders\MessageBuilder;
 use Discord\Http\Exceptions\NoPermissionsException;
+use Discord\Parts\Interactions\Command\Option;
 
-class DelCommand extends Command
+class DelCommand extends SlashCommand
 {
     public function accessLevel(): AccessLevels
     {
@@ -21,18 +25,26 @@ class DelCommand extends Command
 
     public function __construct()
     {
-        parent::__construct();
         $this->requiredArguments = 1;
         $this->usageString = __('bot.cmd.usage-delcmd');
+        $this->slashCommandOptions = [
+            [
+                'name' => 'command',
+                'description' => 'Command',
+                'type' => Option::STRING,
+                'required' => true,
+            ]
+        ];
+        parent::__construct();
     }
 
     /**
      * @throws NoPermissionsException
      */
-    public function action(): void
+    public function action(): MessageBuilder
     {
         \App\Models\Command::where(['trigger' => $this->arguments[0]])->delete();
         Bot::get()->deleteCommand($this->arguments[0]);
-        $this->message->channel->sendMessage(__('bot.cmd.deleted'));
+        return EmbedFactory::successEmbed(__('bot.cmd.deleted', ['trigger' => $this->arguments[0]]));
     }
 }

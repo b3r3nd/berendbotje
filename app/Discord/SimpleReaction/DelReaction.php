@@ -5,10 +5,14 @@ namespace App\Discord\SimpleReaction;
 use App\Discord\Core\AccessLevels;
 use App\Discord\Core\Bot;
 use App\Discord\Core\Command;
+use App\Discord\Core\EmbedFactory;
+use App\Discord\Core\SlashCommand;
 use App\Models\Reaction;
+use Discord\Builders\MessageBuilder;
 use Discord\Http\Exceptions\NoPermissionsException;
+use Discord\Parts\Interactions\Command\Option;
 
-class DelReaction extends Command
+class DelReaction extends SlashCommand
 {
     public function accessLevel(): AccessLevels
     {
@@ -25,15 +29,23 @@ class DelReaction extends Command
         parent::__construct();
         $this->requiredArguments = 1;
         $this->usageString = __('bot.reactions.usage-delreaction');
+        $this->slashCommandOptions = [
+            [
+                'name' => 'command',
+                'description' => 'Command',
+                'type' => Option::STRING,
+                'required' => true,
+            ]
+        ];
     }
 
     /**
      * @throws NoPermissionsException
      */
-    public function action(): void
+    public function action(): MessageBuilder
     {
         Reaction::where(['trigger' => $this->arguments[0]])->delete();
         Bot::get()->deleteReaction($this->arguments[0]);
-        $this->message->channel->sendMessage(__('bot.reactions.deleted'));
+        return EmbedFactory::successEmbed(__('bot.reactions.deleted', ['name' => $this->arguments[0]]));
     }
 }

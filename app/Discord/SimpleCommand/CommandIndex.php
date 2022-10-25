@@ -6,8 +6,10 @@ use App\Discord\Core\AccessLevels;
 use App\Discord\Core\Bot;
 use App\Discord\Core\Command;
 use App\Discord\Core\EmbedBuilder;
+use App\Discord\Core\SlashCommand;
+use Discord\Builders\MessageBuilder;
 
-class CommandIndex extends Command
+class CommandIndex extends SlashCommand
 {
     public function accessLevel(): AccessLevels
     {
@@ -19,7 +21,7 @@ class CommandIndex extends Command
         return 'commands';
     }
 
-    public function action(): void
+    public function action(): MessageBuilder
     {
         $commands = "";
         foreach (\App\Models\Command::all() as $command) {
@@ -31,6 +33,6 @@ class CommandIndex extends Command
             ->setFooter(__('bot.cmd.footer'))
             ->setDescription(__('bot.cmd.description', ['cmds' => $commands]));
 
-        $this->message->channel->sendEmbed($embedBuilder->getEmbed());
+        return MessageBuilder::new()->addEmbed($embedBuilder->getEmbed());
     }
 }

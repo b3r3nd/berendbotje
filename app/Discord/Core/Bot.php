@@ -97,6 +97,12 @@ class Bot
             AddCringe::class,
             DelCringe::class,
             CringeIndex::class,
+            AddCommand::class,
+            DelCommand::class,
+            CommandIndex::class,
+            ReactionsIndex::class,
+            AddReaction::class,
+            DelReaction::class,
         ];
 
         $this->discord->on('ready', function (Discord $discord) {
@@ -143,26 +149,11 @@ class Bot
         }
 
         (new Help())->register();
-
-
-        (new AddCommand())->register();
-        (new DelCommand())->register();
-        (new CommandIndex())->register();
-
-
-        (new ReactionsIndex())->register();
-        (new AddReaction())->register();
-        (new DelReaction())->register();
-
-
         (new AllTimeouts())->register();
         (new SingleUserTimeouts())->register();
-
         (new Say())->register();
-
         (new PlayLocalFile())->register();
         (new PlayYoutube())->register();
-
         (new AddSong())->register();
         (new Pause())->register();
         (new Stop())->register();
