@@ -43,13 +43,13 @@ return [
         'inc' => ":name heeft :count x de discord gebumped!",
         'footer' => 'Use /bump in #botspam',
         'title' => 'Bumper Elites',
-        'description' => "Bump counter\n\n :bumpers"
+        'description' => "Bump counter\n\n:bumpers"
     ],
 
     'cringe' => [
         'footer' => 'usage: addcringe, delcringe, cringecounter',
         'title' => 'Cringe Counter',
-        'description' => "List of the most cringe people in our discord! \n\n :users",
+        'description' => "List of the most cringe people in our discord! \n\n:users",
         'count' => "Cringe counter for :name is :count",
         'change' => "Cringe counter for :name is now :count",
         'not-cringe' => ":name is not cringe",

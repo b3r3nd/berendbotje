@@ -10,7 +10,7 @@ class Helper
      * @param $index
      * @return string
      */
-    public static function topThree($index)
+    public static function topThree($index): string
     {
         if ($index === 0) {
             return "🥇";
@@ -21,7 +21,10 @@ class Helper
         if ($index === 2) {
             return "🥉";
         }
-        return "";
+        else {
+            $index = $index+1;
+            return "**{$index}. ** ";
+        }
     }
 
 }

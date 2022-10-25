@@ -45,29 +45,19 @@ abstract class Command
                 return;
             }
             if (str_starts_with($message->content, Bot::get()->getPrefix() . $this->trigger)) {
+
                 if (!DiscordUser::hasLevel($message->author->id, $this->accessLevel->value)) {
                     $message->channel->sendMessage(__("bot.lack-access"));
                     return;
                 }
-                if ($this->requiresMention) {
-                    if ($message->mentions->count() == 0) {
-
-                        if (isset($this->usageString)) {
-                            $message->channel->sendMessage($this->usageString);
-                        } else {
-                            $message->channel->sendMessage(__('bot.provide-mention'));
-                        }
-                        return;
-                    }
+                if ($this->requiresMention && $message->mentions->count() == 0) {
+                    $message->channel->sendMessage($this->usageString ?? __('bot.provide-mention'));
+                    return;
                 }
                 if ($this->requiredArguments > 0) {
                     $parameters = explode(' ', $message->content);
                     if (!isset($parameters[$this->requiredArguments])) {
-                        if (isset($this->usageString)) {
-                            $message->channel->sendMessage($this->usageString);
-                        } else {
-                            $message->channel->sendMessage(__('bot.provide-arguments', ['count' => $this->requiredArguments]));
-                        }
+                        $message->channel->sendMessage($this->usageString ?? __('bot.provide-arguments', ['count' => $this->requiredArguments]));
                         return;
                     } else {
                         array_shift($parameters);
