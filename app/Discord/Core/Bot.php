@@ -33,15 +33,10 @@ use App\Discord\Timeout\AllTimeouts;
 use App\Discord\Timeout\DetectTimeouts;
 use App\Discord\Timeout\SingleUserTimeouts;
 use App\Models\Reaction;
-use Discord\Builders\MessageBuilder;
 use Discord\Discord;
 use Discord\Exceptions\IntentException;
-use Discord\Parts\Interactions\Command\Choice;
-use Discord\Parts\Interactions\Command\Option;
-use Discord\Parts\Interactions\Interaction;
 use Discord\Parts\User\Activity;
 use Discord\WebSockets\Intents;
-use Discord\Parts\Interactions\Command\Command;
 
 /**
  * We only ever have one instance of this class, you could call it a singleton however it isn't really. This class
@@ -55,40 +50,22 @@ class Bot
 {
     private Discord $discord;
     private string $prefix = '$';
+    private static self $instance;
+
+    /**
+     * @TODO Find better solutions for deleting custom commands and reactions.
+     */
     private array $deletedCommands = [];
     private array $deletedReactions = [];
-    private static self $instance;
-    public array $commandArray;
-
 
     /**
-     * @return Bot|static
+     * Define all command classes which support both text and slash commands here!
+     * @see SlashCommand
+     * @return string[]
      */
-    public static function get(): Bot|static
+    private function slashCommands(): array
     {
-        return self::$instance;
-    }
-
-    public static function getDiscord(): Discord
-    {
-        return self::$instance->discord;
-    }
-
-
-    /**
-     * @throws IntentException
-     */
-    public function __construct()
-    {
-        $this->discord = new Discord([
-                'token' => config('discord.token'),
-                'loadAllMembers' => true,
-                'intents' => Intents::getDefaultIntents() | Intents::GUILD_VOICE_STATES | Intents::GUILD_MEMBERS |
-                    Intents::MESSAGE_CONTENT | Intents::GUILDS
-            ]
-        );
-
-        $this->commandArray = [
+        return [
             AddAdmin::class,
             DelAdmin::class,
             UpdateAdmin::class,
@@ -103,14 +80,64 @@ class Bot
             ReactionsIndex::class,
             AddReaction::class,
             DelReaction::class,
+            Help::class,
         ];
+    }
 
+    /**
+     * Define all command classes using only text commands here.
+     * @see Command
+     * @return string[]
+     */
+    private function textCommands(): array
+    {
+        return [
+            AllTimeouts::class,
+            SingleUserTimeouts::class,
+            PlayLocalFile::class,
+            PlayYoutube::class,
+            AddSong::class,
+            Pause::class,
+            Stop::class,
+            Queue::class,
+            Resume::class,
+            Play::class,
+            Say::class,
+        ];
+    }
+
+    /**
+     * Define all other classes. Mainly events that do not require commands to be triggered.
+     * @return string[]
+     */
+    private function coreClasses(): array
+    {
+        return [
+            VoiceStateUpdate::class,
+            DetectTimeouts::class,
+            BumpCounter::class,
+        ];
+    }
+
+    /**
+     * @throws IntentException
+     */
+    public function __construct()
+    {
+        $this->discord = new Discord([
+                'token' => config('discord.token'),
+                'loadAllMembers' => true,
+                'intents' => Intents::getDefaultIntents() | Intents::GUILD_VOICE_STATES | Intents::GUILD_MEMBERS |
+                    Intents::MESSAGE_CONTENT | Intents::GUILDS
+            ]
+        );
         $this->discord->on('ready', function (Discord $discord) {
             $activity = new Activity($this->discord, [
                 'type' => Activity::TYPE_WATCHING,
                 'name' => __('bot.status'),
             ]);
             $discord->updatePresence($activity);
+            $this->loadCoreClasses();
             $this->loadCommands();
             $this->loadSlashCommands();
         });
@@ -118,8 +145,21 @@ class Bot
         return $this;
     }
 
+    /**
+     * @return void
+     */
+    private function loadCoreClasses(): void
+    {
+        foreach ($this->coreClasses() as $class) {
+            new $class();
+        }
+    }
 
-    private function loadSlashCommands()
+    /**
+     * @TODO Deleting and adding everything on boot is not recommended. Need improve this :)
+     * @return void
+     */
+    private function loadSlashCommands(): void
     {
 //        $this->discord->application->commands->freshen()->done(function ($commands) {
 //            foreach ($commands as $command) {
@@ -127,40 +167,47 @@ class Bot
 //            }
 //        });
 
-        foreach ($this->commandArray as $class) {
+        foreach ($this->slashCommands() as $class) {
             $instance = new $class();
             $instance->registerMessageCommand();
             $instance->registerSlashCommand();
         }
     }
 
+    /**
+     * @return void
+     */
     private function loadCommands(): void
     {
-        new VoiceStateUpdate();
-        new DetectTimeouts();
-        new BumpCounter();
+        foreach ($this->textCommands() as $class) {
+            (new $class())->register();
+        }
 
+        // Custom commands
         foreach (\App\Models\Command::all() as $command) {
             SimpleCommand::create($this, $command->trigger, $command->response);
         }
 
+        // Custom reactions
         foreach (Reaction::all() as $reaction) {
             SimpleReaction::create($this, $reaction->trigger, $reaction->reaction);
         }
+    }
 
-        (new Help())->register();
-        (new AllTimeouts())->register();
-        (new SingleUserTimeouts())->register();
-        (new Say())->register();
-        (new PlayLocalFile())->register();
-        (new PlayYoutube())->register();
-        (new AddSong())->register();
-        (new Pause())->register();
-        (new Stop())->register();
-        (new Queue())->register();
-        (new Resume())->register();
-        (new Play())->register();
+    /**
+     * @return Bot|static
+     */
+    public static function get(): Bot|static
+    {
+        return self::$instance;
+    }
 
+    /**
+     * @return Discord
+     */
+    public static function getDiscord(): Discord
+    {
+        return self::$instance->discord;
     }
 
     /**

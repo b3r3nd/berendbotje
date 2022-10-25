@@ -31,8 +31,8 @@ class DelReaction extends SlashCommand
         $this->usageString = __('bot.reactions.usage-delreaction');
         $this->slashCommandOptions = [
             [
-                'name' => 'command',
-                'description' => 'Command',
+                'name' => 'trigger',
+                'description' => 'Trigger',
                 'type' => Option::STRING,
                 'required' => true,
             ]

@@ -6,8 +6,10 @@ use App\Discord\Core\AccessLevels;
 use App\Discord\Core\Bot;
 use App\Discord\Core\Command;
 use App\Discord\Core\EmbedBuilder;
+use App\Discord\Core\SlashCommand;
+use Discord\Builders\MessageBuilder;
 
-class Help extends Command
+class Help extends SlashCommand
 {
 
     public function accessLevel(): AccessLevels
@@ -20,7 +22,7 @@ class Help extends Command
         return 'help';
     }
 
-    public function action(): void
+    public function action(): MessageBuilder
     {
         $embedBuilder = EmbedBuilder::create(Bot::getDiscord())
             ->setTitle(__('bot.help.title'))
@@ -36,6 +38,7 @@ class Help extends Command
             ['name' => 'Simple Commands', 'value' => 'commands, addcmd, delcmd'],
             ['name' => 'Source Code', 'value' => 'https://gitlab.com/discord54/berend-botje/'],
         );
-        $this->message->channel->sendEmbed($embedBuilder->getEmbed());
+
+        return MessageBuilder::new()->addEmbed($embedBuilder->getEmbed());
     }
 }

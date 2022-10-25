@@ -31,8 +31,8 @@ class AddReaction extends SlashCommand
         $this->usageString = __('bot.reactions.usage-addreaction');
         $this->slashCommandOptions = [
             [
-                'name' => 'command',
-                'description' => 'Command',
+                'name' => 'trigger',
+                'description' => 'Trigger',
                 'type' => Option::STRING,
                 'required' => true,
             ],

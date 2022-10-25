@@ -4,6 +4,7 @@ namespace App\Discord;
 
 use App\Discord\Core\AccessLevels;
 use App\Discord\Core\Command;
+use App\Discord\Core\SlashCommand;
 use Discord\Http\Exceptions\NoPermissionsException;
 
 class Say extends Command
