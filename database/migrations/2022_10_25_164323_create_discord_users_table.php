@@ -13,9 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('discord_admins', function (Blueprint $table) {
+        Schema::create('discord_users', function (Blueprint $table) {
             $table->id();
-            $table->integer('level');
+            $table->string('discord_id');
+            $table->string('discord_tag');
             $table->timestamps();
         });
     }

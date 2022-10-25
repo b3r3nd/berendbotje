@@ -3,53 +3,21 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Admin extends Model
 {
     protected $table = 'discord_admins';
 
     protected $fillable = [
-        'discord_id',
-        'discord_username',
         'level'
     ];
 
     /**
-     * @param string $id
-     * @return bool
+     * @return BelongsTo
      */
-    public static function isAdmin(string $id)
+    public function user(): BelongsTo
     {
-        return !Admin::where(['discord_id' => $id])->get()->isEmpty();
+        return $this->belongsTo(DiscordUser::class);
     }
-
-    /**
-     * @param string $id
-     * @param int $level
-     * @return bool
-     */
-    public static function hasLevel(string $id, int $level)
-    {
-        if($level == 0) { return true; }
-        $admin = Admin::where(['discord_id' => $id])->first();
-        if (!$admin) {
-            return false;
-        }
-        return $admin->level >= $level;
-    }
-
-    /**
-     * @param string $id
-     * @param int $level
-     * @return bool
-     */
-    public static function hasHigherLevel(string $id, int $level)
-    {
-        $admin = Admin::where(['discord_id' => $id])->first();
-        if (!$admin) {
-            return false;
-        }
-        return $admin->level > $level;
-    }
-
 }

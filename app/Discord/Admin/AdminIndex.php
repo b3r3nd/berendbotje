@@ -24,7 +24,7 @@ class AdminIndex extends Command
     {
         $description = "";
         foreach (Admin::orderBy('level', 'desc')->get() as $admin) {
-            $description .= "** {$admin->discord_username} ** - {$admin->level} \n";
+            $description .= "** {$admin->user->discord_tag} ** •  {$admin->level} \n";
         }
         $embedBuilder = EmbedBuilder::create(Bot::get()->discord())
             ->setTitle(__('bot.admins.title'))

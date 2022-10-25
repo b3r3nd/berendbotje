@@ -15,7 +15,6 @@ use App\Discord\Help;
 use App\Discord\Music\Pause;
 use App\Discord\Music\AddSong;
 use App\Discord\Music\Play;
-use App\Discord\Music\PlayerStatus;
 use App\Discord\Music\PlayLocalFile;
 use App\Discord\Music\PlayYoutube;
 use App\Discord\Music\Queue;
@@ -34,10 +33,15 @@ use App\Discord\Timeout\AllTimeouts;
 use App\Discord\Timeout\DetectTimeouts;
 use App\Discord\Timeout\SingleUserTimeouts;
 use App\Models\Reaction;
+use Discord\Builders\MessageBuilder;
 use Discord\Discord;
 use Discord\Exceptions\IntentException;
+use Discord\Parts\Interactions\Command\Choice;
+use Discord\Parts\Interactions\Command\Option;
+use Discord\Parts\Interactions\Interaction;
 use Discord\Parts\User\Activity;
 use Discord\WebSockets\Intents;
+use Discord\Parts\Interactions\Command\Command;
 
 /**
  * We only ever have one instance of this class, you could call it a singleton however it isn't really. This class
@@ -54,6 +58,7 @@ class Bot
     private array $deletedCommands = [];
     private array $deletedReactions = [];
     private static self $instance;
+    public array $commandArray;
 
 
     /**
@@ -69,6 +74,7 @@ class Bot
         return self::$instance->discord;
     }
 
+
     /**
      * @throws IntentException
      */
@@ -82,15 +88,21 @@ class Bot
             ]
         );
 
-        $this->discord->on('ready', function (Discord $discord) {
-            $this->loadCommands();
+        $this->commandArray = [
+            AdminIndex::class,
+            AddAdmin::class,
+        ];
 
+        $this->discord->on('ready', function (Discord $discord) {
             $activity = new Activity($this->discord, [
                 'type' => Activity::TYPE_WATCHING,
                 'name' => __('bot.status'),
             ]);
 
             $discord->updatePresence($activity);
+
+            $this->loadCommands();
+          //  $this->loadSlashCommands();
         });
 
         self::$instance = $this;
@@ -98,23 +110,71 @@ class Bot
     }
 
 
-    /**
-     * @return void
-     */
+    private function loadSlashCommands()
+    {
+        $this->discord->application->commands->freshen()->done(function ($commands) {
+            foreach ($commands as $command) {
+                $this->discord->application->commands->delete($command);
+            }
+        });
+
+        $command = new Command($this->discord, [
+            'name' => 'slashtest',
+            'description' => 'Increase the cringe counter for someone',
+            'options' => [
+                [
+                    'name' => 'user_mention',
+                    'description' => 'Mention',
+                    'type' => Option::USER,
+                    'required' => true,
+                ],
+                [
+                    'name' => 'access_level',
+                    'description' => 'Access',
+                    'type' => Option::INTEGER,
+                    'required' => true,
+                ]
+            ]
+        ]);
+
+        $this->discord->listenCommand('slashtest', function (Interaction $interaction) {
+            $embed = EmbedBuilder::create($this->discord)
+                ->setTitle('Fields')
+                ->setFooter('Je moeder')
+                ->getEmbed();
+            foreach ($interaction->data->options as $option) {
+                $embed->addField(['name' => $option->name, 'value' => $option->value]);
+            }
+            $interaction->respondWithMessage(MessageBuilder::new()->addEmbed($embed));
+        });
+
+
+
+        $this->discord->application->commands->save($command);
+
+    }
+
     private function loadCommands(): void
     {
-        (new Help())->register();
-
         new VoiceStateUpdate();
         new DetectTimeouts();
+        new BumpCounter();
 
-        (new AdminIndex())->register();
+        foreach (\App\Models\Command::all() as $command) {
+            SimpleCommand::create($this, $command->trigger, $command->response);
+        }
+
+        foreach (Reaction::all() as $reaction) {
+            SimpleReaction::create($this, $reaction->trigger, $reaction->reaction);
+        }
+
+        (new Help())->register();
         (new AddAdmin())->register();
         (new DelAdmin())->register();
         (new UpdateAdmin())->register();
+        (new AdminIndex())->register();
 
         (new BumpStatistics())->register();
-        new BumpCounter();
 
         (new AddCringe())->register();
         (new DelCringe())->register();
@@ -124,17 +184,11 @@ class Bot
         (new DelCommand())->register();
         (new CommandIndex())->register();
 
-        foreach (\App\Models\Command::all() as $command) {
-            SimpleCommand::create($this, $command->trigger, $command->response);
-        }
 
         (new ReactionsIndex())->register();
         (new AddReaction())->register();
         (new DelReaction())->register();
 
-        foreach (Reaction::all() as $command) {
-            SimpleReaction::create($this, $command->trigger, $command->reaction);
-        }
 
         (new AllTimeouts())->register();
         (new SingleUserTimeouts())->register();
@@ -150,6 +204,7 @@ class Bot
         (new Queue())->register();
         (new Resume())->register();
         (new Play())->register();
+
     }
 
     /**

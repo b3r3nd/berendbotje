@@ -3,6 +3,7 @@
 namespace App\Discord\Core;
 
 use App\Models\Admin;
+use App\Models\DiscordUser;
 use Discord\Discord;
 use Discord\Parts\Channel\Message;
 use Discord\WebSockets\Event;
@@ -42,14 +43,11 @@ abstract class Command
             if ($message->author->bot) {
                 return;
             }
-
             if (str_starts_with($message->content, Bot::get()->getPrefix() . $this->trigger)) {
-                if (!Admin::hasLevel($message->author->id, $this->accessLevel->value)) {
+                if (!DiscordUser::hasLevel($message->author->id, $this->accessLevel->value)) {
                     $message->channel->sendMessage(__("bot.lack-access"));
                     return;
                 }
-
-
                 if ($this->requiresMention) {
                     if ($message->mentions->count() == 0) {
 
@@ -61,7 +59,6 @@ abstract class Command
                         return;
                     }
                 }
-
                 if ($this->requiredArguments > 0) {
                     $parameters = explode(' ', $message->content);
                     if (!isset($parameters[$this->requiredArguments])) {
@@ -77,7 +74,6 @@ abstract class Command
                         $this->messageString = join(' ', $this->arguments);
                     }
                 }
-
                 $this->message = $message;
                 $this->action();
             }

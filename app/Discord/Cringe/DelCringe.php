@@ -5,6 +5,7 @@ namespace App\Discord\Cringe;
 use App\Discord\Core\AccessLevels;
 use App\Discord\Core\Command;
 use App\Models\CringeCounter;
+use App\Models\DiscordUser;
 use Discord\Http\Exceptions\NoPermissionsException;
 
 class DelCringe extends Command
@@ -33,18 +34,19 @@ class DelCringe extends Command
     public function action(): void
     {
         foreach ($this->message->mentions as $mention) {
-            $cringeCounter = CringeCounter::where(['discord_id' => $mention->id])->first();
-            if ($cringeCounter) {
-                $cringeCounter->count = $cringeCounter->count - 1;
-                if ($cringeCounter->count == 0) {
-                    $cringeCounter->delete();
+            $user = DiscordUser::where(['discord_id' => $mention->id])->first();
+
+            if (!$user->has('cringeCounter')->get()->isEmpty()) {
+                $user->cringeCounter->count = $user->cringeCounter->count - 1;
+                if ($user->cringeCounter->count == 0) {
+                    $user->cringeCounter->delete();
                 } else {
-                    $cringeCounter->save();
+                    $user->cringeCounter->save();
                 }
             } else {
                 $this->message->channel->sendMessage(__('bot.cringe.not-cringe', ['name' => $this->arguments[0]]));
             }
-            $this->message->channel->sendMessage((__('bot.cringe.change', ['name' => $cringeCounter->discord_username, 'count' => $cringeCounter->count])));
+            $this->message->channel->sendMessage((__('bot.cringe.change', ['name' => $user->discord_tga, 'count' => $user->cringeCounter->count])));
         }
     }
 }

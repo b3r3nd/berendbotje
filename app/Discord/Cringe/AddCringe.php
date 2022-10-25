@@ -4,7 +4,9 @@ namespace App\Discord\Cringe;
 
 use App\Discord\Core\AccessLevels;
 use App\Discord\Core\Command;
+use App\Models\Bumper;
 use App\Models\CringeCounter;
+use App\Models\DiscordUser;
 use Discord\Http\Exceptions\NoPermissionsException;
 
 class AddCringe extends Command
@@ -34,19 +36,19 @@ class AddCringe extends Command
     public function action(): void
     {
         foreach ($this->message->mentions as $mention) {
-            $cringeCounter = CringeCounter::where(['discord_id' => $mention->id])->first();
-            if ($cringeCounter) {
-                $cringeCounter->count = $cringeCounter->count + 1;
-                $cringeCounter->save();
+            $user = DiscordUser::firstOrCreate([
+                'discord_id' => $mention->id,
+                'discord_tag' => $mention,
+            ]);
+            if (!$user->has('cringeCounter')->get()->isEmpty()) {
+                $user->cringeCounter()->update(['count' => $user->cringeCounter->count + 1]);
             } else {
-                $cringeCounter = CringeCounter::create([
-                    'discord_tag' => $mention,
-                    'discord_id' => $mention->id,
-                    'discord_username' => $mention->username,
-                    'count' => 1
-                ]);
+                $user->cringeCounter()->save(new CringeCounter(['count' => 1]));
             }
-            $this->message->channel->sendMessage(__('bot.cringe.change', ['name' => $cringeCounter->discord_username, 'count' => $cringeCounter->count]));
+
+            $user->refresh();
+
+            $this->message->channel->sendMessage(__('bot.cringe.change', ['name' => $user->discord_username, 'count' => $user->cringeCounter->count]));
         }
     }
 }

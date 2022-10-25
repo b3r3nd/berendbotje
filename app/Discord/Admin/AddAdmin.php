@@ -5,6 +5,7 @@ namespace App\Discord\Admin;
 use App\Discord\Core\AccessLevels;
 use App\Discord\Core\Command;
 use App\Models\Admin;
+use App\Models\DiscordUser;
 use Discord\Http\Exceptions\NoPermissionsException;
 
 class AddAdmin extends Command
@@ -33,21 +34,19 @@ class AddAdmin extends Command
     public function action(): void
     {
         foreach ($this->message->mentions as $mention) {
-            $admin = Admin::where(['discord_id' => $mention->id])->first();
-            if ($admin) {
+            if (DiscordUser::isAdmin($mention->id)) {
                 $this->message->channel->sendMessage(__('bot.admins.exists'));
                 return;
             }
-
-            if (!Admin::hasHigherLevel($this->message->author->id, $this->arguments[1])) {
+            if (!DiscordUser::hasHigherLevel($this->message->author->id, $this->arguments[1])) {
                 $this->message->channel->sendMessage(__('bot.admins.lack-access'));
                 return;
             }
-            Admin::create([
+            $user = DiscordUser::firstOrCreate([
                 'discord_id' => $mention->id,
-                'discord_username' => $mention->username,
-                'level' => $this->arguments[1]
+                'discord_tag' => $mention,
             ]);
+            $user->admin()->save(new Admin(['user_id' => $user->id, 'level' => $this->arguments[1]]));
             $this->message->channel->sendMessage(__('bot.admins.added'));
         }
     }

@@ -3,11 +3,19 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Bumper extends Model
 {
-    protected $fillable = ['discord_id', 'count', 'discord_tag', 'discord_username'];
+    protected $fillable = ['count'];
+
+    /**
+     * @return BelongsTo
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(DiscordUser::class);
+    }
 }
 
 
-//259461260645629953

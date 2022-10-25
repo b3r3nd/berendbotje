@@ -23,8 +23,8 @@ class CringeIndex extends Command
     public function action(): void
     {
         $description = "";
-        foreach (CringeCounter::orderBy('count', 'desc')->limit(10)->get() as $cringeCounter) {
-            $description .= "**{$cringeCounter->discord_username}** - {$cringeCounter->count} \n";
+        foreach (CringeCounter::orderBy('count', 'desc')->limit(20)->get() as $cringeCounter) {
+            $description .= "**{$cringeCounter->user->discord_tag}** • {$cringeCounter->count} \n";
         }
         $embedBuilder = EmbedBuilder::create(Bot::getDiscord())
             ->setTitle(__('bot.cringe.title'))
