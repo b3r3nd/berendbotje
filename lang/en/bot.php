@@ -25,7 +25,7 @@ return [
         'exists' => 'User already exists, you can change level with clvladmin',
         'provide-access' => "Provide access level..",
         'lack-access' => "Can't give more access than you have yourself..",
-        'added' => 'User added',
+        'added' => 'User :user added with access level :level',
         'not-exist' => 'User does not exist',
         'powerful' => ':name is to powerful for you',
         'deleted' => 'User Deleted',
@@ -33,6 +33,10 @@ return [
         'usage-addadmin' => 'Useage: addadmin `user_mention` `user_level`',
         'usage-deladmin' => 'Usage: deladmin `user_mention`',
         'usage-clvladmin' => 'Usage: clvladmin `user_mention` `new_access_level`',
+        'desc-addadmin' => 'Add an administrator to the bot',
+        'desc-deladmin' => 'Delete an administrator from the bot',
+        'desc-clvladmin' => 'Change the level from an administrator',
+        'desc-index' => 'Show all the bot administrators',
     ],
 
     'bump' => [

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class DiscordUser extends Model
 {
     protected $table = 'discord_users';
-    protected $fillable = ['discord_id', 'discord_tag', 'discord_username'];
+    protected $fillable = ['discord_id', 'discord_tag'];
 
 
     /**

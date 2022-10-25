@@ -4,11 +4,12 @@ namespace App\Discord\Admin;
 
 use App\Discord\Core\AccessLevels;
 use App\Discord\Core\Bot;
-use App\Discord\Core\Command;
 use App\Discord\Core\EmbedBuilder;
+use App\Discord\Core\SlashCommand;
 use App\Models\Admin;
+use Discord\Builders\MessageBuilder;
 
-class AdminIndex extends Command
+class AdminIndex extends SlashCommand
 {
     public function accessLevel(): AccessLevels
     {
@@ -20,7 +21,7 @@ class AdminIndex extends Command
         return 'admins';
     }
 
-    public function action(): void
+    public function action(): MessageBuilder
     {
         $description = "";
         foreach (Admin::orderBy('level', 'desc')->get() as $admin) {
@@ -31,7 +32,7 @@ class AdminIndex extends Command
             ->setFooter(__('bot.admins.footer'))
             ->setDescription(__('bot.admins.description', ['admins' => $description]));
 
-        $this->message->channel->sendEmbed($embedBuilder->getEmbed());
+        return MessageBuilder::new()->addEmbed($embedBuilder->getEmbed());
     }
 
 }

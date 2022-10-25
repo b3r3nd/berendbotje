@@ -3,13 +3,16 @@
 namespace App\Discord\Admin;
 
 use App\Discord\Core\AccessLevels;
-use App\Discord\Core\Command;
+use App\Discord\Core\EmbedFactory;
+use App\Discord\Core\SlashCommand;
 use App\Models\Admin;
 use App\Models\DiscordUser;
-use Discord\Http\Exceptions\NoPermissionsException;
+use Discord\Builders\MessageBuilder;
+use Discord\Parts\Interactions\Command\Option;
 
-class AddAdmin extends Command
+class AddAdmin extends SlashCommand
 {
+
     public function accessLevel(): AccessLevels
     {
         return AccessLevels::GOD;
@@ -22,32 +25,41 @@ class AddAdmin extends Command
 
     public function __construct()
     {
-        parent::__construct();
-        $this->requiresMention = true;
         $this->requiredArguments = 2;
+        $this->requiresMention = true;
         $this->usageString = __('bot.admins.usage-addadmin');
+        $this->description = __('bot.admins.desc-addadmin');
+        $this->slashCommandOptions = [
+            [
+                'name' => 'user_mention',
+                'description' => 'Mention',
+                'type' => Option::USER,
+                'required' => true,
+            ],
+            [
+                'name' => 'access_level',
+                'description' => 'Access',
+                'type' => Option::INTEGER,
+                'required' => true,
+            ]
+        ];
+
+        parent::__construct();
     }
 
-    /**
-     * @throws NoPermissionsException
-     */
-    public function action(): void
+    public function action(): MessageBuilder
     {
-        foreach ($this->message->mentions as $mention) {
-            if (DiscordUser::isAdmin($mention->id)) {
-                $this->message->channel->sendMessage(__('bot.admins.exists'));
-                return;
-            }
-            if (!DiscordUser::hasHigherLevel($this->message->author->id, $this->arguments[1])) {
-                $this->message->channel->sendMessage(__('bot.admins.lack-access'));
-                return;
-            }
-            $user = DiscordUser::firstOrCreate([
-                'discord_id' => $mention->id,
-                'discord_tag' => $mention,
-            ]);
-            $user->admin()->save(new Admin(['user_id' => $user->id, 'level' => $this->arguments[1]]));
-            $this->message->channel->sendMessage(__('bot.admins.added'));
+        if (DiscordUser::isAdmin($this->arguments[0])) {
+            return EmbedFactory::failedEmbed(__('bot.admins.exists'));
         }
+        if (!DiscordUser::hasHigherLevel($this->commandUser, $this->arguments[1])) {
+            return EmbedFactory::failedEmbed(__('bot.admins.lack-access'));
+        }
+        $user = DiscordUser::firstOrCreate([
+            'discord_id' => $this->arguments[0],
+            'discord_tag' => "<@{$this->arguments[0]}>",
+        ]);
+        $user->admin()->save(new Admin(['user_id' => $user->id, 'level' => $this->arguments[1]]));
+        return EmbedFactory::successEmbed(__('bot.admins.added', ['user' => $user->discord_tag, 'level' => $this->arguments[1]]));
     }
 }

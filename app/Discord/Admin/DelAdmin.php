@@ -4,10 +4,15 @@ namespace App\Discord\Admin;
 
 use App\Discord\Core\AccessLevels;
 use App\Discord\Core\Command;
+use App\Discord\Core\EmbedFactory;
+use App\Discord\Core\SlashCommand;
 use App\Models\Admin;
+use Discord\Builders\MessageBuilder;
 use Discord\Http\Exceptions\NoPermissionsException;
+use Discord\Parts\Embed\Embed;
+use Discord\Parts\Interactions\Command\Option;
 
-class DelAdmin extends Command
+class DelAdmin extends SlashCommand
 {
     public function accessLevel(): AccessLevels
     {
@@ -21,25 +26,29 @@ class DelAdmin extends Command
 
     public function __construct()
     {
-        parent::__construct();
         $this->requiresMention = true;
         $this->requiredArguments = 1;
         $this->usageString = __('bot.admins.usage-deladmin');
+        $this->description = __('bot.admins.desc-deladmin');
+        $this->slashCommandOptions = [
+            [
+                'name' => 'user_mention',
+                'description' => 'Mention',
+                'type' => Option::USER,
+                'required' => true,
+            ]
+        ];
+        parent::__construct();
     }
 
-    /**
-     * @throws NoPermissionsException
-     */
-    public function action(): void
+    public function action(): MessageBuilder
     {
-        foreach ($this->message->mentions as $mention) {
-            $admin = AdminHelper::validateAdmin($mention->id, $this->message->author->id);
-            if ($admin instanceof Admin) {
-                $admin->delete();
-                $this->message->channel->sendMessage(__('bot.admins.deleted'));
-            } else {
-                $this->message->channel->sendMessage($admin);
-            }
+        $admin = AdminHelper::validateAdmin($this->arguments[0], $this->commandUser);
+        if ($admin instanceof Admin) {
+            $admin->delete();
+            return EmbedFactory::successEmbed(__('bot.admins.deleted'));
+        } else {
+            return EmbedFactory::failedEmbed($admin);
         }
     }
 }

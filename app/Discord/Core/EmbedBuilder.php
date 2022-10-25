@@ -40,6 +40,24 @@ class EmbedBuilder
         $this->embed->setFooter($footer);
     }
 
+    /**
+     * @return $this
+     */
+    public function setFailed(): self
+    {
+        $this->embed->setColor(15548997);
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function setSuccess(): self
+    {
+        $this->embed->setColor(2067276);
+        return $this;
+    }
+
 
     /**
      * @param string $title
@@ -88,4 +106,5 @@ class EmbedBuilder
         $this->embed->setDescription($description);
         return $this;
     }
+
 }

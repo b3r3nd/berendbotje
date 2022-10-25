@@ -89,8 +89,10 @@ class Bot
         );
 
         $this->commandArray = [
-            AdminIndex::class,
             AddAdmin::class,
+            DelAdmin::class,
+            UpdateAdmin::class,
+            AdminIndex::class,
         ];
 
         $this->discord->on('ready', function (Discord $discord) {
@@ -98,13 +100,10 @@ class Bot
                 'type' => Activity::TYPE_WATCHING,
                 'name' => __('bot.status'),
             ]);
-
             $discord->updatePresence($activity);
-
             $this->loadCommands();
-          //  $this->loadSlashCommands();
+            $this->loadSlashCommands();
         });
-
         self::$instance = $this;
         return $this;
     }
@@ -112,46 +111,17 @@ class Bot
 
     private function loadSlashCommands()
     {
-        $this->discord->application->commands->freshen()->done(function ($commands) {
-            foreach ($commands as $command) {
-                $this->discord->application->commands->delete($command);
-            }
-        });
+//        $this->discord->application->commands->freshen()->done(function ($commands) {
+//            foreach ($commands as $command) {
+//                $this->discord->application->commands->delete($command);
+//            }
+//        });
 
-        $command = new Command($this->discord, [
-            'name' => 'slashtest',
-            'description' => 'Increase the cringe counter for someone',
-            'options' => [
-                [
-                    'name' => 'user_mention',
-                    'description' => 'Mention',
-                    'type' => Option::USER,
-                    'required' => true,
-                ],
-                [
-                    'name' => 'access_level',
-                    'description' => 'Access',
-                    'type' => Option::INTEGER,
-                    'required' => true,
-                ]
-            ]
-        ]);
-
-        $this->discord->listenCommand('slashtest', function (Interaction $interaction) {
-            $embed = EmbedBuilder::create($this->discord)
-                ->setTitle('Fields')
-                ->setFooter('Je moeder')
-                ->getEmbed();
-            foreach ($interaction->data->options as $option) {
-                $embed->addField(['name' => $option->name, 'value' => $option->value]);
-            }
-            $interaction->respondWithMessage(MessageBuilder::new()->addEmbed($embed));
-        });
-
-
-
-        $this->discord->application->commands->save($command);
-
+        foreach ($this->commandArray as $class) {
+            $instance = new $class();
+            $instance->registerMessageCommand();
+            $instance->registerSlashCommand();
+        }
     }
 
     private function loadCommands(): void
@@ -169,10 +139,6 @@ class Bot
         }
 
         (new Help())->register();
-        (new AddAdmin())->register();
-        (new DelAdmin())->register();
-        (new UpdateAdmin())->register();
-        (new AdminIndex())->register();
 
         (new BumpStatistics())->register();
 
