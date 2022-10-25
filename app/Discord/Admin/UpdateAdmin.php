@@ -52,7 +52,7 @@ class UpdateAdmin extends SlashCommand
         $admin = AdminHelper::validateAdmin($this->arguments[0], $this->commandUser);
         if ($admin instanceof Admin) {
             $admin->update(['level' => $this->arguments[1]]);
-            return EmbedFactory::successEmbed(__('bot.admins.changed'));
+            return EmbedFactory::successEmbed(__('bot.admins.changed', ['user' => "<@{$this->arguments[0]}>", 'level' => $this->arguments[1]]));
         } else {
             return EmbedFactory::failedEmbed($admin);
         }

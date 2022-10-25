@@ -46,7 +46,7 @@ class DelAdmin extends SlashCommand
         $admin = AdminHelper::validateAdmin($this->arguments[0], $this->commandUser);
         if ($admin instanceof Admin) {
             $admin->delete();
-            return EmbedFactory::successEmbed(__('bot.admins.deleted'));
+            return EmbedFactory::successEmbed(__('bot.admins.deleted', ['user' => "<@{$this->arguments[0]}>"]));
         } else {
             return EmbedFactory::failedEmbed($admin);
         }
