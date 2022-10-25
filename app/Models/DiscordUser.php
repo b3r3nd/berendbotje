@@ -51,6 +51,9 @@ class DiscordUser extends Model
      */
     public static function hasLevel(string $id, int $level): bool
     {
+        if ($level == 0) {
+            return true;
+        }
         return !DiscordUser::where('discord_id', $id)->whereRelation('admin', 'level', '>=', $level)->get()->isEmpty();
     }
 
@@ -61,6 +64,9 @@ class DiscordUser extends Model
      */
     public static function hasHigherLevel(string $id, int $level): bool
     {
+        if ($level == 0) {
+            return true;
+        }
         return !DiscordUser::where('discord_id', $id)->whereRelation('admin', 'level', '>', $level)->get()->isEmpty();
     }
 }
