@@ -4,6 +4,9 @@ namespace App\Discord\Core;
 
 use Discord\Builders\MessageBuilder;
 
+/**
+ * Includes defined presets for easy usage throughout the code.
+ */
 class EmbedFactory
 {
     /**

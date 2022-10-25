@@ -57,6 +57,6 @@ class DelCringe extends SlashCommand
         } else {
             return EmbedFactory::failedEmbed(__('bot.cringe.not-cringe', ['name' => $this->arguments[0]]));
         }
-        return EmbedFactory::successEmbed(__('bot.cringe.change', ['name' => $user->discord_tga, 'count' => $user->cringeCounter->count]));
+        return EmbedFactory::successEmbed(__('bot.cringe.change', ['name' => $user->discord_tag, 'count' => $user->cringeCounter->count]));
     }
 }

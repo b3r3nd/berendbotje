@@ -30,7 +30,7 @@ return [
         'powerful' => ':name is to powerful for you',
         'deleted' => 'User :user Deleted',
         'changed' => 'User :user level changed to :level',
-        'usage-addadmin' => 'Useage: addadmin `user_mention` `user_level`',
+        'usage-addadmin' => 'Usage: addadmin `user_mention` `user_level`',
         'usage-deladmin' => 'Usage: deladmin `user_mention`',
         'usage-clvladmin' => 'Usage: clvladmin `user_mention` `new_access_level`',
         'desc-addadmin' => 'Add an administrator to the bot',
