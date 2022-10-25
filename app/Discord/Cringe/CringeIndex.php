@@ -6,6 +6,7 @@ use App\Discord\Core\AccessLevels;
 use App\Discord\Core\Bot;
 use App\Discord\Core\EmbedBuilder;
 use App\Discord\Core\SlashCommand;
+use App\Discord\Helper;
 use App\Models\CringeCounter;
 use Discord\Builders\MessageBuilder;
 
@@ -24,7 +25,8 @@ class CringeIndex extends SlashCommand
     public function action(): MessageBuilder
     {
         $description = "";
-        foreach (CringeCounter::orderBy('count', 'desc')->limit(20)->get() as $cringeCounter) {
+        foreach (CringeCounter::orderBy('count', 'desc')->limit(20)->get() as $index => $cringeCounter) {
+            $description .= Helper::topThree($index);
             $description .= "**{$cringeCounter->user->discord_tag}** • {$cringeCounter->count} \n";
         }
         $embedBuilder = EmbedBuilder::create(Bot::getDiscord())

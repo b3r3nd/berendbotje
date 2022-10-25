@@ -8,11 +8,19 @@ use Discord\Discord;
 use Discord\Parts\Channel\Message;
 use Discord\Parts\Interactions\Interaction;
 use Discord\WebSockets\Event;
+use Exception;
 
 /**
- * All commands are single classes. They will all extend this class! It will handle some basic filters so the
- * child only has to worry about the actual custom code required for the command instead of rewriting the same
- * 20 lines of code each time.
+ * Abstract Command class which supports both normal message and slash commands. Slash commands require a lot less coding
+ * since parameter validation is already done before the data arrived in the backend. Sad part is tho, the promise which
+ * listens to slash commands returns Interaction objects, normal commands return message objects. This is cumbersome
+ * because we need to first format this incoming data to a convenient and uniform format the rest of the custom code
+ * in its child can use, regardless how the command was triggered.
+ *
+ * The class will only send Embeds back to discord, nothing else. There is an EmbedBuilder and EmbedFactory to more
+ * quickly and easily return Embeds
+ * @see EmbedBuilder
+ * @see EmbedFactory
  */
 abstract class SlashCommand
 {
@@ -41,6 +49,7 @@ abstract class SlashCommand
         $this->accessLevel = $this->accessLevel();
         $this->trigger = $this->trigger();
     }
+
 
     public function registerSlashCommand(): void
     {

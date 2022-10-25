@@ -107,7 +107,8 @@ class Bot
     }
 
     /**
-     * Define all other classes. Mainly events that do not require commands to be triggered.
+     * Define all other classes. Mainly events that do not require commands to be triggered, for example on user timeout,
+     * or voice state change.
      * @return string[]
      */
     private function coreClasses(): array

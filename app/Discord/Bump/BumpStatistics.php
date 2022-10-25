@@ -7,6 +7,7 @@ use App\Discord\Core\Bot;
 use App\Discord\Core\Command;
 use App\Discord\Core\EmbedBuilder;
 use App\Discord\Core\SlashCommand;
+use App\Discord\Helper;
 use App\Models\Bumper;
 use Discord\Builders\MessageBuilder;
 
@@ -25,7 +26,8 @@ class BumpStatistics extends SlashCommand
     public function action(): MessageBuilder
     {
         $description = "";
-        foreach (Bumper::orderBy('count', 'desc')->limit(20)->get() as $bumper) {
+        foreach (Bumper::orderBy('count', 'desc')->limit(20)->get() as $index => $bumper) {
+            $description .= Helper::topThree($index);
             $description .= "**{$bumper->user->discord_tag}** •  {$bumper->count}\n";
         }
         $embedBuilder = EmbedBuilder::create(Bot::get()->discord())
