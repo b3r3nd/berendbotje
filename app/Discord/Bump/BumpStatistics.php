@@ -27,7 +27,7 @@ class BumpStatistics extends SlashCommand
     {
         $description = "";
         foreach (Bumper::orderBy('count', 'desc')->limit(20)->get() as $index => $bumper) {
-            $description .= Helper::topThree($index);
+            $description .= Helper::indexPrefix($index);
             $description .= "**{$bumper->user->discord_tag}** •  {$bumper->count}\n";
         }
         $embedBuilder = EmbedBuilder::create(Bot::get()->discord())

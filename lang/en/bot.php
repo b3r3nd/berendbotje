@@ -17,6 +17,11 @@ return [
     'provide-mention' => 'This command requires a user to be mentioned',
     'lack-access' => 'You lack access to use this command',
 
+    'buttons' => [
+        'next' => 'Next Page',
+        'previous' => 'Previous Page'
+    ],
+
     'admins' => [
         'index' => 'Admins',
         'title' => 'Admins',
