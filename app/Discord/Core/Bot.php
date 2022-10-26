@@ -11,6 +11,7 @@ use App\Discord\Bump\BumpStatistics;
 use App\Discord\Cringe\AddCringe;
 use App\Discord\Cringe\CringeIndex;
 use App\Discord\Cringe\DelCringe;
+use App\Discord\Cringe\ResetCringe;
 use App\Discord\Help;
 use App\Discord\Music\AddSong;
 use App\Discord\Music\Pause;
@@ -61,8 +62,8 @@ class Bot
 
     /**
      * Define all command classes which support both text and slash commands here!
-     * @see SlashCommand
      * @return string[]
+     * @see SlashCommand
      */
     private function slashCommands(): array
     {
@@ -82,14 +83,15 @@ class Bot
             AddReaction::class,
             DelReaction::class,
             Help::class,
-            EmoteIndex::class
+            EmoteIndex::class,
+            ResetCringe::class,
         ];
     }
 
     /**
      * Define all command classes using only text commands here.
-     * @see Command
      * @return string[]
+     * @see Command
      */
     private function textCommands(): array
     {
@@ -128,7 +130,7 @@ class Bot
     public function __construct()
     {
         // When running local to test I want a different trigger to not trigger both bots
-        if(env('APP_ENV') === 'local') {
+        if (env('APP_ENV') === 'local') {
             $this->prefix = '%';
         }
 
