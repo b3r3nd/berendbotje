@@ -15,7 +15,7 @@ use Discord\WebSockets\Event;
  * reason of the timeout added to our backlog. This info is not given to us when the member who received the timeout
  * is updated. We have to manually check the last entry in the audit log in order to get the reason.
  *
- * @TODO Remove hardcoded server ID
+ * @TODO RemoveSong hardcoded server ID
  * @TODO Read the actual right entry, it now reads the latest which - should - be OK, but there are cases where it wont work.
  */
 class DetectTimeouts

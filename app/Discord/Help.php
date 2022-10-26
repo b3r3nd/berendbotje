@@ -30,12 +30,13 @@ class Help extends SlashCommand
         $embedBuilder->getEmbed()->addField(
             ['name' => 'Prefix', 'value' => 'All commands use $ prefix!'],
             ['name' => 'Admins', 'value' => 'addadmin, deladmin, admins'],
-            ['name' => 'Music Player', 'value' => 'addsong, play, stop, pause, resume'],
+            ['name' => 'Music Player', 'value' => 'add, remove, play, stop, queue, pause, resume'],
             ['name' => 'Cringe Counter', 'value' => 'addcringe, delcringe, cringecounter'],
             ['name' => 'Timeouts', 'value' => 'timeouts, usertimouts'],
             ['name' => 'Bumper Elite', 'value' => 'bumpstats'],
             ['name' => 'Simple Reactions', 'value' => 'reactions, addreaction, delreaction'],
             ['name' => 'Simple Commands', 'value' => 'commands, addcmd, delcmd'],
+            ['name' => 'Emote Counter', 'value' => 'emotes'],
             ['name' => 'Source Code', 'value' => 'https://gitlab.com/discord54/berend-botje/'],
         );
 

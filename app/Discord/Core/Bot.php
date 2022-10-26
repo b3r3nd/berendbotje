@@ -15,9 +15,8 @@ use App\Discord\Help;
 use App\Discord\Music\AddSong;
 use App\Discord\Music\Pause;
 use App\Discord\Music\Play;
-use App\Discord\Music\PlayLocalFile;
-use App\Discord\Music\PlayYoutube;
 use App\Discord\Music\Queue;
+use App\Discord\Music\RemoveSong;
 use App\Discord\Music\Resume;
 use App\Discord\Music\Stop;
 use App\Discord\Say;
@@ -97,8 +96,6 @@ class Bot
         return [
             AllTimeouts::class,
             SingleUserTimeouts::class,
-            PlayLocalFile::class,
-            PlayYoutube::class,
             AddSong::class,
             Pause::class,
             Stop::class,
@@ -106,6 +103,7 @@ class Bot
             Resume::class,
             Play::class,
             Say::class,
+            RemoveSong::class,
         ];
     }
 

@@ -46,6 +46,7 @@ class MusicPlayer
      */
     public function start(Message $message): void
     {
+        $this->playing = true;
         foreach ($message->channel->guild->voice_states as $voiceState) {
             if ($voiceState->user_id === $message->author->id) {
                 Bot::getDiscord()->joinVoiceChannel(Bot::getDiscord()->getChannel($voiceState->channel_id))->done(function (VoiceClient $voice) use ($message) {
@@ -75,6 +76,7 @@ class MusicPlayer
             } else {
                 $message->channel->sendMessage("Queue finished, leaving voice call");
                 $voice->close();
+                $this->playing = false;
             }
         });
     }
@@ -111,6 +113,8 @@ class MusicPlayer
     public function stop(): self
     {
         $this->playing = false;
+        Song::query()->truncate();
+
         return $this;
     }
 

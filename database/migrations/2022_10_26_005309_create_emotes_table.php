@@ -15,7 +15,7 @@ return new class extends Migration {
         Schema::create('emotes', function (Blueprint $table) {
             $table->id();
             $table->string('emote');
-            $table->string('hex');
+            $table->string('hex')->nullable();
             $table->unsignedBigInteger('count')->nullable();
             $table->timestamps();
         });
