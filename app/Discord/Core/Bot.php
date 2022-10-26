@@ -129,6 +129,11 @@ class Bot
      */
     public function __construct()
     {
+        // When running local to test I want a different trigger to not trigger both bots
+        if(env('APP_ENV') === 'local') {
+            $this->prefix = '%';
+        }
+
         $this->discord = new Discord([
                 'token' => config('discord.token'),
                 'loadAllMembers' => true,
