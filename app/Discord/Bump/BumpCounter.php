@@ -30,7 +30,7 @@ class BumpCounter
                 }
 
                 $user->refresh();
-                $message->channel->sendMessage(__('bot.bump.inc', ['name' => $message->interaction->user->username, 'count' => $user->bumper->count]));
+                $message->channel->sendMessage(__('bot.bump.inc', ['name' => $message->interaction->user->username, 'count' => $user->bumper->count ?? 0]));
             }
         });
     }
