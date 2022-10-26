@@ -20,9 +20,9 @@ class Stop extends Command
 
     public function action(): void
     {
-        if(MusicPlayer::isPlaying()) {
+        MusicPlayer::getPlayer()->stop();
+        if (MusicPlayer::isPlaying()) {
             $this->message->channel->sendMessage(__('bot.music.stopping'));
-            MusicPlayer::getPlayer()->stop();
         } else {
             $this->message->channel->sendMessage(__('bot.music.already-stopped'));
         }

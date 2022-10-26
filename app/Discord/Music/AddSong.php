@@ -14,7 +14,7 @@ class AddSong extends Command
 
     public function trigger(): string
     {
-        return 'addsong';
+        return 'add';
     }
 
     public function __construct()

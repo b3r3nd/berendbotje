@@ -99,6 +99,9 @@ return [
         'already-stopped' => 'Player already stopped',
         'no-music' => 'No music in queue to play, use addsong to add songs',
         'usage-addsong' => "Usage: addsong `youtube_url`",
+        'usage-remove' => 'Usage: remove `queue_id`',
+        'removed-song' => 'Removed song from the queue',
+        'not-found' => 'Song with that ID is not in queue',
     ],
 
     'emotes' => [

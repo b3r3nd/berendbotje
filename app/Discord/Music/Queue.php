@@ -25,7 +25,7 @@ class Queue extends Command
     {
         $description = "";
         foreach (Song::all() as $song) {
-            $description .= "{$song->youtube_url} \n";
+            $description .= "** {$song->id}. **{$song->youtube_url} \n";
         }
 
         $embedBuilder = EmbedBuilder::create(Bot::getDiscord())
