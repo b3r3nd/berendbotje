@@ -5,6 +5,7 @@ namespace App\Discord\Music;
 use App\Discord\Core\AccessLevels;
 use App\Discord\Core\Command;
 use App\Models\Song;
+use Illuminate\Support\Facades\Storage;
 
 class RemoveSong extends Command
 {
@@ -31,6 +32,7 @@ class RemoveSong extends Command
         $song = Song::find($this->arguments[0]);
 
         if ($song) {
+            Storage::delete($song->filename);
             $song->delete();
             $this->message->channel->sendMessage(__('bot.music.removed-song'));
         } else {
