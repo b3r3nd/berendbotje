@@ -22,6 +22,11 @@ class SimpleReaction
             }
             if (str_contains(strtolower($message->content), strtolower($trigger))) {
                 if (!in_array($trigger, $bot->getDeletedReactions())) {
+
+                    if (str_contains($reaction, "<")) {
+                        $reaction = str_replace(["<", ">"], "", $reaction);
+                    }
+
                     $message->react($reaction);
                 }
             }
