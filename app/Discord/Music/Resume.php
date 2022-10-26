@@ -10,7 +10,7 @@ class Resume extends Command
 
     public function accessLevel(): AccessLevels
     {
-        return AccessLevels::NONE;
+        return AccessLevels::USER;
     }
 
     public function trigger(): string

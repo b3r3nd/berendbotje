@@ -15,7 +15,7 @@ class PlayYoutube extends Command
 
     public function accessLevel(): AccessLevels
     {
-        return AccessLevels::MOD;
+        return AccessLevels::GOD;
     }
 
     public function trigger(): string
