@@ -30,7 +30,7 @@ class Help extends SlashCommand
         $embedBuilder->getEmbed()->addField(
             ['name' => 'Prefix', 'value' => 'All commands use $ prefix!'],
             ['name' => 'Admins', 'value' => 'addadmin, deladmin, admins'],
-            ['name' => 'Music Player', 'value' => 'add, remove, play, stop, queue, pause, resume'],
+            ['name' => 'Music Player', 'value' => 'addsong, removesong, play, stop, queue, pause, resume'],
             ['name' => 'Cringe Counter', 'value' => 'addcringe, delcringe, cringecounter'],
             ['name' => 'Timeouts', 'value' => 'timeouts, usertimouts'],
             ['name' => 'Bumper Elite', 'value' => 'bumpstats'],

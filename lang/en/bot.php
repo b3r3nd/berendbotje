@@ -93,7 +93,7 @@ return [
 
     'music' => [
         'title' => 'Music Queue',
-        'footer' => 'Usage: add, remove, play, queue, stop, pause, resume',
+        'footer' => 'Usage: addsong, removesong, play, queue, stop, pause, resume',
         'player-status' => 'Player is :status',
         'add-to-queue' => 'Music is playing.. adding to queue..',
         'added' => 'Song added to queue',
@@ -106,7 +106,7 @@ return [
         'already-stopped' => 'Player already stopped',
         'no-music' => 'No music in queue to play, use addsong to add songs',
         'usage-addsong' => "Usage: addsong `youtube_url`",
-        'usage-remove' => 'Usage: remove `queue_id`',
+        'usage-remove' => 'Usage: removesong `queue_id`',
         'removed-song' => 'Removed song from the queue',
         'not-found' => 'Song with that ID is not in queue',
     ],
