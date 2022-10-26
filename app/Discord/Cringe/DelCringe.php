@@ -47,7 +47,7 @@ class DelCringe extends SlashCommand
     {
         $user = DiscordUser::where(['discord_id' => $this->arguments[0]])->first();
 
-        if (!$user->has('cringeCounter')->get()->isEmpty()) {
+        if (isset($user->cringeCounter)) {
             $user->cringeCounter->count = $user->cringeCounter->count - 1;
             if ($user->cringeCounter->count == 0) {
                 $user->cringeCounter->delete();
