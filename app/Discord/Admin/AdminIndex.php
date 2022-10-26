@@ -6,10 +6,12 @@ use App\Discord\Core\AccessLevels;
 use App\Discord\Core\Bot;
 use App\Discord\Core\EmbedBuilder;
 use App\Discord\Core\SlashCommand;
+use App\Discord\Core\SlashIndexCommand;
 use App\Models\Admin;
 use Discord\Builders\MessageBuilder;
+use Discord\Parts\Embed\Embed;
 
-class AdminIndex extends SlashCommand
+class AdminIndex extends SlashIndexCommand
 {
     public function accessLevel(): AccessLevels
     {
@@ -21,18 +23,17 @@ class AdminIndex extends SlashCommand
         return 'admins';
     }
 
-    public function action(): MessageBuilder
+    public function getEmbed(): Embed
     {
+        $this->total = Admin::count();
         $description = "";
-        foreach (Admin::orderBy('level', 'desc')->get() as $admin) {
+        foreach (Admin::orderBy('level', 'desc')->skip($this->offset)->limit($this->perPage)->get() as $admin) {
             $description .= "** {$admin->user->discord_tag} ** •  {$admin->level} \n";
         }
-        $embedBuilder = EmbedBuilder::create(Bot::get()->discord())
+        return EmbedBuilder::create(Bot::get()->discord())
             ->setTitle(__('bot.admins.title'))
             ->setFooter(__('bot.admins.footer'))
-            ->setDescription(__('bot.admins.description', ['admins' => $description]));
-
-        return MessageBuilder::new()->addEmbed($embedBuilder->getEmbed());
+            ->setDescription(__('bot.admins.description', ['admins' => $description]))
+            ->getEmbed();
     }
-
 }

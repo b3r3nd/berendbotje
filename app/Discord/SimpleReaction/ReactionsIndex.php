@@ -4,13 +4,12 @@ namespace App\Discord\SimpleReaction;
 
 use App\Discord\Core\AccessLevels;
 use App\Discord\Core\Bot;
-use App\Discord\Core\Command;
 use App\Discord\Core\EmbedBuilder;
-use App\Discord\Core\SlashCommand;
+use App\Discord\Core\SlashIndexCommand;
 use App\Models\Reaction;
-use Discord\Builders\MessageBuilder;
+use Discord\Parts\Embed\Embed;
 
-class ReactionsIndex extends SlashCommand
+class ReactionsIndex extends SlashIndexCommand
 {
     public function accessLevel(): AccessLevels
     {
@@ -22,16 +21,19 @@ class ReactionsIndex extends SlashCommand
         return 'reactions';
     }
 
-    public function action(): MessageBuilder
+
+    public function getEmbed(): Embed
     {
+        $this->total = Reaction::count();
+        $this->perPage = 20;
+
         $embedBuilder = EmbedBuilder::create(Bot::getDiscord())
             ->setTitle(__('bot.reactions.title'))
             ->setFooter(__('bot.reactions.footer'))
             ->setDescription(__('bot.reactions.description'));
-        foreach (Reaction::all() as $reaction) {
+        foreach (Reaction::skip($this->offset)->limit($this->perPage)->get() as $reaction) {
             $embedBuilder->getEmbed()->addField(['name' => $reaction->trigger, 'value' => $reaction->reaction, 'inline' => true]);
         }
-
-        return MessageBuilder::new()->addEmbed($embedBuilder->getEmbed());
+        return $embedBuilder->getEmbed();
     }
 }

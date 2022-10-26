@@ -24,7 +24,7 @@ class EmoteCounter
             // Checks for custom emotes
             if (preg_match('/<a?:.+?:\d+>/', $message->content, $matches)) {
                 foreach ($matches as $match) {
-                    $emoteInstance = Emote::firstOrCreate(['emote' => $match[0]]);
+                    $emoteInstance = Emote::firstOrCreate(['emote' => $match]);
                     $this->processEmote($emoteInstance);
                 }
             }

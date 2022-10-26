@@ -8,6 +8,7 @@ use App\Discord\Core\EmbedBuilder;
 use App\Discord\Core\SlashIndexCommand;
 use App\Discord\Helper;
 use App\Models\CringeCounter;
+use Discord\Parts\Embed\Embed;
 
 class CringeIndex extends SlashIndexCommand
 {
@@ -21,8 +22,10 @@ class CringeIndex extends SlashIndexCommand
         return 'cringecounter';
     }
 
-    public function getEmbed(): EmbedBuilder
+    public function getEmbed(): Embed
     {
+        $this->total = CringeCounter::count();
+
         $description = "";
         foreach (CringeCounter::orderBy('count', 'desc')->skip($this->offset)->limit($this->perPage)->get() as $index => $cringeCounter) {
             $description .= Helper::indexPrefix($index, $this->offset);
@@ -31,6 +34,7 @@ class CringeIndex extends SlashIndexCommand
         return EmbedBuilder::create(Bot::getDiscord())
             ->setTitle(__('bot.cringe.title'))
             ->setFooter(__('bot.cringe.footer'))
-            ->setDescription(__('bot.cringe.description', ['users' => $description]));
+            ->setDescription(__('bot.cringe.description', ['users' => $description]))
+            ->getEmbed();
     }
 }

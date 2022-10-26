@@ -133,4 +133,12 @@ abstract class SlashCommand
             }
         });
     }
+
+    /**
+     * @return string
+     */
+    public function getCommandUser(): string
+    {
+        return $this->commandUser;
+    }
 }
