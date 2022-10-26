@@ -4,13 +4,15 @@ namespace App\Discord\Statistics;
 
 use App\Discord\Core\AccessLevels;
 use App\Discord\Core\Bot;
+use App\Discord\Core\ButtonFactory;
 use App\Discord\Core\EmbedBuilder;
-use App\Discord\Core\SlashCommand;
+use App\Discord\Core\SlashIndexCommand;
 use App\Discord\Helper;
 use App\Models\Emote;
-use Discord\Builders\MessageBuilder;
+use Discord\Builders\Components\Button;
+use Discord\Parts\Embed\Embed;
 
-class EmoteIndex extends SlashCommand
+class EmoteIndex extends SlashIndexCommand
 {
 
     public function accessLevel(): AccessLevels
@@ -23,18 +25,19 @@ class EmoteIndex extends SlashCommand
         return 'emotes';
     }
 
-    public function action(): MessageBuilder
+    public function getEmbed(): Embed
     {
+        $this->total = Emote::count();
         $description = "";
-        foreach (Emote::orderBy('count', 'desc')->limit(20)->get() as $index => $emote) {
-            $description .= Helper::topThree($index);
+        foreach (Emote::orderBy('count', 'desc')->skip($this->offset)->limit($this->perPage)->get() as $index => $emote) {
+            $description .= Helper::indexPrefix($index, $this->offset);
             $description .= "**{$emote->emote}** • {$emote->count} \n";
         }
-        $embedBuilder = EmbedBuilder::create(Bot::getDiscord())
+        return EmbedBuilder::create(Bot::getDiscord())
             ->setTitle(__('bot.emotes.title'))
             ->setFooter(__('bot.emotes.footer'))
-            ->setDescription(__('bot.emotes.description', ['emotes' => $description]));
-
-        return MessageBuilder::new()->addEmbed($embedBuilder->getEmbed());
+            ->setDescription(__('bot.emotes.description', ['emotes' => $description]))
+            ->getEmbed();
     }
+
 }

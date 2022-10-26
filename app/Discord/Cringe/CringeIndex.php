@@ -5,12 +5,12 @@ namespace App\Discord\Cringe;
 use App\Discord\Core\AccessLevels;
 use App\Discord\Core\Bot;
 use App\Discord\Core\EmbedBuilder;
-use App\Discord\Core\SlashCommand;
+use App\Discord\Core\SlashIndexCommand;
 use App\Discord\Helper;
 use App\Models\CringeCounter;
-use Discord\Builders\MessageBuilder;
+use Discord\Parts\Embed\Embed;
 
-class CringeIndex extends SlashCommand
+class CringeIndex extends SlashIndexCommand
 {
     public function accessLevel(): AccessLevels
     {
@@ -22,18 +22,19 @@ class CringeIndex extends SlashCommand
         return 'cringecounter';
     }
 
-    public function action(): MessageBuilder
+    public function getEmbed(): Embed
     {
+        $this->total = CringeCounter::count();
+
         $description = "";
-        foreach (CringeCounter::orderBy('count', 'desc')->limit(20)->get() as $index => $cringeCounter) {
-            $description .= Helper::topThree($index);
+        foreach (CringeCounter::orderBy('count', 'desc')->skip($this->offset)->limit($this->perPage)->get() as $index => $cringeCounter) {
+            $description .= Helper::indexPrefix($index, $this->offset);
             $description .= "**{$cringeCounter->user->discord_tag}** • {$cringeCounter->count} \n";
         }
-        $embedBuilder = EmbedBuilder::create(Bot::getDiscord())
+        return EmbedBuilder::create(Bot::getDiscord())
             ->setTitle(__('bot.cringe.title'))
             ->setFooter(__('bot.cringe.footer'))
-            ->setDescription(__('bot.cringe.description', ['users' => $description]));
-
-        return MessageBuilder::new()->addEmbed($embedBuilder->getEmbed());
+            ->setDescription(__('bot.cringe.description', ['users' => $description]))
+            ->getEmbed();
     }
 }

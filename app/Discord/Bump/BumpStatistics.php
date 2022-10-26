@@ -7,11 +7,13 @@ use App\Discord\Core\Bot;
 use App\Discord\Core\Command;
 use App\Discord\Core\EmbedBuilder;
 use App\Discord\Core\SlashCommand;
+use App\Discord\Core\SlashIndexCommand;
 use App\Discord\Helper;
 use App\Models\Bumper;
 use Discord\Builders\MessageBuilder;
+use Discord\Parts\Embed\Embed;
 
-class BumpStatistics extends SlashCommand
+class BumpStatistics extends SlashIndexCommand
 {
     public function accessLevel(): AccessLevels
     {
@@ -23,18 +25,20 @@ class BumpStatistics extends SlashCommand
         return 'bumpstats';
     }
 
-    public function action(): MessageBuilder
+
+    public function getEmbed(): Embed
     {
+        $this->total = Bumper::count();
         $description = "";
-        foreach (Bumper::orderBy('count', 'desc')->limit(20)->get() as $index => $bumper) {
-            $description .= Helper::topThree($index);
+        foreach (Bumper::orderBy('count', 'desc')->skip($this->offset)->limit($this->perPage)->get() as $index => $bumper) {
+            $description .= Helper::indexPrefix($index);
             $description .= "**{$bumper->user->discord_tag}** •  {$bumper->count}\n";
         }
-        $embedBuilder = EmbedBuilder::create(Bot::get()->discord())
+        return EmbedBuilder::create(Bot::get()->discord())
             ->setTitle(__('bot.bump.title'))
             ->setFooter(__('bot.bump.footer'))
-            ->setDescription(__('bot.bump.description', ['bumpers' => $description]));
+            ->setDescription(__('bot.bump.description', ['bumpers' => $description]))
+            ->getEmbed();
 
-        return MessageBuilder::new()->addEmbed($embedBuilder->getEmbed());
     }
 }
