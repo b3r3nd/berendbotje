@@ -72,7 +72,7 @@ return [
         'deleted' => 'Reaction for :name deleted',
         'footer' => 'usage: addreaction, delreaction, reactions',
         'title' => 'Reactions',
-        'description' => "Basic reactions. \n\n :reactions",
+        'description' => "Basic reactions.",
         'usage-addreaction' => 'Usage: addreaction `reaction_trigger` `reaction_emote`',
         'usage-delreaction' => 'Usage: delreaction `reaction_trigger`',
     ],
@@ -99,6 +99,12 @@ return [
         'already-stopped' => 'Player already stopped',
         'no-music' => 'No music in queue to play, use addsong to add songs',
         'usage-addsong' => "Usage: addsong `youtube_url`",
+    ],
+
+    'emotes' => [
+        'title' => 'Emote Counter',
+        'footer' => 'Counts all used emotes!',
+        'description' => "List of most used emotes\n\n:emotes",
     ],
 
     'help' => [

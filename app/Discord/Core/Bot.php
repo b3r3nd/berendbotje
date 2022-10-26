@@ -12,8 +12,8 @@ use App\Discord\Cringe\AddCringe;
 use App\Discord\Cringe\CringeIndex;
 use App\Discord\Cringe\DelCringe;
 use App\Discord\Help;
-use App\Discord\Music\Pause;
 use App\Discord\Music\AddSong;
+use App\Discord\Music\Pause;
 use App\Discord\Music\Play;
 use App\Discord\Music\PlayLocalFile;
 use App\Discord\Music\PlayYoutube;
@@ -29,6 +29,8 @@ use App\Discord\SimpleReaction\AddReaction;
 use App\Discord\SimpleReaction\DelReaction;
 use App\Discord\SimpleReaction\ReactionsIndex;
 use App\Discord\SimpleReaction\SimpleReaction;
+use App\Discord\Statistics\EmoteCounter;
+use App\Discord\Statistics\EmoteIndex;
 use App\Discord\Timeout\AllTimeouts;
 use App\Discord\Timeout\DetectTimeouts;
 use App\Discord\Timeout\SingleUserTimeouts;
@@ -81,6 +83,7 @@ class Bot
             AddReaction::class,
             DelReaction::class,
             Help::class,
+            EmoteIndex::class
         ];
     }
 
@@ -117,6 +120,7 @@ class Bot
             VoiceStateUpdate::class,
             DetectTimeouts::class,
             BumpCounter::class,
+            EmoteCounter::class,
         ];
     }
 
