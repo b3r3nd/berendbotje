@@ -21,6 +21,21 @@ use Exception;
  * quickly and easily return Embeds
  * @see EmbedBuilder
  * @see EmbedFactory
+ *
+ * Properties you can set yourself in child class:
+ * @property AccessLevels $accessLevels         Required access level for this command.
+ * @property string $trigger                    Trigger for the command, both slash and text.
+ * @property string $description                Description for the (slash) command.
+ * @property bool $requiresMention              Whether a user mention is required as argument
+ * @property int $requiredArguments             The amount of arguments required for the text version of the command.
+ * @property string $usageString                Example usage of how to use the command, shown as error on incorrect usage.
+ * @property array $slashCommandOptions         Array of all options @see https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-option-structure
+ *
+ * Properties which will be set for you and available in child:
+ * @property string $message                If available set with the Message instance received.
+ * @property array $arguments               Array of all the given arguments by either slash or text commands.
+ * @property string $messageString          String of the message received without command trigger.
+ * @property string $commandUser            Discord ID of user using the command.
  */
 abstract class SlashCommand
 {
@@ -75,7 +90,7 @@ abstract class SlashCommand
 
         // Why you ask? I do not want to register slash commands everytime on my test bot. It takes time, it's
         // Annoying and I don't need them!
-        if(env('APP_ENV') != 'local') {
+        if (env('APP_ENV') != 'local') {
             Bot::getDiscord()->application->commands->save($command);
         }
     }
