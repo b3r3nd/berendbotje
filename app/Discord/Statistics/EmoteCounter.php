@@ -10,7 +10,7 @@ use Discord\WebSockets\Event;
 use function Emoji\detect_emoji;
 
 /**
- * @TODO This code will consume a shit ton of resources looping over emotes and executing DB queries by each emote, improve.
+ * It will only count emoji ONCE per message, te prevent people just spamming emotes 10x in a single message.
  */
 class EmoteCounter
 {
@@ -22,19 +22,23 @@ class EmoteCounter
             }
 
             // Checks for custom emotes
-            if (preg_match('/<a?:.+?:\d+>/', $message->content, $matches, PREG_OFFSET_CAPTURE)) {
+            if (preg_match('/<a?:.+?:\d+>/', $message->content, $matches)) {
                 foreach ($matches as $match) {
-                    $emote = Emote::firstOrCreate(['emote' => $match[0]]);
-                    $this->processEmote($emote);
+                    $emoteInstance = Emote::firstOrCreate(['emote' => $match[0]]);
+                    $this->processEmote($emoteInstance);
                 }
             }
 
             // Checks for default emotes
             $emotes = detect_emoji($message->content);
             if (empty(!$emotes)) {
-                foreach ($emotes as $emoteS) {
-                    $emote = Emote::firstOrCreate(['hex' => $emoteS['hex_str'], 'emote' => $emoteS['emoji']]);
-                    $this->processEmote($emote);
+                $usedEmotes = [];
+                foreach ($emotes as $emote) {
+                    if (!in_array($emote['hex_str'], $usedEmotes)) {
+                        $emoteInstance = Emote::firstOrCreate(['hex' => $emote['hex_str'], 'emote' => $emote['emoji']]);
+                        $this->processEmote($emoteInstance);
+                        $usedEmotes[] = $emote['hex_str'];
+                    }
                 }
             }
         });
