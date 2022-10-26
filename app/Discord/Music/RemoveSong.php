@@ -17,7 +17,7 @@ class RemoveSong extends Command
 
     public function trigger(): string
     {
-        return 'remove';
+        return 'removesong';
     }
 
     public function __construct()
