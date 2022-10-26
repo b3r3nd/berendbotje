@@ -60,6 +60,8 @@ return [
         'not-cringe' => ":name is not cringe",
         'usage-delcringe' => "Usage: delcringe `user_mention`",
         'usage-addcringe' => "Usage: addcringe `user_mention`",
+        'usage-resetcringe' => "Usage: resetcringe `user_mention`",
+        'reset' => "Cringe for :user is reset to 0",
     ],
 
     'cmd' => [
