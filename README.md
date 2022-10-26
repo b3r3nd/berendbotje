@@ -34,12 +34,10 @@ Before you use the bot, you require the following:
 3. Make sure both these run in the background while you exit your connection / terminal. Or keep two terminals running if you want to test it locally.
 
 # Functions
-Bot is still early in development and not many features are added. 
-Also some of the code is pretty nasty still and there is redundancy in
-the database (Users and their IDs for example).
+Bot is still early in development and not many features are added. Some code is still pretty nasty so bear with me!
 
-**The trigger for the bot and all its commands is $ but can be easily changed in 
-the main Bot class if you wish.**
+**The trigger for the bot and all its commands is $ but can be easily changed. Most commands also work as 
+slash commands!**
 
 ## Youtube music player
 The bot has a simple music player with queue. I am using laravel queues to
@@ -66,35 +64,6 @@ or she will get some nice perks!
 
 Command to view the bump statistics is 
 * **bumpcounter**
-
-## Timeout detection
-We are not satisfied with the audit log and how timeouts are displayed and
-filtered. It is not easy to quickly look up how often somebody has been timed
-out, for what reason and how long. Every timeout is automatically saved
-in the database including the reason and duration. We can easily see a history
-of timeouts + filter timeouts only for specific users.
-
-Commands to show timeouts are: 
-* **timeouts**
-* **usertimeouts** `<user_mention>`
-
-## Admin management
-The bot works with access levels between 1 and 1000. Users can be added to
-the bot and have access to commands corresponding to their level. What 
-access level is required for a command of function is also dynamic and can 
-be changed in order to give admins freedom of choice what levels can use w
-which commands.
-
-There are 3 levels predefined in the bot:
-* **Admin** -> 1000
-* **Mod** -> 500
-* **User** -> 100
-
-Commands have their access level defined using the Enum class in each command child. Commands to manage admins are: 
-*admins
-* **addadmin** `<user_mention>` `<access_level>`
-* **deladmin** `<user>`
-* **clvladmin** `<user>` `<access_level>`
 
 ## Reactions
 Certain strings can be added to the bot and when those strings are detected
@@ -128,6 +97,39 @@ commands to use cringe is:
 * **addcringe** `<user>`
 * **delcringe** `<user>`
 * **cringecounter**
+
+## Emote Counter
+The bot counts both custom and default emotes! These can be retrieved by using:
+* **emotes**
+
+## Timeout detection
+We are not satisfied with the audit log and how timeouts are displayed and
+filtered. It is not easy to quickly look up how often somebody has been timed
+out, for what reason and how long. Every timeout is automatically saved
+in the database including the reason and duration. We can easily see a history
+of timeouts + filter timeouts only for specific users.
+
+Commands to show timeouts are:
+* **timeouts**
+* **usertimeouts** `<user_mention>`
+
+## Admin management
+The bot works with access levels between 1 and 1000. Users can be added to
+the bot and have access to commands corresponding to their level. What
+access level is required for a command of function is also dynamic and can
+be changed in order to give admins freedom of choice what levels can use w
+which commands.
+
+There are 3 levels predefined in the bot:
+* **Admin** -> 1000
+* **Mod** -> 500
+* **User** -> 100
+
+Commands have their access level defined using the Enum class in each command child. Commands to manage admins are:
+* **admins**
+* **addadmin** `<user_mention>` `<access_level>`
+* **deladmin** `<user>`
+* **clvladmin** `<user>` `<access_level>`
 
 
 Thats it for now! I will keep updating this readme everytime I add new functionality :)
