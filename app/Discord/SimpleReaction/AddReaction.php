@@ -51,11 +51,6 @@ class AddReaction extends SlashCommand
      */
     public function action(): MessageBuilder
     {
-        // If the reaction contains <> it's custom emote from the server. <> Need to be removed in order for it to work.
-        if (str_contains($this->arguments[1], "<")) {
-            $this->arguments[1] = str_replace(["<", ">"], "", $this->arguments[1]);
-        }
-
         $command = Reaction::create(['trigger' => $this->arguments[0], 'reaction' => $this->arguments[1]]);
         $command->save();
         new SimpleReaction(Bot::get(), $this->arguments[0], $this->arguments[1]);
