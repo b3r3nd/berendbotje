@@ -16,6 +16,9 @@ return [
     'provide-arguments' => 'This command requires :count arguments to be given',
     'provide-mention' => 'This command requires a user to be mentioned',
     'lack-access' => 'You lack access to use this command',
+    'error' => 'Error',
+    'done' => 'Done!',
+
 
     'buttons' => [
         'next' => 'Next Page',

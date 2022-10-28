@@ -2,6 +2,7 @@
 
 namespace App\Discord\Core;
 
+use Carbon\Carbon;
 use Discord\Builders\MessageBuilder;
 
 /**
@@ -17,6 +18,7 @@ class EmbedFactory
     {
         $messageBuilder = MessageBuilder::new();
         $embed = EmbedBuilder::create(Bot::getDiscord());
+        $embed->setTitle(__('bot.error'));
         $embed->setDescription($message);
         $embed->setFailed();
         $messageBuilder->addEmbed($embed->getEmbed());
@@ -32,6 +34,7 @@ class EmbedFactory
     {
         $messageBuilder = MessageBuilder::new();
         $embed = EmbedBuilder::create(Bot::getDiscord());
+        $embed->setTitle(__('bot.done'));
         $embed->setDescription($message);
         $embed->setSuccess();
         $messageBuilder->addEmbed($embed->getEmbed());
