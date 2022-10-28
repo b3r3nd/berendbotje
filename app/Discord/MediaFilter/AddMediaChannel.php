@@ -51,7 +51,6 @@ class AddMediaChannel extends SlashCommand
 
         MediaChannel::create(['channel' => $this->arguments[0]]);
         Bot::get()->addMediaChannel($this->arguments[0]);
-
         return EmbedFactory::successEmbed(__('bot.media.added', ['channel' => $this->arguments[0]]));
 
     }

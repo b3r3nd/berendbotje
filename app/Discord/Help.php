@@ -28,7 +28,7 @@ class Help extends SlashCommand
             ->setTitle(__('bot.help.title'))
             ->setFooter(__('bot.help.footer'));
         $embedBuilder->getEmbed()->addField(
-            ['name' => 'Prefix', 'value' => 'All commands use $ prefix!'],
+            ['name' => 'Prefix', 'value' => 'All commands use `$` prefix, alternatively you can use slash commands `/`.'],
             ['name' => 'Admins', 'value' => 'addadmin, deladmin, admins'],
             ['name' => 'Music Player', 'value' => 'addsong, removesong, play, stop, queue, pause, resume'],
             ['name' => 'Cringe Counter', 'value' => 'addcringe, delcringe, cringecounter'],
