@@ -9,7 +9,6 @@ use Discord\WebSockets\Event;
 
 class MediaFilter
 {
-
     public function __construct()
     {
         Bot::getDiscord()->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) {

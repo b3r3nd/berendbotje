@@ -11,6 +11,16 @@ use Discord\Parts\Embed\Embed;
 
 class MediaChannelIndex extends SlashIndexCommand
 {
+    public function accessLevel(): AccessLevels
+    {
+        return AccessLevels::GOD;
+    }
+
+    public function trigger(): string
+    {
+        return 'mediachannels';
+    }
+
     public function getEmbed(): Embed
     {
         $this->total = MediaChannel::count();
@@ -23,15 +33,5 @@ class MediaChannelIndex extends SlashIndexCommand
             ->setFooter(__('bot.media.footer'))
             ->setDescription(__('bot.media.description', ['channels' => $channels]))
             ->getEmbed();
-    }
-
-    public function accessLevel(): AccessLevels
-    {
-        return AccessLevels::GOD;
-    }
-
-    public function trigger(): string
-    {
-        return 'mediachannels';
     }
 }
