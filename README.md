@@ -65,6 +65,14 @@ or she will get some nice perks!
 Command to view the bump statistics is 
 * **bumpcounter**
 
+## Media channels
+You can add channels to a list of channels marked as media only, in these channels only attachments and URLS are allowed.
+Anything else will be deleted!
+
+* **mediachannels**
+* **addmediachannel** `channel`
+* **delmediachannel** `channel`
+
 ## Reactions
 Certain strings can be added to the bot and when those strings are detected
 in a message the bot will add a reaction to the message with a set emote. These
