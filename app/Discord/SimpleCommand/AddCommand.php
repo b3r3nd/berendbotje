@@ -51,9 +51,11 @@ class AddCommand extends SlashCommand
      */
     public function action(): MessageBuilder
     {
-        $command = \App\Models\Command::create(['trigger' => $this->arguments[0], 'response' => $this->arguments[1]]);
+        $trigger = array_shift($this->arguments);
+        $response = join(' ', $this->arguments);
+        $command = \App\Models\Command::create(['trigger' => $trigger, 'response' => $response]);
         $command->save();
-        new SimpleCommand(Bot::get(), $this->arguments[0], $this->arguments[1]);
-        return EmbedFactory::successEmbed(__('bot.cmd.saved', ['trigger' => $this->arguments[0], 'response' => $this->arguments[1]]));
+        new SimpleCommand(Bot::get(), $trigger, $response);
+        return EmbedFactory::successEmbed(__('bot.cmd.saved', ['trigger' => $trigger, 'response' => $response]));
     }
 }

@@ -16,6 +16,23 @@ return [
     'provide-arguments' => 'This command requires :count arguments to be given',
     'provide-mention' => 'This command requires a user to be mentioned',
     'lack-access' => 'You lack access to use this command',
+    'error' => 'Error',
+    'done' => 'Done!',
+    'media-deleted' => 'Your message in :channel has been deleted. Only media and URLs are allowed.',
+
+
+    'media' => [
+        'usage-addmedia' => 'Usage: addmediachannel `channel`',
+        'usage-delmedia' => 'Usage: delmediachannel `channel`',
+        'added' => 'Media channel :channel added',
+        'deleted' => 'Media channel :channel deleted',
+        'exists' => 'Channel :channel is already marked as media channel',
+        'not-exists' => 'Channel :channel is not marked as media channel',
+        'no-channel' => 'Please provide a valid channel.',
+        'title' => 'Media Channels',
+        'footer' => 'Usage: addmediachannel, delmediachannel, mediachannels',
+        'description' => "Channels marked as media only allow attachments and URLS\n\n:channels"
+    ],
 
     'buttons' => [
         'next' => 'Next Page',

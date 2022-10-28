@@ -36,6 +36,7 @@ class Help extends SlashCommand
             ['name' => 'Bumper Elite', 'value' => 'bumpstats'],
             ['name' => 'Simple Reactions', 'value' => 'reactions, addreaction, delreaction'],
             ['name' => 'Simple Commands', 'value' => 'commands, addcmd, delcmd'],
+            ['name' => 'Media channels', 'value' => 'mediachannels, addmediachannel, delmediachannel'],
             ['name' => 'Emote Counter', 'value' => 'emotes'],
             ['name' => 'Source Code', 'value' => 'https://gitlab.com/discord54/berend-botje/'],
         );

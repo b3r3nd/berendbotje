@@ -13,6 +13,10 @@ use App\Discord\Cringe\CringeIndex;
 use App\Discord\Cringe\DelCringe;
 use App\Discord\Cringe\ResetCringe;
 use App\Discord\Help;
+use App\Discord\MediaFilter\AddMediaChannel;
+use App\Discord\MediaFilter\DeleteMediaChannel;
+use App\Discord\MediaFilter\MediaChannelIndex;
+use App\Discord\MediaFilter\MediaFilter;
 use App\Discord\Music\AddSong;
 use App\Discord\Music\Pause;
 use App\Discord\Music\Play;
@@ -34,6 +38,7 @@ use App\Discord\Statistics\EmoteIndex;
 use App\Discord\Timeout\AllTimeouts;
 use App\Discord\Timeout\DetectTimeouts;
 use App\Discord\Timeout\SingleUserTimeouts;
+use App\Models\MediaChannel;
 use App\Models\Reaction;
 use Discord\Discord;
 use Discord\Exceptions\IntentException;
@@ -59,6 +64,35 @@ class Bot
      */
     private array $deletedCommands = [];
     private array $deletedReactions = [];
+    private array $deletedMediaChannels = [];
+
+    private array $mediaChannels = [];
+
+    /**
+     * @param string $channel
+     * @return void
+     */
+    public function addMediaChannel(string $channel): void
+    {
+        $this->mediaChannels[$channel] = $channel;
+    }
+
+    /**
+     * @param string $channel
+     * @return void
+     */
+    public function delMediaChannel(string $channel): void
+    {
+        unset($this->mediaChannels[$channel]);
+    }
+
+    /**
+     * @return array
+     */
+    public function getMediaChannels(): array
+    {
+        return $this->mediaChannels;
+    }
 
     /**
      * Define all command classes which support both text and slash commands here!
@@ -85,6 +119,9 @@ class Bot
             Help::class,
             EmoteIndex::class,
             ResetCringe::class,
+            AddMediaChannel::class,
+            DeleteMediaChannel::class,
+            MediaChannelIndex::class,
         ];
     }
 
@@ -121,6 +158,7 @@ class Bot
             DetectTimeouts::class,
             BumpCounter::class,
             EmoteCounter::class,
+            MediaFilter::class,
         ];
     }
 
@@ -201,6 +239,11 @@ class Bot
         // Custom reactions
         foreach (Reaction::all() as $reaction) {
             SimpleReaction::create($this, $reaction->trigger, $reaction->reaction);
+        }
+
+        // Set media channel filters
+        foreach (MediaChannel::all() as $channel) {
+            $this->mediaChannels[$channel->channel] = $channel->channel;
         }
     }
 
