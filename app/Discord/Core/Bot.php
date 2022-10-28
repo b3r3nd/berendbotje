@@ -52,47 +52,30 @@ use Discord\WebSockets\Intents;
  *
  * I could pass this as an argument to literally every class constructor (which I did at first) but it became
  * cumbersome rather quick, hence this implementation.
+ *
+ * @property $discord           Set with the global discord instance from DiscordPHP.
+ * @property $prefix            Prefix of the bot, can be changed on the fly whenever you like.
+ * @property $instance          Static instance of self (singleton) accessible through static call get().
+ * @property $mediaChannel      List of channels marked as media, add or remove any channels whenever you like.
+ *
+ * When a new command or reaction is added a new instance of either class is instantiated. I cannot manually destroy
+ * these instances when the command or reaction is deleted, so I keep track of them here and make sure they do not fire.
+ * @see SimpleCommand
+ * @see SimpleReaction
+ * @property $deletedCommands   List deleted commands so they do not trigger.
+ * @property $deletedReactions  List of deleted reactions so they do not rigger.
+ *
+ * @TODO find better solution for deleted commands and reactions.. probably step away from having a single instance per trigger
  */
 class Bot
 {
     private Discord $discord;
     private string $prefix = '$';
     private static self $instance;
-
-    /**
-     * @TODO Find better solutions for deleting custom commands and reactions.
-     */
+    private array $mediaChannels = [];
     private array $deletedCommands = [];
     private array $deletedReactions = [];
-    private array $deletedMediaChannels = [];
 
-    private array $mediaChannels = [];
-
-    /**
-     * @param string $channel
-     * @return void
-     */
-    public function addMediaChannel(string $channel): void
-    {
-        $this->mediaChannels[$channel] = $channel;
-    }
-
-    /**
-     * @param string $channel
-     * @return void
-     */
-    public function delMediaChannel(string $channel): void
-    {
-        unset($this->mediaChannels[$channel]);
-    }
-
-    /**
-     * @return array
-     */
-    public function getMediaChannels(): array
-    {
-        return $this->mediaChannels;
-    }
 
     /**
      * Define all command classes which support both text and slash commands here!
@@ -261,6 +244,32 @@ class Bot
     public static function getDiscord(): Discord
     {
         return self::$instance->discord;
+    }
+
+    /**
+     * @param string $channel
+     * @return void
+     */
+    public function addMediaChannel(string $channel): void
+    {
+        $this->mediaChannels[$channel] = $channel;
+    }
+
+    /**
+     * @param string $channel
+     * @return void
+     */
+    public function delMediaChannel(string $channel): void
+    {
+        unset($this->mediaChannels[$channel]);
+    }
+
+    /**
+     * @return array
+     */
+    public function getMediaChannels(): array
+    {
+        return $this->mediaChannels;
     }
 
     /**

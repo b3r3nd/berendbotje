@@ -10,12 +10,13 @@ use Discord\Parts\Interactions\Interaction;
 /**
  * This class can be extended in order to easily add pagination to the index file. All you need to do
  * is write the embed body in the child class, everything else is handled by either this class or SlashCommand.
+ *
+ * @property $offset        Automatically increased by te perPage amount when clicking to next page.
+ * @property $perPage       Can be overwritten in child to set the items shown per page.
+ * @property $total         MUST BE SET in child in order to disable buttons when you are on the last page.
  */
 abstract class SlashIndexCommand extends SlashCommand implements PaginationIndex
 {
-    /**
-     * These can be overwritten in the child, $total must be set in order for the buttons to disable properly.
-     */
     public int $offset = 0;
     public int $perPage = 10;
     public int $total = 0;
