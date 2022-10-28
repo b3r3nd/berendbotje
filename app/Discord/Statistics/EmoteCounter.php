@@ -31,7 +31,7 @@ class EmoteCounter
 
             // Checks for default emotes
             $emotes = detect_emoji($message->content);
-            if (empty(!$emotes)) {
+            if (!empty($emotes)) {
                 $usedEmotes = [];
                 foreach ($emotes as $emote) {
                     if (!in_array($emote['hex_str'], $usedEmotes)) {
