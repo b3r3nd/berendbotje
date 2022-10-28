@@ -120,7 +120,7 @@ abstract class SlashCommand
                         array_shift($parameters);
                         $this->messageString = join(' ', $this->arguments);
                         foreach ($parameters as $index => $parameter) {
-                            if ($parameter == $message->mentions->first()) {
+                            if ($parameter === $message->mentions->first()) {
                                 $parameters[$index] = $message->mentions->first()->id;
                             }
                         }
