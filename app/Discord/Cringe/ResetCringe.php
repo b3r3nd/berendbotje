@@ -49,7 +49,7 @@ class ResetCringe extends SlashAndMessageCommand
         $user = DiscordUser::where(['discord_id' => $this->arguments[0]])->first();
 
         if (!isset($user->cringeCounter)) {
-            return EmbedFactory::failedEmbed(__('bot.cringe.not-cringe', ['name' => $this->arguments[0]]));
+            return EmbedFactory::failedEmbed(__('bot.cringe.not-cringe', ['name' => "<@{$this->arguments[0]}>"]));
         }
 
         $user->cringeCounter->delete();
