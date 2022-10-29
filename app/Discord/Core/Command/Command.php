@@ -14,6 +14,10 @@ use Discord\Parts\Channel\Message;
  * @property array $arguments               Array of all the given arguments by either slash or text commands.
  * @property string $message                If available set with the Message instance received.
  * @property string $commandUser            Discord ID of user using the command.
+ * @property bool $requiresMention          Whether a user mention is required as argument
+ * @property int $requiredArguments         The amount of arguments required for the text version of the command.
+ * @property string $usageString            Example usage of how to use the command, shown as error on incorrect usage.
+ * @property string $messageString          String of the message received without command trigger.
  *
  */
 abstract class Command
@@ -23,6 +27,10 @@ abstract class Command
     protected array $arguments = [];
     protected Message $message;
     protected string $commandUser;
+    protected bool $requiresMention = false;
+    protected int $requiredArguments = 0;
+    protected string $usageString;
+    protected string $messageString = '';
 
     public abstract function accessLevel(): AccessLevels;
 

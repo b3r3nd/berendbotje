@@ -21,7 +21,7 @@ class EmbedFactory
         $embed->setTitle(__('bot.error'));
         $embed->setDescription($message);
         $embed->setFailed();
-        $embed->setFooter(Carbon::now()->format('H:i:s'));
+        $embed->setFooter(__('bot.needhelp'));
         $messageBuilder->addEmbed($embed->getEmbed());
 
         return $messageBuilder;
@@ -36,7 +36,7 @@ class EmbedFactory
         $messageBuilder = MessageBuilder::new();
         $embed = EmbedBuilder::create(Bot::getDiscord());
         $embed->setTitle(__('bot.done'));
-        $embed->setFooter(Carbon::now()->format('H:i:s'));
+        $embed->setFooter(__('bot.needhelp'));
         $embed->setDescription($message);
         $embed->setSuccess();
         $messageBuilder->addEmbed($embed->getEmbed());

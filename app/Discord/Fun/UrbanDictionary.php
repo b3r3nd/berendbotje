@@ -34,16 +34,16 @@ class UrbanDictionary extends MessageCommand
         $response = Http::withHeaders([
             'X-RapidAPI-Key' => env('URB_TOKEN'),
             'X-RapidAPI-Host' => env('URB_HOST'),
-        ])->get('https://mashape-community-urban-dictionary.p.rapidapi.com/define', ['term' => $this->arguments[0]]);
+        ])->get('https://mashape-community-urban-dictionary.p.rapidapi.com/define', ['term' => $this->messageString]);
 
 
         if (empty($response->json()['list'])) {
-            $this->message->channel->sendMessage(EmbedFactory::failedEmbed(__('bot.no-valid-term', ['term' => $this->arguments[0]])));
+            $this->message->channel->sendMessage(EmbedFactory::failedEmbed(__('bot.no-valid-term', ['term' => $this->messageString])));
             return;
         }
         $embedBuilder = EmbedBuilder::create(Bot::getDiscord())
             ->setFooter($response->json()['list'][0]['permalink'])
-            ->setTitle($this->arguments[0])
+            ->setTitle($this->messageString)
             ->setDescription($response->json()['list'][0]['definition']);
 
         $this->message->channel->sendEmbed($embedBuilder->getEmbed());

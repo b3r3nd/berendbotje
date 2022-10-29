@@ -31,6 +31,8 @@ abstract class SlashAndMessageCommand extends Command
      * I would love to move this code to the trait like I did with slash commands, but depending on where the data is going
      * (message only command, or both slash and message command) something else needs to be done.
      * @return void
+     *
+     * @TODO Fix duplicate code with block below
      */
     public function registerMessageCommand(): void
     {
@@ -58,13 +60,13 @@ abstract class SlashAndMessageCommand extends Command
                         return;
                     } else {
                         array_shift($parameters);
-                        $this->messageString = join(' ', $this->arguments);
                         foreach ($parameters as $index => $parameter) {
                             if ($message->mentions->first() && str_contains($parameter, $message->mentions->first())) {
                                 $parameters[$index] = $message->mentions->first()->id;
                             }
                         }
                         $this->arguments = $parameters;
+                        $this->messageString = join(' ', $this->arguments);
                     }
                 }
                 $this->message = $message;
