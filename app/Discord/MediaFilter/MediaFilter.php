@@ -25,9 +25,12 @@ class MediaFilter
             }
 
             // If the message contains a valid URL we allow it.
-            if (filter_var($message->content, FILTER_VALIDATE_URL)) {
-                return;
+            foreach (explode(' ', $message->content) as $word) {
+                if (filter_var($word, FILTER_VALIDATE_URL)) {
+                    return;
+                }
             }
+
 
             $message->delete();
             $message->author->sendMessage(__('bot.media-deleted', ['channel' => $message->channel->name]));
