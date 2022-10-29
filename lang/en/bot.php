@@ -27,6 +27,22 @@ return [
         'no-question' => 'You should ask me a question..',
     ],
 
+    'xp' => [
+        'not-found' => 'You do not have any messages',
+        'count' => 'You have :messages',
+        'footer' => 'You gain :xp per message',
+        'title' => 'Message statistics',
+        'description' => 'You have :messages messages which amounts to :xp xp!',
+    ],
+
+    'set' => [
+        'footer' => 'Use set <setting_key> <new_value> to update settings.',
+        'title' => 'General bot settings',
+        'usage-set' => 'Usage: set `setting_key` `setting_value`',
+        'not-exist' => 'Setting :key does not exist',
+        'updated' => 'Setting :key is updated to value :value',
+    ],
+
     'media' => [
         'usage-addmedia' => 'Usage: addmediachannel `channel`',
         'usage-delmedia' => 'Usage: delmediachannel `channel`',

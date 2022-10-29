@@ -14,6 +14,14 @@ class DiscordUser extends Model
     /**
      * @return HasOne
      */
+    public function messageCounter(): HasOne
+    {
+        return $this->hasOne(MessageCounter::class, 'user_id', 'id');
+    }
+
+    /**
+     * @return HasOne
+     */
     public function admin(): HasOne
     {
         return $this->hasOne(Admin::class, 'user_id', 'id');
