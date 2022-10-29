@@ -2,21 +2,9 @@
 
 namespace App\Discord\Core\Command;
 
-use App\Discord\Core\EmbedFactory;
-use App\Models\DiscordUser;
 
-/**
- * @property bool $requiresMention          Whether a user mention is required as argument
- * @property int $requiredArguments         The amount of arguments required for the text version of the command.
- * @property string $usageString            Example usage of how to use the command, shown as error on incorrect usage.
- * @property string $messageString          String of the message received without command trigger.
- */
 trait MessageCommandTrait
 {
-    protected bool $requiresMention = false;
-    protected int $requiredArguments = 0;
-    protected string $usageString;
-    protected string $messageString = '';
 
     /**
      * @param $message

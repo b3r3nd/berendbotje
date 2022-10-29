@@ -52,13 +52,13 @@ abstract class MessageCommand extends Command
                         return;
                     } else {
                         array_shift($parameters);
-                        $this->messageString = join(' ', $this->arguments);
                         foreach ($parameters as $index => $parameter) {
                             if ($message->mentions->first() && str_contains($parameter, $message->mentions->first())) {
                                 $parameters[$index] = $message->mentions->first()->id;
                             }
                         }
                         $this->arguments = $parameters;
+                        $this->messageString = join(' ', $this->arguments);
                     }
                 }
 
