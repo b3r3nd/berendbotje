@@ -11,13 +11,11 @@ use Exception;
 /**
  * @property string $description            Description for the (slash) command.
  * @property array $slashCommandOptions     Array of all options @see https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-option-structure
- * @property string $commandUser            Discord ID of user using the command.
  */
 trait SlashCommandTrait
 {
     protected string $description;
     protected array $slashCommandOptions;
-    protected string $commandUser;
 
     /**
      * @return void

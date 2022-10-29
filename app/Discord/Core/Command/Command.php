@@ -13,6 +13,7 @@ use Discord\Parts\Channel\Message;
  * @property string $trigger                Trigger for the command, both slash and text.
  * @property array $arguments               Array of all the given arguments by either slash or text commands.
  * @property string $message                If available set with the Message instance received.
+ * @property string $commandUser            Discord ID of user using the command.
  *
  */
 abstract class Command
@@ -21,6 +22,7 @@ abstract class Command
     protected string $trigger;
     protected array $arguments = [];
     protected Message $message;
+    protected string $commandUser;
 
     public abstract function accessLevel(): AccessLevels;
 
