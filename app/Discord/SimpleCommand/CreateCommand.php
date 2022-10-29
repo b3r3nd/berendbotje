@@ -10,7 +10,7 @@ use Discord\Builders\MessageBuilder;
 use Discord\Http\Exceptions\NoPermissionsException;
 use Discord\Parts\Interactions\Command\Option;
 
-class AddAndMessageCommand extends SlashAndMessageCommand
+class CreateCommand extends SlashAndMessageCommand
 {
     public function accessLevel(): AccessLevels
     {

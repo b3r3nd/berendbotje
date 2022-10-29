@@ -5,13 +5,13 @@ namespace App\Discord\Statistics;
 use App\Discord\Core\AccessLevels;
 use App\Discord\Core\Bot;
 use App\Discord\Core\ButtonFactory;
-use App\Discord\Core\Command\IndexCommand;
+use App\Discord\Core\Command\SlashAndMessageIndexCommand;
 use App\Discord\Core\EmbedBuilder;
 use App\Discord\Helper;
 use App\Models\Emote;
 use Discord\Parts\Embed\Embed;
 
-class EmoteIndex extends IndexCommand
+class EmoteIndex extends SlashAndMessageIndexCommand
 {
 
     public function accessLevel(): AccessLevels

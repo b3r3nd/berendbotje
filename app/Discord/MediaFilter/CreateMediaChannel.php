@@ -10,7 +10,7 @@ use App\Models\MediaChannel;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Command\Option;
 
-class AddMediaChannel extends SlashAndMessageCommand
+class CreateMediaChannel extends SlashAndMessageCommand
 {
 
     public function accessLevel(): AccessLevels

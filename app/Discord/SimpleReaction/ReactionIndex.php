@@ -4,12 +4,12 @@ namespace App\Discord\SimpleReaction;
 
 use App\Discord\Core\AccessLevels;
 use App\Discord\Core\Bot;
-use App\Discord\Core\Command\IndexCommand;
+use App\Discord\Core\Command\SlashAndMessageIndexCommand;
 use App\Discord\Core\EmbedBuilder;
 use App\Models\Reaction;
 use Discord\Parts\Embed\Embed;
 
-class ReactionsIndex extends IndexCommand
+class ReactionIndex extends SlashAndMessageIndexCommand
 {
     public function accessLevel(): AccessLevels
     {

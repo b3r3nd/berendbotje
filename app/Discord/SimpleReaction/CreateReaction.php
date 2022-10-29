@@ -11,7 +11,7 @@ use Discord\Builders\MessageBuilder;
 use Discord\Http\Exceptions\NoPermissionsException;
 use Discord\Parts\Interactions\Command\Option;
 
-class AddReaction extends SlashAndMessageCommand
+class CreateReaction extends SlashAndMessageCommand
 {
     public function accessLevel(): AccessLevels
     {

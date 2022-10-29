@@ -5,28 +5,29 @@ namespace App\Discord\Cringe;
 use App\Discord\Core\AccessLevels;
 use App\Discord\Core\Command\SlashAndMessageCommand;
 use App\Discord\Core\EmbedFactory;
+use App\Models\CringeCounter;
 use App\Models\DiscordUser;
 use Discord\Builders\MessageBuilder;
 use Discord\Http\Exceptions\NoPermissionsException;
 use Discord\Parts\Interactions\Command\Option;
 
-class DelCringe extends SlashAndMessageCommand
+class IncreaseCringe extends SlashAndMessageCommand
 {
     public function accessLevel(): AccessLevels
     {
-        return AccessLevels::MOD;
+        return AccessLevels::USER;
     }
 
     public function trigger(): string
     {
-        return 'delcringe';
+        return 'addcringe';
     }
 
     public function __construct()
     {
         $this->requiredArguments = 1;
         $this->requiresMention = true;
-        $this->usageString = __('bot.cringe.usage-delcringe');
+        $this->usageString = __('bot.cringe.usage-addcringe');
         $this->slashCommandOptions = [
             [
                 'name' => 'user_mention',
@@ -44,18 +45,16 @@ class DelCringe extends SlashAndMessageCommand
      */
     public function action(): MessageBuilder
     {
-        $user = DiscordUser::where(['discord_id' => $this->arguments[0]])->first();
-
-        if (isset($user->cringeCounter)) {
-            $user->cringeCounter->count = $user->cringeCounter->count - 1;
-            if ($user->cringeCounter->count == 0) {
-                $user->cringeCounter->delete();
-            } else {
-                $user->cringeCounter->save();
-            }
+        $user = DiscordUser::firstOrCreate([
+            'discord_id' => $this->arguments[0],
+            'discord_tag' => "<@{$this->arguments[0]}>",
+        ]);
+        if ($user->cringeCounter) {
+            $user->cringeCounter()->update(['count' => $user->cringeCounter->count + 1]);
         } else {
-            return EmbedFactory::failedEmbed(__('bot.cringe.not-cringe', ['name' => $this->arguments[0]]));
+            $user->cringeCounter()->save(new CringeCounter(['count' => 1]));
         }
+        $user->refresh();
         return EmbedFactory::successEmbed(__('bot.cringe.change', ['name' => $user->discord_tag, 'count' => $user->cringeCounter->count]));
     }
 }

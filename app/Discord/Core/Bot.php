@@ -2,21 +2,23 @@
 
 namespace App\Discord\Core;
 
-use App\Discord\Admin\AddAdmin;
+use App\Discord\Admin\CreateAdmin;
 use App\Discord\Admin\AdminIndex;
-use App\Discord\Admin\DelAdmin;
+use App\Discord\Admin\DeleteAdmin;
 use App\Discord\Admin\UpdateAdmin;
 use App\Discord\Bump\BumpCounter;
 use App\Discord\Bump\BumpStatistics;
 use App\Discord\Core\Command\MessageCommand;
 use App\Discord\Core\Command\SlashAndMessageCommand;
-use App\Discord\Cringe\AddCringe;
+use App\Discord\Core\Command\SlashAndMessageIndexCommand;
+use App\Discord\Core\Command\SlashCommand;
+use App\Discord\Cringe\IncreaseCringe;
 use App\Discord\Cringe\CringeIndex;
-use App\Discord\Cringe\DelCringe;
+use App\Discord\Cringe\DecreaseCringe;
 use App\Discord\Cringe\ResetCringe;
 use App\Discord\Fun\EightBall;
 use App\Discord\Help;
-use App\Discord\MediaFilter\AddMediaChannel;
+use App\Discord\MediaFilter\CreateMediaChannel;
 use App\Discord\MediaFilter\DeleteMediaChannel;
 use App\Discord\MediaFilter\MediaChannelIndex;
 use App\Discord\MediaFilter\MediaFilter;
@@ -28,13 +30,13 @@ use App\Discord\Music\RemoveSong;
 use App\Discord\Music\Resume;
 use App\Discord\Music\Stop;
 use App\Discord\Say;
-use App\Discord\SimpleCommand\AddAndMessageCommand;
+use App\Discord\SimpleCommand\CreateCommand;
 use App\Discord\SimpleCommand\CommandIndex;
-use App\Discord\SimpleCommand\DelAndMessageCommand;
+use App\Discord\SimpleCommand\DeleteCommand;
 use App\Discord\SimpleCommand\SimpleCommand;
-use App\Discord\SimpleReaction\AddReaction;
-use App\Discord\SimpleReaction\DelReaction;
-use App\Discord\SimpleReaction\ReactionsIndex;
+use App\Discord\SimpleReaction\CreateReaction;
+use App\Discord\SimpleReaction\DeleteReaction;
+use App\Discord\SimpleReaction\ReactionIndex;
 use App\Discord\SimpleReaction\SimpleReaction;
 use App\Discord\Statistics\EmoteCounter;
 use App\Discord\Statistics\EmoteIndex;
@@ -47,6 +49,7 @@ use Discord\Discord;
 use Discord\Exceptions\IntentException;
 use Discord\Parts\User\Activity;
 use Discord\WebSockets\Intents;
+use Exception;
 
 /**
  * We only ever have one instance of this class, you could call it a singleton however it isn't really. This class
@@ -79,63 +82,8 @@ class Bot
     private array $deletedCommands = [];
     private array $deletedReactions = [];
 
-
     /**
-     * Define all command classes which support both text and slash commands here!
-     * @return string[]
-     * @see SlashAndMessageCommand
-     */
-    private function slashCommands(): array
-    {
-        return [
-            AddAdmin::class,
-            DelAdmin::class,
-            UpdateAdmin::class,
-            AdminIndex::class,
-            BumpStatistics::class,
-            AddCringe::class,
-            DelCringe::class,
-            CringeIndex::class,
-            AddAndMessageCommand::class,
-            DelAndMessageCommand::class,
-            CommandIndex::class,
-            ReactionsIndex::class,
-            AddReaction::class,
-            DelReaction::class,
-            Help::class,
-            EmoteIndex::class,
-            ResetCringe::class,
-            AddMediaChannel::class,
-            DeleteMediaChannel::class,
-            MediaChannelIndex::class,
-        ];
-    }
-
-    /**
-     * Define all command classes using only text commands here.
-     * @return string[]
-     * @see MessageCommand
-     */
-    private function textCommands(): array
-    {
-        return [
-            EightBall::class,
-            AllTimeouts::class,
-            SingleUserTimeouts::class,
-            AddSong::class,
-            Pause::class,
-            Stop::class,
-            Queue::class,
-            Resume::class,
-            Play::class,
-            Say::class,
-            RemoveSong::class,
-        ];
-    }
-
-    /**
-     * Define all other classes. Mainly events that do not require commands to be triggered, for example on user timeout,
-     * or voice state change.
+     * Define all events that do not require commands to be triggered, for example the media filter or voice states.
      * @return string[]
      */
     private function coreClasses(): array
@@ -146,6 +94,33 @@ class Bot
             BumpCounter::class,
             EmoteCounter::class,
             MediaFilter::class,
+        ];
+    }
+
+    /**
+     * Define all command classes, command classes are implementations of either of the 4 abstract classes below.
+     * @return string[]
+     * @see SlashCommand
+     * @see SlashAndMessageCommand
+     * @see SlashAndMessageIndexCommand
+     *
+     * @see MessageCommand
+     */
+    private function commands(): array
+    {
+        return [
+            CreateAdmin::class, DeleteAdmin::class, UpdateAdmin::class, AdminIndex::class,
+            IncreaseCringe::class, DecreaseCringe::class, CringeIndex::class, ResetCringe::class,
+            CreateCommand::class, DeleteCommand::class, CommandIndex::class,
+            ReactionIndex::class, CreateReaction::class, DeleteReaction::class,
+            CreateMediaChannel::class, DeleteMediaChannel::class, MediaChannelIndex::class,
+            AddSong::class, Pause::class, Stop::class, Queue::class, Resume::class, Play::class, RemoveSong::class,
+            AllTimeouts::class, SingleUserTimeouts::class,
+            Help::class,
+            BumpStatistics::class,
+            EmoteIndex::class,
+            EightBall::class,
+            Say::class,
         ];
     }
 
@@ -173,8 +148,8 @@ class Bot
             ]);
             $discord->updatePresence($activity);
             $this->loadCoreClasses();
+            //$this->deleteSlashCommands();
             $this->loadCommands();
-            $this->loadSlashCommands();
         });
         self::$instance = $this;
         return $this;
@@ -191,31 +166,17 @@ class Bot
     }
 
     /**
-     * @TODO Deleting and adding everything on boot is not recommended. Need improve this :)
-     * @return void
-     */
-    private function loadSlashCommands(): void
-    {
-        $this->discord->application->commands->freshen()->done(function ($commands) {
-            foreach ($commands as $command) {
-                $this->discord->application->commands->delete($command);
-            }
-        });
-
-        foreach ($this->slashCommands() as $class) {
-            $instance = new $class();
-            $instance->registerMessageCommand();
-            $instance->registerSlashCommand();
-        }
-    }
-
-    /**
      * @return void
      */
     private function loadCommands(): void
     {
-        foreach ($this->textCommands() as $class) {
-            (new $class())->registerMessageCommand();
+        foreach ($this->commands() as $class) {
+            $instance = new $class();
+            if (method_exists($instance, 'registerMessageCommand')) {
+                $instance->registerMessageCommand();
+            }
+            if (method_exists($instance, 'registerSlashCommand'))
+                (new $class())->registerSlashCommand();
         }
 
         // Custom commands
@@ -232,6 +193,19 @@ class Bot
         foreach (MediaChannel::all() as $channel) {
             $this->mediaChannels[$channel->channel] = $channel->channel;
         }
+    }
+
+    /**
+     * @return void
+     * @throws Exception
+     */
+    function deleteSlashCommands(): void
+    {
+        $this->discord->application->commands->freshen()->done(function ($commands) {
+            foreach ($commands as $command) {
+                $this->discord->application->commands->delete($command);
+            }
+        });
     }
 
     /**

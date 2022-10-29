@@ -4,13 +4,13 @@ namespace App\Discord\Bump;
 
 use App\Discord\Core\AccessLevels;
 use App\Discord\Core\Bot;
-use App\Discord\Core\Command\IndexCommand;
+use App\Discord\Core\Command\SlashAndMessageIndexCommand;
 use App\Discord\Core\EmbedBuilder;
 use App\Discord\Helper;
 use App\Models\Bumper;
 use Discord\Parts\Embed\Embed;
 
-class BumpStatistics extends IndexCommand
+class BumpStatistics extends SlashAndMessageIndexCommand
 {
     public function accessLevel(): AccessLevels
     {

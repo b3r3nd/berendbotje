@@ -10,7 +10,7 @@ use Discord\Builders\MessageBuilder;
 use Discord\Http\Exceptions\NoPermissionsException;
 use Discord\Parts\Interactions\Command\Option;
 
-class DelAndMessageCommand extends SlashAndMessageCommand
+class DeleteCommand extends SlashAndMessageCommand
 {
     public function accessLevel(): AccessLevels
     {

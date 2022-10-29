@@ -9,7 +9,7 @@ use App\Models\Admin;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Command\Option;
 
-class DelAdmin extends SlashAndMessageCommand
+class DeleteAdmin extends SlashAndMessageCommand
 {
     public function accessLevel(): AccessLevels
     {
