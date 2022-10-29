@@ -25,6 +25,7 @@ abstract class MessageCommand extends Command
      * (message only command, or both slash and message command) something else needs to be done.
      *
      * @return void
+     * @TODO Fix duplicate code with block below
      */
     public function registerMessageCommand(): void
     {

@@ -21,6 +21,7 @@ return [
     'media-deleted' => 'Your message in :channel has been deleted. Only media and URLs are allowed.',
     'no-term' => 'Enter a search term',
     'no-valid-term' => 'Search term :term cannot be found',
+    'needhelp' => 'For more info check $help',
 
     '8ball' => [
         'no-question' => 'You should ask me a question..',
