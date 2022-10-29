@@ -12,6 +12,7 @@ use App\Discord\Cringe\AddCringe;
 use App\Discord\Cringe\CringeIndex;
 use App\Discord\Cringe\DelCringe;
 use App\Discord\Cringe\ResetCringe;
+use App\Discord\Fun\EightBall;
 use App\Discord\Help;
 use App\Discord\MediaFilter\AddMediaChannel;
 use App\Discord\MediaFilter\DeleteMediaChannel;
@@ -116,6 +117,7 @@ class Bot
     private function textCommands(): array
     {
         return [
+            EightBall::class,
             AllTimeouts::class,
             SingleUserTimeouts::class,
             AddSong::class,
