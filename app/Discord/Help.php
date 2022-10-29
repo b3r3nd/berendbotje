@@ -33,7 +33,7 @@ class Help extends SlashAndMessageCommand
             if (isset($parameters[1])) {
                 if ($parameters[1] === 'admins') {
                     $embedBuilder->getEmbed()->addField(
-                        ['name' => 'Admins', 'value' => 'Managing bot admins, moderators and their access levels.'],
+                        ['name' => 'Admins', 'value' => 'For now there are 3 defined access levels in use, `900`, `500` and `100`. `900` is only for administrators to manage the bot, `500` is for moderators who can also add and remove reactions for example. `100` is for users, these can increase cringe counters, add music to the queue and other basic stuff.'],
                         ['name' => 'Create Admin', 'value' => 'addadmin `user_mention` `access_level`'],
                         ['name' => 'Delete Admin', 'value' => 'deladmin `user_mention`'],
                         ['name' => 'Update Admin Level', 'value' => 'clvladmin `user_mention` `access_level`'],
