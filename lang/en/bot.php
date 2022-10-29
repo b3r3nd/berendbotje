@@ -43,6 +43,12 @@ return [
         'updated' => 'Setting :key is updated to value :value',
     ],
 
+    'messages' => [
+        'title' => 'Message statistics',
+        'footer' => 'You gain :xp xp per message',
+        'description' => "List of messages and xp for users\n\n:users",
+    ],
+
     'media' => [
         'usage-addmedia' => 'Usage: addmediachannel `channel`',
         'usage-delmedia' => 'Usage: delmediachannel `channel`',

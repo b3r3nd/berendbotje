@@ -45,6 +45,7 @@ use App\Discord\SimpleReaction\SimpleReaction;
 use App\Discord\Statistics\EmoteCounter;
 use App\Discord\Statistics\EmoteIndex;
 use App\Discord\Statistics\MessageCounter;
+use App\Discord\Statistics\MessagesIndex;
 use App\Discord\Statistics\UserMessages;
 use App\Discord\Timeout\AllTimeouts;
 use App\Discord\Timeout\DetectTimeouts;
@@ -94,19 +95,6 @@ class Bot
     private array $lastMessages = [];
 
 
-    public function getLastMessage(string $userId): Carbon
-    {
-        if (isset($this->lastMessages[$userId])) {
-            return $this->lastMessages[$userId];
-        }
-        return Carbon::now()->subMinutes(100);
-    }
-
-    public function setLastMessage(string $userId): void
-    {
-        $this->lastMessages[$userId] = Carbon::now();
-    }
-
     /**
      * Define all events that do not require commands to be triggered, for example the media filter or voice states.
      * @return string[]
@@ -152,7 +140,7 @@ class Bot
 
             Settings::class, UpdateSetting::class,
 
-            UserMessages::class,
+            UserMessages::class, MessagesIndex::class
         ];
     }
 
@@ -198,7 +186,9 @@ class Bot
         }
     }
 
-
+    /**
+     * @return void
+     */
     public function loadSettings(): void
     {
         foreach (Setting::all() as $setting) {
@@ -249,17 +239,49 @@ class Bot
         });
     }
 
+    /**
+     * @param string $userId
+     * @return Carbon
+     */
+    public function getLastMessage(string $userId): Carbon
+    {
+        if (isset($this->lastMessages[$userId])) {
+            return $this->lastMessages[$userId];
+        }
+        return Carbon::now()->subMinutes(100);
+    }
+
+    /**
+     * @param string $userId
+     * @return void
+     */
+    public function setLastMessage(string $userId): void
+    {
+        $this->lastMessages[$userId] = Carbon::now();
+    }
+
+    /**
+     * @return array
+     */
     public function getSettings(): array
     {
         return $this->settings;
     }
 
+    /**
+     * @param string $setting
+     * @param $value
+     * @return void
+     */
     public function setSetting(string $setting, $value): void
     {
         $this->settings[$setting] = $value;
     }
 
-
+    /**
+     * @param string $setting
+     * @return false|mixed
+     */
     public function getSetting(string $setting)
     {
         if (isset($this->settings[$setting])) {
