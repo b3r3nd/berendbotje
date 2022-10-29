@@ -37,6 +37,10 @@ abstract class SlashAndMessageCommand extends Command
             if ($message->author->bot) {
                 return;
             }
+            if (str_contains($message->content, $discord->user->id)) {
+                return;
+            }
+
             if (str_starts_with($message->content, Bot::get()->getPrefix() . $this->trigger)) {
                 $this->validateMessage($message);
                 $this->message = $message;

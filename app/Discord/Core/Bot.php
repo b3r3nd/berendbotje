@@ -17,6 +17,7 @@ use App\Discord\Cringe\CringeIndex;
 use App\Discord\Cringe\DecreaseCringe;
 use App\Discord\Cringe\ResetCringe;
 use App\Discord\Fun\EightBall;
+use App\Discord\Fun\MentionResponder;
 use App\Discord\Help;
 use App\Discord\MediaFilter\CreateMediaChannel;
 use App\Discord\MediaFilter\DeleteMediaChannel;
@@ -50,6 +51,7 @@ use Discord\Exceptions\IntentException;
 use Discord\Parts\User\Activity;
 use Discord\WebSockets\Intents;
 use Exception;
+use League\CommonMark\Extension\Mention\Mention;
 
 /**
  * We only ever have one instance of this class, you could call it a singleton however it isn't really. This class
@@ -94,6 +96,7 @@ class Bot
             BumpCounter::class,
             EmoteCounter::class,
             MediaFilter::class,
+            MentionResponder::class,
         ];
     }
 
