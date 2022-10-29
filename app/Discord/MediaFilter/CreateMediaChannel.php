@@ -4,14 +4,13 @@ namespace App\Discord\MediaFilter;
 
 use App\Discord\Core\AccessLevels;
 use App\Discord\Core\Bot;
+use App\Discord\Core\Command\SlashAndMessageCommand;
 use App\Discord\Core\EmbedFactory;
-use App\Discord\Core\SlashCommand;
 use App\Models\MediaChannel;
 use Discord\Builders\MessageBuilder;
-use Discord\Parts\Channel\Channel;
 use Discord\Parts\Interactions\Command\Option;
 
-class AddMediaChannel extends SlashCommand
+class CreateMediaChannel extends SlashAndMessageCommand
 {
 
     public function accessLevel(): AccessLevels

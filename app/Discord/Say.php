@@ -3,11 +3,10 @@
 namespace App\Discord;
 
 use App\Discord\Core\AccessLevels;
-use App\Discord\Core\Command;
-use App\Discord\Core\SlashCommand;
+use App\Discord\Core\Command\MessageCommand;
 use Discord\Http\Exceptions\NoPermissionsException;
 
-class Say extends Command
+class Say extends MessageCommand
 {
     public function accessLevel(): AccessLevels
     {

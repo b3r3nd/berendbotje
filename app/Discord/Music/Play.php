@@ -3,10 +3,10 @@
 namespace App\Discord\Music;
 
 use App\Discord\Core\AccessLevels;
-use App\Discord\Core\Command;
+use App\Discord\Core\Command\MessageCommand;
 use App\Models\Song;
 
-class Play extends Command
+class Play extends MessageCommand
 {
 
     public function accessLevel(): AccessLevels

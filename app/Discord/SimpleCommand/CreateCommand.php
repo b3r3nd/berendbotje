@@ -4,15 +4,13 @@ namespace App\Discord\SimpleCommand;
 
 use App\Discord\Core\AccessLevels;
 use App\Discord\Core\Bot;
-use App\Discord\Core\Command;
+use App\Discord\Core\Command\SlashAndMessageCommand;
 use App\Discord\Core\EmbedFactory;
-use App\Discord\Core\SlashCommand;
 use Discord\Builders\MessageBuilder;
 use Discord\Http\Exceptions\NoPermissionsException;
 use Discord\Parts\Interactions\Command\Option;
-use Illuminate\Support\Facades\DB;
 
-class AddCommand extends SlashCommand
+class CreateCommand extends SlashAndMessageCommand
 {
     public function accessLevel(): AccessLevels
     {

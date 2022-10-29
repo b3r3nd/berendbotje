@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Discord\Core;
+namespace App\Discord\Core\Command;
 
 use Discord\Builders\Components\Button;
 use Discord\Parts\Embed\Embed;

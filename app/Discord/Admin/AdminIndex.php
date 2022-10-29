@@ -4,14 +4,12 @@ namespace App\Discord\Admin;
 
 use App\Discord\Core\AccessLevels;
 use App\Discord\Core\Bot;
+use App\Discord\Core\Command\SlashAndMessageIndexCommand;
 use App\Discord\Core\EmbedBuilder;
-use App\Discord\Core\SlashCommand;
-use App\Discord\Core\SlashIndexCommand;
 use App\Models\Admin;
-use Discord\Builders\MessageBuilder;
 use Discord\Parts\Embed\Embed;
 
-class AdminIndex extends SlashIndexCommand
+class AdminIndex extends SlashAndMessageIndexCommand
 {
     public function accessLevel(): AccessLevels
     {

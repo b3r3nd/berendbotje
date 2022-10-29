@@ -4,13 +4,13 @@ namespace App\Discord\Cringe;
 
 use App\Discord\Core\AccessLevels;
 use App\Discord\Core\Bot;
+use App\Discord\Core\Command\SlashAndMessageIndexCommand;
 use App\Discord\Core\EmbedBuilder;
-use App\Discord\Core\SlashIndexCommand;
 use App\Discord\Helper;
 use App\Models\CringeCounter;
 use Discord\Parts\Embed\Embed;
 
-class CringeIndex extends SlashIndexCommand
+class CringeIndex extends SlashAndMessageIndexCommand
 {
     public function accessLevel(): AccessLevels
     {
