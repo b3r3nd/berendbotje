@@ -4,12 +4,12 @@ namespace App\Discord\MediaFilter;
 
 use App\Discord\Core\AccessLevels;
 use App\Discord\Core\Bot;
+use App\Discord\Core\Command\IndexCommand;
 use App\Discord\Core\EmbedBuilder;
-use App\Discord\Core\SlashIndexCommand;
 use App\Models\MediaChannel;
 use Discord\Parts\Embed\Embed;
 
-class MediaChannelIndex extends SlashIndexCommand
+class MediaChannelIndex extends IndexCommand
 {
     public function accessLevel(): AccessLevels
     {

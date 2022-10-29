@@ -3,16 +3,15 @@
 namespace App\Discord\Cringe;
 
 use App\Discord\Core\AccessLevels;
+use App\Discord\Core\Command\SlashAndMessageCommand;
 use App\Discord\Core\EmbedFactory;
-use App\Discord\Core\SlashCommand;
-use App\Models\Bumper;
 use App\Models\CringeCounter;
 use App\Models\DiscordUser;
 use Discord\Builders\MessageBuilder;
 use Discord\Http\Exceptions\NoPermissionsException;
 use Discord\Parts\Interactions\Command\Option;
 
-class AddCringe extends SlashCommand
+class AddCringe extends SlashAndMessageCommand
 {
     public function accessLevel(): AccessLevels
     {

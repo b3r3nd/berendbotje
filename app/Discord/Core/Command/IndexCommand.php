@@ -1,21 +1,22 @@
 <?php
 
-namespace App\Discord\Core;
+namespace App\Discord\Core\Command;
 
+use App\Discord\Core\Bot;
 use Discord\Builders\Components\ActionRow;
 use Discord\Builders\Components\Button;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Interaction;
 
 /**
- * This class can be extended in order to easily add pagination to the index file. All you need to do
- * is write the embed body in the child class, everything else is handled by either this class or SlashCommand.
+ * Extendable class to easily create new index commands for both message and slash commands. Read the property
+ * description, so you know what you are doing.
  *
  * @property $offset        Automatically increased by te perPage amount when clicking to next page.
  * @property $perPage       Can be overwritten in child to set the items shown per page.
  * @property $total         MUST BE SET in child in order to disable buttons when you are on the last page.
  */
-abstract class SlashIndexCommand extends SlashCommand implements PaginationIndex
+abstract class IndexCommand extends SlashAndMessageCommand implements PaginationIndex
 {
     public int $offset = 0;
     public int $perPage = 10;

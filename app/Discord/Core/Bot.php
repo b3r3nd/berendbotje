@@ -8,6 +8,8 @@ use App\Discord\Admin\DelAdmin;
 use App\Discord\Admin\UpdateAdmin;
 use App\Discord\Bump\BumpCounter;
 use App\Discord\Bump\BumpStatistics;
+use App\Discord\Core\Command\MessageCommand;
+use App\Discord\Core\Command\SlashAndMessageCommand;
 use App\Discord\Cringe\AddCringe;
 use App\Discord\Cringe\CringeIndex;
 use App\Discord\Cringe\DelCringe;
@@ -26,9 +28,9 @@ use App\Discord\Music\RemoveSong;
 use App\Discord\Music\Resume;
 use App\Discord\Music\Stop;
 use App\Discord\Say;
-use App\Discord\SimpleCommand\AddCommand;
+use App\Discord\SimpleCommand\AddAndMessageCommand;
 use App\Discord\SimpleCommand\CommandIndex;
-use App\Discord\SimpleCommand\DelCommand;
+use App\Discord\SimpleCommand\DelAndMessageCommand;
 use App\Discord\SimpleCommand\SimpleCommand;
 use App\Discord\SimpleReaction\AddReaction;
 use App\Discord\SimpleReaction\DelReaction;
@@ -81,7 +83,7 @@ class Bot
     /**
      * Define all command classes which support both text and slash commands here!
      * @return string[]
-     * @see SlashCommand
+     * @see SlashAndMessageCommand
      */
     private function slashCommands(): array
     {
@@ -94,8 +96,8 @@ class Bot
             AddCringe::class,
             DelCringe::class,
             CringeIndex::class,
-            AddCommand::class,
-            DelCommand::class,
+            AddAndMessageCommand::class,
+            DelAndMessageCommand::class,
             CommandIndex::class,
             ReactionsIndex::class,
             AddReaction::class,
@@ -194,11 +196,11 @@ class Bot
      */
     private function loadSlashCommands(): void
     {
-//        $this->discord->application->commands->freshen()->done(function ($commands) {
-//            foreach ($commands as $command) {
-//                $this->discord->application->commands->delete($command);
-//            }
-//        });
+        $this->discord->application->commands->freshen()->done(function ($commands) {
+            foreach ($commands as $command) {
+                $this->discord->application->commands->delete($command);
+            }
+        });
 
         foreach ($this->slashCommands() as $class) {
             $instance = new $class();
@@ -213,7 +215,7 @@ class Bot
     private function loadCommands(): void
     {
         foreach ($this->textCommands() as $class) {
-            (new $class())->register();
+            (new $class())->registerMessageCommand();
         }
 
         // Custom commands

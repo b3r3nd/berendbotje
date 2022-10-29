@@ -4,7 +4,7 @@ namespace App\Discord\Timeout;
 
 use App\Discord\Core\AccessLevels;
 use App\Discord\Core\Bot;
-use App\Discord\Core\MessageCommand;
+use App\Discord\Core\Command\MessageCommand;
 use App\Discord\Core\EmbedBuilder;
 use App\Models\Timeout;
 

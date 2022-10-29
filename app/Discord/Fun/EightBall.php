@@ -3,8 +3,7 @@
 namespace App\Discord\Fun;
 
 use App\Discord\Core\AccessLevels;
-use App\Discord\Core\MessageCommand;
-use App\Discord\Core\EmbedFactory;
+use App\Discord\Core\Command\MessageCommand;
 
 class EightBall extends MessageCommand
 {

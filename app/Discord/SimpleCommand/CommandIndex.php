@@ -4,14 +4,11 @@ namespace App\Discord\SimpleCommand;
 
 use App\Discord\Core\AccessLevels;
 use App\Discord\Core\Bot;
-use App\Discord\Core\MessageCommand;
+use App\Discord\Core\Command\IndexCommand;
 use App\Discord\Core\EmbedBuilder;
-use App\Discord\Core\SlashCommand;
-use App\Discord\Core\SlashIndexCommand;
-use Discord\Builders\MessageBuilder;
 use Discord\Parts\Embed\Embed;
 
-class CommandIndex extends SlashIndexCommand
+class CommandIndex extends IndexCommand
 {
     public function accessLevel(): AccessLevels
     {

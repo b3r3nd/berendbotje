@@ -4,16 +4,14 @@ namespace App\Discord\SimpleReaction;
 
 use App\Discord\Core\AccessLevels;
 use App\Discord\Core\Bot;
-use App\Discord\Core\MessageCommand;
-use App\Discord\Core\EmbedBuilder;
+use App\Discord\Core\Command\SlashAndMessageCommand;
 use App\Discord\Core\EmbedFactory;
-use App\Discord\Core\SlashCommand;
 use App\Models\Reaction;
 use Discord\Builders\MessageBuilder;
 use Discord\Http\Exceptions\NoPermissionsException;
 use Discord\Parts\Interactions\Command\Option;
 
-class AddReaction extends SlashCommand
+class AddReaction extends SlashAndMessageCommand
 {
     public function accessLevel(): AccessLevels
     {

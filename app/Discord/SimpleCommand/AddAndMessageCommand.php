@@ -4,14 +4,13 @@ namespace App\Discord\SimpleCommand;
 
 use App\Discord\Core\AccessLevels;
 use App\Discord\Core\Bot;
-use App\Discord\Core\MessageCommand;
+use App\Discord\Core\Command\SlashAndMessageCommand;
 use App\Discord\Core\EmbedFactory;
-use App\Discord\Core\SlashCommand;
 use Discord\Builders\MessageBuilder;
 use Discord\Http\Exceptions\NoPermissionsException;
 use Discord\Parts\Interactions\Command\Option;
 
-class DelCommand extends SlashCommand
+class AddAndMessageCommand extends SlashAndMessageCommand
 {
     public function accessLevel(): AccessLevels
     {
@@ -20,21 +19,28 @@ class DelCommand extends SlashCommand
 
     public function trigger(): string
     {
-        return 'delcmd';
+        return 'addcmd';
     }
 
     public function __construct()
     {
-        $this->requiredArguments = 1;
-        $this->usageString = __('bot.cmd.usage-delcmd');
+        $this->requiredArguments = 2;
+        $this->usageString = __('bot.cmd.usage-addcmd');
         $this->slashCommandOptions = [
             [
                 'name' => 'command',
                 'description' => 'Command',
                 'type' => Option::STRING,
                 'required' => true,
+            ],
+            [
+                'name' => 'response',
+                'description' => 'Response',
+                'type' => Option::STRING,
+                'required' => true,
             ]
         ];
+
         parent::__construct();
     }
 
@@ -43,8 +49,11 @@ class DelCommand extends SlashCommand
      */
     public function action(): MessageBuilder
     {
-        \App\Models\Command::where(['trigger' => $this->arguments[0]])->delete();
-        Bot::get()->deleteCommand($this->arguments[0]);
-        return EmbedFactory::successEmbed(__('bot.cmd.deleted', ['trigger' => $this->arguments[0]]));
+        $trigger = array_shift($this->arguments);
+        $response = join(' ', $this->arguments);
+        $command = \App\Models\Command::create(['trigger' => $trigger, 'response' => $response]);
+        $command->save();
+        new SimpleCommand(Bot::get(), $trigger, $response);
+        return EmbedFactory::successEmbed(__('bot.cmd.saved', ['trigger' => $trigger, 'response' => $response]));
     }
 }

@@ -3,7 +3,7 @@
 namespace App\Discord\Music;
 
 use App\Discord\Core\AccessLevels;
-use App\Discord\Core\MessageCommand;
+use App\Discord\Core\Command\MessageCommand;
 
 class Pause extends MessageCommand
 {

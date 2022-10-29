@@ -3,15 +3,14 @@
 namespace App\Discord\Cringe;
 
 use App\Discord\Core\AccessLevels;
+use App\Discord\Core\Command\SlashAndMessageCommand;
 use App\Discord\Core\EmbedFactory;
-use App\Discord\Core\SlashCommand;
 use App\Models\DiscordUser;
 use Discord\Builders\MessageBuilder;
 use Discord\Http\Exceptions\NoPermissionsException;
-use Discord\Parts\Embed\Embed;
 use Discord\Parts\Interactions\Command\Option;
 
-class DelCringe extends SlashCommand
+class DelCringe extends SlashAndMessageCommand
 {
     public function accessLevel(): AccessLevels
     {

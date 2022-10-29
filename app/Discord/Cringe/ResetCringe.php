@@ -3,13 +3,13 @@
 namespace App\Discord\Cringe;
 
 use App\Discord\Core\AccessLevels;
+use App\Discord\Core\Command\SlashAndMessageCommand;
 use App\Discord\Core\EmbedFactory;
-use App\Discord\Core\SlashCommand;
 use App\Models\DiscordUser;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Command\Option;
 
-class ResetCringe extends SlashCommand
+class ResetCringe extends SlashAndMessageCommand
 {
 
     public function accessLevel(): AccessLevels
