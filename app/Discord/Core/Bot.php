@@ -18,6 +18,7 @@ use App\Discord\Cringe\DecreaseCringe;
 use App\Discord\Cringe\ResetCringe;
 use App\Discord\Fun\EightBall;
 use App\Discord\Fun\MentionResponder;
+use App\Discord\Fun\UrbanDictionary;
 use App\Discord\Help;
 use App\Discord\MediaFilter\CreateMediaChannel;
 use App\Discord\MediaFilter\DeleteMediaChannel;
@@ -123,6 +124,7 @@ class Bot
             BumpStatistics::class,
             EmoteIndex::class,
             EightBall::class,
+            UrbanDictionary::class,
             Say::class,
         ];
     }
