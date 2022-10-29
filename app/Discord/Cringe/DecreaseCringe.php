@@ -54,7 +54,7 @@ class DecreaseCringe extends SlashAndMessageCommand
                 $user->cringeCounter->save();
             }
         } else {
-            return EmbedFactory::failedEmbed(__('bot.cringe.not-cringe', ['name' => $this->arguments[0]]));
+            return EmbedFactory::failedEmbed(__('bot.cringe.not-cringe', ['name' => "<@{$this->arguments[0]}>"]));
         }
         return EmbedFactory::successEmbed(__('bot.cringe.change', ['name' => $user->discord_tag, 'count' => $user->cringeCounter->count]));
     }
