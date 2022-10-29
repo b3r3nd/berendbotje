@@ -90,9 +90,9 @@ abstract class SlashCommand
 
         // Why you ask? I do not want to register slash commands everytime on my test bot. It takes time, it's
         // Annoying and I don't need them!
-        if (env('APP_ENV') != 'local') {
-            Bot::getDiscord()->application->commands->save($command);
-        }
+        //  if (env('APP_ENV') != 'local') {
+        Bot::getDiscord()->application->commands->save($command);
+        // }
     }
 
     public function registerMessageCommand(): void
@@ -120,7 +120,7 @@ abstract class SlashCommand
                         array_shift($parameters);
                         $this->messageString = join(' ', $this->arguments);
                         foreach ($parameters as $index => $parameter) {
-                            if ($parameter === $message->mentions->first()) {
+                            if (str_contains($parameter, $message->mentions->first())) {
                                 $parameters[$index] = $message->mentions->first()->id;
                             }
                         }

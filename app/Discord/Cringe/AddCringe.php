@@ -57,6 +57,5 @@ class AddCringe extends SlashCommand
         }
         $user->refresh();
         return EmbedFactory::successEmbed(__('bot.cringe.change', ['name' => $user->discord_tag, 'count' => $user->cringeCounter->count]));
-
     }
 }
