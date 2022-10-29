@@ -3,11 +3,11 @@
 namespace App\Discord\Music;
 
 use App\Discord\Core\AccessLevels;
-use App\Discord\Core\Command;
+use App\Discord\Core\MessageCommand;
 use App\Models\Song;
 use Illuminate\Support\Facades\Storage;
 
-class RemoveSong extends Command
+class RemoveSong extends MessageCommand
 {
 
     public function accessLevel(): AccessLevels

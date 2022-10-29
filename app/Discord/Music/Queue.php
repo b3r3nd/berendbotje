@@ -4,11 +4,11 @@ namespace App\Discord\Music;
 
 use App\Discord\Core\AccessLevels;
 use App\Discord\Core\Bot;
-use App\Discord\Core\Command;
+use App\Discord\Core\MessageCommand;
 use App\Discord\Core\EmbedBuilder;
 use App\Models\Song;
 
-class Queue extends Command
+class Queue extends MessageCommand
 {
 
     public function accessLevel(): AccessLevels

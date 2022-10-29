@@ -112,7 +112,7 @@ class Bot
     /**
      * Define all command classes using only text commands here.
      * @return string[]
-     * @see Command
+     * @see MessageCommand
      */
     private function textCommands(): array
     {

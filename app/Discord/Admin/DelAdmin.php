@@ -3,7 +3,7 @@
 namespace App\Discord\Admin;
 
 use App\Discord\Core\AccessLevels;
-use App\Discord\Core\Command;
+use App\Discord\Core\MessageCommand;
 use App\Discord\Core\EmbedFactory;
 use App\Discord\Core\SlashCommand;
 use App\Models\Admin;

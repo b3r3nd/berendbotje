@@ -26,7 +26,7 @@ use Discord\WebSockets\Event;
  * @property array $arguments               Array of all the given arguments by either slash or text commands.
  * @property string $messageString          String of the message received without command trigger.
  */
-abstract class Command
+abstract class MessageCommand
 {
     protected AccessLevels $accessLevel;
     protected Message $message;

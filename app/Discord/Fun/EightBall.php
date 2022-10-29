@@ -3,10 +3,10 @@
 namespace App\Discord\Fun;
 
 use App\Discord\Core\AccessLevels;
-use App\Discord\Core\Command;
+use App\Discord\Core\MessageCommand;
 use App\Discord\Core\EmbedFactory;
 
-class EightBall extends Command
+class EightBall extends MessageCommand
 {
 
     public function accessLevel(): AccessLevels
