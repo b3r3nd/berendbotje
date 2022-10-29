@@ -22,32 +22,31 @@ trait MessageCommandTrait
      * @param $message
      * @return void
      */
-    protected function validateMessage($message): void
-    {
-        if (!DiscordUser::hasLevel($message->author->id, $this->accessLevel->value)) {
-            $message->channel->sendMessage(EmbedFactory::failedEmbed(__("bot.lack-access")));
-            return;
-        }
-        if ($this->requiresMention && $message->mentions->count() == 0) {
-            $message->channel->sendMessage(EmbedFactory::failedEmbed($this->usageString ?? __('bot.provide-mention')));
-            return;
-        }
-        if ($this->requiredArguments > 0) {
-            $parameters = explode(' ', $message->content);
-            if (!isset($parameters[$this->requiredArguments])) {
-                $message->channel->sendMessage(EmbedFactory::failedEmbed($this->usageString ?? __('bot.provide-arguments', ['count' => $this->requiredArguments])));
-                return;
-            } else {
-                array_shift($parameters);
-                $this->messageString = join(' ', $this->arguments);
-                foreach ($parameters as $index => $parameter) {
-                    if ($message->mentions->first() && str_contains($parameter, $message->mentions->first())) {
-                        $parameters[$index] = $message->mentions->first()->id;
-                    }
-                }
-                $this->arguments = $parameters;
-            }
-        }
-
-    }
+//    protected function validateMessage($message): void
+//    {
+//        if (!DiscordUser::hasLevel($message->author->id, $this->accessLevel->value)) {
+//            $message->channel->sendMessage(EmbedFactory::failedEmbed(__("bot.lack-access")));
+//            return;
+//        }
+//        if ($this->requiresMention && $message->mentions->count() == 0) {
+//            $message->channel->sendMessage(EmbedFactory::failedEmbed($this->usageString ?? __('bot.provide-mention')));
+//            return;
+//        }
+//        if ($this->requiredArguments > 0) {
+//            $parameters = explode(' ', $message->content);
+//            if (!isset($parameters[$this->requiredArguments])) {
+//                $message->channel->sendMessage(EmbedFactory::failedEmbed($this->usageString ?? __('bot.provide-arguments', ['count' => $this->requiredArguments])));
+//                return;
+//            } else {
+//                array_shift($parameters);
+//                $this->messageString = join(' ', $this->arguments);
+//                foreach ($parameters as $index => $parameter) {
+//                    if ($message->mentions->first() && str_contains($parameter, $message->mentions->first())) {
+//                        $parameters[$index] = $message->mentions->first()->id;
+//                    }
+//                }
+//                $this->arguments = $parameters;
+//            }
+//        }
+//    }
 }
