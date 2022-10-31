@@ -14,6 +14,9 @@ use Discord\Parts\User\Member;
 use Discord\WebSockets\Event;
 
 /**
+ * This event triggers for whenever somebody leaves, gets kicked or gets banned. We need to read the audit log
+ * to figure out what has happened, luckily we can determine the action based on action_type.
+ *
  * action_type 20 = kick
  * action_type 22 = ban
  * action_type 25 = leave -> we ignore this

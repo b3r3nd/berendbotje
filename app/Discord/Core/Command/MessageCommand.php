@@ -19,9 +19,6 @@ abstract class MessageCommand extends Command
     public abstract function action(): void;
 
     /**
-     * I would love to move this code to the trait like I did with slash commands, but depending on where the data is going
-     * (message only command, or both slash and message command) something else needs to be done.
-     *
      * @return void
      */
     public function registerMessageCommand(): void
