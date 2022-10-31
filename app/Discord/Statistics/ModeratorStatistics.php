@@ -28,7 +28,6 @@ class ModeratorStatistics extends SlashAndMessageCommand
         $embedBuilder = EmbedBuilder::create(Bot::getDiscord())
             ->setTitle(__('bot.adminstats.title'))
             ->setFooter(__('bot.adminstats.footer'));
-
         $description = __('bot.adminstats.description');
 
         foreach (Admin::where('level', '>=', AccessLevels::MOD->value)->get() as $admin) {
@@ -36,13 +35,10 @@ class ModeratorStatistics extends SlashAndMessageCommand
             $timeouts = Timeout::where('giver_id', $user->id)->count();
             $bans = $user->banCounter->count ?? 0;
             $kicks = $user->kickCounter->count ?? 0;
-
             $description .= "**Moderator**: <@{$user->discord_id}>\n**Bans given**: {$bans}\n**Kicks given**: {$kicks}\n**Timeouts given**: {$timeouts}\n\n";
         }
-
         $embedBuilder->setDescription($description);
 
         return MessageBuilder::new()->addEmbed($embedBuilder->getEmbed());
-
     }
 }

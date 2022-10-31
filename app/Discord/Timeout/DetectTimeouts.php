@@ -13,14 +13,10 @@ use Discord\Parts\User\Member;
 use Discord\WebSockets\Event;
 
 /**
- * Well, it does detect the timeouts given by moderators however it's a bit cumbersome. We would like to have the
- * reason of the timeout added to our backlog. This info is not given to us when the member who received the timeout
- * is updated. We have to manually check the last entry in the audit log in order to get the reason.
- *
- * This event triggers whenever a user is updated, when communication_disabled_until is set, and the date is not in the past
- * it means the user got timed out. If a user is never timed out the value will be null, if a user has been timed out
- * before it will be set to date of the previous timeout.
- *
+ * The event triggers on ANY use update, we have to manually check if the communication_disabled_until is set to a date
+ * in the future. if it is not set, the user never had a timeout before. If it is set to a past date the user has been
+ * given a timeout before. We still need to manually read the audit log to figure out the reason for the timeout and who
+ * gave the timeout.
  */
 class DetectTimeouts
 {
