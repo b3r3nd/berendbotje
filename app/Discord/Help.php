@@ -38,6 +38,7 @@ class Help extends SlashAndMessageCommand
                         ['name' => 'Delete Admin', 'value' => 'deladmin `user_mention`'],
                         ['name' => 'Update Admin Level', 'value' => 'clvladmin `user_mention` `access_level`'],
                         ['name' => 'Admin Overview', 'value' => 'admins'],
+                        ['name' => 'Moderator statistics', 'value' => 'modstats'],
                         ['name' => 'Settings overview', 'value' => 'config'],
                         ['name' => 'Update setting', 'value' => 'set `setting_key` `setting_value`'],
                     );
