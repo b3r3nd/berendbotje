@@ -12,6 +12,8 @@ use App\Discord\Core\Command\MessageCommand;
 use App\Discord\Core\Command\SlashAndMessageCommand;
 use App\Discord\Core\Command\SlashAndMessageIndexCommand;
 use App\Discord\Core\Command\SlashCommand;
+use App\Discord\Core\Settings\Settings;
+use App\Discord\Core\Settings\UpdateSetting;
 use App\Discord\Cringe\IncreaseCringe;
 use App\Discord\Cringe\CringeIndex;
 use App\Discord\Cringe\DecreaseCringe;
@@ -42,11 +44,16 @@ use App\Discord\SimpleReaction\ReactionIndex;
 use App\Discord\SimpleReaction\SimpleReaction;
 use App\Discord\Statistics\EmoteCounter;
 use App\Discord\Statistics\EmoteIndex;
+use App\Discord\Statistics\MessageCounter;
+use App\Discord\Statistics\MessagesIndex;
+use App\Discord\Statistics\UserMessages;
 use App\Discord\Timeout\AllTimeouts;
 use App\Discord\Timeout\DetectTimeouts;
 use App\Discord\Timeout\SingleUserTimeouts;
 use App\Models\MediaChannel;
 use App\Models\Reaction;
+use App\Models\Setting;
+use Carbon\Carbon;
 use Discord\Discord;
 use Discord\Exceptions\IntentException;
 use Discord\Parts\User\Activity;
@@ -84,6 +91,9 @@ class Bot
     private array $mediaChannels = [];
     private array $deletedCommands = [];
     private array $deletedReactions = [];
+    private array $settings = [];
+    private array $lastMessages = [];
+
 
     /**
      * Define all events that do not require commands to be triggered, for example the media filter or voice states.
@@ -98,6 +108,7 @@ class Bot
             EmoteCounter::class,
             MediaFilter::class,
             MentionResponder::class,
+            MessageCounter::class,
         ];
     }
 
@@ -126,6 +137,10 @@ class Bot
             EightBall::class,
             UrbanDictionary::class,
             Say::class,
+
+            Settings::class, UpdateSetting::class,
+
+            UserMessages::class, MessagesIndex::class
         ];
     }
 
@@ -152,6 +167,7 @@ class Bot
                 'name' => __('bot.status'),
             ]);
             $discord->updatePresence($activity);
+            $this->loadSettings();
             $this->loadCoreClasses();
             //$this->deleteSlashCommands();
             $this->loadCommands();
@@ -167,6 +183,16 @@ class Bot
     {
         foreach ($this->coreClasses() as $class) {
             new $class();
+        }
+    }
+
+    /**
+     * @return void
+     */
+    public function loadSettings(): void
+    {
+        foreach (Setting::all() as $setting) {
+            $this->setSetting($setting->key, $setting->value);
         }
     }
 
@@ -211,6 +237,57 @@ class Bot
                 $this->discord->application->commands->delete($command);
             }
         });
+    }
+
+    /**
+     * @param string $userId
+     * @return Carbon
+     */
+    public function getLastMessage(string $userId): Carbon
+    {
+        if (isset($this->lastMessages[$userId])) {
+            return $this->lastMessages[$userId];
+        }
+        return Carbon::now()->subMinutes(100);
+    }
+
+    /**
+     * @param string $userId
+     * @return void
+     */
+    public function setLastMessage(string $userId): void
+    {
+        $this->lastMessages[$userId] = Carbon::now();
+    }
+
+    /**
+     * @return array
+     */
+    public function getSettings(): array
+    {
+        return $this->settings;
+    }
+
+    /**
+     * @param string $setting
+     * @param $value
+     * @return void
+     */
+    public function setSetting(string $setting, $value): void
+    {
+        $this->settings[$setting] = $value;
+    }
+
+    /**
+     * @param string $setting
+     * @return false|mixed
+     */
+    public function getSetting(string $setting)
+    {
+        if (isset($this->settings[$setting])) {
+            return $this->settings[$setting];
+        }
+        return false;
     }
 
     /**

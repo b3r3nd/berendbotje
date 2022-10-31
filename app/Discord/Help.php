@@ -38,6 +38,8 @@ class Help extends SlashAndMessageCommand
                         ['name' => 'Delete Admin', 'value' => 'deladmin `user_mention`'],
                         ['name' => 'Update Admin Level', 'value' => 'clvladmin `user_mention` `access_level`'],
                         ['name' => 'Admin Overview', 'value' => 'admins'],
+                        ['name' => 'Settings overview', 'value' => 'config'],
+                        ['name' => 'Update setting', 'value' => 'set `setting_key` `setting_value`'],
                     );
                 } elseif ($parameters[1] === 'music') {
                     $embedBuilder->getEmbed()->addField(
@@ -95,6 +97,12 @@ class Help extends SlashAndMessageCommand
                         ['name' => '8ball', 'value' => '8ball `your_question`'],
                         ['name' => 'Emote Counter', 'value' => 'Global emote counter, to see a list use `emotes`'],
                     );
+                } elseif ($parameters[1] === 'messages') {
+                    $embedBuilder->getEmbed()->addField(
+                        ['name' => 'Messages Counter', 'value' => 'Counts your messages and gives you xp. Over time you gain levels and server roles.'],
+                        ['name' => 'messages', 'value' => 'Overview of all users, their message count and xp'],
+                        ['name' => 'xp', 'value' => 'Show your own messages and xp'],
+                    );
                 }
                 return MessageBuilder::new()->addEmbed($embedBuilder->getEmbed());
             }
@@ -102,7 +110,7 @@ class Help extends SlashAndMessageCommand
 
         $embedBuilder->getEmbed()->addField(
             ['name' => 'Help Files', 'value' => "All commands use `$` prefix, alternatively you can use slash commands `/`.\n Use `\$help <section_title>` for more extensive explanation.\n For example `\$help admins` "],
-            ['name' => 'Admins', 'value' => 'Managing bot admins, moderators and their access levels.'],
+            ['name' => 'Admins', 'value' => 'Managing admins, moderators and config files.'],
             ['name' => 'Music Player (music)', 'value' => 'Youtube music player with queue.'],
             ['name' => 'Cringe Counter (cringe)', 'value' => 'Keep track of who is most cringe in our discord.'],
             ['name' => 'Timeouts', 'value' => 'Timeout detection and overview.'],
@@ -110,6 +118,7 @@ class Help extends SlashAndMessageCommand
             ['name' => 'Simple Reactions (reactions)', 'value' => 'Manage simple emote reactions to text strings.'],
             ['name' => 'Simple Commands (commands)', 'value' => 'Manage simple commands which require only text responses'],
             ['name' => 'Media channels (media)', 'value' => 'Configure channels as media only channels'],
+            ['name' => 'Messages Counter (messages)', 'value' => 'Counts your messages and gives you xp. Over time you gain levels and server roles.'],
             ['name' => 'Fun Commands (fun)', 'value' => 'Small fun commands :)'],
             ['name' => 'Source Code', 'value' => 'https://gitlab.com/discord54/berend-botje/'],
         );
