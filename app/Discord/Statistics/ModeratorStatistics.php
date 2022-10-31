@@ -31,7 +31,7 @@ class ModeratorStatistics extends SlashAndMessageCommand
 
         $description = __('bot.adminstats.description');
 
-        foreach (Admin::all() as $admin) {
+        foreach (Admin::where('level', '>=', AccessLevels::MOD->value)->get() as $admin) {
             $user = $admin->user;
             $timeouts = Timeout::where('giver_id', $user->id)->count();
             $bans = $user->banCounter->count ?? 0;
