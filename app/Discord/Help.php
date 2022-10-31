@@ -62,7 +62,7 @@ class Help extends SlashAndMessageCommand
                     );
                 } elseif ($parameters[1] === 'timeouts') {
                     $embedBuilder->getEmbed()->addField(
-                        ['name' => 'Timeouts', 'value' => 'Timeout detection and overview.'],
+                        ['name' => 'Timeouts', 'value' => 'Timeouts are automatically detected and added to this list, including the giver and reason.'],
                         ['name' => 'All timeouts', 'value' => 'timeouts'],
                         ['name' => 'Single user timeouts', 'value' => 'usertimeouts `user_mention`'],
                     );
