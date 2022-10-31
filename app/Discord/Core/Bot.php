@@ -42,10 +42,13 @@ use App\Discord\SimpleReaction\CreateReaction;
 use App\Discord\SimpleReaction\DeleteReaction;
 use App\Discord\SimpleReaction\ReactionIndex;
 use App\Discord\SimpleReaction\SimpleReaction;
+use App\Discord\Statistics\ModeratorStatistics;
+use App\Discord\Statistics\DetectKicksAndBans;
 use App\Discord\Statistics\EmoteCounter;
 use App\Discord\Statistics\EmoteIndex;
 use App\Discord\Statistics\MessageCounter;
 use App\Discord\Statistics\MessagesIndex;
+use App\Discord\Statistics\ProcessAuditLog;
 use App\Discord\Statistics\UserMessages;
 use App\Discord\Timeout\AllTimeouts;
 use App\Discord\Timeout\DetectTimeouts;
@@ -104,6 +107,7 @@ class Bot
         return [
             VoiceStateUpdate::class,
             DetectTimeouts::class,
+            DetectKicksAndBans::class,
             BumpCounter::class,
             EmoteCounter::class,
             MediaFilter::class,
@@ -140,7 +144,9 @@ class Bot
 
             Settings::class, UpdateSetting::class,
 
-            UserMessages::class, MessagesIndex::class
+            UserMessages::class, MessagesIndex::class,
+
+            ModeratorStatistics::class,
         ];
     }
 

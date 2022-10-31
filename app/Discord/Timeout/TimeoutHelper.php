@@ -7,16 +7,15 @@ namespace App\Discord\Timeout;
  */
 class TimeoutHelper
 {
-    public static function timeoutLength($embed, $timeout)
+    public static function timeoutLength($timeout)
     {
         $length = $timeout->length;
         if ($length >= 60) {
-            $length = $length / 60;
-            $embed->addField(['name' => $timeout->discord_username . ' - ' . round($length) . ' hours ', 'value' => $timeout->reason]);
+            $length = round($length / 60);
+            return "**User**: <@{$timeout->discord_id}>\n**Length**: {$length} hours\n**By**: <@{$timeout->giver->discord_id}>\n**Reason**:\n{$timeout->reason}\n\n";
         } else {
-            $embed->addField(['name' => $timeout->discord_username . ' - ' . round($length) . ' minutes ', 'value' => $timeout->reason]);
+            return "**User**: <@{$timeout->discord_id}>\n**Length**: {$length} minutes\n**By**: <@{$timeout->giver->discord_id}>\n**Reason**:\n{$timeout->reason}\n\n";
         }
-        return $embed;
     }
 
 }

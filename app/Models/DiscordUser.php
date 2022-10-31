@@ -44,6 +44,22 @@ class DiscordUser extends Model
     }
 
     /**
+     * @return HasOne
+     */
+    public function banCounter(): HasOne
+    {
+        return $this->hasOne(BanCounter::class, 'user_id', 'id');
+    }
+
+    /**
+     * @return HasOne
+     */
+    public function kickCounter(): HasOne
+    {
+        return $this->hasOne(KickCounter::class, 'user_id', 'id');
+    }
+
+    /**
      * @param string $id
      * @return bool
      */
