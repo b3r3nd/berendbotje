@@ -89,6 +89,12 @@ return [
         'desc-index' => 'Show all the bot administrators',
     ],
 
+    'adminstats' => [
+        'title' => 'Moderator statistics',
+        'footer' => 'Counts bans, kicks and timeouts.',
+        'description' => "Who got the power?\n\n",
+    ],
+
     'bump' => [
         'inc' => ":name heeft :count x de discord gebumped!",
         'footer' => 'Use /bump in #botspam',
