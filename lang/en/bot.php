@@ -70,7 +70,7 @@ return [
     'admins' => [
         'index' => 'Admins',
         'title' => 'Admins',
-        'footer' => 'Usage: admins, addadmin, deladmin, clvladmin',
+        'footer' => 'Usage: admins, access, addadmin, deladmin, clvladmin',
         'description' => "List of bot administrators\n\n :admins",
         'exists' => 'User already exists, you can change level with clvladmin',
         'provide-access' => "Provide access level..",
@@ -93,6 +93,14 @@ return [
         'title' => 'Moderator statistics',
         'footer' => 'Counts bans, kicks and timeouts.',
         'description' => "Who got the power?\n\n",
+    ],
+
+    'access' => [
+        'title' => 'Your access level',
+        'footer' => 'To see all admins use $admins',
+        'desc' => 'Your access level to the bot is :level',
+        'desc-lack' => 'You do not have any access to the bot.'
+
     ],
 
     'bump' => [
