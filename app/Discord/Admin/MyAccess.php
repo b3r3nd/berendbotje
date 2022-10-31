@@ -24,7 +24,7 @@ class MyAccess extends SlashAndMessageCommand
 
     public function action(): MessageBuilder
     {
-        $level = DiscordUser::where('discord_id', $this->message->user_id)->first()->admin->level ?? 0;
+        $level = DiscordUser::where('discord_id', $this->commandUser)->first()->admin->level ?? 0;
 
         $embedBuilder = EmbedBuilder::create(Bot::getDiscord())
             ->setTitle(__('bot.access.title'))
