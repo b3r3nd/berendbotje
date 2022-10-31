@@ -24,16 +24,19 @@ class AllTimeouts extends SlashAndMessageIndexCommand
 
     public function getEmbed(): Embed
     {
+        $this->perPage = 5;
         $this->total = Timeout::count();
         $embedBuilder = EmbedBuilder::create(Bot::getDiscord())
             ->setTitle(__('bot.timeout.title'))
             ->setFooter(__('bot.timeout.footer'));
 
         $embed = $embedBuilder->getEmbed();
-        $embed->setDescription(__('bot.timeout.count', ['count' => Timeout::count()]));
+        $description = __('bot.timeout.count', ['count' => Timeout::count()]) . "\n\n";
         foreach (Timeout::skip($this->offset)->limit($this->perPage)->orderBy('created_at', 'desc')->get() as $timeout) {
-            $embed = TimeoutHelper::timeoutLength($embed, $timeout);
+            $description .= TimeoutHelper::timeoutLength($timeout);
         }
+        $embed->setDescription($description);
+
         return $embed;
     }
 }

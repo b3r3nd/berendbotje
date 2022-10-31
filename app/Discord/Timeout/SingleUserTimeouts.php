@@ -50,10 +50,11 @@ class SingleUserTimeouts extends SlashAndMessageIndexCommand
             ->setFooter(__('bot.timeout.footer'));
 
         $embed = $embedBuilder->getEmbed();
-        $embed->setDescription(__('bot.timeout.count', ['count' => $this->total]));
+        $description = __('bot.timeout.count', ['count' => Timeout::count()]) . "\n\n";
         foreach (Timeout::where(['discord_id' => $this->arguments[0]])->skip($this->offset)->limit($this->perPage)->orderBy('created_at', 'desc')->get() as $timeout) {
-            $embed = TimeoutHelper::timeoutLength($embed, $timeout);
+            $description .= TimeoutHelper::timeoutLength($timeout);
         }
+        $embed->setDescription($description);
 
         return $embed;
     }

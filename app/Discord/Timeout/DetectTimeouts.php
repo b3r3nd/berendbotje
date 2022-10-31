@@ -3,6 +3,7 @@
 namespace App\Discord\Timeout;
 
 use App\Discord\Core\Bot;
+use App\Models\DiscordUser;
 use Carbon\Carbon;
 use Discord\Discord;
 use Discord\Parts\Channel\Channel;
@@ -36,12 +37,14 @@ class DetectTimeouts
                         $endTime = $member->communication_disabled_until;
                         $startTime = Carbon::now();
                         if ($endTime) {
-                            $diff = $endTime->diffInMinutes($startTime);
+                            $user = DiscordUser::where(['discord_id' => $entry->user->id])->first();
+                            $diff = $endTime->diffInMinutes($startTime) + 1;
                             \App\Models\Timeout::create([
                                 'discord_id' => $member->id,
                                 'discord_username' => $member->username,
                                 'length' => $diff ?? 0,
                                 'reason' => $entry->reason ?? "Empty",
+                                'giver_id' => $user->id,
                             ]);
                         }
                     }
