@@ -5,6 +5,7 @@ namespace App\Discord\Core;
 use App\Discord\Admin\CreateAdmin;
 use App\Discord\Admin\AdminIndex;
 use App\Discord\Admin\DeleteAdmin;
+use App\Discord\Admin\MyAccess;
 use App\Discord\Admin\UpdateAdmin;
 use App\Discord\Bump\BumpCounter;
 use App\Discord\Bump\BumpStatistics;
@@ -128,7 +129,7 @@ class Bot
     private function commands(): array
     {
         return [
-            CreateAdmin::class, DeleteAdmin::class, UpdateAdmin::class, AdminIndex::class,
+            CreateAdmin::class, DeleteAdmin::class, UpdateAdmin::class, AdminIndex::class, MyAccess::class,
             IncreaseCringe::class, DecreaseCringe::class, CringeIndex::class, ResetCringe::class,
             CreateCommand::class, DeleteCommand::class, CommandIndex::class,
             ReactionIndex::class, CreateReaction::class, DeleteReaction::class,
@@ -141,11 +142,8 @@ class Bot
             EightBall::class,
             UrbanDictionary::class,
             Say::class,
-
             Settings::class, UpdateSetting::class,
-
             UserMessages::class, MessagesIndex::class,
-
             ModeratorStatistics::class,
         ];
     }
