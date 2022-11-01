@@ -97,6 +97,7 @@ class Help extends SlashAndMessageCommand
                         ['name' => 'Fun Commands', 'value' => 'Small fun commands :)'],
                         ['name' => 'Urban Dictionary', 'value' => 'urb `search_term`'],
                         ['name' => '8ball', 'value' => '8ball `your_question`'],
+                        ['name' => 'ask', 'value' => 'Yes or no?'],
                         ['name' => 'say', 'value' => 'say `whatever_you_want`'],
                         ['name' => 'Emote Counter', 'value' => 'Global emote counter, to see a list use `emotes`'],
                     );

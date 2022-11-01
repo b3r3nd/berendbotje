@@ -33,36 +33,40 @@ Before you use the bot, you require the following:
 3. Make sure both these run in the background while you exit your connection / terminal. Or keep two terminals running if you want to test it locally.
 
 # Functions
-Bot is still early in development and not many features are added. Some code is still pretty nasty so bear with me!
+Bot is still early in development and not many features are added. Some code is still pretty nasty so bear with me! 
+I will try to keep this readme up to date with new functions when I add them, but I might be a bit behind on them :)
 
 **The trigger for the bot and all its commands is $ but can be easily changed. Most commands also work as 
 slash commands!**
 
-## Youtube music player
-The bot has a simple music player with queue. I am using laravel queues to
-download the songs from youtube in the background. They are added to the queue
-and once you use the $play command it will play the entire queue and then leave the call.
-Songs obviously can be added while the bot is playing. Once a song is downloaded the job in 
-the queue will create an entry in the songs table, that's the queue. It will delete the entry
-and file once the song has been played! The libraries I used to both to download and 
-play songs are included at the top.
+## Bot Config
+The bot loads a config from the settings table which can be viewed and changed, it allows anything to be changed to anything
+you want so make sure you know what you are doing. 
 
-Commands are: 
-* **addsong** `<youtube_url>`
-* **play**
-* **stop**
-* **pause**
-* **resume**
-* **queue**
-## Bump Counter
-We use a bot to add our discord server to an external website, once every
-2 hours you can use this bot to get back on the front page. To encourage
-people in our server to use the bump our bot counts for every member how often
-they bump. At the end of the month we will check the highest member and he
-or she will get some nice perks!
+* **config**
+* **set** `setting_name` `new_value`
 
-Command to view the bump statistics is 
-* **bumpcounter**
+For now there are only two settings:
+* `xp_count` - xp gained per message
+* `xp_cooldown` - seconds cooldown after last message before it counts again
+
+## Admin management
+The bot works with access levels between 1 and 1000. Users can be added to
+the bot and have access to commands corresponding to their level. What
+access level is required for a command of function is also dynamic and can
+be changed in order to give admins freedom of choice what levels can use w
+which commands.
+
+There are 3 levels predefined in the bot:
+* **Admin** -> 1000
+* **Mod** -> 500
+* **User** -> 100
+
+Commands have their access level defined using the Enum class in each command child. Commands to manage admins are:
+* **admins**
+* **addadmin** `<user_mention>` `<access_level>`
+* **deladmin** `<user>`
+* **clvladmin** `<user>` `<access_level>`
 
 ## Media channels
 You can add channels to a list of channels marked as media only, in these channels only attachments and URLS are allowed.
@@ -94,20 +98,15 @@ Commands to manage simple commands are:
 * **addcmd** `<command>` `<response>`
 * **delcmd** `<command>`
 
-## Cringe Counter
-Sometimes people on discord can be quite cringe, some more than others.
-We can add cringe counters to member to see who makes the most cringe 
-comments. Just a funny little feature! You can only add and delete a single cringe
-at the time. No deleting everything at once!
-
-commands to use cringe is: 
-* **addcringe** `<user>`
-* **delcringe** `<user>`
-* **cringecounter**
-
 ## Emote Counter
 The bot counts both custom and default emotes! These can be retrieved by using:
 * **emotes**
+
+## Message counter
+The bot counts messages and gives XP for each message. There are two settings which allow you to change the amount
+of XP gained and the cooldown for when to count messages. For example only one message a minute counts.
+* **messages**
+* **xp**
 
 ## Timeout detection
 We are not satisfied with the audit log and how timeouts are displayed and
@@ -120,23 +119,53 @@ Commands to show timeouts are:
 * **timeouts**
 * **usertimeouts** `<user_mention>`
 
-## Admin management
-The bot works with access levels between 1 and 1000. Users can be added to
-the bot and have access to commands corresponding to their level. What
-access level is required for a command of function is also dynamic and can
-be changed in order to give admins freedom of choice what levels can use w
-which commands.
+## Moderator statistics
+The bot counts timeouts bans and kicks for moderators with more than 500 access to the bot! More will be added
+in the future.
 
-There are 3 levels predefined in the bot:
-* **Admin** -> 1000
-* **Mod** -> 500
-* **User** -> 100
+* **modstats**
 
-Commands have their access level defined using the Enum class in each command child. Commands to manage admins are:
-* **admins**
-* **addadmin** `<user_mention>` `<access_level>`
-* **deladmin** `<user>`
-* **clvladmin** `<user>` `<access_level>`
+## Youtube music player
+The bot has a simple music player with queue. I am using laravel queues to
+download the songs from youtube in the background. They are added to the queue
+and once you use the $play command it will play the entire queue and then leave the call.
+Songs obviously can be added while the bot is playing. Once a song is downloaded the job in
+the queue will create an entry in the songs table, that's the queue. It will delete the entry
+and file once the song has been played! The libraries I used to both to download and
+play songs are included at the top.
 
+Commands are:
+* **addsong** `<youtube_url>`
+* **play**
+* **stop**
+* **pause**
+* **resume**
+* **queue**
+## Bump Counter
+We use a bot to add our discord server to an external website, once every
+2 hours you can use this bot to get back on the front page. To encourage
+people in our server to use the bump our bot counts for every member how often
+they bump. At the end of the month we will check the highest member and he
+or she will get some nice perks!
+
+Command to view the bump statistics is
+* **bumpcounter**
+
+## Cringe Counter
+Sometimes people on discord can be quite cringe, some more than others.
+We can add cringe counters to member to see who makes the most cringe
+comments. Just a funny little feature! You can only add and delete a single cringe
+at the time. No deleting everything at once!
+
+commands to use cringe is:
+* **addcringe** `<user>`
+* **delcringe** `<user>`
+* **cringecounter**
+
+## Fun commands
+A few fun commands you can use
+* **urb** `search_term` - Searches on urban dictionary
+* **8ball** `question` - Ask a question to the 8ball
+* **ask** `question` - Ask a question and get a gif response
 
 Thats it for now! I will keep updating this readme everytime I add new functionality :)
