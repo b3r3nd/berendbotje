@@ -5,10 +5,9 @@ Discord bot written in Laravel using:
 * Play audio https://ffmpeg.org/
 * Redis for queues https://github.com/predis/predis
 
-Created for our discord server at http://discord.gg/netherlands. If you have questions you can join the server and 
-contact me in the `#developers` channel or DM my directly by my tag: `berend#0579` For now the code only runs on a single server and multi server support
-is not yet included. Many more things will be added in the future but
-its a hobby project so I take my time :)
+Created for our discord server. If you have questions DM my directly by my tag: `berend#0579`.
+For now the code only runs on a single server and multi server support is not yet included. 
+Many more things will be added in the future, but it's a hobby project, so I take my time :)
 ## Requirements
 Before you use the bot, you require the following:
 * Linux machine!

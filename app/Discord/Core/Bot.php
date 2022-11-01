@@ -49,7 +49,6 @@ use App\Discord\Statistics\EmoteCounter;
 use App\Discord\Statistics\EmoteIndex;
 use App\Discord\Statistics\MessageCounter;
 use App\Discord\Statistics\MessagesIndex;
-use App\Discord\Statistics\ProcessAuditLog;
 use App\Discord\Statistics\UserMessages;
 use App\Discord\Timeout\AllTimeouts;
 use App\Discord\Timeout\DetectTimeouts;
@@ -63,7 +62,6 @@ use Discord\Exceptions\IntentException;
 use Discord\Parts\User\Activity;
 use Discord\WebSockets\Intents;
 use Exception;
-use League\CommonMark\Extension\Mention\Mention;
 
 /**
  * We only ever have one instance of this class, you could call it a singleton however it isn't really. This class
