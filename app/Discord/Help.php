@@ -123,7 +123,6 @@ class Help extends SlashAndMessageCommand
             ['name' => 'Media channels (media)', 'value' => 'Configure channels as media only channels'],
             ['name' => 'Messages Counter (messages)', 'value' => 'Counts your messages and gives you xp. Over time you gain levels and server roles.'],
             ['name' => 'Fun Commands (fun)', 'value' => 'Small fun commands :)'],
-            ['name' => 'Source Code', 'value' => 'https://gitlab.com/discord54/berend-botje/'],
         );
 
         return MessageBuilder::new()->addEmbed($embedBuilder->getEmbed());
