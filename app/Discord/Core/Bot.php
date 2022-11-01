@@ -19,6 +19,7 @@ use App\Discord\Cringe\IncreaseCringe;
 use App\Discord\Cringe\CringeIndex;
 use App\Discord\Cringe\DecreaseCringe;
 use App\Discord\Cringe\ResetCringe;
+use App\Discord\Fun\Ask;
 use App\Discord\Fun\EightBall;
 use App\Discord\Fun\MentionResponder;
 use App\Discord\Fun\UrbanDictionary;
@@ -137,7 +138,7 @@ class Bot
             Help::class,
             BumpStatistics::class,
             EmoteIndex::class,
-            EightBall::class, UrbanDictionary::class, Say::class,
+            EightBall::class, UrbanDictionary::class, Say::class, Ask::class,
             Settings::class, UpdateSetting::class,
             UserMessages::class, MessagesIndex::class,
             ModeratorStatistics::class,
