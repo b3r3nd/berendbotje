@@ -12,7 +12,7 @@ class CommandIndex extends SlashAndMessageIndexCommand
 {
     public function accessLevel(): AccessLevels
     {
-        return AccessLevels::MOD;
+        return AccessLevels::NONE;
     }
 
     public function trigger(): string
