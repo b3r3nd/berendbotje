@@ -20,7 +20,7 @@ class MentionResponder
             if ($message->mentions->count() > 0) {
                 if (str_contains($message->content, $discord->user->id)) {
                     if (str_contains($message->content, '?give')) {
-                        $message->reply('Thanks 😊');
+                        $message->reply('Thanks! 😎');
                     } else if (str_contains($message->content, Bot::get()->getPrefix() . 'addcringe')) {
                         $message->reply('Keep on dreaming.. 🖕');
                     } elseif (DiscordUser::hasLevel($message->author->id, AccessLevels::GOD->value)) {
