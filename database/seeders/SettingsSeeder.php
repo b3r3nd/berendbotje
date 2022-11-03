@@ -17,7 +17,7 @@ class SettingsSeeder extends Seeder
         $settings = [
             'xp_count' => 15,
             'xp_cooldown' => 60,
-            'bot_trigger' => '$'
+            'bot_trigger' => '%'
         ];
 
         foreach ($settings as $key => $value) {
