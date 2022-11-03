@@ -23,7 +23,7 @@ class MentionResponder
                         $message->reply('Thanks! 😎');
                     } else if (str_contains($message->content, Bot::get()->getPrefix() . 'addcringe')) {
                         $message->reply('Keep on dreaming.. 🖕');
-                    } elseif (DiscordUser::hasLevel($message->author->id, AccessLevels::GOD->value)) {
+                    } elseif (DiscordUser::hasLevel($message->author->id, $message->guild_id, AccessLevels::GOD->value)) {
                         $message->reply('Yes? 😎');
                     } else {
                         $options = [
