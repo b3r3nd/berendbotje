@@ -1,15 +1,8 @@
 # Introdcution
-Discord bot written in Laravel using:
-* Offical PHP library http://discord-php.github.io/DiscordPHP
-* To download from youtube https://github.com/ytdl-org/youtube-dl
-* Play audio https://ffmpeg.org/
-* Redis for queues https://github.com/predis/predis
+Discord bot written in PHP, using laravel and the DiscordPHP package. Initially created just for our own server but
+now runs on as many serves as you like. If you have questions DM my directly by my discord tag: `berend#0579`.
 
-Created for our discord server. If you have questions DM my directly by my tag: `berend#0579`.
-For now the code only runs on a single server and multi server support is not yet included. 
-Many more things will be added in the future, but it's a hobby project, so I take my time :)
 ## Requirements
-Before you use the bot, you require the following:
 * Linux machine!
 * Configured mysql database and knowing the credentials
 * Bot signed up to developers portal and knowing your bot token
@@ -24,8 +17,8 @@ Before you use the bot, you require the following:
 5. `BOT_TOKEN` is already added to the .env example, fill in your bot token there!
 6. Install FFMPEG using `sudo apt-get install ffmpeg` or however your package manager works.
 7. Install `youtube-dl` following the installation guide in their repo https://github.com/ytdl-org/youtube-dl#installation
-8. Cd to your project directory and use `php artisan migrate` to setup your database.
-9. There are no seeders, so there is no data. Some commands require bot access 1000. As a one time setup you need to manually add your discord id etc to the admins table with 1000 access in order to use the bot and add more admins.
+8. There is a seeder file called `database\seeders\DiscordUsersSeeder`, here you can add your user id and server id to setup admin account with 1000 access to a single server.
+9. Cd to your project directory and use `php artisan migrate --seed` to setup your database.
 
 ## Running the bot
 1. I added an artisan command to run the bot `php artisan bot:run`.
@@ -33,11 +26,8 @@ Before you use the bot, you require the following:
 3. Make sure both these run in the background while you exit your connection / terminal. Or keep two terminals running if you want to test it locally.
 
 # Functions
-Bot is still early in development and not many features are added. Some code is still pretty nasty so bear with me! 
-I will try to keep this readme up to date with new functions when I add them, but I might be a bit behind on them :)
-
-**The trigger for the bot and all its commands is $ but can be easily changed. Most commands also work as 
-slash commands!**
+I will try to update this readme with new functionality as I add it, but I cannot promise I keep it entirely up to date.
+The trigger for all commands is `$` and for the majority of them slash commands are also enabled.
 
 ## Bot Config
 The bot loads a config from the settings table which can be viewed and changed, it allows anything to be changed to anything
@@ -50,26 +40,30 @@ For now there are only two settings:
 * `xp_count` - xp gained per message
 * `xp_cooldown` - seconds cooldown after last message before it counts again
 
+## Adding to multiple servers
+The bot works on multiple servers, if you want to add it to another server use the following command:
+* **addserver** `server_id` `owner_discord_id`
 ## Admin management
 The bot works with access levels between 1 and 1000. Users can be added to
 the bot and have access to commands corresponding to their level. What
-access level is required for a command of function is also dynamic and can
-be changed in order to give admins freedom of choice what levels can use w
-which commands.
+access level is required for a command is now coded into the bot per command. In the future I will make it entirely
+dynamic, so you can change the levels required for each command per server.
 
-There are 3 levels predefined in the bot:
-* **Admin** -> 1000
+For now there are 5 levels predefined in the bot:
+* **Bot owner** -> 1000
+* **Server owner** -> 900
+* **Server Admin** -> 800
 * **Mod** -> 500
 * **User** -> 100
 
-Commands have their access level defined using the Enum class in each command child. Commands to manage admins are:
+Commands to manage admins are:
 * **admins**
 * **addadmin** `<user_mention>` `<access_level>`
 * **deladmin** `<user>`
 * **clvladmin** `<user>` `<access_level>`
 
 ## Media channels
-You can add channels to a list of channels marked as media only, in these channels only attachments and URLS are allowed.
+You can add channels to a list of channels marked as media only, in these channels only attachments and (https) urls are allowed.
 Anything else will be deleted!
 
 * **mediachannels**
@@ -167,5 +161,6 @@ A few fun commands you can use
 * **urb** `search_term` - Searches on urban dictionary
 * **8ball** `question` - Ask a question to the 8ball
 * **ask** `question` - Ask a question and get a gif response
+* **say** `something` - say something
 
-Thats it for now! I will keep updating this readme everytime I add new functionality :)
+That's it for now! Enjoy! :)

@@ -6,8 +6,10 @@ namespace App\Discord\Core;
  */
 enum AccessLevels: int
 {
-    case NONE = 0;
-    case GOD = 900;
+    case BOT_OWNER = 1000;
+    case SERVER_OWNER = 900;
+    case GOD = 800;
     case MOD = 500;
     case USER = 100;
+    case NONE = 0;
 }

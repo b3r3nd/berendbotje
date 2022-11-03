@@ -15,7 +15,7 @@ class SetupServer extends MessageCommand
 
     public function accessLevel(): AccessLevels
     {
-        return AccessLevels::GOD;
+        return AccessLevels::BOT_OWNER;
     }
 
     public function trigger(): string
@@ -36,7 +36,7 @@ class SetupServer extends MessageCommand
     public function action(): void
     {
         $user = DiscordUser::getByGuild($this->arguments[1], $this->arguments[0]);
-        $user->admin()->save(new Admin(['level' => 1000]));
+        $user->admin()->save(new Admin(['level' => AccessLevels::SERVER_OWNER->value]));
         Setting::create(['key' => 'xp_count', 'value' => 15, 'guild_id' => $this->arguments[0]]);
         Setting::create(['key' => 'xp_cooldown', 'value' => 60, 'guild_id' => $this->arguments[0]]);
 
