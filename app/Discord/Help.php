@@ -42,6 +42,7 @@ class Help extends SlashAndMessageCommand
                         ['name' => 'Moderator statistics', 'value' => 'modstats'],
                         ['name' => 'Settings overview', 'value' => 'config'],
                         ['name' => 'Update setting', 'value' => 'set `setting_key` `setting_value`'],
+                        ['name' => 'Add server', 'value' => 'addserver `server_id` `owner_account_id`'],
                     );
                 } elseif (strtolower($parameters[1]) === 'music') {
                     $embedBuilder->getEmbed()->addField(

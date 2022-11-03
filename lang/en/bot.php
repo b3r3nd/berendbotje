@@ -23,6 +23,11 @@ return [
     'no-valid-term' => 'Search term :term cannot be found',
     'needhelp' => 'For more info check $help',
 
+    'server' => [
+        'usage-addserver' => 'addserver `server_id` `owner_user_id`',
+        'added' => 'server with ID: :id added to owner :owner'
+    ],
+
     '8ball' => [
         'no-question' => 'You should ask me a question..',
     ],

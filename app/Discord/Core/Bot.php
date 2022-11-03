@@ -36,6 +36,7 @@ use App\Discord\Music\RemoveSong;
 use App\Discord\Music\Resume;
 use App\Discord\Music\Stop;
 use App\Discord\Say;
+use App\Discord\SetupServer;
 use App\Discord\SimpleCommand\CreateCommand;
 use App\Discord\SimpleCommand\CommandIndex;
 use App\Discord\SimpleCommand\DeleteCommand;
@@ -142,6 +143,7 @@ class Bot
             Settings::class, UpdateSetting::class,
             UserMessages::class, MessagesIndex::class,
             ModeratorStatistics::class,
+            SetupServer::class,
         ];
     }
 
