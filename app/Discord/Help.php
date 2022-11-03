@@ -33,7 +33,7 @@ class Help extends SlashAndMessageCommand
             if (isset($parameters[1])) {
                 if (strtolower($parameters[1]) === 'admins') {
                     $embedBuilder->getEmbed()->addField(
-                        ['name' => 'Admins', 'value' => 'For now there are 3 defined access levels in use, `900`, `500` and `100`. `900` is only for administrators to manage the bot, `500` is for moderators who can also add and remove reactions for example. `100` is for users, these can increase cringe counters, add music to the queue and other basic stuff.'],
+                        ['name' => 'Admins', 'value' => 'For now there are 4 defined access levels in use, `900`, `800`, `500` and `100`. `900` is the owner of the server. `800` is only for administrators to manage the bot, `500` is for moderators who can also add and remove reactions for example. `100` is for users, these can increase cringe counters, add music to the queue and other basic stuff.'],
                         ['name' => 'Create Admin', 'value' => 'addadmin `user_mention` `access_level`'],
                         ['name' => 'Delete Admin', 'value' => 'deladmin `user_mention`'],
                         ['name' => 'Update Admin Level', 'value' => 'clvladmin `user_mention` `access_level`'],
@@ -43,6 +43,7 @@ class Help extends SlashAndMessageCommand
                         ['name' => 'Settings overview', 'value' => 'config'],
                         ['name' => 'Update setting', 'value' => 'set `setting_key` `setting_value`'],
                         ['name' => 'Add server', 'value' => 'addserver `server_id` `owner_account_id`'],
+                        ['name' => 'Active servers', 'value' => 'servers`'],
                     );
                 } elseif (strtolower($parameters[1]) === 'music') {
                     $embedBuilder->getEmbed()->addField(

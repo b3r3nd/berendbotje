@@ -25,7 +25,10 @@ return [
 
     'server' => [
         'usage-addserver' => 'addserver `server_id` `owner_user_id`',
-        'added' => 'server with ID: :id added to owner :owner'
+        'added' => 'server with ID: :id added to owner :owner',
+        'title' => 'Active servers',
+        'footer' => 'user addserver server_id discord_owner_id to add new servers',
+        'description' => "Server ID • Owner Account\n\n:servers"
     ],
 
     '8ball' => [
