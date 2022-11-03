@@ -27,9 +27,9 @@ class DetectKicksAndBans
     {
         Bot::getDiscord()->on(Event::GUILD_MEMBER_REMOVE, function (Member $member, Discord $discord) {
             $discord->guilds->fetch($member->guild_id)->done(function (Guild $guild) use ($member) {
-                $guild->getAuditLog(['limit' => 1])->done(function (AuditLog $auditLog) use ($member) {
+                $guild->getAuditLog(['limit' => 1])->done(function (AuditLog $auditLog) use ($member, $guild) {
                     foreach ($auditLog->audit_log_entries as $entry) {
-                        $user = DiscordUser::firstOrCreate(['discord_id' => $entry->user->id]);
+                        $user = DiscordUser::getByGuild($entry->user->id, $guild->id);
                         if ($entry->action_type == 20) {
                             if ($user->kickCounter) {
                                 $user->kickCounter()->update(['count' => $user->kickCounter->count + 1]);

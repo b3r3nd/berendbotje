@@ -9,6 +9,10 @@ class MediaChannel extends Model
 
     protected $table = 'mediachannels';
 
-    protected $fillable = ['channel'];
+    protected $fillable = ['channel', 'guild_id'];
 
+    public static function byGuild($guildId)
+    {
+        return MediaChannel::where(['guild_id' => $guildId]);
+    }
 }

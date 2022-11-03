@@ -50,13 +50,13 @@ class CreateAdmin extends SlashAndMessageCommand
 
     public function action(): MessageBuilder
     {
-        if (DiscordUser::isAdmin($this->arguments[0])) {
+        if (DiscordUser::isAdmin($this->arguments[0], $this->guildId)) {
             return EmbedFactory::failedEmbed(__('bot.admins.exists'));
         }
-        if (!DiscordUser::hasHigherLevel($this->commandUser, $this->arguments[1])) {
+        if (!DiscordUser::hasHigherLevel($this->commandUser, $this->guildId, $this->arguments[1])) {
             return EmbedFactory::failedEmbed(__('bot.admins.lack-access'));
         }
-        $user = DiscordUser::firstOrCreate(['discord_id' => $this->arguments[0]]);
+        $user = DiscordUser::getByGuild($this->arguments[0], $this->guildId);
         $user->admin()->save(new Admin(['user_id' => $user->id, 'level' => $this->arguments[1]]));
         return EmbedFactory::successEmbed(__('bot.admins.added', ['user' => $user->tag(), 'level' => $this->arguments[1]]));
     }

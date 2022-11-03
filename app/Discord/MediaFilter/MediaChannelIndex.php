@@ -23,9 +23,9 @@ class MediaChannelIndex extends SlashAndMessageIndexCommand
 
     public function getEmbed(): Embed
     {
-        $this->total = MediaChannel::count();
+        $this->total = MediaChannel::byGuild($this->guildId)->count();
         $channels = "";
-        foreach (MediaChannel::skip($this->offset)->limit($this->perPage)->get() as $channel) {
+        foreach (MediaChannel::byGuild($this->guildId)->skip($this->offset)->limit($this->perPage)->get() as $channel) {
             $channels .= "** {$channel->channel} **\n";
         }
         return EmbedBuilder::create(Bot::getDiscord())

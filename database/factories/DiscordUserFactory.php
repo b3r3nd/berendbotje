@@ -18,6 +18,7 @@ class DiscordUserFactory extends Factory
     {
         return [
             'discord_id' => $this->faker->randomKey,
+            'guild_id' => $this->faker->randomKey,
         ];
     }
 }

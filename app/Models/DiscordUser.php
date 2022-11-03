@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Scopes\GuildScope;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -12,8 +13,16 @@ class DiscordUser extends Model
     use HasFactory;
 
     protected $table = 'discord_users';
-    protected $fillable = ['discord_id'];
+    protected $fillable = ['discord_id', 'guild_id'];
 
+
+    public static function getByGuild($discordId, $guildId)
+    {
+        return DiscordUser::firstOrCreate([
+            'discord_id' => $discordId,
+            'guild_id' => $guildId,
+        ]);
+    }
 
     /**
      * @return string
@@ -21,6 +30,44 @@ class DiscordUser extends Model
     public function tag(): string
     {
         return "<@{$this->discord_id}>";
+    }
+
+    /**
+     * @param string $id
+     * @param string $guildId
+     * @return bool
+     */
+    public static function isAdmin(string $id, string $guildId): bool
+    {
+        return !DiscordUser::where(['discord_id' => $id, 'guild_id' => $guildId])->has('admin')->get()->isEmpty();
+    }
+
+    /**
+     * @param string $id
+     * @param string $guildId
+     * @param int $level
+     * @return bool
+     */
+    public static function hasLevel(string $id, string $guildId, int $level): bool
+    {
+        if ($level == 0) {
+            return true;
+        }
+        return !DiscordUser::where(['discord_id' => $id, 'guild_id' => $guildId])->whereRelation('admin', 'level', '>=', $level)->get()->isEmpty();
+    }
+
+    /**
+     * @param string $id
+     * @param string $guildId
+     * @param int $level
+     * @return bool
+     */
+    public static function hasHigherLevel(string $id, string $guildId, int $level): bool
+    {
+        if ($level == 0) {
+            return true;
+        }
+        return !DiscordUser::where('discord_id', $id)->where('guild_id', $guildId)->whereRelation('admin', 'level', '>', $level)->get()->isEmpty();
     }
 
     /**
@@ -69,40 +116,5 @@ class DiscordUser extends Model
     public function kickCounter(): HasOne
     {
         return $this->hasOne(KickCounter::class, 'user_id', 'id');
-    }
-
-    /**
-     * @param string $id
-     * @return bool
-     */
-    public static function isAdmin(string $id): bool
-    {
-        return !DiscordUser::where('discord_id', $id)->has('admin')->get()->isEmpty();
-    }
-
-    /**
-     * @param string $id
-     * @param int $level
-     * @return bool
-     */
-    public static function hasLevel(string $id, int $level): bool
-    {
-        if ($level == 0) {
-            return true;
-        }
-        return !DiscordUser::where('discord_id', $id)->whereRelation('admin', 'level', '>=', $level)->get()->isEmpty();
-    }
-
-    /**
-     * @param string $id
-     * @param int $level
-     * @return bool
-     */
-    public static function hasHigherLevel(string $id, int $level): bool
-    {
-        if ($level == 0) {
-            return true;
-        }
-        return !DiscordUser::where('discord_id', $id)->whereRelation('admin', 'level', '>', $level)->get()->isEmpty();
     }
 }

@@ -19,6 +19,7 @@ class SettingFactory extends Factory
         return [
             'key' => $this->faker->randomKey,
             'value' => $this->faker->numberBetween(1, 100),
+            'guild_id' => $this->faker->randomKey,
         ];
     }
 }

@@ -18,6 +18,7 @@ class DiscordUsersSeeder extends Seeder
     {
         $user = DiscordUser::factory()->create([
             'discord_id' => '259461260645629953',
+            'guild_id' => '590941503917129743',
         ]);
 
         Admin::factory()->create([

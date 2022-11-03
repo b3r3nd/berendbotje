@@ -17,13 +17,13 @@ class SettingsSeeder extends Seeder
         $settings = [
             'xp_count' => 15,
             'xp_cooldown' => 60,
-            'bot_trigger' => '%'
         ];
 
         foreach ($settings as $key => $value) {
             Setting::factory()->create([
                 'key' => $key,
                 'value' => $value,
+                'guild_id' => '590941503917129743',
             ]);
         }
     }

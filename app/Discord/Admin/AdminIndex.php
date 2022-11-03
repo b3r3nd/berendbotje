@@ -23,9 +23,9 @@ class AdminIndex extends SlashAndMessageIndexCommand
 
     public function getEmbed(): Embed
     {
-        $this->total = Admin::count();
+        $this->total = Admin::byGuild($this->guildId)->count();
         $description = "";
-        foreach (Admin::orderBy('level', 'desc')->skip($this->offset)->limit($this->perPage)->get() as $admin) {
+        foreach (Admin::byGuild($this->guildId)->orderBy('level', 'desc')->skip($this->offset)->limit($this->perPage)->get() as $admin) {
             $description .= "** {$admin->user->tag()} ** • {$admin->level} \n";
         }
         return EmbedBuilder::create(Bot::get()->discord())

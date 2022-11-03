@@ -42,7 +42,7 @@ class DeleteCommand extends SlashAndMessageCommand
      */
     public function action(): MessageBuilder
     {
-        \App\Models\Command::where(['trigger' => $this->arguments[0]])->delete();
+        \App\Models\Command::where(['trigger' => $this->arguments[0], 'guild_id' => $this->guildId])->delete();
         Bot::get()->deleteCommand($this->arguments[0]);
         return EmbedFactory::successEmbed(__('bot.cmd.deleted', ['trigger' => $this->arguments[0]]));
     }

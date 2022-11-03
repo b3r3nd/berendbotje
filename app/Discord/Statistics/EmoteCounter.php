@@ -24,7 +24,7 @@ class EmoteCounter
             // Checks for custom emotes
             if (preg_match('/<a?:.+?:\d+>/', $message->content, $matches)) {
                 foreach ($matches as $match) {
-                    $emoteInstance = Emote::firstOrCreate(['emote' => $match]);
+                    $emoteInstance = Emote::firstOrCreate(['emote' => $match, 'guild_id' => $message->guild_id]);
                     $this->processEmote($emoteInstance);
                 }
             }
@@ -35,7 +35,7 @@ class EmoteCounter
                 $usedEmotes = [];
                 foreach ($emotes as $emote) {
                     if (!in_array($emote['hex_str'], $usedEmotes)) {
-                        $emoteInstance = Emote::firstOrCreate(['hex' => $emote['hex_str'], 'emote' => $emote['emoji']]);
+                        $emoteInstance = Emote::firstOrCreate(['hex' => $emote['hex_str'], 'emote' => $emote['emoji'], 'guild_id' => $message->guild_id]);
                         $this->processEmote($emoteInstance);
                         $usedEmotes[] = $emote['hex_str'];
                     }

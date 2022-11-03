@@ -24,10 +24,10 @@ class CringeIndex extends SlashAndMessageIndexCommand
 
     public function getEmbed(): Embed
     {
-        $this->total = CringeCounter::count();
+        $this->total = CringeCounter::byGuild($this->guildId)->count();
 
         $description = "";
-        foreach (CringeCounter::orderBy('count', 'desc')->skip($this->offset)->limit($this->perPage)->get() as $index => $cringeCounter) {
+        foreach (CringeCounter::byGuild($this->guildId)->orderBy('count', 'desc')->skip($this->offset)->limit($this->perPage)->get() as $index => $cringeCounter) {
             $description .= Helper::indexPrefix($index, $this->offset);
             $description .= "**{$cringeCounter->user->tag()}** • {$cringeCounter->count} \n";
         }

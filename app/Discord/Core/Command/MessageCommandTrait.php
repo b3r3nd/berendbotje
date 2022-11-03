@@ -41,7 +41,7 @@ trait MessageCommandTrait
             str_contains($message->content, $discord->user->id)) {
             return false;
         }
-        if (!DiscordUser::hasLevel($message->author->id, $this->accessLevel->value)) {
+        if (!DiscordUser::hasLevel($message->author->id, $message->guild_id, $this->accessLevel->value)) {
             $message->channel->sendMessage(EmbedFactory::failedEmbed(__("bot.lack-access")));
             return false;
         }

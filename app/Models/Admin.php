@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Scopes\HasUserScope;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -16,6 +18,13 @@ class Admin extends Model
         'level',
         'user_id',
     ];
+
+    public static function byGuild($guildId)
+    {
+        return Admin::whereHas('user', function (Builder $query) use ($guildId) {
+            $query->where('guild_id', '=', $guildId);
+        });
+    }
 
     /**
      * @return BelongsTo

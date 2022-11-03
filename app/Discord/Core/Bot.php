@@ -89,7 +89,7 @@ use Exception;
 class Bot
 {
     private Discord $discord;
-    private string $prefix = '$';
+    private string $prefix = '%';
     private static self $instance;
     private array $mediaChannels = [];
     private array $deletedCommands = [];
@@ -133,7 +133,7 @@ class Bot
             CreateCommand::class, DeleteCommand::class, CommandIndex::class,
             ReactionIndex::class, CreateReaction::class, DeleteReaction::class,
             CreateMediaChannel::class, DeleteMediaChannel::class, MediaChannelIndex::class,
-            AddSong::class, Pause::class, Stop::class, Queue::class, Resume::class, Play::class, RemoveSong::class,
+          //  AddSong::class, Pause::class, Stop::class, Queue::class, Resume::class, Play::class, RemoveSong::class,
             AllTimeouts::class, SingleUserTimeouts::class,
             Help::class,
             BumpStatistics::class,
@@ -188,11 +188,7 @@ class Bot
     public function loadSettings(): void
     {
         foreach (Setting::all() as $setting) {
-            if ($setting->key == 'bot_trigger') {
-                var_dump($setting->value);
-                $this->prefix = $setting->value;
-            }
-            $this->setSetting($setting->key, $setting->value);
+            $this->setSetting($setting->key, $setting->value, $setting->guild_id);
         }
     }
 
@@ -212,12 +208,12 @@ class Bot
 
         // Custom commands
         foreach (\App\Models\Command::all() as $command) {
-            SimpleCommand::create($this, $command->trigger, $command->response);
+            SimpleCommand::create($this, $command->trigger, $command->response, $command->guild_id);
         }
 
         // Custom reactions
         foreach (Reaction::all() as $reaction) {
-            SimpleReaction::create($this, $reaction->trigger, $reaction->reaction);
+            SimpleReaction::create($this, $reaction->trigger, $reaction->reaction, $reaction->guild_id);
         }
 
         // Set media channel filters
@@ -261,35 +257,34 @@ class Bot
     }
 
     /**
+     * @param string $guildId
      * @return array
      */
-    public function getSettings(): array
+    public function getSettings(string $guildId): array
     {
-        return $this->settings;
+        return $this->settings[$guildId] ?? [];
     }
 
     /**
      * @param string $setting
      * @param $value
+     * @param string $guildId
      * @return void
      */
-    public function setSetting(string $setting, $value): void
+    public function setSetting(string $setting, $value, string $guildId): void
     {
-        $this->settings[$setting] = $value;
-
-        if ($setting == 'bot_trigger') {
-            $this->prefix = $value;
-        }
+        $this->settings[$guildId][$setting] = $value;
     }
 
     /**
      * @param string $setting
+     * @param string $guildId
      * @return false|mixed
      */
-    public function getSetting(string $setting)
+    public function getSetting(string $setting, string $guildId)
     {
-        if (isset($this->settings[$setting])) {
-            return $this->settings[$setting];
+        if (isset($this->settings[$guildId][$setting])) {
+            return $this->settings[$guildId][$setting];
         }
         return false;
     }
@@ -312,28 +307,31 @@ class Bot
 
     /**
      * @param string $channel
+     * @param string $guildId
      * @return void
      */
-    public function addMediaChannel(string $channel): void
+    public function addMediaChannel(string $channel, string $guildId): void
     {
-        $this->mediaChannels[$channel] = $channel;
+        $this->mediaChannels[$guildId][$channel] = $channel;
     }
 
     /**
      * @param string $channel
+     * @param string $guildId
      * @return void
      */
-    public function delMediaChannel(string $channel): void
+    public function delMediaChannel(string $channel, string $guildId): void
     {
-        unset($this->mediaChannels[$channel]);
+        unset($this->mediaChannels[$guildId][$channel]);
     }
 
     /**
+     * @param string $guildId
      * @return array
      */
-    public function getMediaChannels(): array
+    public function getMediaChannels(string $guildId): array
     {
-        return $this->mediaChannels;
+        return $this->mediaChannels[$guildId] ?? [];
     }
 
     /**

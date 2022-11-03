@@ -30,7 +30,7 @@ class UpdateSetting extends MessageCommand
 
     public function action(): void
     {
-        $setting = Setting::where('key', $this->arguments[0])->first();
+        $setting = Setting::where(['key' => $this->arguments[0], 'guild_id' => $this->guildId])->first();
 
         if (!$setting) {
             $this->message->channel->sendMessage(EmbedFactory::failedEmbed(__('bot.set.not-exist', ['key' => $this->arguments[0]])));
@@ -39,7 +39,7 @@ class UpdateSetting extends MessageCommand
 
         $setting->value = $this->arguments[1];
         $setting->save();
-        Bot::get()->setSetting($this->arguments[0], $this->arguments[1]);
+        Bot::get()->setSetting($this->arguments[0], $this->arguments[1], $this->guildId);
         $this->message->channel->sendMessage(EmbedFactory::successEmbed(__('bot.set.updated', ['key' => $this->arguments[0], 'value' => $this->arguments[1]])));
     }
 }

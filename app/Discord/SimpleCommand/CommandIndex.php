@@ -22,9 +22,9 @@ class CommandIndex extends SlashAndMessageIndexCommand
 
     public function getEmbed(): Embed
     {
-        $this->total = \App\Models\Command::count();
+        $this->total = \App\Models\Command::byGuild($this->guildId)->count();
         $commands = "";
-        foreach (\App\Models\Command::skip($this->offset)->limit($this->perPage)->get() as $command) {
+        foreach (\App\Models\Command::byGuild($this->guildId)->skip($this->offset)->limit($this->perPage)->get() as $command) {
             $commands .= "** {$command->trigger} ** - {$command->response}\n";
         }
         return EmbedBuilder::create(Bot::getDiscord())

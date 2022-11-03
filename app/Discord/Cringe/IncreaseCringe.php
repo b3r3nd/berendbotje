@@ -46,7 +46,7 @@ class IncreaseCringe extends SlashAndMessageCommand
      */
     public function action(): MessageBuilder
     {
-        $user = DiscordUser::firstOrCreate(['discord_id' => $this->arguments[0]]);
+        $user = DiscordUser::getByGuild($this->arguments[0], $this->guildId);
         if ($user->cringeCounter) {
             $user->cringeCounter()->update(['count' => $user->cringeCounter->count + 1]);
         } else {
