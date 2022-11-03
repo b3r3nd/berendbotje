@@ -43,7 +43,7 @@ class DeleteReaction extends SlashAndMessageCommand
      */
     public function action(): MessageBuilder
     {
-        Reaction::where(['trigger' => $this->arguments[0]])->delete();
+        Reaction::where(['trigger' => $this->arguments[0], 'guild_id' => $this->guildId])->delete();
         Bot::get()->deleteReaction($this->arguments[0]);
         return EmbedFactory::successEmbed(__('bot.reactions.deleted', ['name' => $this->arguments[0]]));
     }

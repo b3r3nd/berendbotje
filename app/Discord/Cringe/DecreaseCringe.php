@@ -44,7 +44,7 @@ class DecreaseCringe extends SlashAndMessageCommand
      */
     public function action(): MessageBuilder
     {
-        $user = DiscordUser::where(['discord_id' => $this->arguments[0]])->first();
+        $user = DiscordUser::getByGuild($this->arguments[0], $this->guildId);
 
         if (isset($user->cringeCounter)) {
             $user->cringeCounter->count = $user->cringeCounter->count - 1;
@@ -56,6 +56,6 @@ class DecreaseCringe extends SlashAndMessageCommand
         } else {
             return EmbedFactory::failedEmbed(__('bot.cringe.not-cringe', ['name' => "<@{$this->arguments[0]}>"]));
         }
-        return EmbedFactory::successEmbed(__('bot.cringe.change', ['name' => $user->discord_tag, 'count' => $user->cringeCounter->count]));
+        return EmbedFactory::successEmbed(__('bot.cringe.change', ['name' => $user->tag(), 'count' => $user->cringeCounter->count]));
     }
 }

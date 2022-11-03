@@ -46,13 +46,13 @@ class ResetCringe extends SlashAndMessageCommand
         if (str_contains($this->arguments[0], '<@')) {
             $this->arguments[0] = str_replace(['<', '>', '@'], '', $this->arguments[0]);
         }
-        $user = DiscordUser::where(['discord_id' => $this->arguments[0]])->first();
+        $user = DiscordUser::getByGuild($this->arguments[0], $this->guildId);
 
         if (!isset($user->cringeCounter)) {
             return EmbedFactory::failedEmbed(__('bot.cringe.not-cringe', ['name' => "<@{$this->arguments[0]}>"]));
         }
 
         $user->cringeCounter->delete();
-        return EmbedFactory::successEmbed(__('bot.cringe.reset', ['user' => $user->discord_tag]));
+        return EmbedFactory::successEmbed(__('bot.cringe.reset', ['user' => $user->tag()]));
     }
 }

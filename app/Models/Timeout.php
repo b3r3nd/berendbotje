@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Timeout extends Model
 {
-    protected $fillable = ['discord_id', 'discord_username', 'reason', 'length', 'giver_id'];
+    protected $fillable = ['discord_id', 'discord_username', 'reason', 'length', 'giver_id', 'guild_id'];
 
 
     /**
@@ -16,6 +16,11 @@ class Timeout extends Model
     public function giver(): BelongsTo
     {
         return $this->belongsTo(DiscordUser::class);
+    }
+
+    public static function byGuild($guildId)
+    {
+        return Timeout::where(['guild_id' =>  $guildId]);
     }
 
 }

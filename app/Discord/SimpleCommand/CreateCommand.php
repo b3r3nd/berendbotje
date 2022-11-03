@@ -51,9 +51,9 @@ class CreateCommand extends SlashAndMessageCommand
     {
         $trigger = array_shift($this->arguments);
         $response = join(' ', $this->arguments);
-        $command = \App\Models\Command::create(['trigger' => $trigger, 'response' => $response]);
+        $command = \App\Models\Command::create(['trigger' => $trigger, 'response' => $response, 'guild_id' => $this->guildId]);
         $command->save();
-        new SimpleCommand(Bot::get(), $trigger, $response);
+        new SimpleCommand(Bot::get(), $trigger, $response, $this->guildId);
         return EmbedFactory::successEmbed(__('bot.cmd.saved', ['trigger' => $trigger, 'response' => $response]));
     }
 }

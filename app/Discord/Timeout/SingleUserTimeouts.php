@@ -44,14 +44,14 @@ class SingleUserTimeouts extends SlashAndMessageIndexCommand
 
     public function getEmbed(): Embed
     {
-        $this->total = Timeout::where(['discord_id' => $this->arguments[0]])->count();
+        $this->total = Timeout::byGuild($this->guildId)->where(['discord_id' => $this->arguments[0]])->count();
         $embedBuilder = EmbedBuilder::create(Bot::getDiscord())
             ->setTitle(__('bot.timeout.title'))
             ->setFooter(__('bot.timeout.footer'));
 
         $embed = $embedBuilder->getEmbed();
-        $description = __('bot.timeout.count', ['count' => Timeout::count()]) . "\n\n";
-        foreach (Timeout::where(['discord_id' => $this->arguments[0]])->skip($this->offset)->limit($this->perPage)->orderBy('created_at', 'desc')->get() as $timeout) {
+        $description = __('bot.timeout.count', ['count' => $this->total]) . "\n\n";
+        foreach (Timeout::byGuild($this->guildId)->where(['discord_id' => $this->arguments[0]])->skip($this->offset)->limit($this->perPage)->orderBy('created_at', 'desc')->get() as $timeout) {
             $description .= TimeoutHelper::timeoutLength($timeout);
         }
         $embed->setDescription($description);

@@ -48,8 +48,8 @@ class CreateMediaChannel extends SlashAndMessageCommand
             return EmbedFactory::failedEmbed(__('bot.media.exists', ['channel' => $this->arguments[0]]));
         }
 
-        MediaChannel::create(['channel' => $this->arguments[0]]);
-        Bot::get()->addMediaChannel($this->arguments[0]);
+        MediaChannel::create(['channel' => $this->arguments[0], 'guild_id' => $this->guildId]);
+        Bot::get()->addMediaChannel($this->arguments[0], $this->guildId);
         return EmbedFactory::successEmbed(__('bot.media.added', ['channel' => $this->arguments[0]]));
 
     }

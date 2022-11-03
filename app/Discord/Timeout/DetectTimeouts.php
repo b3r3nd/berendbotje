@@ -28,7 +28,7 @@ class DetectTimeouts
             }
 
             $discord->guilds->fetch($member->guild_id)->done(function (Guild $guild) use ($member) {
-                $guild->getAuditLog(['limit' => 1])->done(function (AuditLog $auditLog) use ($member) {
+                $guild->getAuditLog(['limit' => 1])->done(function (AuditLog $auditLog) use ($member, $guild) {
                     foreach ($auditLog->audit_log_entries as $entry) {
                         $endTime = $member->communication_disabled_until;
                         $startTime = Carbon::now();
@@ -41,6 +41,7 @@ class DetectTimeouts
                                 'length' => $diff ?? 0,
                                 'reason' => $entry->reason ?? "Empty",
                                 'giver_id' => $user->id,
+                                'guild_id' => $guild->id,
                             ]);
                         }
                     }

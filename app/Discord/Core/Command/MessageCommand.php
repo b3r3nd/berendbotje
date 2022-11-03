@@ -27,6 +27,7 @@ abstract class MessageCommand extends Command
             if (!$this->validateMessage($message, $discord)) {
                 return;
             }
+            $this->guildId = $message->guild_id;
             $parameters = $this->processParameters($message);
             $this->arguments = $parameters;
             $this->messageString = join(' ', $this->arguments);

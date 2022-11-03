@@ -25,11 +25,11 @@ class BumpStatistics extends SlashAndMessageIndexCommand
 
     public function getEmbed(): Embed
     {
-        $this->total = Bumper::count();
+        $this->total = Bumper::byGuild($this->guildId)->count();
         $description = "";
-        foreach (Bumper::orderBy('count', 'desc')->skip($this->offset)->limit($this->perPage)->get() as $index => $bumper) {
+        foreach (Bumper::byGuild($this->guildId)->orderBy('count', 'desc')->skip($this->offset)->limit($this->perPage)->get() as $index => $bumper) {
             $description .= Helper::indexPrefix($index);
-            $description .= "**{$bumper->user->discord_tag}** •  {$bumper->count}\n";
+            $description .= "**{$bumper->user->tag()}** •  {$bumper->count}\n";
         }
         return EmbedBuilder::create(Bot::get()->discord())
             ->setTitle(__('bot.bump.title'))

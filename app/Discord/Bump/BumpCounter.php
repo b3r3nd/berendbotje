@@ -9,19 +9,14 @@ use Discord\Discord;
 use Discord\Parts\Channel\Message;
 use Discord\WebSockets\Event;
 
-/**
- * @TODO Use Command class. Currently the command class does not support a message type and interaction name check.
- */
+
 class BumpCounter
 {
     public function __construct()
     {
         Bot::getDiscord()->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) {
             if ($message->type == 20 && $message->interaction->name == 'bump') {
-                $user = DiscordUser::firstOrCreate([
-                    'discord_id' => $message->interaction->user->id,
-                    'discord_tag' => $message->interaction->user,
-                ]);
+                $user = DiscordUser::getByGuild($message->interaction->user->id, $message->guild_id);
 
                 if ($user->bumper) {
                     $user->bumper()->update(['count' => $user->bumper->count + 1]);

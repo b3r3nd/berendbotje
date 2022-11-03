@@ -30,7 +30,7 @@ class UserMessages extends SlashAndMessageCommand
      */
     public function action(): MessageBuilder
     {
-        $user = DiscordUser::where('discord_id', $this->commandUser)->first();
+        $user = DiscordUser::getByGuild($this->commandUser, $this->guildId);
 
         if (!$user) {
             return EmbedFactory::failedEmbed(__('bot.xp.not-found'));

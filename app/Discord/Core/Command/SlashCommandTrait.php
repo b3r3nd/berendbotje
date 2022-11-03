@@ -33,13 +33,14 @@ trait SlashCommandTrait
         $command = new \Discord\Parts\Interactions\Command\Command(Bot::getDiscord(), $optionsArray);
         Bot::getDiscord()->listenCommand($this->trigger, function (Interaction $interaction) {
             $this->arguments = [];
-            if (!DiscordUser::hasLevel($interaction->member->id, $this->accessLevel->value)) {
+            if (!DiscordUser::hasLevel($interaction->member->id, $interaction->guild_id, $this->accessLevel->value)) {
                 return $interaction->respondWithMessage(EmbedFactory::failedEmbed(__("bot.lack-access")));
             }
             foreach ($interaction->data->options as $option) {
                 $this->arguments[] = $option->value;
             }
             $this->commandUser = $interaction->member->id;
+            $this->guildId = $interaction->guild_id;
             return $interaction->respondWithMessage($this->action());
         });
 

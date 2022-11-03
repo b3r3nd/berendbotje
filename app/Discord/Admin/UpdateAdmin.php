@@ -46,10 +46,10 @@ class UpdateAdmin extends SlashAndMessageCommand
 
     public function action(): MessageBuilder
     {
-        $admin = AdminHelper::validateAdmin($this->arguments[0], $this->commandUser);
+        $admin = AdminHelper::validateAdmin($this->arguments[0], $this->commandUser, $this->guildId);
         if ($admin instanceof Admin) {
             $admin->update(['level' => $this->arguments[1]]);
-            return EmbedFactory::successEmbed(__('bot.admins.changed', ['user' => "<@{$this->arguments[0]}>", 'level' => $this->arguments[1]]));
+            return EmbedFactory::successEmbed(__('bot.admins.changed', ['user' => "{$admin->user->tag()}", 'level' => $this->arguments[1]]));
         } else {
             return EmbedFactory::failedEmbed($admin);
         }

@@ -47,8 +47,8 @@ class DeleteMediaChannel extends SlashAndMessageCommand
             return EmbedFactory::failedEmbed(__('bot.media.not-exists', ['channel' => $this->arguments[0]]));
         }
 
-        MediaChannel::where('channel', $this->arguments[0])->first()->delete();
-        Bot::get()->delMediaChannel($this->arguments[0]);
+        MediaChannel::where(['channel' => $this->arguments[0], 'guild_id' => $this->guildId])->first()->delete();
+        Bot::get()->delMediaChannel($this->arguments[0], $this->guildId);
         return EmbedFactory::successEmbed(__('bot.media.deleted', ['channel' => $this->arguments[0]]));
 
     }

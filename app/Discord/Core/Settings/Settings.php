@@ -27,7 +27,7 @@ class Settings extends MessageCommand
             ->setTitle(__('bot.set.title'))
             ->setFooter(__('bot.set.footer'));
 
-        foreach (Setting::all() as $setting) {
+        foreach (Setting::byGuild($this->guildId)->get() as $setting) {
             $embedBuilder->getEmbed()->addField(['name' => $setting->key, 'value' => $setting->value]);
         }
 

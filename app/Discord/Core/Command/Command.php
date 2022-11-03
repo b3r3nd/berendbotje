@@ -31,6 +31,7 @@ abstract class Command
     protected int $requiredArguments = 0;
     protected string $usageString;
     protected string $messageString = '';
+    protected string $guildId = '';
 
     public abstract function accessLevel(): AccessLevels;
 

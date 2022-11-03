@@ -7,6 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class Song extends Model
 {
 
-    protected $fillable = ['youtube_url', 'filename', 'queue_order'];
+    protected $fillable = ['youtube_url', 'filename', 'queue_order', 'guid_id'];
 
 }

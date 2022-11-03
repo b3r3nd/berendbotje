@@ -26,9 +26,9 @@ class EmoteIndex extends SlashAndMessageIndexCommand
 
     public function getEmbed(): Embed
     {
-        $this->total = Emote::count();
+        $this->total = Emote::byGuild($this->guildId)->count();
         $description = "";
-        foreach (Emote::orderBy('count', 'desc')->skip($this->offset)->limit($this->perPage)->get() as $index => $emote) {
+        foreach (Emote::byGuild($this->guildId)->orderBy('count', 'desc')->skip($this->offset)->limit($this->perPage)->get() as $index => $emote) {
             $description .= Helper::indexPrefix($index, $this->offset);
             $description .= "**{$emote->emote}** • {$emote->count} \n";
         }

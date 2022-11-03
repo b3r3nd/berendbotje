@@ -10,19 +10,20 @@ use App\Models\DiscordUser;
  */
 class AdminHelper
 {
-    public static function validateAdmin($adminId, $userId)
+    public static function validateAdmin($targetUserId, $commandUserId, $guildId)
     {
-        $user = DiscordUser::where('discord_id', $adminId)->first();
-
-        if (!DiscordUser::isAdmin($adminId)) {
+        if (!DiscordUser::isAdmin($targetUserId, $guildId)) {
             return __('bot.admins.not-exist');
         }
-        $admin = $user->admin;
 
-        if (!DiscordUser::hasHigherLevel($userId, $admin->level)) {
-            return __('bot.admins.powerful', ['name' => $user->discord_tag]);
+        $targetUser = DiscordUser::getByGuild($targetUserId, $guildId);
+        $targetAdmin = $targetUser->admin;
+
+
+        if (!DiscordUser::hasHigherLevel($commandUserId, $guildId, $targetAdmin->level)) {
+            return __('bot.admins.powerful', ['name' => $targetUser->tag()]);
         }
-        return $admin;
+        return $targetAdmin;
     }
 
 }
