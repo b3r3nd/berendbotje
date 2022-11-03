@@ -89,7 +89,7 @@ use Exception;
 class Bot
 {
     private Discord $discord;
-    private string $prefix = '%';
+    private string $prefix = '$';
     private static self $instance;
     private array $mediaChannels = [];
     private array $deletedCommands = [];
@@ -133,7 +133,7 @@ class Bot
             CreateCommand::class, DeleteCommand::class, CommandIndex::class,
             ReactionIndex::class, CreateReaction::class, DeleteReaction::class,
             CreateMediaChannel::class, DeleteMediaChannel::class, MediaChannelIndex::class,
-          //  AddSong::class, Pause::class, Stop::class, Queue::class, Resume::class, Play::class, RemoveSong::class,
+            //  AddSong::class, Pause::class, Stop::class, Queue::class, Resume::class, Play::class, RemoveSong::class,
             AllTimeouts::class, SingleUserTimeouts::class,
             Help::class,
             BumpStatistics::class,
@@ -150,6 +150,11 @@ class Bot
      */
     public function __construct()
     {
+        // When running local to test I want a different trigger to not trigger both bots
+        if (env('APP_ENV') === 'local') {
+            $this->prefix = '%';
+        }
+
         $this->discord = new Discord([
                 'token' => config('discord.token'),
                 'loadAllMembers' => true,
