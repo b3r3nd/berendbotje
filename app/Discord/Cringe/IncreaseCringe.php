@@ -46,16 +46,13 @@ class IncreaseCringe extends SlashAndMessageCommand
      */
     public function action(): MessageBuilder
     {
-        $user = DiscordUser::firstOrCreate([
-            'discord_id' => $this->arguments[0],
-            'discord_tag' => "<@{$this->arguments[0]}>",
-        ]);
+        $user = DiscordUser::firstOrCreate(['discord_id' => $this->arguments[0]]);
         if ($user->cringeCounter) {
             $user->cringeCounter()->update(['count' => $user->cringeCounter->count + 1]);
         } else {
             $user->cringeCounter()->save(new CringeCounter(['count' => 1]));
         }
         $user->refresh();
-        return EmbedFactory::successEmbed(__('bot.cringe.change', ['name' => $user->discord_tag, 'count' => $user->cringeCounter->count]));
+        return EmbedFactory::successEmbed(__('bot.cringe.change', ['name' => $user->tag(), 'count' => $user->cringeCounter->count]));
     }
 }

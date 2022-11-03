@@ -30,7 +30,7 @@ class MessagesIndex extends SlashAndMessageIndexCommand
         foreach (\App\Models\MessageCounter::orderBy('count', 'desc')->skip($this->offset)->limit($this->perPage)->get() as $index => $messageCounter) {
             $description .= Helper::indexPrefix($index, $this->offset);
             $count = $messageCounter->count * Bot::get()->getSetting('xp_count');
-            $description .= "**{$messageCounter->user->discord_tag}** • {$messageCounter->count} messages • {$count} xp \n";
+            $description .= "**{$messageCounter->user->tag()}** • {$messageCounter->count} messages • {$count} xp \n";
         }
         return EmbedBuilder::create(Bot::getDiscord())
             ->setTitle(__('bot.messages.title'))

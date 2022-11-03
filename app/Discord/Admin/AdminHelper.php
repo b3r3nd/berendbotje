@@ -20,7 +20,7 @@ class AdminHelper
         $admin = $user->admin;
 
         if (!DiscordUser::hasHigherLevel($userId, $admin->level)) {
-            return __('bot.admins.powerful', ['name' => $user->discord_tag]);
+            return __('bot.admins.powerful', ['name' => $user->tag()]);
         }
         return $admin;
     }

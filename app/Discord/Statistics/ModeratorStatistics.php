@@ -35,7 +35,7 @@ class ModeratorStatistics extends SlashAndMessageCommand
             $timeouts = Timeout::where('giver_id', $user->id)->count();
             $bans = $user->banCounter->count ?? 0;
             $kicks = $user->kickCounter->count ?? 0;
-            $description .= "**Moderator**: <@{$user->discord_id}>\n**Bans given**: {$bans}\n**Kicks given**: {$kicks}\n**Timeouts given**: {$timeouts}\n\n";
+            $description .= "**Moderator**: {$user->tag()}\n**Bans given**: {$bans}\n**Kicks given**: {$kicks}\n**Timeouts given**: {$timeouts}\n\n";
         }
         $embedBuilder->setDescription($description);
 

@@ -29,7 +29,7 @@ class BumpStatistics extends SlashAndMessageIndexCommand
         $description = "";
         foreach (Bumper::orderBy('count', 'desc')->skip($this->offset)->limit($this->perPage)->get() as $index => $bumper) {
             $description .= Helper::indexPrefix($index);
-            $description .= "**{$bumper->user->discord_tag}** •  {$bumper->count}\n";
+            $description .= "**{$bumper->user->tag()}** •  {$bumper->count}\n";
         }
         return EmbedBuilder::create(Bot::get()->discord())
             ->setTitle(__('bot.bump.title'))

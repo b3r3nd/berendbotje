@@ -18,10 +18,7 @@ class BumpCounter
     {
         Bot::getDiscord()->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) {
             if ($message->type == 20 && $message->interaction->name == 'bump') {
-                $user = DiscordUser::firstOrCreate([
-                    'discord_id' => $message->interaction->user->id,
-                    'discord_tag' => $message->interaction->user,
-                ]);
+                $user = DiscordUser::firstOrCreate(['discord_id' => $message->interaction->user->id]);
 
                 if ($user->bumper) {
                     $user->bumper()->update(['count' => $user->bumper->count + 1]);

@@ -12,7 +12,6 @@ use Discord\Parts\Channel\Message;
 
 trait MessageCommandTrait
 {
-
     /**
      * @param Message $message
      * @return array
@@ -26,7 +25,6 @@ trait MessageCommandTrait
                 $parameters[$index] = $message->mentions->first()->id;
             }
         }
-
         return $parameters;
     }
 
@@ -43,7 +41,6 @@ trait MessageCommandTrait
             str_contains($message->content, $discord->user->id)) {
             return false;
         }
-
         if (!DiscordUser::hasLevel($message->author->id, $this->accessLevel->value)) {
             $message->channel->sendMessage(EmbedFactory::failedEmbed(__("bot.lack-access")));
             return false;
@@ -52,7 +49,6 @@ trait MessageCommandTrait
             $message->channel->sendMessage(EmbedFactory::failedEmbed($this->usageString ?? __('bot.provide-mention')));
             return false;
         }
-
         if ($this->requiredArguments > 0) {
             $parameters = explode(' ', $message->content);
             if (!isset($parameters[$this->requiredArguments])) {
@@ -60,8 +56,6 @@ trait MessageCommandTrait
                 return false;
             }
         }
-
         return true;
     }
-
 }

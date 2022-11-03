@@ -53,6 +53,6 @@ class ResetCringe extends SlashAndMessageCommand
         }
 
         $user->cringeCounter->delete();
-        return EmbedFactory::successEmbed(__('bot.cringe.reset', ['user' => $user->discord_tag]));
+        return EmbedFactory::successEmbed(__('bot.cringe.reset', ['user' => $user->tag()]));
     }
 }

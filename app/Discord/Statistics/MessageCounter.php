@@ -20,10 +20,7 @@ class MessageCounter
             $lastMessageDate = Bot::get()->getLastMessage($message->author->id);
 
             if ($lastMessageDate->diffInSeconds(Carbon::now()) >= Bot::get()->getSetting('xp_cooldown')) {
-                $user = DiscordUser::firstOrCreate([
-                    'discord_id' => $message->author->id,
-                    'discord_tag' => "<@{$message->author->id}>",
-                ]);
+                $user = DiscordUser::firstOrCreate(['discord_id' => $message->author->id]);
                 Bot::get()->setLastMessage($message->author->id);
                 if ($user->messageCounter) {
                     $user->messageCounter()->update(['count' => $user->messageCounter->count + 1]);

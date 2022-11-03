@@ -26,7 +26,7 @@ class AdminIndex extends SlashAndMessageIndexCommand
         $this->total = Admin::count();
         $description = "";
         foreach (Admin::orderBy('level', 'desc')->skip($this->offset)->limit($this->perPage)->get() as $admin) {
-            $description .= "** {$admin->user->discord_tag} ** •  {$admin->level} \n";
+            $description .= "** {$admin->user->tag()} ** • {$admin->level} \n";
         }
         return EmbedBuilder::create(Bot::get()->discord())
             ->setTitle(__('bot.admins.title'))

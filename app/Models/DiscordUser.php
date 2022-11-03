@@ -2,14 +2,26 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class DiscordUser extends Model
 {
-    protected $table = 'discord_users';
-    protected $fillable = ['discord_id', 'discord_tag'];
+    use HasFactory;
 
+    protected $table = 'discord_users';
+    protected $fillable = ['discord_id'];
+
+
+    /**
+     * @return string
+     */
+    public function tag(): string
+    {
+        return "<@{$this->discord_id}>";
+    }
 
     /**
      * @return HasOne
