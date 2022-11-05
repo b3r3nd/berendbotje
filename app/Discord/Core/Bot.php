@@ -2,15 +2,15 @@
 
 namespace App\Discord\Core;
 
-use App\Discord\Admin\AdminIndex;
-use App\Discord\Admin\CreateAdmin;
-use App\Discord\Admin\DeleteAdmin;
-use App\Discord\Admin\MyAccess;
-use App\Discord\Admin\UpdateAdmin;
 use App\Discord\Core\Command\MessageCommand;
 use App\Discord\Core\Command\SlashAndMessageCommand;
 use App\Discord\Core\Command\SlashAndMessageIndexCommand;
 use App\Discord\Core\Command\SlashCommand;
+use App\Discord\Fun\SimpleCommand\SimpleCommand;
+use App\Discord\Fun\SimpleReaction\SimpleReaction;
+use App\Discord\Moderation\Timeout\AllTimeouts;
+use App\Discord\Moderation\Timeout\DetectTimeouts;
+use App\Discord\Moderation\Timeout\SingleUserTimeouts;
 use App\Discord\Roles\AttachRolePermission;
 use App\Discord\Roles\AttachUserRole;
 use App\Discord\Roles\CreateRole;
@@ -24,8 +24,6 @@ use App\Discord\Roles\UserRoles;
 use App\Discord\Roles\Users;
 use App\Discord\Settings\Settings;
 use App\Discord\Settings\UpdateSetting;
-use App\Discord\SimpleCommand\SimpleCommand;
-use App\Discord\SimpleReaction\SimpleReaction;
 use App\Models\Guild;
 use Discord\Discord;
 use Discord\Exceptions\IntentException;
@@ -70,8 +68,8 @@ class Bot
     private function coreClasses(): array
     {
         return [
-//            VoiceStateUpdate::class,
-//            DetectTimeouts::class,
+            VoiceStateUpdate::class,
+            DetectTimeouts::class,
 //            DetectKicksAndBans::class,
 //            BumpCounter::class,
 //            EmoteCounter::class,
@@ -100,19 +98,8 @@ class Bot
 
             Settings::class, UpdateSetting::class,
 
-//            IncreaseCringe::class, DecreaseCringe::class, CringeIndex::class, ResetCringe::class,
-//            CreateCommand::class, DeleteCommand::class, CommandIndex::class,
-//            ReactionIndex::class, CreateReaction::class, DeleteReaction::class,
-//            CreateMediaChannel::class, DeleteMediaChannel::class, MediaChannelIndex::class,
-//            //  AddSong::class, Pause::class, Stop::class, Queue::class, Resume::class, Play::class, RemoveSong::class,
-//            AllTimeouts::class, SingleUserTimeouts::class,
-//            Help::class,
-//            BumpStatistics::class,
-//            EmoteIndex::class,
-//            EightBall::class, UrbanDictionary::class, Say::class, Ask::class,
-//            UserMessages::class, MessagesIndex::class,
-//            ModeratorStatistics::class,
-            //         SetupServer::class, Servers::class,
+            SingleUserTimeouts::class, AllTimeouts::class,
+
         ];
     }
 
@@ -141,10 +128,7 @@ class Bot
             $discord->updatePresence($activity);
 
             $this->loadCoreClasses();
-
             $this->loadGuilds();
-
-            //$this->loadSettings();
             //$this->deleteSlashCommands();
             $this->loadCommands();
         });

@@ -2,7 +2,6 @@
 
 namespace App\Discord;
 
-use App\Discord\Core\AccessLevels;
 use App\Discord\Core\Bot;
 use App\Discord\Core\Command\SlashAndMessageCommand;
 use App\Discord\Core\EmbedBuilder;
@@ -11,9 +10,9 @@ use Discord\Builders\MessageBuilder;
 class Help extends SlashAndMessageCommand
 {
 
-    public function accessLevel(): AccessLevels
+    public function permission(): string
     {
-        return AccessLevels::NONE;
+        return "";
     }
 
     public function trigger(): string
