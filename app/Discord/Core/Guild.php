@@ -6,6 +6,19 @@ use App\Models\Setting;
 use Carbon\Carbon;
 use \App\Models\Guild as GuildModel;
 
+/**
+ * Guild settings are loaded on boot and only updated when the actual setting is changed using commands.
+ *
+ * When a new command or reaction is added a new instance of either class is instantiated. I cannot manually destroy
+ * these instances when the command or reaction is deleted, so I keep track of them here and make sure they do not fire.
+ * @see SimpleCommand
+ * @see SimpleReaction
+ * @property $deletedCommands   List deleted commands so they do not trigger.
+ * @property $deletedReactions  List of deleted reactions so they do not rigger.
+ * @property $mediaChannel      List of channels marked as media, add or remove any channels whenever you like.
+ *
+ * @TODO find better solution for deleted commands and reactions.. probably step away from having a single instance per trigger
+ */
 class Guild
 {
     private array $mediaChannels = [];
@@ -15,6 +28,9 @@ class Guild
     private array $lastMessages = [];
     public GuildModel $model;
 
+    /**
+     * @param GuildModel $guild
+     */
     public function __construct(GuildModel $guild)
     {
         $this->model = $guild;

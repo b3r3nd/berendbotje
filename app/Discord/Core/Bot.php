@@ -74,16 +74,7 @@ use Exception;
  * @property $discord           Set with the global discord instance from DiscordPHP.
  * @property $prefix            Prefix of the bot, can be changed on the fly whenever you like.
  * @property $instance          Static instance of self (singleton) accessible through static call get().
- * @property $mediaChannel      List of channels marked as media, add or remove any channels whenever you like.
- *
- * When a new command or reaction is added a new instance of either class is instantiated. I cannot manually destroy
- * these instances when the command or reaction is deleted, so I keep track of them here and make sure they do not fire.
- * @see SimpleCommand
- * @see SimpleReaction
- * @property $deletedCommands   List deleted commands so they do not trigger.
- * @property $deletedReactions  List of deleted reactions so they do not rigger.
- *
- * @TODO find better solution for deleted commands and reactions.. probably step away from having a single instance per trigger
+ * @property $guilds            List of all active guilds using the bot.
  */
 class Bot
 {
@@ -180,6 +171,9 @@ class Bot
     }
 
 
+    /**
+     * @return void
+     */
     public function loadGuilds(): void
     {
         foreach (Guild::all() as $guild) {
@@ -187,17 +181,19 @@ class Bot
         }
     }
 
+    /**
+     * @param string $id
+     * @return mixed|null
+     */
     public function getGuild(string $id)
     {
         return $this->guilds[$id] ?? null;
     }
 
-    public function setGuild(string $id, \App\Discord\Core\Guild $guild)
-    {
-        $this->guilds[$id] = $guild;
-    }
-
-    public function getGuilds()
+    /**
+     * @return array
+     */
+    public function getGuilds(): array
     {
         return $this->guilds;
     }
