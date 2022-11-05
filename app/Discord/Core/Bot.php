@@ -8,6 +8,10 @@ use App\Discord\Core\Command\SlashAndMessageIndexCommand;
 use App\Discord\Core\Command\SlashCommand;
 use App\Discord\Fun\SimpleCommand\SimpleCommand;
 use App\Discord\Fun\SimpleReaction\SimpleReaction;
+use App\Discord\Moderation\MediaFilter\CreateMediaChannel;
+use App\Discord\Moderation\MediaFilter\DeleteMediaChannel;
+use App\Discord\Moderation\MediaFilter\MediaChannels;
+use App\Discord\Moderation\MediaFilter\MediaFilter;
 use App\Discord\Moderation\Timeout\AllTimeouts;
 use App\Discord\Moderation\Timeout\DetectTimeouts;
 use App\Discord\Moderation\Timeout\SingleUserTimeouts;
@@ -70,10 +74,10 @@ class Bot
         return [
             VoiceStateUpdate::class,
             DetectTimeouts::class,
+            MediaFilter::class,
 //            DetectKicksAndBans::class,
 //            BumpCounter::class,
 //            EmoteCounter::class,
-//            MediaFilter::class,
 //            MentionResponder::class,
 //            MessageCounter::class,
         ];
@@ -99,6 +103,7 @@ class Bot
             Settings::class, UpdateSetting::class,
 
             SingleUserTimeouts::class, AllTimeouts::class,
+            CreateMediaChannel::class, DeleteMediaChannel::class, MediaChannels::class,
 
         ];
     }

@@ -27,4 +27,9 @@ class Guild extends Model
     {
         return $this->hasMany(Setting::class);
     }
+
+    public function mediaChannels(): HasMany
+    {
+        return $this->hasMany(MediaChannel::class);
+    }
 }

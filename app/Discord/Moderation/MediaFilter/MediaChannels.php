@@ -2,18 +2,17 @@
 
 namespace App\Discord\Moderation\MediaFilter;
 
-use App\Discord\Core\AccessLevels;
 use App\Discord\Core\Bot;
 use App\Discord\Core\Command\SlashAndMessageIndexCommand;
 use App\Discord\Core\EmbedBuilder;
 use App\Models\MediaChannel;
 use Discord\Parts\Embed\Embed;
 
-class MediaChannelIndex extends SlashAndMessageIndexCommand
+class MediaChannels extends SlashAndMessageIndexCommand
 {
-    public function accessLevel(): AccessLevels
+    public function permission(): string
     {
-        return AccessLevels::GOD;
+        return "media-filter";
     }
 
     public function trigger(): string

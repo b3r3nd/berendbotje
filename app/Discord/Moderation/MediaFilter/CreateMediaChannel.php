@@ -2,10 +2,10 @@
 
 namespace App\Discord\Moderation\MediaFilter;
 
-use App\Discord\Core\AccessLevels;
 use App\Discord\Core\Bot;
 use App\Discord\Core\Command\SlashAndMessageCommand;
 use App\Discord\Core\EmbedFactory;
+use App\Models\Guild;
 use App\Models\MediaChannel;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Command\Option;
@@ -13,9 +13,9 @@ use Discord\Parts\Interactions\Command\Option;
 class CreateMediaChannel extends SlashAndMessageCommand
 {
 
-    public function accessLevel(): AccessLevels
+    public function permission(): string
     {
-        return AccessLevels::GOD;
+        return "media-filter";
     }
 
     public function trigger(): string
@@ -48,8 +48,8 @@ class CreateMediaChannel extends SlashAndMessageCommand
             return EmbedFactory::failedEmbed(__('bot.media.exists', ['channel' => $this->arguments[0]]));
         }
 
-        MediaChannel::create(['channel' => $this->arguments[0], 'guild_id' => $this->guildId]);
-        Bot::get()->addMediaChannel($this->arguments[0], $this->guildId);
+        MediaChannel::create(['channel' => $this->arguments[0], 'guild_id' => Guild::get($this->guildId)->id]);
+        Bot::get()->getGuild($this->guildId)->addMediaChannel($this->arguments[0]);
         return EmbedFactory::successEmbed(__('bot.media.added', ['channel' => $this->arguments[0]]));
 
     }

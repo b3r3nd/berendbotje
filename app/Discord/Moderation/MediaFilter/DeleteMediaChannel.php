@@ -2,19 +2,19 @@
 
 namespace App\Discord\Moderation\MediaFilter;
 
-use App\Discord\Core\AccessLevels;
 use App\Discord\Core\Bot;
 use App\Discord\Core\Command\SlashAndMessageCommand;
 use App\Discord\Core\EmbedFactory;
+use App\Models\Guild;
 use App\Models\MediaChannel;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Command\Option;
 
 class DeleteMediaChannel extends SlashAndMessageCommand
 {
-    public function accessLevel(): AccessLevels
+    public function permission(): string
     {
-        return AccessLevels::GOD;
+        return "media-filter";
     }
 
     public function trigger(): string
@@ -47,8 +47,8 @@ class DeleteMediaChannel extends SlashAndMessageCommand
             return EmbedFactory::failedEmbed(__('bot.media.not-exists', ['channel' => $this->arguments[0]]));
         }
 
-        MediaChannel::where(['channel' => $this->arguments[0], 'guild_id' => $this->guildId])->first()->delete();
-        Bot::get()->delMediaChannel($this->arguments[0], $this->guildId);
+        MediaChannel::where(['channel' => $this->arguments[0], 'guild_id' => Guild::get($this->guildId)->id])->first()->delete();
+        Bot::get()->getGuild($this->guildId)->delMediaChannel($this->arguments[0]);
         return EmbedFactory::successEmbed(__('bot.media.deleted', ['channel' => $this->arguments[0]]));
 
     }

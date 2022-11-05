@@ -24,6 +24,10 @@ class Guild
             $this->settings[$setting->key] = $setting->value;
         }
 
+        foreach ($this->model->mediaChannels as $channel) {
+            $this->mediaChannels[$channel->channel] = $channel->channel;
+        }
+
     }
 
     /**
