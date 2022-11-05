@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Discord\Core\PermissionScope;
 use App\Models\DiscordUser;
 use App\Models\Guild;
 use App\Models\Permission;
@@ -19,6 +20,7 @@ class RoleSeeder extends Seeder
     {
         $roles = ['admin'];
 
+        $user = DiscordUser::find(1);
         foreach ($roles as $role) {
             foreach (Guild::all() as $guild) {
                 $tmpRole = Role::factory()->create([
@@ -27,9 +29,17 @@ class RoleSeeder extends Seeder
                 ]);
 
                 $tmpRole->permissions()->attach(Permission::all());
-                $user = DiscordUser::find(1);
                 $user->roles()->attach($tmpRole);
             }
         }
+        $guild = Guild::find(1);
+        $role = Role::factory()->create([
+            'name' => 'owners',
+            'guild_id' => $guild->id,
+            'is_admin' => true,
+        ]);
+        $role->permissions()->attach(Permission::withoutGlobalScope(PermissionScope::class)->get());
+        $user->roles()->attach($role);
     }
+
 }

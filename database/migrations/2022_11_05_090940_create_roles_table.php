@@ -16,6 +16,7 @@ return new class extends Migration {
             $table->id();
             $table->string('name');
             $table->unsignedBigInteger('guild_id');
+            $table->boolean('is_admin')->default(false);
             $table->foreign('guild_id')->references('id')->on('guilds');
             $table->timestamps();
         });

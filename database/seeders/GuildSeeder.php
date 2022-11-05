@@ -17,14 +17,15 @@ class GuildSeeder extends Seeder
     {
         $guilds = [
             [
-                'name' => 'Netherlands',
-                'guild_id' => '590941503917129743',
-                'owner_id' => 1, // 1 = berend in seed data
-            ],
-            [
+                // First guild is owner guild
                 'name' => 'BerendBotje',
                 'guild_id' => '1034615413725736970',
-                'owner_id' => 1, // 1 = berend in seed data
+                'owner_id' => 1, // 1 = main admin account
+            ],
+            [
+                'name' => 'Netherlands',
+                'guild_id' => '590941503917129743',
+                'owner_id' => 1,
             ],
         ];
 

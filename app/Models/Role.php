@@ -11,7 +11,7 @@ class Role extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'guild_id'];
+    protected $fillable = ['name', 'guild_id', 'is_admin'];
 
 
     public static function get(string $guildId, string $roleName)

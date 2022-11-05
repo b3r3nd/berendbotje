@@ -2,6 +2,7 @@
 
 namespace App\Discord\Core;
 
+use App\Discord\Administration\Servers;
 use App\Discord\Core\Command\MessageCommand;
 use App\Discord\Core\Command\SlashAndMessageCommand;
 use App\Discord\Core\Command\SlashAndMessageIndexCommand;
@@ -104,6 +105,8 @@ class Bot
             AttachRolePermission::class, AttachUserRole::class, DetachRolePermission::class, DetachUserRole::class,
 
             Settings::class, UpdateSetting::class,
+
+            Servers::class,
 
             SingleUserTimeouts::class, AllTimeouts::class,
             CreateMediaChannel::class, DeleteMediaChannel::class, MediaChannels::class,

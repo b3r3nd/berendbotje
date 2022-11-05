@@ -3,6 +3,7 @@
 namespace App\Models;
 
 
+use App\Discord\Core\PermissionScope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -33,18 +34,20 @@ class DiscordUser extends Model
     {
         $permissions = [];
         foreach ($this->roles->where('guild_id', $guild->id) as $role) {
-            foreach ($role->permissions as $perm) {
+            foreach ($role->permissions()->withoutGlobalScope(PermissionScope::class)->get() as $perm) {
                 $permissions[] = $perm->name;
             }
         }
         return $permissions;
     }
 
+
     public static function hasPermission(string $userId, string $guildId, string $permissionName): bool
     {
         $guild = Guild::get($guildId);
         $user = DiscordUser::get($userId);
         $permissionName = strtolower($permissionName);
+
         return in_array($permissionName, $user->permissionsByGuild($guild) ?? []);
     }
 

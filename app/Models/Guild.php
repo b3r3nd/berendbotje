@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Guild extends Model
@@ -16,6 +17,11 @@ class Guild extends Model
     public static function get(string $guildId)
     {
         return Guild::where('guild_id', $guildId)->first();
+    }
+
+    public function owner(): BelongsTo
+    {
+        return $this->belongsTo(DiscordUser::class, 'owner_id', 'id');
     }
 
     public function roles(): HasMany

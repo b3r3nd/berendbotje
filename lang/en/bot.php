@@ -66,7 +66,7 @@ return [
         'added' => 'server with ID: :id added to owner :owner',
         'title' => 'Active servers',
         'footer' => 'user addserver server_id discord_owner_id to add new servers',
-        'description' => "Server ID • Owner Account\n\n:servers"
+        'description' => "Server • Owner Account\n\n:servers"
     ],
 
     '8ball' => [
