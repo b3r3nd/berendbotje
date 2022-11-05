@@ -6,7 +6,9 @@ use App\Discord\Core\Bot;
 use App\Discord\Core\Command\SlashAndMessageCommand;
 use App\Discord\Core\EmbedBuilder;
 use App\Models\DiscordUser;
+use App\Models\Guild;
 use Discord\Builders\MessageBuilder;
+use Illuminate\Database\Eloquent\Builder;
 
 class ModeratorStatistics extends SlashAndMessageCommand
 {
@@ -21,6 +23,13 @@ class ModeratorStatistics extends SlashAndMessageCommand
         return 'modstats';
     }
 
+    private function getCounter(string $counter, Guild $guild)
+    {
+        return DiscordUser::whereHas($counter, function (Builder $query) use ($guild) {
+            $query->where('guild_id', '=', $guild->id);
+        })->get();
+    }
+
     public function action(): MessageBuilder
     {
         $embedBuilder = EmbedBuilder::create(Bot::getDiscord())
@@ -28,12 +37,18 @@ class ModeratorStatistics extends SlashAndMessageCommand
             ->setFooter(__('bot.adminstats.footer'));
         $description = __('bot.adminstats.description');
 
-        $kickers = DiscordUser::has('kickCounters')->get();
-        $banners = DiscordUser::has('banCounters')->get();
-        $timeouts = DiscordUser::has('givenTimeouts')->get();
+        $guild = Guild::get($this->guildId);
+        $kicks = $this->getCounter('kickCounters', $guild);
+        $bans = $this->getCounter('banCounters', $guild);
+        $timeouts = $this->getCounter('givenTimeouts', $guild);
 
-        foreach ($kickers->merge($banners)->merge($timeouts) as $moderator) {
-            $description .= "**Moderator**: {$moderator->tag()}\n**Kicks**: {$moderator->kickCounters->count()}\n**Bans**: {$moderator->banCounters->count()}\n**Timeouts**: {$moderator->givenTimeouts->count()}\n\n";
+        foreach ($kicks->merge($bans)->merge($timeouts) as $moderator) {
+            $bans = $moderator->banCounters->first()->count ?? 0;
+            $kicks = $moderator->kickCounters->first()->count ?? 0;
+            $description .= "**Moderator**: {$moderator->tag()}
+            **Kicks**: {$kicks}
+            **Bans**: {$bans}
+            **Timeouts**: {$moderator->givenTimeouts->count()}\n\n";
         }
 
         $embedBuilder->setDescription($description);
