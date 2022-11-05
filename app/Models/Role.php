@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Role extends Model
 {
@@ -13,6 +12,36 @@ class Role extends Model
 
     protected $fillable = ['name', 'guild_id'];
 
+
+    public static function get(string $guildId, string $roleName)
+    {
+        $guild = Guild::get($guildId);
+
+        return Role::where([
+            ['guild_id', '=', $guild->id],
+            ['name', '=', strtolower($roleName)]
+        ])->first();
+    }
+
+    public static function exists(string $guildId, string $roleName): bool
+    {
+        $guild = Guild::get($guildId);
+        return !Role::where([
+            ['guild_id', '=', $guild->id],
+            ['name', '=', strtolower($roleName)]
+        ])->get()->isEmpty();
+    }
+
+    public static function byGuildId(string $guildId)
+    {
+        return Role::where('guild_id', $guildId);
+    }
+
+    public static function byDiscordGuildId(string $guildId)
+    {
+        $guild = Guild::get($guildId);
+        return Role::where('guild_id', $guild->id);
+    }
 
     public function permissions()
     {

@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
-use App\Scopes\GuildScope;
-use Illuminate\Database\Eloquent\Casts\Attribute;
+
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class DiscordUser extends Model
@@ -16,17 +17,40 @@ class DiscordUser extends Model
     protected $fillable = ['discord_id'];
 
 
-    public function roles()
+    public function roles(): BelongsToMany
     {
         return $this->belongsToMany(Role::class, 'discord_user_roles', 'user_id');
     }
 
-    public static function getByGuild($discordId, $guildId)
+    public function rolesByGuild(string $guildId)
     {
-        return DiscordUser::firstOrCreate([
-            'discord_id' => $discordId,
-            'guild_id' => $guildId,
-        ]);
+        $guild = Guild::get($guildId);
+        return $this->roles->where('guild_id', '=', $guild->id);
+    }
+
+    public function permissionsByGuild(Guild $guild): array
+    {
+        $permissions = [];
+        foreach ($this->roles->where('guild_id', $guild->id) as $role) {
+            foreach ($role->permissions as $perm) {
+                $permissions[] = $perm->name;
+            }
+        }
+        return $permissions;
+    }
+
+    public static function hasPermission(string $userId, string $guildId, string $permissionName): bool
+    {
+        $guild = Guild::get($guildId);
+        $user = DiscordUser::get($userId);
+        $permissionName = strtolower($permissionName);
+        return in_array($permissionName, $user->permissionsByGuild($guild) ?? []);
+    }
+
+
+    public static function get($discordId)
+    {
+        return DiscordUser::firstOrCreate(['discord_id' => $discordId]);
     }
 
     /**

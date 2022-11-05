@@ -23,6 +23,33 @@ return [
     'no-valid-term' => 'Search term :term cannot be found',
     'needhelp' => 'For more info check $help',
 
+
+    'myroles' => [
+        'title' => 'My roles in this server',
+        'footer' => 'See help for more info',
+        'description' => ':roles',
+        'none' => 'You have no roles in this server',
+    ],
+
+    'roles' => [
+        'title' => 'Roles for this server',
+        'footer' => 'Usage: addrole, delrole, roles',
+        'description' => ':roles',
+        'usage-addrole' => 'addrole `role_name`',
+        'usage-delrole' => 'delrole `role_name`',
+        'exist' => 'Role already exists',
+        'created' => 'Role :role created',
+        'not-exist' => 'Role :role does not exist',
+        'deleted' => 'Role :role deleted',
+    ],
+
+    'permissions' => [
+        'title' => 'Global permissions',
+        'footer' => 'See help for more info',
+        'description' => ':perms',
+    ],
+
+
     'server' => [
         'usage-addserver' => 'addserver `server_id` `owner_user_id`',
         'added' => 'server with ID: :id added to owner :owner',

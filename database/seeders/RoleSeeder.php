@@ -17,20 +17,18 @@ class RoleSeeder extends Seeder
      */
     public function run()
     {
-        $roles = ['Admin'];
+        $roles = ['admin'];
 
         foreach ($roles as $role) {
             foreach (Guild::all() as $guild) {
-                $role = Role::factory()->create([
+                $tmpRole = Role::factory()->create([
                     'name' => $role,
                     'guild_id' => $guild->id,
                 ]);
 
-                $role->permissions()->attach(Permission::all());
-
-                foreach (DiscordUser::all() as $user) {
-                    $user->roles()->attach($role);
-                }
+                $tmpRole->permissions()->attach(Permission::all());
+                $user = DiscordUser::find(1);
+                $user->roles()->attach($tmpRole);
             }
         }
     }

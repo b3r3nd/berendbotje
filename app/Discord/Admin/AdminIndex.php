@@ -11,9 +11,9 @@ use Discord\Parts\Embed\Embed;
 
 class AdminIndex extends SlashAndMessageIndexCommand
 {
-    public function accessLevel(): AccessLevels
+    public function permission(): string
     {
-        return AccessLevels::GOD;
+        return 'admin';
     }
 
     public function trigger(): string

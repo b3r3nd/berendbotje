@@ -56,6 +56,12 @@ use App\Discord\Statistics\UserMessages;
 use App\Discord\Timeout\AllTimeouts;
 use App\Discord\Timeout\DetectTimeouts;
 use App\Discord\Timeout\SingleUserTimeouts;
+use App\Discord\UserManagement\CreateRole;
+use App\Discord\UserManagement\DeleteRole;
+use App\Discord\UserManagement\MyRoles;
+use App\Discord\UserManagement\Permissions;
+use App\Discord\UserManagement\Roles;
+use App\Models\Guild;
 use App\Models\MediaChannel;
 use App\Models\Reaction;
 use App\Models\Setting;
@@ -65,6 +71,7 @@ use Discord\Exceptions\IntentException;
 use Discord\Parts\User\Activity;
 use Discord\WebSockets\Intents;
 use Exception;
+use Illuminate\Support\Collection;
 
 /**
  * We only ever have one instance of this class, you could call it a singleton however it isn't really. This class
@@ -91,13 +98,9 @@ use Exception;
 class Bot
 {
     private Discord $discord;
+    private array $guilds;
     private string $prefix = '$';
     private static self $instance;
-    private array $mediaChannels = [];
-    private array $deletedCommands = [];
-    private array $deletedReactions = [];
-    private array $settings = [];
-    private array $lastMessages = [];
 
 
     /**
@@ -107,14 +110,14 @@ class Bot
     private function coreClasses(): array
     {
         return [
-            VoiceStateUpdate::class,
-            DetectTimeouts::class,
-            DetectKicksAndBans::class,
-            BumpCounter::class,
-            EmoteCounter::class,
-            MediaFilter::class,
-            MentionResponder::class,
-            MessageCounter::class,
+//            VoiceStateUpdate::class,
+//            DetectTimeouts::class,
+//            DetectKicksAndBans::class,
+//            BumpCounter::class,
+//            EmoteCounter::class,
+//            MediaFilter::class,
+//            MentionResponder::class,
+//            MessageCounter::class,
         ];
     }
 
@@ -130,7 +133,9 @@ class Bot
     private function commands(): array
     {
         return [
-            CreateAdmin::class, DeleteAdmin::class, UpdateAdmin::class, AdminIndex::class, MyAccess::class,
+            Roles::class, Permissions::class, MyRoles::class, CreateRole::class, DeleteRole::class,
+            //AdminIndex::class,
+            // CreateAdmin::class, DeleteAdmin::class, UpdateAdmin::class, MyAccess::class,
 //            IncreaseCringe::class, DecreaseCringe::class, CringeIndex::class, ResetCringe::class,
 //            CreateCommand::class, DeleteCommand::class, CommandIndex::class,
 //            ReactionIndex::class, CreateReaction::class, DeleteReaction::class,
@@ -144,7 +149,7 @@ class Bot
 //            Settings::class, UpdateSetting::class,
 //            UserMessages::class, MessagesIndex::class,
 //            ModeratorStatistics::class,
-            SetupServer::class, Servers::class,
+            //         SetupServer::class, Servers::class,
         ];
     }
 
@@ -171,13 +176,35 @@ class Bot
                 'name' => __('bot.status'),
             ]);
             $discord->updatePresence($activity);
-            $this->loadSettings();
+
             $this->loadCoreClasses();
+
+            $this->loadGuilds();
+
+            //$this->loadSettings();
             //$this->deleteSlashCommands();
             $this->loadCommands();
         });
         self::$instance = $this;
         return $this;
+    }
+
+
+    public function loadGuilds(): void
+    {
+        foreach (Guild::all() as $guild) {
+            $this->guilds[$guild->id] = new \App\Discord\Core\Guild($guild);
+        }
+    }
+
+    public function getGuild(string $id)
+    {
+        return $this->guilds[$id] ?? null;
+    }
+
+    public function getGuilds()
+    {
+        return $this->guilds;
     }
 
     /**
@@ -193,16 +220,6 @@ class Bot
     /**
      * @return void
      */
-    public function loadSettings(): void
-    {
-        foreach (Setting::all() as $setting) {
-            $this->setSetting($setting->key, $setting->value, $setting->guild_id);
-        }
-    }
-
-    /**
-     * @return void
-     */
     private function loadCommands(): void
     {
         foreach ($this->commands() as $class) {
@@ -211,23 +228,23 @@ class Bot
                 $instance->registerMessageCommand();
             }
             if (method_exists($instance, 'registerSlashCommand'))
-                (new $class())->registerSlashCommand();
+                $instance->registerSlashCommand();
         }
 
-        // Custom commands
-        foreach (\App\Models\Command::all() as $command) {
-            SimpleCommand::create($this, $command->trigger, $command->response, $command->guild_id);
-        }
-
-        // Custom reactions
-        foreach (Reaction::all() as $reaction) {
-            SimpleReaction::create($this, $reaction->trigger, $reaction->reaction, $reaction->guild_id);
-        }
-
-        // Set media channel filters
-        foreach (MediaChannel::all() as $channel) {
-            $this->mediaChannels[$channel->channel] = $channel->channel;
-        }
+//        // Custom commands
+//        foreach (\App\Models\Command::all() as $command) {
+//            SimpleCommand::create($this, $command->trigger, $command->response, $command->guild_id);
+//        }
+//
+//        // Custom reactions
+//        foreach (Reaction::all() as $reaction) {
+//            SimpleReaction::create($this, $reaction->trigger, $reaction->reaction, $reaction->guild_id);
+//        }
+//
+//        // Set media channel filters
+//        foreach (MediaChannel::all() as $channel) {
+//            $this->mediaChannels[$channel->channel] = $channel->channel;
+//        }
     }
 
     /**
@@ -241,60 +258,6 @@ class Bot
                 $this->discord->application->commands->delete($command);
             }
         });
-    }
-
-    /**
-     * @param string $userId
-     * @return Carbon
-     */
-    public function getLastMessage(string $userId): Carbon
-    {
-        if (isset($this->lastMessages[$userId])) {
-            return $this->lastMessages[$userId];
-        }
-        return Carbon::now()->subMinutes(100);
-    }
-
-    /**
-     * @param string $userId
-     * @return void
-     */
-    public function setLastMessage(string $userId): void
-    {
-        $this->lastMessages[$userId] = Carbon::now();
-    }
-
-    /**
-     * @param string $guildId
-     * @return array
-     */
-    public function getSettings(string $guildId): array
-    {
-        return $this->settings[$guildId] ?? [];
-    }
-
-    /**
-     * @param string $setting
-     * @param $value
-     * @param string $guildId
-     * @return void
-     */
-    public function setSetting(string $setting, $value, string $guildId): void
-    {
-        $this->settings[$guildId][$setting] = $value;
-    }
-
-    /**
-     * @param string $setting
-     * @param string $guildId
-     * @return false|mixed
-     */
-    public function getSetting(string $setting, string $guildId)
-    {
-        if (isset($this->settings[$guildId][$setting])) {
-            return $this->settings[$guildId][$setting];
-        }
-        return false;
     }
 
     /**
@@ -313,68 +276,6 @@ class Bot
         return self::$instance->discord;
     }
 
-    /**
-     * @param string $channel
-     * @param string $guildId
-     * @return void
-     */
-    public function addMediaChannel(string $channel, string $guildId): void
-    {
-        $this->mediaChannels[$guildId][$channel] = $channel;
-    }
-
-    /**
-     * @param string $channel
-     * @param string $guildId
-     * @return void
-     */
-    public function delMediaChannel(string $channel, string $guildId): void
-    {
-        unset($this->mediaChannels[$guildId][$channel]);
-    }
-
-    /**
-     * @param string $guildId
-     * @return array
-     */
-    public function getMediaChannels(string $guildId): array
-    {
-        return $this->mediaChannels[$guildId] ?? [];
-    }
-
-    /**
-     * @return array
-     */
-    public function getDeletedReactions(): array
-    {
-        return $this->deletedReactions;
-    }
-
-    /**
-     * @param string $command
-     * @return void
-     */
-    public function deleteReaction(string $command): void
-    {
-        $this->deletedReactions[] = $command;
-    }
-
-    /**
-     * @return array
-     */
-    public function getDeletedCommands(): array
-    {
-        return $this->deletedCommands;
-    }
-
-    /**
-     * @param string $command
-     * @return void
-     */
-    public function deleteCommand(string $command): void
-    {
-        $this->deletedCommands[] = $command;
-    }
 
     /**
      * @return Discord

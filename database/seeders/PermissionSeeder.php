@@ -15,7 +15,10 @@ class PermissionSeeder extends Seeder
      */
     public function run()
     {
-        $permissions = ['addadmin', 'deladmin', 'admins'];
+        $permissions = [
+            'roles', 'create role', 'delete role', 'update role',
+            'permissions',
+        ];
 
         foreach ($permissions as $permission) {
             Permission::factory()->create(['name' => $permission]);
