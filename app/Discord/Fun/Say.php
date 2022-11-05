@@ -9,7 +9,7 @@ class Say extends MessageCommand
 {
     public function permission(): string
     {
-        return "";
+        return "admins";
     }
 
     public function trigger(): string

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Discord\Fun;
+namespace App\Discord\Fun\Message;
 
 use App\Discord\Core\Bot;
 use App\Models\DiscordUser;
@@ -21,9 +21,11 @@ class MessageCounter
 
             $guild = Bot::get()->getGuild($message->guild_id);
 
+
             if ($lastMessageDate->diffInSeconds(Carbon::now()) >= $guild->getSetting('xp_cooldown')) {
                 $user = DiscordUser::get($message->author->id);
                 $guild->setLastMessage($message->author->id);
+
 
                 $messageCounters = $user->messageCounters()->where('guild_id', $guild->model->id)->get();
                 $messageCounter = new \App\Models\MessageCounter(['count' => 1, 'guild_id' => $guild->model->id]);
@@ -31,8 +33,8 @@ class MessageCounter
                 if ($messageCounters->isEmpty()) {
                     $user->messageCounters()->save($messageCounter);
                 } else {
-                    $bumpCounter = $messageCounter->first();
-                    $bumpCounter->update(['count' => $messageCounter->count + 1]);
+                    $messageCounter = $messageCounters->first();
+                    $messageCounter->update(['count' => $messageCounter->count + 1]);
                 }
             }
         });

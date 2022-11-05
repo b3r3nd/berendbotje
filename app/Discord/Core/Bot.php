@@ -7,24 +7,29 @@ use App\Discord\Core\Command\MessageCommand;
 use App\Discord\Core\Command\SlashAndMessageCommand;
 use App\Discord\Core\Command\SlashAndMessageIndexCommand;
 use App\Discord\Core\Command\SlashCommand;
+use App\Discord\Fun\Ask;
 use App\Discord\Fun\Bump\BumpCounter;
 use App\Discord\Fun\Bump\BumpStatistics;
+use App\Discord\Fun\Command\CommandIndex;
+use App\Discord\Fun\Command\CreateCommand;
+use App\Discord\Fun\Command\DeleteCommand;
+use App\Discord\Fun\Command\SimpleCommand;
 use App\Discord\Fun\Cringe\CringeIndex;
 use App\Discord\Fun\Cringe\DecreaseCringe;
 use App\Discord\Fun\Cringe\IncreaseCringe;
 use App\Discord\Fun\Cringe\ResetCringe;
-use App\Discord\Fun\EmoteCounter;
-use App\Discord\Fun\EmoteIndex;
-use App\Discord\Fun\MessageCounter;
-use App\Discord\Fun\MessagesIndex;
-use App\Discord\Fun\SimpleCommand\CommandIndex;
-use App\Discord\Fun\SimpleCommand\CreateCommand;
-use App\Discord\Fun\SimpleCommand\DeleteCommand;
-use App\Discord\Fun\SimpleCommand\SimpleCommand;
-use App\Discord\Fun\SimpleReaction\CreateReaction;
-use App\Discord\Fun\SimpleReaction\DeleteReaction;
-use App\Discord\Fun\SimpleReaction\ReactionIndex;
-use App\Discord\Fun\SimpleReaction\SimpleReaction;
+use App\Discord\Fun\EightBall;
+use App\Discord\Fun\Emote\EmoteCounter;
+use App\Discord\Fun\Emote\EmoteIndex;
+use App\Discord\Fun\Message\MessageCounter;
+use App\Discord\Fun\Message\MessagesIndex;
+use App\Discord\Fun\Message\UserMessages;
+use App\Discord\Fun\Reaction\CreateReaction;
+use App\Discord\Fun\Reaction\DeleteReaction;
+use App\Discord\Fun\Reaction\ReactionIndex;
+use App\Discord\Fun\Reaction\SimpleReaction;
+use App\Discord\Fun\Say;
+use App\Discord\Fun\UrbanDictionary;
 use App\Discord\Moderation\DetectKicksAndBans;
 use App\Discord\Moderation\MediaFilter\CreateMediaChannel;
 use App\Discord\Moderation\MediaFilter\DeleteMediaChannel;
@@ -127,9 +132,10 @@ class Bot
             CreateMediaChannel::class, DeleteMediaChannel::class, MediaChannels::class,
 
             CringeIndex::class, IncreaseCringe::class, DecreaseCringe::class, ResetCringe::class,
-            BumpStatistics::class, EmoteIndex::class, MessagesIndex::class,
+            BumpStatistics::class, EmoteIndex::class, MessagesIndex::class, UserMessages::class,
             CommandIndex::class, CreateCommand::class, DeleteCommand::class,
             ReactionIndex::class, CreateReaction::class, DeleteReaction::class,
+            EightBall::class, Ask::class, Say::class, UrbanDictionary::class,
 
 
             TestCommand::class,
@@ -180,6 +186,11 @@ class Bot
     public function getGuild(string $id)
     {
         return $this->guilds[$id] ?? null;
+    }
+
+    public function setGuild(string $id, \App\Discord\Core\Guild $guild)
+    {
+        $this->guilds[$id] = $guild;
     }
 
     public function getGuilds()

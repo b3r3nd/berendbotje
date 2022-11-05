@@ -22,6 +22,7 @@ class Permissions extends SlashAndMessageIndexCommand
 
     public function getEmbed(): Embed
     {
+        $this->perPage = 30;
         $this->total = Permission::count();
         $description = "";
         foreach (Permission::orderBy('created_at', 'desc')->skip($this->offset)->limit($this->perPage)->get() as $permission) {

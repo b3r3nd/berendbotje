@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Discord\Fun\SimpleCommand;
+namespace App\Discord\Fun\Command;
 
 use App\Discord\Core\AccessLevels;
 use App\Discord\Core\Bot;

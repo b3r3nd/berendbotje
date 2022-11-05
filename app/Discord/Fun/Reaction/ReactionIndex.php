@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Discord\Fun\SimpleReaction;
+namespace App\Discord\Fun\Reaction;
 
 use App\Discord\Core\Bot;
 use App\Discord\Core\Command\SlashAndMessageIndexCommand;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Discord\Fun;
+namespace App\Discord\Fun\Emote;
 
 use App\Discord\Core\Bot;
 use App\Discord\Core\Command\SlashAndMessageIndexCommand;
