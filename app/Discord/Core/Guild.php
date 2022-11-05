@@ -4,7 +4,6 @@ namespace App\Discord\Core;
 
 use App\Models\Setting;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
 use \App\Models\Guild as GuildModel;
 
 class Guild
@@ -72,7 +71,7 @@ class Guild
 
 
     /**
-     * @param string $setting
+     * @param string $key
      * @param $value
      * @return void
      */

@@ -10,7 +10,7 @@ class BanCounter extends Model
 
     protected $table = 'ban_counter';
 
-    protected $fillable = ['count'];
+    protected $fillable = ['count', 'guild_id'];
 
     /**
      * @return BelongsTo

@@ -28,18 +28,23 @@ class DetectKicksAndBans
             $discord->guilds->fetch($member->guild_id)->done(function (Guild $guild) use ($member) {
                 $guild->getAuditLog(['limit' => 1])->done(function (AuditLog $auditLog) use ($member, $guild) {
                     foreach ($auditLog->audit_log_entries as $entry) {
-                        $user = DiscordUser::getByGuild($entry->user->id, $guild->id);
+                        $user = DiscordUser::get($entry->user->id);
+                        $guildModel = \App\Models\Guild::get($guild->id);
                         if ($entry->action_type == 20) {
-                            if ($user->kickCounter) {
-                                $user->kickCounter()->update(['count' => $user->kickCounter->count + 1]);
+                            $kickCounters = $user->kickCounters()->where('guild_id', $guildModel->id)->get();
+                            if ($kickCounters->isEmpty()) {
+                                $user->kickCounters()->save(new KickCounter(['count' => 1, 'guild_id' => $guildModel->id]));
                             } else {
-                                $user->kickCounter()->save(new KickCounter(['count' => 1]));
+                                $kickCounter = $kickCounters->first();
+                                $kickCounter->update(['count' => $kickCounter->count + 1]);
                             }
                         } elseif ($entry->action_type == 22) {
-                            if ($user->banCounter) {
-                                $user->banCounter()->update(['count' => $user->banCounter->count + 1]);
+                            $banCounters = $user->banCounters()->where('guild_id', $guildModel->id)->get();
+                            if ($banCounters->isEmpty()) {
+                                $user->banCounters()->save(new BanCounter(['count' => 1, 'guild_id' => $guildModel->id]));
                             } else {
-                                $user->banCounter()->save(new BanCounter(['count' => 1]));
+                                $banCounter = $banCounters->first();
+                                $banCounter->update(['count' => $banCounter->count + 1]);
                             }
                         }
                     }
