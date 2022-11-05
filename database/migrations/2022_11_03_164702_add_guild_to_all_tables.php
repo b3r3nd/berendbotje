@@ -56,6 +56,10 @@ return new class extends Migration {
             $table->unsignedBigInteger('guild_id');
             $table->foreign('guild_id')->references('id')->on('guilds');
         });
+        Schema::table('bumpers', function (Blueprint $table) {
+            $table->unsignedBigInteger('guild_id');
+            $table->foreign('guild_id')->references('id')->on('guilds');
+        });
     }
 
     /**

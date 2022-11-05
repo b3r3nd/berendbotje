@@ -7,6 +7,8 @@ use App\Discord\Core\Command\MessageCommand;
 use App\Discord\Core\Command\SlashAndMessageCommand;
 use App\Discord\Core\Command\SlashAndMessageIndexCommand;
 use App\Discord\Core\Command\SlashCommand;
+use App\Discord\Fun\Bump\BumpCounter;
+use App\Discord\Fun\Bump\BumpStatistics;
 use App\Discord\Fun\Cringe\CringeIndex;
 use App\Discord\Fun\Cringe\DecreaseCringe;
 use App\Discord\Fun\Cringe\IncreaseCringe;
@@ -84,7 +86,7 @@ class Bot
             DetectTimeouts::class,
             MediaFilter::class,
             DetectKicksAndBans::class,
-//            BumpCounter::class,
+            BumpCounter::class,
 //            EmoteCounter::class,
 //            MentionResponder::class,
 //            MessageCounter::class,
@@ -115,7 +117,7 @@ class Bot
             CreateMediaChannel::class, DeleteMediaChannel::class, MediaChannels::class,
 
             CringeIndex::class, IncreaseCringe::class, DecreaseCringe::class, ResetCringe::class,
-
+            BumpStatistics::class,
 
             TestCommand::class,
         ];

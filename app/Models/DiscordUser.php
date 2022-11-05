@@ -84,7 +84,7 @@ class DiscordUser extends Model
     /**
      * @return HasMany
      */
-    public function bumper(): HasMany
+    public function bumpCounters(): HasMany
     {
         return $this->hasMany(Bumper::class, 'user_id', 'id');
     }

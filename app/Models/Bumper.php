@@ -8,14 +8,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Bumper extends Model
 {
-    protected $fillable = ['count'];
+    protected $fillable = ['count', 'guild_id'];
 
 
     public static function byGuild($guildId)
     {
-        return Bumper::whereHas('user', function (Builder $query) use ($guildId) {
-            $query->where('guild_id', '=', $guildId);
-        });
+        return Bumper::where('guild_id', Guild::get($guildId)->id);
     }
 
     /**
