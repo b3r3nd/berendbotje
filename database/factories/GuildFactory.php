@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\DiscordUser>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Guild>
  */
-class DiscordUserFactory extends Factory
+class GuildFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,7 +17,9 @@ class DiscordUserFactory extends Factory
     public function definition()
     {
         return [
-            'discord_id' => $this->faker->randomKey
+            'name' => $this->faker->name,
+            'guild_id' => $this->faker->randomKey,
+            'owner_id' => $this->faker->randomKey,
         ];
     }
 }

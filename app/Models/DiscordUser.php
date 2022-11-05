@@ -13,8 +13,13 @@ class DiscordUser extends Model
     use HasFactory;
 
     protected $table = 'discord_users';
-    protected $fillable = ['discord_id', 'guild_id'];
+    protected $fillable = ['discord_id'];
 
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class, 'discord_user_roles', 'user_id');
+    }
 
     public static function getByGuild($discordId, $guildId)
     {
