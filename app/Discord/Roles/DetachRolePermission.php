@@ -34,6 +34,10 @@ class DetachRolePermission extends MessageCommand
             $this->message->channel->sendMessage(EmbedFactory::failedEmbed(__('bot.roles.not-exist', ['role' => $this->arguments[0]])));
             return;
         }
+        if(!RoleHelper::processPermissions($this->arguments[1])) {
+            $this->message->channel->sendMessage(EmbedFactory::failedEmbed(__('bot.permissions.not-exist', ['perm' => $this->arguments[1]])));
+            return;
+        }
 
         $role = Role::get($this->guildId, $this->arguments[0]);
         $permissions = RoleHelper::processPermissions($this->arguments[1]);
