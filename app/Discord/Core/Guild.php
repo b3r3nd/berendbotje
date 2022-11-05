@@ -72,16 +72,22 @@ class Guild
      * @param $value
      * @return void
      */
-    public function setSetting(string $setting, $value): void
+    public function setSetting(string $key, $value): void
     {
-        $this->settings[$setting] = $value;
+        $this->settings[$key] = $value;
+
+        $setting = Setting::getSetting($key, $this->model->guild_id);
+
+
+        $setting->value = $value;
+        $setting->save();
     }
 
     /**
      * @param string $setting
      * @return false|mixed
      */
-    public function getSetting(string $setting)
+    public function getSetting(string $setting): mixed
     {
         if (isset($this->settings[$setting])) {
             return $this->settings[$setting];

@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Discord\UserManagement;
+namespace App\Discord\Roles;
 
 use App\Discord\Core\Command\MessageCommand;
 use App\Discord\Core\EmbedFactory;
 use App\Models\Permission;
 use App\Models\Role;
 
-class AttachRolePermission extends MessageCommand
+class DetachRolePermission extends MessageCommand
 {
 
     public function permission(): string
@@ -17,13 +17,14 @@ class AttachRolePermission extends MessageCommand
 
     public function trigger(): string
     {
-        return 'setperm';
+        return 'unsetperm';
     }
 
     public function __construct()
     {
         $this->requiredArguments = 2;
-        $this->usageString = __('bot.roles.usage-attachperm');
+        $this->usageString = __('bot.roles.usage-detachperm');
+
         parent::__construct();
     }
 
@@ -40,8 +41,8 @@ class AttachRolePermission extends MessageCommand
 
         $role = Role::get($this->guildId, $this->arguments[0]);
         $permission = Permission::get($this->arguments[1]);
-        $role->permissions()->attach($permission);
+        $role->permissions()->detach($permission);
 
-        $this->message->channel->sendMessage(EmbedFactory::successEmbed(__('bot.roles.perm-attached', ['role' => $role->name, 'perm' => $permission->name])));
+        $this->message->channel->sendMessage(EmbedFactory::successEmbed(__('bot.roles.perm-detached', ['role' => $role->name, 'perm' => $permission->name])));
     }
 }

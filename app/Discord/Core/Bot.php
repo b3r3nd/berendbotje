@@ -2,82 +2,36 @@
 
 namespace App\Discord\Core;
 
-use App\Discord\Admin\CreateAdmin;
 use App\Discord\Admin\AdminIndex;
+use App\Discord\Admin\CreateAdmin;
 use App\Discord\Admin\DeleteAdmin;
 use App\Discord\Admin\MyAccess;
 use App\Discord\Admin\UpdateAdmin;
-use App\Discord\Bump\BumpCounter;
-use App\Discord\Bump\BumpStatistics;
 use App\Discord\Core\Command\MessageCommand;
 use App\Discord\Core\Command\SlashAndMessageCommand;
 use App\Discord\Core\Command\SlashAndMessageIndexCommand;
 use App\Discord\Core\Command\SlashCommand;
-use App\Discord\Core\Settings\Settings;
-use App\Discord\Core\Settings\UpdateSetting;
-use App\Discord\Cringe\IncreaseCringe;
-use App\Discord\Cringe\CringeIndex;
-use App\Discord\Cringe\DecreaseCringe;
-use App\Discord\Cringe\ResetCringe;
-use App\Discord\Fun\Ask;
-use App\Discord\Fun\EightBall;
-use App\Discord\Fun\MentionResponder;
-use App\Discord\Fun\UrbanDictionary;
-use App\Discord\Help;
-use App\Discord\MediaFilter\CreateMediaChannel;
-use App\Discord\MediaFilter\DeleteMediaChannel;
-use App\Discord\MediaFilter\MediaChannelIndex;
-use App\Discord\MediaFilter\MediaFilter;
-use App\Discord\Music\AddSong;
-use App\Discord\Music\Pause;
-use App\Discord\Music\Play;
-use App\Discord\Music\Queue;
-use App\Discord\Music\RemoveSong;
-use App\Discord\Music\Resume;
-use App\Discord\Music\Stop;
-use App\Discord\Say;
-use App\Discord\Servers;
-use App\Discord\SetupServer;
-use App\Discord\SimpleCommand\CreateCommand;
-use App\Discord\SimpleCommand\CommandIndex;
-use App\Discord\SimpleCommand\DeleteCommand;
+use App\Discord\Roles\AttachRolePermission;
+use App\Discord\Roles\AttachUserRole;
+use App\Discord\Roles\CreateRole;
+use App\Discord\Roles\DeleteRole;
+use App\Discord\Roles\DetachRolePermission;
+use App\Discord\Roles\DetachUserRole;
+use App\Discord\Roles\MyRoles;
+use App\Discord\Roles\Permissions;
+use App\Discord\Roles\Roles;
+use App\Discord\Roles\UserRoles;
+use App\Discord\Roles\Users;
+use App\Discord\Settings\Settings;
+use App\Discord\Settings\UpdateSetting;
 use App\Discord\SimpleCommand\SimpleCommand;
-use App\Discord\SimpleReaction\CreateReaction;
-use App\Discord\SimpleReaction\DeleteReaction;
-use App\Discord\SimpleReaction\ReactionIndex;
 use App\Discord\SimpleReaction\SimpleReaction;
-use App\Discord\Statistics\ModeratorStatistics;
-use App\Discord\Statistics\DetectKicksAndBans;
-use App\Discord\Statistics\EmoteCounter;
-use App\Discord\Statistics\EmoteIndex;
-use App\Discord\Statistics\MessageCounter;
-use App\Discord\Statistics\MessagesIndex;
-use App\Discord\Statistics\UserMessages;
-use App\Discord\Timeout\AllTimeouts;
-use App\Discord\Timeout\DetectTimeouts;
-use App\Discord\Timeout\SingleUserTimeouts;
-use App\Discord\UserManagement\AttachRolePermission;
-use App\Discord\UserManagement\AttachUserRole;
-use App\Discord\UserManagement\CreateRole;
-use App\Discord\UserManagement\DeleteRole;
-use App\Discord\UserManagement\DetachRolePermission;
-use App\Discord\UserManagement\DetachUserRole;
-use App\Discord\UserManagement\MyRoles;
-use App\Discord\UserManagement\Permissions;
-use App\Discord\UserManagement\Roles;
-use App\Discord\UserManagement\UserRoles;
-use App\Discord\UserManagement\Users;
 use App\Models\Guild;
-use App\Models\MediaChannel;
-use App\Models\Reaction;
-use App\Models\Setting;
-use Carbon\Carbon;
 use Discord\Discord;
 use Discord\Exceptions\IntentException;
 use Discord\Parts\User\Activity;
 use Discord\WebSockets\Intents;
 use Exception;
-use Illuminate\Support\Collection;
 
 /**
  * We only ever have one instance of this class, you could call it a singleton however it isn't really. This class
@@ -143,8 +97,9 @@ class Bot
             MyRoles::class, UserRoles::class,
             CreateRole::class, DeleteRole::class,
             AttachRolePermission::class, AttachUserRole::class, DetachRolePermission::class, DetachUserRole::class,
-            //AdminIndex::class,
-            // CreateAdmin::class, DeleteAdmin::class, UpdateAdmin::class, MyAccess::class,
+
+            Settings::class, UpdateSetting::class,
+
 //            IncreaseCringe::class, DecreaseCringe::class, CringeIndex::class, ResetCringe::class,
 //            CreateCommand::class, DeleteCommand::class, CommandIndex::class,
 //            ReactionIndex::class, CreateReaction::class, DeleteReaction::class,
@@ -155,7 +110,6 @@ class Bot
 //            BumpStatistics::class,
 //            EmoteIndex::class,
 //            EightBall::class, UrbanDictionary::class, Say::class, Ask::class,
-//            Settings::class, UpdateSetting::class,
 //            UserMessages::class, MessagesIndex::class,
 //            ModeratorStatistics::class,
             //         SetupServer::class, Servers::class,
@@ -202,7 +156,7 @@ class Bot
     public function loadGuilds(): void
     {
         foreach (Guild::all() as $guild) {
-            $this->guilds[$guild->id] = new \App\Discord\Core\Guild($guild);
+            $this->guilds[$guild->guild_id] = new \App\Discord\Core\Guild($guild);
         }
     }
 

@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Discord\Cringe;
+namespace App\Discord\Fun\Cringe;
 
 use App\Discord\Core\AccessLevels;
-use App\Discord\Core\Bot;
 use App\Discord\Core\Command\SlashAndMessageCommand;
 use App\Discord\Core\EmbedFactory;
 use App\Models\CringeCounter;

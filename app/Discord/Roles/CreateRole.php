@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Discord\UserManagement;
+namespace App\Discord\Roles;
 
 use App\Discord\Core\Command\MessageCommand;
 use App\Discord\Core\EmbedFactory;

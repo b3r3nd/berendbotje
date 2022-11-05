@@ -1,17 +1,18 @@
 <?php
 
-namespace App\Discord\Cringe;
+namespace App\Discord\Fun\Cringe;
 
 use App\Discord\Core\AccessLevels;
 use App\Discord\Core\Command\SlashAndMessageCommand;
 use App\Discord\Core\EmbedFactory;
 use App\Models\DiscordUser;
 use Discord\Builders\MessageBuilder;
-use Discord\Http\Exceptions\NoPermissionsException;
 use Discord\Parts\Interactions\Command\Option;
+use function App\Discord\Cringe\str_contains;
 
-class DecreaseCringe extends SlashAndMessageCommand
+class ResetCringe extends SlashAndMessageCommand
 {
+
     public function accessLevel(): AccessLevels
     {
         return AccessLevels::MOD;
@@ -19,14 +20,13 @@ class DecreaseCringe extends SlashAndMessageCommand
 
     public function trigger(): string
     {
-        return 'delcringe';
+        return 'resetcringe';
     }
 
     public function __construct()
     {
         $this->requiredArguments = 1;
-        $this->requiresMention = true;
-        $this->usageString = __('bot.cringe.usage-delcringe');
+        $this->usageString = __('bot.cringe.usage-resetcringe');
         $this->slashCommandOptions = [
             [
                 'name' => 'user_mention',
@@ -39,23 +39,21 @@ class DecreaseCringe extends SlashAndMessageCommand
         parent::__construct();
     }
 
-    /**
-     * @throws NoPermissionsException
-     */
     public function action(): MessageBuilder
     {
+        /**
+         * @TODO Try to add this to the abstract class when people leave the server this is the only way to get ID?
+         */
+        if (str_contains($this->arguments[0], '<@')) {
+            $this->arguments[0] = str_replace(['<', '>', '@'], '', $this->arguments[0]);
+        }
         $user = DiscordUser::getByGuild($this->arguments[0], $this->guildId);
 
-        if (isset($user->cringeCounter)) {
-            $user->cringeCounter->count = $user->cringeCounter->count - 1;
-            if ($user->cringeCounter->count == 0) {
-                $user->cringeCounter->delete();
-            } else {
-                $user->cringeCounter->save();
-            }
-        } else {
+        if (!isset($user->cringeCounter)) {
             return EmbedFactory::failedEmbed(__('bot.cringe.not-cringe', ['name' => "<@{$this->arguments[0]}>"]));
         }
-        return EmbedFactory::successEmbed(__('bot.cringe.change', ['name' => $user->tag(), 'count' => $user->cringeCounter->count]));
+
+        $user->cringeCounter->delete();
+        return EmbedFactory::successEmbed(__('bot.cringe.reset', ['user' => $user->tag()]));
     }
 }

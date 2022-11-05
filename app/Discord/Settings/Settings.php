@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Discord\Core\Settings;
+namespace App\Discord\Settings;
 
-use App\Discord\Core\AccessLevels;
 use App\Discord\Core\Bot;
 use App\Discord\Core\Command\MessageCommand;
 use App\Discord\Core\EmbedBuilder;
@@ -11,9 +10,9 @@ use App\Models\Setting;
 class Settings extends MessageCommand
 {
 
-    public function accessLevel(): AccessLevels
+    public function permission(): string
     {
-        return AccessLevels::GOD;
+        return 'config';
     }
 
     public function trigger(): string
@@ -27,10 +26,9 @@ class Settings extends MessageCommand
             ->setTitle(__('bot.set.title'))
             ->setFooter(__('bot.set.footer'));
 
-        foreach (Setting::byGuild($this->guildId)->get() as $setting) {
+        foreach (Setting::byDiscordGuildId($this->guildId)->get() as $setting) {
             $embedBuilder->getEmbed()->addField(['name' => $setting->key, 'value' => $setting->value]);
         }
-
         $this->message->channel->sendEmbed($embedBuilder->getEmbed());
     }
 }

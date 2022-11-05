@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Discord\Cringe;
+namespace App\Discord\Fun\Cringe;
 
 use App\Discord\Core\AccessLevels;
 use App\Discord\Core\Bot;
