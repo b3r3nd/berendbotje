@@ -10,9 +10,9 @@ use Discord\Parts\Embed\Embed;
 
 class CommandIndex extends SlashAndMessageIndexCommand
 {
-    public function accessLevel(): AccessLevels
+    public function permission(): string
     {
-        return AccessLevels::NONE;
+        return 'commands';
     }
 
     public function trigger(): string

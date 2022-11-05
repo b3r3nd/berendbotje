@@ -6,7 +6,6 @@ use App\Discord\Core\Bot;
 use Discord\Discord;
 use Discord\Parts\Channel\Message;
 use Discord\WebSockets\Event;
-use function App\Discord\SimpleReaction\str_contains;
 
 class SimpleReaction
 {
@@ -25,7 +24,7 @@ class SimpleReaction
                 return;
             }
             if (str_contains(strtolower($message->content), strtolower($trigger))) {
-                if (!in_array($trigger, $bot->getDeletedReactions())) {
+                if (!in_array($trigger, $bot->getGuild($guildId)->getDeletedReactions())) {
 
                     if (str_contains($reaction, "<")) {
                         $reaction = str_replace(["<", ">"], "", $reaction);

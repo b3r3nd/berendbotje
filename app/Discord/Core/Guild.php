@@ -99,6 +99,24 @@ class Guild
     }
 
     /**
+     * @param string $command
+     * @return void
+     */
+    public function deleteCommand(string $command): void
+    {
+        $this->deletedCommands[] = strtolower($command);
+    }
+
+    /**
+     * @param string $reaction
+     * @return void
+     */
+    public function deleteReaction(string $reaction): void
+    {
+        $this->deletedReactions[] = strtolower($reaction);
+    }
+
+    /**
      * @return array
      */
     public function getSettings(): array

@@ -2,7 +2,6 @@
 
 namespace App\Discord\Fun\SimpleReaction;
 
-use App\Discord\Core\AccessLevels;
 use App\Discord\Core\Bot;
 use App\Discord\Core\Command\SlashAndMessageIndexCommand;
 use App\Discord\Core\EmbedBuilder;
@@ -11,9 +10,9 @@ use Discord\Parts\Embed\Embed;
 
 class ReactionIndex extends SlashAndMessageIndexCommand
 {
-    public function accessLevel(): AccessLevels
+    public function permission(): string
     {
-        return AccessLevels::NONE;
+        return "";
     }
 
     public function trigger(): string

@@ -13,7 +13,13 @@ use App\Discord\Fun\Cringe\CringeIndex;
 use App\Discord\Fun\Cringe\DecreaseCringe;
 use App\Discord\Fun\Cringe\IncreaseCringe;
 use App\Discord\Fun\Cringe\ResetCringe;
+use App\Discord\Fun\SimpleCommand\CommandIndex;
+use App\Discord\Fun\SimpleCommand\CreateCommand;
+use App\Discord\Fun\SimpleCommand\DeleteCommand;
 use App\Discord\Fun\SimpleCommand\SimpleCommand;
+use App\Discord\Fun\SimpleReaction\CreateReaction;
+use App\Discord\Fun\SimpleReaction\DeleteReaction;
+use App\Discord\Fun\SimpleReaction\ReactionIndex;
 use App\Discord\Fun\SimpleReaction\SimpleReaction;
 use App\Discord\Moderation\DetectKicksAndBans;
 use App\Discord\Moderation\MediaFilter\CreateMediaChannel;
@@ -39,6 +45,7 @@ use App\Discord\Settings\Settings;
 use App\Discord\Settings\UpdateSetting;
 use App\Discord\TestCommand;
 use App\Models\Guild;
+use App\Models\Reaction;
 use Discord\Discord;
 use Discord\Exceptions\IntentException;
 use Discord\Parts\User\Activity;
@@ -119,6 +126,9 @@ class Bot
             CringeIndex::class, IncreaseCringe::class, DecreaseCringe::class, ResetCringe::class,
             BumpStatistics::class,
 
+            CommandIndex::class, CreateCommand::class, DeleteCommand::class,
+            ReactionIndex::class, CreateReaction::class, DeleteReaction::class,
+
             TestCommand::class,
         ];
     }
@@ -198,15 +208,15 @@ class Bot
                 $instance->registerSlashCommand();
         }
 
-//        // Custom commands
-//        foreach (\App\Models\Command::all() as $command) {
-//            SimpleCommand::create($this, $command->trigger, $command->response, $command->guild_id);
-//        }
+        // Custom commands
+        foreach (\App\Models\Command::all() as $command) {
+            SimpleCommand::create($this, $command->trigger, $command->response, $command->guild->guild_id);
+        }
 //
 //        // Custom reactions
-//        foreach (Reaction::all() as $reaction) {
-//            SimpleReaction::create($this, $reaction->trigger, $reaction->reaction, $reaction->guild_id);
-//        }
+        foreach (Reaction::all() as $reaction) {
+            SimpleReaction::create($this, $reaction->trigger, $reaction->reaction, $reaction->guild->guild_id);
+        }
 //
 //        // Set media channel filters
 //        foreach (MediaChannel::all() as $channel) {

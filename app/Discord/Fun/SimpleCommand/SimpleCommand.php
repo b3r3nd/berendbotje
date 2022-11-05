@@ -25,7 +25,7 @@ class SimpleCommand
                 return;
             }
             if (strtolower($message->content) == strtolower($trigger)) {
-                if (!in_array(strtolower($message->content), $bot->getDeletedCommands())) {
+                if (!in_array(strtolower($message->content), $bot->getGuild($guildId)->getDeletedCommands())) {
                     $message->channel->sendMessage($response);
                 }
             }
