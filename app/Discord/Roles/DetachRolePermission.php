@@ -17,7 +17,7 @@ class DetachRolePermission extends MessageCommand
 
     public function trigger(): string
     {
-        return 'unsetperm';
+        return 'delperm';
     }
 
     public function __construct()
@@ -34,15 +34,11 @@ class DetachRolePermission extends MessageCommand
             $this->message->channel->sendMessage(EmbedFactory::failedEmbed(__('bot.roles.not-exist', ['role' => $this->arguments[0]])));
             return;
         }
-        if (!Permission::exists($this->arguments[1])) {
-            $this->message->channel->sendMessage(EmbedFactory::failedEmbed(__('bot.permissions.not-exist', ['perm' => $this->arguments[1]])));
-            return;
-        }
 
         $role = Role::get($this->guildId, $this->arguments[0]);
-        $permission = Permission::get($this->arguments[1]);
-        $role->permissions()->detach($permission);
+        $permissions = RoleHelper::processPermissions($this->arguments[1]);
+        $role->permissions()->detach($permissions->pluck('id'));
 
-        $this->message->channel->sendMessage(EmbedFactory::successEmbed(__('bot.roles.perm-detached', ['role' => $role->name, 'perm' => $permission->name])));
+        $this->message->channel->sendMessage(EmbedFactory::successEmbed(__('bot.roles.perm-detached', ['role' => $role->name, 'perm' => $this->arguments[1]])));
     }
 }

@@ -32,7 +32,7 @@ class Users extends SlashAndMessageIndexCommand
             foreach ($role->users as $user) {
                 $users .= "{$user->tag()}\n ";
             }
-            $description .= "** {$role->name} **\n $users\n\n";
+            $description .= "** {$role->name} **\n $users";
         }
         return EmbedBuilder::create(Bot::get()->discord())
             ->setTitle(__('bot.roles.title'))

@@ -20,8 +20,16 @@ class PermissionSeeder extends Seeder
             'config', 'timeouts', 'media-filter'
         ];
 
+        $adminPermissions = [
+            'servers', 'admins'
+        ];
+
         foreach ($permissions as $permission) {
             Permission::factory()->create(['name' => $permission]);
+        }
+
+        foreach ($adminPermissions as $permission) {
+            Permission::factory()->create(['name' => $permission, 'is_admin' => true]);
         }
     }
 }

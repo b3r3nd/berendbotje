@@ -34,7 +34,7 @@ class DeleteRole extends MessageCommand
             return;
         }
 
-        if (!Role::get($this->guildId, $this->arguments[0])->permissions->isEmpty()) {
+        if (!Role::get($this->guildId, $this->arguments[0])->users->isEmpty()) {
             $this->message->channel->sendMessage(EmbedFactory::failedEmbed(__('bot.roles.has-users')));
             return;
         }

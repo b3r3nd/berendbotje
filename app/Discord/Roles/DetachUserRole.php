@@ -17,7 +17,7 @@ class DetachUserRole extends MessageCommand
 
     public function trigger(): string
     {
-        return 'unsetrole';
+        return 'deluser';
     }
 
     public function __construct()
@@ -31,13 +31,13 @@ class DetachUserRole extends MessageCommand
 
     public function action(): void
     {
-        if (!Role::exists($this->guildId, $this->arguments[0])) {
-            $this->message->channel->sendMessage(EmbedFactory::failedEmbed(__('bot.roles.not-exist', ['role' => $this->arguments[0]])));
+        if (!Role::exists($this->guildId, $this->arguments[1])) {
+            $this->message->channel->sendMessage(EmbedFactory::failedEmbed(__('bot.roles.not-exist', ['role' => $this->arguments[1]])));
             return;
         }
-        $role = Role::get($this->guildId, $this->arguments[0]);
+        $role = Role::get($this->guildId, $this->arguments[1]);
 
-        $user = DiscordUser::get($this->arguments[1]);
+        $user = DiscordUser::get($this->arguments[0]);
         $user->roles()->detach($role);
 
         $this->message->channel->sendMessage(EmbedFactory::successEmbed(__('bot.roles.role-detached', ['role' => $role->name, 'user' => $user->tag()])));

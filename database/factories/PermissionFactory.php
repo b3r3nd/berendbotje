@@ -18,6 +18,7 @@ class PermissionFactory extends Factory
     {
         return [
             'name' => $this->faker->name,
+            'is_admin' => false,
         ];
     }
 }
