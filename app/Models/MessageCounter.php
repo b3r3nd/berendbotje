@@ -10,7 +10,7 @@ class MessageCounter extends Model
 {
     protected $table = 'message_counter';
 
-    protected $fillable = ['count'];
+    protected $fillable = ['count', 'guild_id'];
 
     /**
      * @return BelongsTo
@@ -22,9 +22,7 @@ class MessageCounter extends Model
 
     public static function byGuild($guildId)
     {
-        return MessageCounter::whereHas('user', function (Builder $query) use ($guildId) {
-            $query->where('guild_id', '=', $guildId);
-        });
+        return MessageCounter::where('guild_id', Guild::get($guildId)->id);
     }
 
 }

@@ -17,19 +17,22 @@ class MessageCounter
             if ($message->author->bot) {
                 return;
             }
-            $lastMessageDate = Bot::get()->getLastMessage($message->author->id);
+            $lastMessageDate = Bot::get()->getGuild($message->guild_id)->getLastMessage($message->author->id);
 
-            if ($lastMessageDate->diffInSeconds(Carbon::now()) >= Bot::get()->getSetting('xp_cooldown', $message->guild_id)) {
-                $user = DiscordUser::firstOrCreate([
-                    'discord_id' => $message->author->id,
-                    'guild_id' => $message->guild_id,
-                ]);
-                Bot::get()->setLastMessage($message->author->id);
-                if ($user->messageCounter) {
-                    $user->messageCounter()->update(['count' => $user->messageCounter->count + 1]);
-                    Bot::get()->setLastMessage($message->author->id);
+            $guild = Bot::get()->getGuild($message->guild_id);
+
+            if ($lastMessageDate->diffInSeconds(Carbon::now()) >= $guild->getSetting('xp_cooldown')) {
+                $user = DiscordUser::get($message->author->id);
+                $guild->setLastMessage($message->author->id);
+
+                $messageCounters = $user->messageCounters()->where('guild_id', $guild->model->id)->get();
+                $messageCounter = new \App\Models\MessageCounter(['count' => 1, 'guild_id' => $guild->model->id]);
+
+                if ($messageCounters->isEmpty()) {
+                    $user->messageCounters()->save($messageCounter);
                 } else {
-                    $user->messageCounter()->save(new \App\Models\MessageCounter(['count' => 1]));
+                    $bumpCounter = $messageCounter->first();
+                    $bumpCounter->update(['count' => $messageCounter->count + 1]);
                 }
             }
         });

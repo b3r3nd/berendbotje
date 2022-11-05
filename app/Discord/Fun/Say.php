@@ -2,15 +2,14 @@
 
 namespace App\Discord\Fun;
 
-use App\Discord\Core\AccessLevels;
 use App\Discord\Core\Command\MessageCommand;
 use Discord\Http\Exceptions\NoPermissionsException;
 
 class Say extends MessageCommand
 {
-    public function accessLevel(): AccessLevels
+    public function permission(): string
     {
-        return AccessLevels::MOD;
+        return "";
     }
 
     public function trigger(): string

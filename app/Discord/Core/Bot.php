@@ -13,6 +13,10 @@ use App\Discord\Fun\Cringe\CringeIndex;
 use App\Discord\Fun\Cringe\DecreaseCringe;
 use App\Discord\Fun\Cringe\IncreaseCringe;
 use App\Discord\Fun\Cringe\ResetCringe;
+use App\Discord\Fun\EmoteCounter;
+use App\Discord\Fun\EmoteIndex;
+use App\Discord\Fun\MessageCounter;
+use App\Discord\Fun\MessagesIndex;
 use App\Discord\Fun\SimpleCommand\CommandIndex;
 use App\Discord\Fun\SimpleCommand\CreateCommand;
 use App\Discord\Fun\SimpleCommand\DeleteCommand;
@@ -94,9 +98,8 @@ class Bot
             MediaFilter::class,
             DetectKicksAndBans::class,
             BumpCounter::class,
-//            EmoteCounter::class,
-//            MentionResponder::class,
-//            MessageCounter::class,
+            EmoteCounter::class,
+            MessageCounter::class,
         ];
     }
 
@@ -124,10 +127,10 @@ class Bot
             CreateMediaChannel::class, DeleteMediaChannel::class, MediaChannels::class,
 
             CringeIndex::class, IncreaseCringe::class, DecreaseCringe::class, ResetCringe::class,
-            BumpStatistics::class,
-
+            BumpStatistics::class, EmoteIndex::class, MessagesIndex::class,
             CommandIndex::class, CreateCommand::class, DeleteCommand::class,
             ReactionIndex::class, CreateReaction::class, DeleteReaction::class,
+
 
             TestCommand::class,
         ];

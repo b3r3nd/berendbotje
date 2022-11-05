@@ -13,7 +13,7 @@ class Guild
     private array $deletedReactions = [];
     private array $settings = [];
     private array $lastMessages = [];
-    private GuildModel $model;
+    public GuildModel $model;
 
     public function __construct(GuildModel $guild)
     {
@@ -92,10 +92,7 @@ class Guild
      */
     public function getSetting(string $setting): mixed
     {
-        if (isset($this->settings[$setting])) {
-            return $this->settings[$setting];
-        }
-        return false;
+        return $this->settings[$setting] ?? "";
     }
 
     /**

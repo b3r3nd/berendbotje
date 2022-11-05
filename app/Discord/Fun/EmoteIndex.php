@@ -2,9 +2,7 @@
 
 namespace App\Discord\Fun;
 
-use App\Discord\Core\AccessLevels;
 use App\Discord\Core\Bot;
-use App\Discord\Core\ButtonFactory;
 use App\Discord\Core\Command\SlashAndMessageIndexCommand;
 use App\Discord\Core\EmbedBuilder;
 use App\Discord\Helper;
@@ -14,9 +12,9 @@ use Discord\Parts\Embed\Embed;
 class EmoteIndex extends SlashAndMessageIndexCommand
 {
 
-    public function accessLevel(): AccessLevels
+    public function permission(): string
     {
-        return AccessLevels::NONE;
+        return "";
     }
 
     public function trigger(): string

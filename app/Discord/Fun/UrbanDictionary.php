@@ -2,7 +2,6 @@
 
 namespace App\Discord\Fun;
 
-use App\Discord\Core\AccessLevels;
 use App\Discord\Core\Bot;
 use App\Discord\Core\Command\MessageCommand;
 use App\Discord\Core\EmbedBuilder;
@@ -12,9 +11,9 @@ use Illuminate\Support\Facades\Http;
 class UrbanDictionary extends MessageCommand
 {
 
-    public function accessLevel(): AccessLevels
+    public function permission(): string
     {
-        return AccessLevels::NONE;
+        return "";
     }
 
     public function trigger(): string

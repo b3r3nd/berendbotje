@@ -2,7 +2,6 @@
 
 namespace App\Discord\Fun;
 
-use App\Discord\Core\AccessLevels;
 use App\Discord\Core\Bot;
 use App\Discord\Core\Command\SlashAndMessageIndexCommand;
 use App\Discord\Core\EmbedBuilder;
@@ -12,9 +11,9 @@ use Discord\Parts\Embed\Embed;
 class MessagesIndex extends SlashAndMessageIndexCommand
 {
 
-    public function accessLevel(): AccessLevels
+    public function permission(): string
     {
-        return AccessLevels::NONE;
+        return "";
     }
 
     public function trigger(): string
@@ -29,12 +28,12 @@ class MessagesIndex extends SlashAndMessageIndexCommand
         $description = "";
         foreach (\App\Models\MessageCounter::byGuild($this->guildId)->orderBy('count', 'desc')->skip($this->offset)->limit($this->perPage)->get() as $index => $messageCounter) {
             $description .= Helper::indexPrefix($index, $this->offset);
-            $count = $messageCounter->count * Bot::get()->getSetting('xp_count', $this->guildId);
+            $count = $messageCounter->count * Bot::get()->getGuild($this->guildId)->getSetting('xp_count', $this->guildId);
             $description .= "**{$messageCounter->user->tag()}** • {$messageCounter->count} messages • {$count} xp \n";
         }
         return EmbedBuilder::create(Bot::getDiscord())
             ->setTitle(__('bot.messages.title'))
-            ->setFooter(__('bot.messages.footer', ['xp' => Bot::get()->getSetting('xp_count', $this->guildId)]))
+            ->setFooter(__('bot.messages.footer', ['xp' => Bot::get()->getGuild($this->guildId)->getSetting('xp_count', $this->guildId)]))
             ->setDescription(__('bot.messages.description', ['users' => $description]))
             ->getEmbed();
     }
