@@ -28,6 +28,7 @@ abstract class MessageCommand extends Command
                 return;
             }
             $this->guildId = $message->guild_id;
+            $this->commandUser = $message->user_id;
             $parameters = $this->processParameters($message);
             $this->arguments = $parameters;
             $this->messageString = join(' ', $this->arguments);

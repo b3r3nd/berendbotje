@@ -9,7 +9,7 @@ use App\Discord\Core\EmbedFactory;
 use App\Models\DiscordUser;
 use Discord\Builders\MessageBuilder;
 
-class MyRoles extends MessageCommand
+class UserRoles extends MessageCommand
 {
 
     public function permission(): string
@@ -19,17 +19,26 @@ class MyRoles extends MessageCommand
 
     public function trigger(): string
     {
-        return 'myroles';
+        return 'userroles';
+    }
+
+    public function __construct()
+    {
+        $this->requiredArguments = 1;
+        $this->requiresMention = 1;
+        $this->usageString = __('bot.roles.usage-userroles');
+
+        parent::__construct();
     }
 
     public function action(): void
     {
         $description = "";
-        if (DiscordUser::get($this->commandUser)->roles->isEmpty()) {
+        if (DiscordUser::get($this->arguments[0])->roles->isEmpty()) {
             $this->message->channel->sendMessage(EmbedFactory::failedEmbed(__('bot.myroles.none')));
             return;
         }
-        foreach (DiscordUser::get($this->commandUser)->rolesByGuild($this->guildId) as $role) {
+        foreach (DiscordUser::get($this->arguments[0])->rolesByGuild($this->guildId) as $role) {
             $description .= "{$role->name}\n";
         }
 

@@ -4,25 +4,27 @@ namespace App\Discord\UserManagement;
 
 use App\Discord\Core\Command\MessageCommand;
 use App\Discord\Core\EmbedFactory;
+use App\Models\DiscordUser;
 use App\Models\Role;
 
-class DeleteRole extends MessageCommand
+class DetachUserRole extends MessageCommand
 {
 
     public function permission(): string
     {
-        return 'delete-role';
+        return 'attach-role';
     }
 
     public function trigger(): string
     {
-        return 'delrole';
+        return 'unsetrole';
     }
 
     public function __construct()
     {
-        $this->requiredArguments = 1;
-        $this->usageString = __('bot.roles.usage-delrole');
+        $this->requiredArguments = 2;
+        $this->requiresMention = true;
+        $this->usageString = __('bot.roles.usage-detachrole');
 
         parent::__construct();
     }
@@ -33,13 +35,11 @@ class DeleteRole extends MessageCommand
             $this->message->channel->sendMessage(EmbedFactory::failedEmbed(__('bot.roles.not-exist', ['role' => $this->arguments[0]])));
             return;
         }
+        $role = Role::get($this->guildId, $this->arguments[0]);
 
-        if (!Role::get($this->guildId, $this->arguments[0])->permissions->isEmpty()) {
-            $this->message->channel->sendMessage(EmbedFactory::failedEmbed(__('bot.roles.has-users')));
-            return;
-        }
+        $user = DiscordUser::get($this->arguments[1]);
+        $user->roles()->detach($role);
 
-        Role::get($this->guildId, $this->arguments[0])->delete();
-        $this->message->channel->sendMessage(EmbedFactory::successEmbed(__('bot.roles.deleted', ['role' => $this->arguments[0]])));
+        $this->message->channel->sendMessage(EmbedFactory::successEmbed(__('bot.roles.role-detached', ['role' => $role->name, 'user' => $user->tag()])));
     }
 }

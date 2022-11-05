@@ -25,10 +25,10 @@ return [
 
 
     'myroles' => [
-        'title' => 'My roles in this server',
+        'title' => 'Roles in this server',
         'footer' => 'See help for more info',
         'description' => ':roles',
-        'none' => 'You have no roles in this server',
+        'none' => 'No roles in this server',
     ],
 
     'roles' => [
@@ -41,12 +41,23 @@ return [
         'created' => 'Role :role created',
         'not-exist' => 'Role :role does not exist',
         'deleted' => 'Role :role deleted',
+        'usage-attachperm' => 'setperm `role_name` `perm_name`',
+        'usage-attachrole' => 'setrole `role_name` `user_mention`',
+        'usage-detachperm' => 'unsetperm `role_name` `perm_name`',
+        'usage-detachrole' => 'unsetrole `role_name` `user_mention`',
+        'perm-attached' => 'Permission :perm given to role :role',
+        'role-attached' => 'Role :role given to user :user',
+        'perm-detached' => 'Permission :perm removed from role :role',
+        'role-detached' => 'Role :role removed from user :user',
+        'has-users' => 'You cannot delete roles in use by users, remove users first.',
+        'usage-userroles' => 'userroles `user_mention`'
     ],
 
     'permissions' => [
         'title' => 'Global permissions',
         'footer' => 'See help for more info',
         'description' => ':perms',
+        'not-exist' => 'Permission :perm does not exist',
     ],
 
 

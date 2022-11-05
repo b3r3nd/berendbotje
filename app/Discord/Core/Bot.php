@@ -56,11 +56,17 @@ use App\Discord\Statistics\UserMessages;
 use App\Discord\Timeout\AllTimeouts;
 use App\Discord\Timeout\DetectTimeouts;
 use App\Discord\Timeout\SingleUserTimeouts;
+use App\Discord\UserManagement\AttachRolePermission;
+use App\Discord\UserManagement\AttachUserRole;
 use App\Discord\UserManagement\CreateRole;
 use App\Discord\UserManagement\DeleteRole;
+use App\Discord\UserManagement\DetachRolePermission;
+use App\Discord\UserManagement\DetachUserRole;
 use App\Discord\UserManagement\MyRoles;
 use App\Discord\UserManagement\Permissions;
 use App\Discord\UserManagement\Roles;
+use App\Discord\UserManagement\UserRoles;
+use App\Discord\UserManagement\Users;
 use App\Models\Guild;
 use App\Models\MediaChannel;
 use App\Models\Reaction;
@@ -133,7 +139,10 @@ class Bot
     private function commands(): array
     {
         return [
-            Roles::class, Permissions::class, MyRoles::class, CreateRole::class, DeleteRole::class,
+            Roles::class, Permissions::class, Users::class,
+            MyRoles::class, UserRoles::class,
+            CreateRole::class, DeleteRole::class,
+            AttachRolePermission::class, AttachUserRole::class, DetachRolePermission::class, DetachUserRole::class,
             //AdminIndex::class,
             // CreateAdmin::class, DeleteAdmin::class, UpdateAdmin::class, MyAccess::class,
 //            IncreaseCringe::class, DecreaseCringe::class, CringeIndex::class, ResetCringe::class,

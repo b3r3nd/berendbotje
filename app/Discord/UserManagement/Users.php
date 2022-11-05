@@ -8,28 +8,31 @@ use App\Discord\Core\EmbedBuilder;
 use App\Models\Role;
 use Discord\Parts\Embed\Embed;
 
-class Roles extends SlashAndMessageIndexCommand
+class Users extends SlashAndMessageIndexCommand
 {
+
     public function permission(): string
     {
-        return 'roles';
+        return "";
     }
 
     public function trigger(): string
     {
-        return 'roles';
+        return 'users';
     }
+
 
     public function getEmbed(): Embed
     {
         $this->total = Role::byDiscordGuildId($this->guildId)->count();
+
         $description = "";
         foreach (Role::byDiscordGuildId(($this->guildId))->orderBy('created_at', 'desc')->skip($this->offset)->limit($this->perPage)->get() as $role) {
-            $perms = "";
-            foreach ($role->permissions as $permission) {
-                $perms .= "{$permission->name}, ";
+            $users = "";
+            foreach ($role->users as $user) {
+                $users .= "{$user->tag()}\n ";
             }
-            $description .= "** {$role->name} **\n $perms\n\n";
+            $description .= "** {$role->name} **\n $users\n\n";
         }
         return EmbedBuilder::create(Bot::get()->discord())
             ->setTitle(__('bot.roles.title'))

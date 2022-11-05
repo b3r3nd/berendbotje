@@ -12,4 +12,13 @@ class Permission extends Model
     protected $fillable = ['name'];
 
 
+    public static function exists(string $name): bool
+    {
+        return !Permission::where('name', strtolower($name))->get()->isEmpty();
+    }
+
+    public static function get(string $name)
+    {
+        return Permission::where('name', strtolower($name))->first();
+    }
 }
