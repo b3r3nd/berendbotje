@@ -5,17 +5,19 @@ namespace App\Discord\Fun\Cringe;
 use App\Discord\Core\AccessLevels;
 use App\Discord\Core\Command\SlashAndMessageCommand;
 use App\Discord\Core\EmbedFactory;
+use App\Discord\Core\Guild;
 use App\Models\CringeCounter;
 use App\Models\DiscordUser;
+use App\Models\KickCounter;
 use Discord\Builders\MessageBuilder;
 use Discord\Http\Exceptions\NoPermissionsException;
 use Discord\Parts\Interactions\Command\Option;
 
 class IncreaseCringe extends SlashAndMessageCommand
 {
-    public function accessLevel(): AccessLevels
+    public function permission(): string
     {
-        return AccessLevels::USER;
+        return 'add-cringe';
     }
 
     public function trigger(): string
@@ -45,13 +47,20 @@ class IncreaseCringe extends SlashAndMessageCommand
      */
     public function action(): MessageBuilder
     {
-        $user = DiscordUser::getByGuild($this->arguments[0], $this->guildId);
-        if ($user->cringeCounter) {
-            $user->cringeCounter()->update(['count' => $user->cringeCounter->count + 1]);
+        $user = DiscordUser::get($this->arguments[0]);
+        $guildModel = \App\Models\Guild::get($this->guildId);
+
+        $cringeCounters = $user->cringeCounters()->where('guild_id', $guildModel->id)->get();
+
+        if ($cringeCounters->isEmpty()) {
+            $cringeCounter = new CringeCounter(['count' => 1, 'guild_id' => $guildModel->id]);
+            $user->cringeCounters()->save($cringeCounter);
         } else {
-            $user->cringeCounter()->save(new CringeCounter(['count' => 1]));
+            $cringeCounter = $cringeCounters->first();
+            $cringeCounter->update(['count' => $cringeCounter->count + 1]);
         }
-        $user->refresh();
-        return EmbedFactory::successEmbed(__('bot.cringe.change', ['name' => $user->tag(), 'count' => $user->cringeCounter->count]));
+
+        $cringeCounter->refresh();
+        return EmbedFactory::successEmbed(__('bot.cringe.change', ['name' => $user->tag(), 'count' => $cringeCounter->count]));
     }
 }

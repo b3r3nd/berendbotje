@@ -13,9 +13,9 @@ use function App\Discord\Cringe\str_contains;
 class ResetCringe extends SlashAndMessageCommand
 {
 
-    public function accessLevel(): AccessLevels
+    public function permission(): string
     {
-        return AccessLevels::MOD;
+        return "delete-cringe";
     }
 
     public function trigger(): string
@@ -41,19 +41,15 @@ class ResetCringe extends SlashAndMessageCommand
 
     public function action(): MessageBuilder
     {
-        /**
-         * @TODO Try to add this to the abstract class when people leave the server this is the only way to get ID?
-         */
-        if (str_contains($this->arguments[0], '<@')) {
-            $this->arguments[0] = str_replace(['<', '>', '@'], '', $this->arguments[0]);
-        }
-        $user = DiscordUser::getByGuild($this->arguments[0], $this->guildId);
+        $user = DiscordUser::get($this->arguments[0]);
+        $guildModel = \App\Models\Guild::get($this->guildId);
+        $cringeCounters = $user->cringeCounters()->where('guild_id', $guildModel->id)->get();
 
-        if (!isset($user->cringeCounter)) {
+        if ($cringeCounters->isEmpty()) {
             return EmbedFactory::failedEmbed(__('bot.cringe.not-cringe', ['name' => "<@{$this->arguments[0]}>"]));
         }
 
-        $user->cringeCounter->delete();
+        $cringeCounters->first()->delete();
         return EmbedFactory::successEmbed(__('bot.cringe.reset', ['user' => $user->tag()]));
     }
 }

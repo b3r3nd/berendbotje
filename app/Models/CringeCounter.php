@@ -11,7 +11,7 @@ class CringeCounter extends Model
 
     protected $table = 'cringe_counter';
 
-    protected $fillable = ['count'];
+    protected $fillable = ['count', 'guild_id'];
 
     /**
      * @return BelongsTo
@@ -23,9 +23,7 @@ class CringeCounter extends Model
 
     public static function byGuild($guildId)
     {
-        return CringeCounter::whereHas('user', function (Builder $query) use ($guildId) {
-            $query->where('guild_id', '=', $guildId);
-        });
+        return CringeCounter::where('guild_id', Guild::get($guildId)->id);
     }
 
 }

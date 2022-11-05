@@ -12,9 +12,9 @@ use Discord\Parts\Embed\Embed;
 
 class CringeIndex extends SlashAndMessageIndexCommand
 {
-    public function accessLevel(): AccessLevels
+    public function permission(): string
     {
-        return AccessLevels::NONE;
+        return "";
     }
 
     public function trigger(): string

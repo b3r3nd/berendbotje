@@ -5,6 +5,7 @@ namespace App\Discord\Fun\Cringe;
 use App\Discord\Core\AccessLevels;
 use App\Discord\Core\Command\SlashAndMessageCommand;
 use App\Discord\Core\EmbedFactory;
+use App\Models\CringeCounter;
 use App\Models\DiscordUser;
 use Discord\Builders\MessageBuilder;
 use Discord\Http\Exceptions\NoPermissionsException;
@@ -12,9 +13,9 @@ use Discord\Parts\Interactions\Command\Option;
 
 class DecreaseCringe extends SlashAndMessageCommand
 {
-    public function accessLevel(): AccessLevels
+    public function permission(): string
     {
-        return AccessLevels::MOD;
+        return 'delete-cringe';
     }
 
     public function trigger(): string
@@ -44,18 +45,23 @@ class DecreaseCringe extends SlashAndMessageCommand
      */
     public function action(): MessageBuilder
     {
-        $user = DiscordUser::getByGuild($this->arguments[0], $this->guildId);
+        $user = DiscordUser::get($this->arguments[0]);
+        $guildModel = \App\Models\Guild::get($this->guildId);
+        $cringeCounters = $user->cringeCounters()->where('guild_id', $guildModel->id)->get();
 
-        if (isset($user->cringeCounter)) {
-            $user->cringeCounter->count = $user->cringeCounter->count - 1;
-            if ($user->cringeCounter->count == 0) {
-                $user->cringeCounter->delete();
-            } else {
-                $user->cringeCounter->save();
-            }
-        } else {
+        if ($cringeCounters->isEmpty()) {
             return EmbedFactory::failedEmbed(__('bot.cringe.not-cringe', ['name' => "<@{$this->arguments[0]}>"]));
         }
-        return EmbedFactory::successEmbed(__('bot.cringe.change', ['name' => $user->tag(), 'count' => $user->cringeCounter->count]));
+
+        $cringeCounter = $cringeCounters->first();
+        $count = $cringeCounter->count - 1;
+        if ($count == 0) {
+            $cringeCounter->delete();
+        } else {
+            $cringeCounter->count = $count;
+            $cringeCounter->save();
+        }
+
+        return EmbedFactory::successEmbed(__('bot.cringe.change', ['name' => $user->tag(), 'count' => $count]));
     }
 }

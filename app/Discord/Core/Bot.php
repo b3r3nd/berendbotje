@@ -7,6 +7,10 @@ use App\Discord\Core\Command\MessageCommand;
 use App\Discord\Core\Command\SlashAndMessageCommand;
 use App\Discord\Core\Command\SlashAndMessageIndexCommand;
 use App\Discord\Core\Command\SlashCommand;
+use App\Discord\Fun\Cringe\CringeIndex;
+use App\Discord\Fun\Cringe\DecreaseCringe;
+use App\Discord\Fun\Cringe\IncreaseCringe;
+use App\Discord\Fun\Cringe\ResetCringe;
 use App\Discord\Fun\SimpleCommand\SimpleCommand;
 use App\Discord\Fun\SimpleReaction\SimpleReaction;
 use App\Discord\Moderation\DetectKicksAndBans;
@@ -99,19 +103,19 @@ class Bot
     private function commands(): array
     {
         return [
+            Servers::class,
+
             Roles::class, Permissions::class, Users::class,
             MyRoles::class, UserRoles::class,
             CreateRole::class, DeleteRole::class,
             AttachRolePermission::class, AttachUserRole::class, DetachRolePermission::class, DetachUserRole::class,
-
             Settings::class, UpdateSetting::class,
 
-            Servers::class,
-
-            SingleUserTimeouts::class, AllTimeouts::class,
+            SingleUserTimeouts::class, AllTimeouts::class, ModeratorStatistics::class,
             CreateMediaChannel::class, DeleteMediaChannel::class, MediaChannels::class,
 
-            ModeratorStatistics::class,
+            CringeIndex::class, IncreaseCringe::class, DecreaseCringe::class, ResetCringe::class,
+
 
             TestCommand::class,
         ];
