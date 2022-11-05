@@ -30,6 +30,7 @@ use App\Discord\Fun\Reaction\ReactionIndex;
 use App\Discord\Fun\Reaction\SimpleReaction;
 use App\Discord\Fun\Say;
 use App\Discord\Fun\UrbanDictionary;
+use App\Discord\Help;
 use App\Discord\Moderation\DetectKicksAndBans;
 use App\Discord\Moderation\MediaFilter\CreateMediaChannel;
 use App\Discord\Moderation\MediaFilter\DeleteMediaChannel;
@@ -54,6 +55,7 @@ use App\Discord\Settings\Settings;
 use App\Discord\Settings\UpdateSetting;
 use App\Discord\TestCommand;
 use App\Models\Guild;
+use App\Models\MediaChannel;
 use App\Models\Reaction;
 use Discord\Discord;
 use Discord\Exceptions\IntentException;
@@ -137,6 +139,8 @@ class Bot
             ReactionIndex::class, CreateReaction::class, DeleteReaction::class,
             EightBall::class, Ask::class, Say::class, UrbanDictionary::class,
 
+
+            Help::class,
 
             TestCommand::class,
         ];
@@ -226,16 +230,11 @@ class Bot
         foreach (\App\Models\Command::all() as $command) {
             SimpleCommand::create($this, $command->trigger, $command->response, $command->guild->guild_id);
         }
-//
-//        // Custom reactions
+
+        // Custom reactions
         foreach (Reaction::all() as $reaction) {
             SimpleReaction::create($this, $reaction->trigger, $reaction->reaction, $reaction->guild->guild_id);
         }
-//
-//        // Set media channel filters
-//        foreach (MediaChannel::all() as $channel) {
-//            $this->mediaChannels[$channel->channel] = $channel->channel;
-//        }
     }
 
     /**
