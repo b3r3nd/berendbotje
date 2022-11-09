@@ -1,16 +1,14 @@
 <?php
 
-namespace App\Discord\Levels\Actions;
+namespace App\Discord\Levels;
 
 use App\Discord\Core\Bot;
 use App\Discord\Helper;
 use App\Models\DiscordUser;
 use Discord\Parts\Channel\Message;
 
-/**
- * Action to process everything related to XP and levels.
- */
-class ProcessMessageCounterAction
+
+class UpdateMessageCounterAction
 {
     public function execute(Message $message, $userId, $xpCount, $removeXp = false): void
     {

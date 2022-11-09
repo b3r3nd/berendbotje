@@ -5,7 +5,6 @@ namespace App\Discord\Levels;
 use App\Discord\Core\Command\MessageCommand;
 use App\Discord\Core\EmbedFactory;
 use App\Discord\Core\Permission;
-use App\Discord\Levels\Actions\ProcessMessageCounterAction;
 
 class GiveXp extends MessageCommand
 {
@@ -30,7 +29,7 @@ class GiveXp extends MessageCommand
 
     public function action(): void
     {
-        (new ProcessMessageCounterAction())->execute($this->message, $this->arguments[0], $this->arguments[1]);
+        (new UpdateMessageCounterAction())->execute($this->message, $this->arguments[0], $this->arguments[1]);
         $this->message->channel->sendMessage(EmbedFactory::successEmbed(__('bot.xp.given', ['user' => $this->arguments[0], 'xp' => $this->arguments[1]])));
     }
 }
