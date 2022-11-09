@@ -41,10 +41,12 @@ trait MessageCommandTrait
             str_contains($message->content, $discord->user->id)) {
             return false;
         }
-        if (!DiscordUser::hasLevel($message->author->id, $message->guild_id, $this->accessLevel->value)) {
+
+        if (!DiscordUser::hasPermission($message->user_id, $message->guild_id, $this->permission) && $this->permission !== "") {
             $message->channel->sendMessage(EmbedFactory::failedEmbed(__("bot.lack-access")));
             return false;
         }
+
         if ($this->requiresMention && $message->mentions->count() == 0) {
             $message->channel->sendMessage(EmbedFactory::failedEmbed($this->usageString ?? __('bot.provide-mention')));
             return false;

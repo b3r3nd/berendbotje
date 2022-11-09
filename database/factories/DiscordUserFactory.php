@@ -17,8 +17,7 @@ class DiscordUserFactory extends Factory
     public function definition()
     {
         return [
-            'discord_id' => $this->faker->randomKey,
-            'guild_id' => $this->faker->randomKey,
+            'discord_id' => $this->faker->randomKey
         ];
     }
 }

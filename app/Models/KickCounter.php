@@ -10,7 +10,7 @@ class KickCounter extends Model
 
     protected $table = 'kick_counter';
 
-    protected $fillable = ['count'];
+    protected $fillable = ['count', 'guild_id'];
 
     /**
      * @return BelongsTo

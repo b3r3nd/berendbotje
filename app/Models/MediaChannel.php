@@ -13,6 +13,6 @@ class MediaChannel extends Model
 
     public static function byGuild($guildId)
     {
-        return MediaChannel::where(['guild_id' => $guildId]);
+        return MediaChannel::where(['guild_id' => Guild::get($guildId)->id]);
     }
 }

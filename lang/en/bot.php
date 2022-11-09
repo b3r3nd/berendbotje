@@ -23,12 +23,50 @@ return [
     'no-valid-term' => 'Search term :term cannot be found',
     'needhelp' => 'For more info check $help',
 
+
+    'myroles' => [
+        'title' => 'Roles in this server',
+        'footer' => 'See help for more info',
+        'description' => ':roles',
+        'none' => 'No roles in this server',
+    ],
+
+    'roles' => [
+        'title' => 'Roles for this server',
+        'footer' => 'see help for more info',
+        'description' => ':roles',
+        'usage-addrole' => 'addrole `role_name`',
+        'usage-delrole' => 'delrole `role_name`',
+        'exist' => 'Role already exists',
+        'created' => 'Role :role created',
+        'not-exist' => 'Role :role does not exist',
+        'deleted' => 'Role :role deleted',
+        'usage-attachperm' => 'addperm `role_name` `perm_name`',
+        'usage-attachrole' => 'adduser `user_mention` `role_name`',
+        'usage-detachperm' => 'delperm `role_name` `perm_name`',
+        'usage-detachrole' => 'deluser `user_mention` `role_name`',
+        'perm-attached' => 'Permission :perm given to role :role',
+        'role-attached' => 'Role :role given to user :user',
+        'perm-detached' => 'Permission :perm removed from role :role',
+        'role-detached' => 'Role :role removed from user :user',
+        'has-users' => 'You cannot delete roles in use by users, remove users first.',
+        'usage-userroles' => 'userroles `user_mention`'
+    ],
+
+    'permissions' => [
+        'title' => 'Global permissions',
+        'footer' => 'See help for more info',
+        'description' => ':perms',
+        'not-exist' => 'Permission :perm does not exist',
+    ],
+
+
     'server' => [
         'usage-addserver' => 'addserver `server_id` `owner_user_id`',
         'added' => 'server with ID: :id added to owner :owner',
         'title' => 'Active servers',
         'footer' => 'user addserver server_id discord_owner_id to add new servers',
-        'description' => "Server ID • Owner Account\n\n:servers"
+        'description' => "Server • Owner Account\n\n:servers"
     ],
 
     '8ball' => [

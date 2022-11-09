@@ -16,14 +16,18 @@ class DiscordUsersSeeder extends Seeder
      */
     public function run()
     {
-        $user = DiscordUser::factory()->create([
-            'discord_id' => '259461260645629953',
-            'guild_id' => '590941503917129743',
-        ]);
+        $ids = [
+            // First is main admin account
+            '259461260645629953', // berend
+            '964503537495191582', // pewpew
 
-        Admin::factory()->create([
-            'user_id' => $user->id,
-            'level' => 1000,
-        ]);
+        ];
+
+
+        foreach ($ids as $id) {
+            DiscordUser::factory()->create([
+                'discord_id' => $id,
+            ]);
+        }
     }
 }

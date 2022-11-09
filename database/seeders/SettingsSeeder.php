@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Guild;
 use App\Models\Setting;
 use Illuminate\Database\Seeder;
 
@@ -19,12 +20,14 @@ class SettingsSeeder extends Seeder
             'xp_cooldown' => 60,
         ];
 
-        foreach ($settings as $key => $value) {
-            Setting::factory()->create([
-                'key' => $key,
-                'value' => $value,
-                'guild_id' => '590941503917129743',
-            ]);
+        foreach (Guild::all() as $guild) {
+            foreach ($settings as $key => $value) {
+                Setting::factory()->create([
+                    'key' => $key,
+                    'value' => $value,
+                    'guild_id' => $guild->id,
+                ]);
+            }
         }
     }
 }

@@ -2,26 +2,57 @@
 
 namespace App\Models;
 
-use App\Scopes\GuildScope;
-use Illuminate\Database\Eloquent\Casts\Attribute;
+
+use App\Discord\Core\PermissionScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class DiscordUser extends Model
 {
     use HasFactory;
 
     protected $table = 'discord_users';
-    protected $fillable = ['discord_id', 'guild_id'];
+    protected $fillable = ['discord_id'];
 
 
-    public static function getByGuild($discordId, $guildId)
+    public function roles(): BelongsToMany
     {
-        return DiscordUser::firstOrCreate([
-            'discord_id' => $discordId,
-            'guild_id' => $guildId,
-        ]);
+        return $this->belongsToMany(Role::class, 'discord_user_roles', 'user_id');
+    }
+
+    public function rolesByGuild(string $guildId)
+    {
+        $guild = Guild::get($guildId);
+        return $this->roles->where('guild_id', '=', $guild->id);
+    }
+
+    public function permissionsByGuild(Guild $guild): array
+    {
+        $permissions = [];
+        foreach ($this->roles->where('guild_id', $guild->id) as $role) {
+            foreach ($role->permissions()->withoutGlobalScope(PermissionScope::class)->get() as $perm) {
+                $permissions[] = $perm->name;
+            }
+        }
+        return $permissions;
+    }
+
+
+    public static function hasPermission(string $userId, string $guildId, string $permissionName): bool
+    {
+        $guild = Guild::get($guildId);
+        $user = DiscordUser::get($userId);
+        $permissionName = strtolower($permissionName);
+
+        return in_array($permissionName, $user->permissionsByGuild($guild) ?? []);
+    }
+
+
+    public static function get($discordId)
+    {
+        return DiscordUser::firstOrCreate(['discord_id' => $discordId]);
     }
 
     /**
@@ -33,88 +64,50 @@ class DiscordUser extends Model
     }
 
     /**
-     * @param string $id
-     * @param string $guildId
-     * @return bool
+     * @return hasMany
      */
-    public static function isAdmin(string $id, string $guildId): bool
+    public function givenTimeouts(): hasMany
     {
-        return !DiscordUser::where(['discord_id' => $id, 'guild_id' => $guildId])->has('admin')->get()->isEmpty();
+        return $this->hasMany(Timeout::class, 'giver_id', 'id');
     }
 
     /**
-     * @param string $id
-     * @param string $guildId
-     * @param int $level
-     * @return bool
+     * @return hasMany
      */
-    public static function hasLevel(string $id, string $guildId, int $level): bool
+    public function messageCounters(): hasMany
     {
-        if ($level == 0) {
-            return true;
-        }
-        return !DiscordUser::where(['discord_id' => $id, 'guild_id' => $guildId])->whereRelation('admin', 'level', '>=', $level)->get()->isEmpty();
+        return $this->hasMany(MessageCounter::class, 'user_id', 'id');
     }
 
     /**
-     * @param string $id
-     * @param string $guildId
-     * @param int $level
-     * @return bool
+     * @return HasMany
      */
-    public static function hasHigherLevel(string $id, string $guildId, int $level): bool
+    public function bumpCounters(): HasMany
     {
-        if ($level == 0) {
-            return true;
-        }
-        return !DiscordUser::where('discord_id', $id)->where('guild_id', $guildId)->whereRelation('admin', 'level', '>', $level)->get()->isEmpty();
+        return $this->hasMany(Bumper::class, 'user_id', 'id');
     }
 
     /**
-     * @return HasOne
+     * @return HasMany
      */
-    public function messageCounter(): HasOne
+    public function cringeCounters(): HasMany
     {
-        return $this->hasOne(MessageCounter::class, 'user_id', 'id');
+        return $this->hasMany(CringeCounter::class, 'user_id', 'id');
     }
 
     /**
-     * @return HasOne
+     * @return HasMany
      */
-    public function admin(): HasOne
+    public function banCounters(): HasMany
     {
-        return $this->hasOne(Admin::class, 'user_id', 'id');
+        return $this->hasMany(BanCounter::class, 'user_id', 'id');
     }
 
     /**
-     * @return HasOne
+     * @return HasMany
      */
-    public function bumper(): HasOne
+    public function kickCounters(): HasMany
     {
-        return $this->hasOne(Bumper::class, 'user_id', 'id');
-    }
-
-    /**
-     * @return HasOne
-     */
-    public function cringeCounter(): HasOne
-    {
-        return $this->hasOne(CringeCounter::class, 'user_id', 'id');
-    }
-
-    /**
-     * @return HasOne
-     */
-    public function banCounter(): HasOne
-    {
-        return $this->hasOne(BanCounter::class, 'user_id', 'id');
-    }
-
-    /**
-     * @return HasOne
-     */
-    public function kickCounter(): HasOne
-    {
-        return $this->hasOne(KickCounter::class, 'user_id', 'id');
+        return $this->hasMany(KickCounter::class, 'user_id', 'id');
     }
 }

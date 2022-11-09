@@ -2,7 +2,6 @@
 
 namespace App\Discord\Fun;
 
-use App\Discord\Core\AccessLevels;
 use App\Discord\Core\Command\SlashAndMessageCommand;
 use Discord\Builders\MessageBuilder;
 use Illuminate\Support\Facades\Http;
@@ -10,9 +9,9 @@ use Illuminate\Support\Facades\Http;
 class Ask extends SlashAndMessageCommand
 {
 
-    public function accessLevel(): AccessLevels
+    public function permission(): string
     {
-        return AccessLevels::NONE;
+        return "";
     }
 
     public function trigger(): string

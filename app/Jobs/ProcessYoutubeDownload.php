@@ -2,14 +2,10 @@
 
 namespace App\Jobs;
 
-use App\Discord\Core\Bot;
-use App\Discord\Music\MusicPlayer;
+use App\Discord\Fun\Music\MusicPlayer;
 use App\Models\Song;
 use Discord\Parts\Channel\Channel;
-use Discord\Parts\Channel\Message;
-use Discord\Voice\VoiceClient;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
