@@ -33,7 +33,7 @@ return [
 
     'roles' => [
         'title' => 'Roles for this server',
-        'footer' => 'Usage: addrole, delrole, roles',
+        'footer' => 'see help for more info',
         'description' => ':roles',
         'usage-addrole' => 'addrole `role_name`',
         'usage-delrole' => 'delrole `role_name`',

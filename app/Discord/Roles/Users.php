@@ -26,14 +26,22 @@ class Users extends SlashAndMessageIndexCommand
     {
         $this->total = Role::byDiscordGuildId($this->guildId)->count();
 
-        $description = "";
-        foreach (Role::byDiscordGuildId(($this->guildId))->orderBy('created_at', 'desc')->skip($this->offset)->limit($this->perPage)->get() as $role) {
-            $users = "";
+        $userRoles = [];
+        foreach (Role::byDiscordGuildId(($this->guildId))->orderBy('created_at', 'asc')->skip($this->offset)->limit($this->perPage)->get() as $role) {
             foreach ($role->users as $user) {
-                $users .= "{$user->tag()}\n ";
+                $userRoles[$user->tag()][] = $role->name;
             }
-            $description .= "** {$role->name} **\n $users";
         }
+
+        $description = "";
+        foreach ($userRoles as $user => $roles) {
+            $description .= "\n**{$user}**\n";
+            foreach ($roles as $role) {
+                $description .= "{$role}, ";
+            }
+        }
+
+
         return EmbedBuilder::create(Bot::get()->discord())
             ->setTitle(__('bot.roles.title'))
             ->setFooter(__('bot.roles.footer'))
