@@ -3,13 +3,14 @@
 namespace App\Discord\Fun;
 
 use App\Discord\Core\Command\MessageCommand;
+use App\Discord\Core\Permission;
 
 class EightBall extends MessageCommand
 {
 
-    public function permission(): string
+    public function permission(): Permission
     {
-        return "";
+        return Permission::NONE;
     }
 
     public function trigger(): string

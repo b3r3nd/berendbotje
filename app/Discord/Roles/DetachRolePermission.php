@@ -4,15 +4,15 @@ namespace App\Discord\Roles;
 
 use App\Discord\Core\Command\MessageCommand;
 use App\Discord\Core\EmbedFactory;
-use App\Models\Permission;
+use App\Discord\Core\Permission;
 use App\Models\Role;
 
 class DetachRolePermission extends MessageCommand
 {
 
-    public function permission(): string
+    public function permission(): Permission
     {
-        return 'attach-permission';
+        return Permission::ATTACH_PERM;
     }
 
     public function trigger(): string

@@ -5,14 +5,15 @@ namespace App\Discord\Fun\Reaction;
 use App\Discord\Core\Bot;
 use App\Discord\Core\Command\SlashAndMessageIndexCommand;
 use App\Discord\Core\EmbedBuilder;
+use App\Discord\Core\Permission;
 use App\Models\Reaction;
 use Discord\Parts\Embed\Embed;
 
 class ReactionIndex extends SlashAndMessageIndexCommand
 {
-    public function permission(): string
+    public function permission(): Permission
     {
-        return "";
+        return Permission::NONE;
     }
 
     public function trigger(): string

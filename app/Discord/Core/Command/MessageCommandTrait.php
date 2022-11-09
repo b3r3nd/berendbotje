@@ -5,6 +5,7 @@ namespace App\Discord\Core\Command;
 
 use App\Discord\Core\Bot;
 use App\Discord\Core\EmbedFactory;
+use App\Discord\Core\Permission;
 use App\Models\DiscordUser;
 use Discord\Discord;
 use Discord\Http\Exceptions\NoPermissionsException;
@@ -42,7 +43,7 @@ trait MessageCommandTrait
             return false;
         }
 
-        if (!DiscordUser::hasPermission($message->user_id, $message->guild_id, $this->permission) && $this->permission !== "") {
+        if (!DiscordUser::hasPermission($message->user_id, $message->guild_id, $this->permission->value) && $this->permission->value !== Permission::NONE->value) {
             $message->channel->sendMessage(EmbedFactory::failedEmbed(__("bot.lack-access")));
             return false;
         }

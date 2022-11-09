@@ -5,14 +5,15 @@ namespace App\Discord\Administration;
 use App\Discord\Core\Bot;
 use App\Discord\Core\Command\MessageCommand;
 use App\Discord\Core\EmbedBuilder;
+use App\Discord\Core\Permission;
 use App\Models\Guild;
 
 class Servers extends MessageCommand
 {
 
-    public function permission(): string
+    public function permission(): Permission
     {
-        return 'servers';
+        return Permission::ADMIN_SERVER;
     }
 
     public function trigger(): string

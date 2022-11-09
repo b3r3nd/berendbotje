@@ -5,6 +5,7 @@ namespace App\Discord\Moderation\MediaFilter;
 use App\Discord\Core\Bot;
 use App\Discord\Core\Command\SlashAndMessageCommand;
 use App\Discord\Core\EmbedFactory;
+use App\Discord\Core\Permission;
 use App\Models\Guild;
 use App\Models\MediaChannel;
 use Discord\Builders\MessageBuilder;
@@ -12,9 +13,9 @@ use Discord\Parts\Interactions\Command\Option;
 
 class DeleteMediaChannel extends SlashAndMessageCommand
 {
-    public function permission(): string
+    public function permission(): Permission
     {
-        return "media-filter";
+        return Permission::MEDIA;
     }
 
     public function trigger(): string

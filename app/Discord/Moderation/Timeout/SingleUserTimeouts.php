@@ -5,15 +5,16 @@ namespace App\Discord\Moderation\Timeout;
 use App\Discord\Core\Bot;
 use App\Discord\Core\Command\SlashAndMessageIndexCommand;
 use App\Discord\Core\EmbedBuilder;
+use App\Discord\Core\Permission;
 use App\Models\Timeout;
 use Discord\Parts\Embed\Embed;
 use Discord\Parts\Interactions\Command\Option;
 
 class SingleUserTimeouts extends SlashAndMessageIndexCommand
 {
-    public function permission(): string
+    public function permission(): Permission
     {
-        return 'timeouts';
+        return Permission::TIMEOUTS;
     }
 
     public function trigger(): string

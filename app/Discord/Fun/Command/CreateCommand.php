@@ -2,10 +2,10 @@
 
 namespace App\Discord\Fun\Command;
 
-use App\Discord\Core\AccessLevels;
 use App\Discord\Core\Bot;
 use App\Discord\Core\Command\SlashAndMessageCommand;
 use App\Discord\Core\EmbedFactory;
+use App\Discord\Core\Permission;
 use App\Models\Guild;
 use Discord\Builders\MessageBuilder;
 use Discord\Http\Exceptions\NoPermissionsException;
@@ -13,9 +13,9 @@ use Discord\Parts\Interactions\Command\Option;
 
 class CreateCommand extends SlashAndMessageCommand
 {
-    public function permission(): string
+    public function permission(): Permission
     {
-        return 'commands';
+        return Permission::COMMANDS;
     }
 
     public function trigger(): string

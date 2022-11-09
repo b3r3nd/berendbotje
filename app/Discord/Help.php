@@ -5,14 +5,15 @@ namespace App\Discord;
 use App\Discord\Core\Bot;
 use App\Discord\Core\Command\SlashAndMessageCommand;
 use App\Discord\Core\EmbedBuilder;
+use App\Discord\Core\Permission;
 use Discord\Builders\MessageBuilder;
 
 class Help extends SlashAndMessageCommand
 {
 
-    public function permission(): string
+    public function permission(): Permission
     {
-        return "";
+        return Permission::NONE;
     }
 
     public function trigger(): string

@@ -5,15 +5,16 @@ namespace App\Discord\Fun\Bump;
 use App\Discord\Core\Bot;
 use App\Discord\Core\Command\SlashAndMessageIndexCommand;
 use App\Discord\Core\EmbedBuilder;
+use App\Discord\Core\Permission;
 use App\Discord\Helper;
 use App\Models\Bumper;
 use Discord\Parts\Embed\Embed;
 
 class BumpStatistics extends SlashAndMessageIndexCommand
 {
-    public function permission(): string
+    public function permission(): Permission
     {
-        return "";
+        return Permission::NONE;
     }
 
     public function trigger(): string

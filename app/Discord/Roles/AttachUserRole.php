@@ -4,15 +4,16 @@ namespace App\Discord\Roles;
 
 use App\Discord\Core\Command\MessageCommand;
 use App\Discord\Core\EmbedFactory;
+use App\Discord\Core\Permission;
 use App\Models\DiscordUser;
 use App\Models\Role;
 
 class AttachUserRole extends MessageCommand
 {
 
-    public function permission(): string
+    public function permission(): Permission
     {
-        return 'attach-role';
+        return Permission::ATTACH_ROLE;
     }
 
     public function trigger(): string

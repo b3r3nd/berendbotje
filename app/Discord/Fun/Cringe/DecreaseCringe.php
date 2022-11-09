@@ -2,10 +2,9 @@
 
 namespace App\Discord\Fun\Cringe;
 
-use App\Discord\Core\AccessLevels;
 use App\Discord\Core\Command\SlashAndMessageCommand;
 use App\Discord\Core\EmbedFactory;
-use App\Models\CringeCounter;
+use App\Discord\Core\Permission;
 use App\Models\DiscordUser;
 use Discord\Builders\MessageBuilder;
 use Discord\Http\Exceptions\NoPermissionsException;
@@ -13,9 +12,9 @@ use Discord\Parts\Interactions\Command\Option;
 
 class DecreaseCringe extends SlashAndMessageCommand
 {
-    public function permission(): string
+    public function permission(): Permission
     {
-        return 'delete-cringe';
+        return Permission::DEL_CRINGE;
     }
 
     public function trigger(): string

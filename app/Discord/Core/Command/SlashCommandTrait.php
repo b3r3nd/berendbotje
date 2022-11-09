@@ -4,6 +4,7 @@ namespace App\Discord\Core\Command;
 
 use App\Discord\Core\Bot;
 use App\Discord\Core\EmbedFactory;
+use App\Discord\Core\Permission;
 use App\Models\DiscordUser;
 use Discord\Parts\Interactions\Interaction;
 use Exception;
@@ -34,7 +35,7 @@ trait SlashCommandTrait
         Bot::getDiscord()->listenCommand($this->trigger, function (Interaction $interaction) {
             $this->arguments = [];
 
-            if (!DiscordUser::hasPermission($interaction->member->id, $interaction->guild_id, $this->permission) && $this->permission !== "") {
+            if (!DiscordUser::hasPermission($interaction->member->id, $interaction->guild_id, $this->permission->value) && $this->permission->value !== Permission::NONE->value) {
                 return $interaction->respondWithMessage(EmbedFactory::failedEmbed(__("bot.lack-access")));
             }
 

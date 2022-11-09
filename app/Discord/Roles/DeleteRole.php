@@ -4,14 +4,15 @@ namespace App\Discord\Roles;
 
 use App\Discord\Core\Command\MessageCommand;
 use App\Discord\Core\EmbedFactory;
+use App\Discord\Core\Permission;
 use App\Models\Role;
 
 class DeleteRole extends MessageCommand
 {
 
-    public function permission(): string
+    public function permission(): Permission
     {
-        return 'delete-role';
+        return Permission::DELETE_ROLE;
     }
 
     public function trigger(): string

@@ -2,22 +2,20 @@
 
 namespace App\Discord\Fun\Cringe;
 
-use App\Discord\Core\AccessLevels;
 use App\Discord\Core\Command\SlashAndMessageCommand;
 use App\Discord\Core\EmbedFactory;
-use App\Discord\Core\Guild;
+use App\Discord\Core\Permission;
 use App\Models\CringeCounter;
 use App\Models\DiscordUser;
-use App\Models\KickCounter;
 use Discord\Builders\MessageBuilder;
 use Discord\Http\Exceptions\NoPermissionsException;
 use Discord\Parts\Interactions\Command\Option;
 
 class IncreaseCringe extends SlashAndMessageCommand
 {
-    public function permission(): string
+    public function permission(): Permission
     {
-        return 'add-cringe';
+        return Permission::ADD_CRINGE;
     }
 
     public function trigger(): string

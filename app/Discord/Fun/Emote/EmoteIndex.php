@@ -5,6 +5,7 @@ namespace App\Discord\Fun\Emote;
 use App\Discord\Core\Bot;
 use App\Discord\Core\Command\SlashAndMessageIndexCommand;
 use App\Discord\Core\EmbedBuilder;
+use App\Discord\Core\Permission;
 use App\Discord\Helper;
 use App\Models\Emote;
 use Discord\Parts\Embed\Embed;
@@ -12,9 +13,9 @@ use Discord\Parts\Embed\Embed;
 class EmoteIndex extends SlashAndMessageIndexCommand
 {
 
-    public function permission(): string
+    public function permission(): Permission
     {
-        return "";
+        return Permission::NONE;
     }
 
     public function trigger(): string

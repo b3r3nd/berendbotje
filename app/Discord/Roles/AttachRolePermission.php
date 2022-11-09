@@ -4,15 +4,15 @@ namespace App\Discord\Roles;
 
 use App\Discord\Core\Command\MessageCommand;
 use App\Discord\Core\EmbedFactory;
-use App\Models\Permission;
+use App\Discord\Core\Permission;
 use App\Models\Role;
 
 class AttachRolePermission extends MessageCommand
 {
 
-    public function permission(): string
+    public function permission(): Permission
     {
-        return 'attach-permission';
+        return Permission::ATTACH_PERM;
     }
 
     public function trigger(): string
@@ -33,7 +33,7 @@ class AttachRolePermission extends MessageCommand
             $this->message->channel->sendMessage(EmbedFactory::failedEmbed(__('bot.roles.not-exist', ['role' => $this->arguments[0]])));
             return;
         }
-        if(!RoleHelper::processPermissions($this->arguments[1])) {
+        if (!RoleHelper::processPermissions($this->arguments[1])) {
             $this->message->channel->sendMessage(EmbedFactory::failedEmbed(__('bot.permissions.not-exist', ['perm' => $this->arguments[1]])));
             return;
         }

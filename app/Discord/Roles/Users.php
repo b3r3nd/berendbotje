@@ -5,15 +5,16 @@ namespace App\Discord\Roles;
 use App\Discord\Core\Bot;
 use App\Discord\Core\Command\SlashAndMessageIndexCommand;
 use App\Discord\Core\EmbedBuilder;
+use App\Discord\Core\Permission;
 use App\Models\Role;
 use Discord\Parts\Embed\Embed;
 
 class Users extends SlashAndMessageIndexCommand
 {
 
-    public function permission(): string
+    public function permission(): Permission
     {
-        return "";
+        return Permission::NONE;
     }
 
     public function trigger(): string

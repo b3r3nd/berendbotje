@@ -6,6 +6,7 @@ use App\Discord\Core\Bot;
 use App\Discord\Core\Command\SlashAndMessageCommand;
 use App\Discord\Core\EmbedBuilder;
 use App\Discord\Core\EmbedFactory;
+use App\Discord\Core\Permission;
 use App\Models\DiscordUser;
 use App\Models\Guild;
 use Discord\Builders\MessageBuilder;
@@ -14,9 +15,9 @@ use Discord\Http\Exceptions\NoPermissionsException;
 class UserMessages extends SlashAndMessageCommand
 {
 
-    public function permission(): string
+    public function permission(): Permission
     {
-        return "";
+        return Permission::NONE;
     }
 
     public function trigger(): string
