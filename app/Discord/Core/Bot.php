@@ -18,9 +18,6 @@ use App\Discord\Fun\EightBall;
 use App\Discord\Fun\Emote\EmoteCounter;
 use App\Discord\Fun\Emote\EmoteIndex;
 use App\Discord\Fun\MentionResponder;
-use App\Discord\Fun\Message\MessageCounter;
-use App\Discord\Fun\Message\MessagesIndex;
-use App\Discord\Fun\Message\UserMessages;
 use App\Discord\Fun\Reaction\CreateReaction;
 use App\Discord\Fun\Reaction\DeleteReaction;
 use App\Discord\Fun\Reaction\ReactionIndex;
@@ -28,6 +25,15 @@ use App\Discord\Fun\Reaction\SimpleReaction;
 use App\Discord\Fun\Say;
 use App\Discord\Fun\UrbanDictionary;
 use App\Discord\Help;
+use App\Discord\Levels\CreateRoleReward;
+use App\Discord\Levels\DeleteRoleReward;
+use App\Discord\Levels\GiveXp;
+use App\Discord\Levels\Leaderboard;
+use App\Discord\Levels\MessageCounter;
+use App\Discord\Levels\RemoveXp;
+use App\Discord\Levels\ResetXp;
+use App\Discord\Levels\RoleRewards;
+use App\Discord\Levels\UserRank;
 use App\Discord\Moderation\Command\CommandIndex;
 use App\Discord\Moderation\Command\CreateCommand;
 use App\Discord\Moderation\Command\DeleteCommand;
@@ -125,8 +131,11 @@ class Bot
             SingleUserTimeouts::class, AllTimeouts::class, ModeratorStatistics::class,
             CreateMediaChannel::class, DeleteMediaChannel::class, MediaChannels::class,
 
+            Leaderboard::class, UserRank::class, RoleRewards::class, CreateRoleReward::class, DeleteRoleReward::class,
+            GiveXp::class, RemoveXp::class, ResetXp::class,
+
             CringeIndex::class, IncreaseCringe::class, DecreaseCringe::class, ResetCringe::class,
-            BumpStatistics::class, EmoteIndex::class, MessagesIndex::class, UserMessages::class,
+            BumpStatistics::class, EmoteIndex::class,
             CommandIndex::class, CreateCommand::class, DeleteCommand::class,
             ReactionIndex::class, CreateReaction::class, DeleteReaction::class,
             EightBall::class, Ask::class, Say::class, UrbanDictionary::class,

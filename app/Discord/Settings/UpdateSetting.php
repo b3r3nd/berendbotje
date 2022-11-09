@@ -17,7 +17,7 @@ class UpdateSetting extends MessageCommand
 
     public function trigger(): string
     {
-        return 'setconfig';
+        return 'set';
     }
 
     public function __construct()

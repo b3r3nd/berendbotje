@@ -73,12 +73,30 @@ return [
         'no-question' => 'You should ask me a question..',
     ],
 
+    'rewards' => [
+        'title' => 'Role rewards',
+        'footer' => 'Use help for more information',
+        'description' => "Level • Role Reward\n\n:rewards",
+        'usage-delreward' => 'Usage: delreward `level`',
+        'usage-addreward' => 'Usage: addreward `level`, `role_id`',
+        'added' => 'Role reward :role added for level :level',
+        'deleted' => 'All role rewards for :level deleted',
+        'number' => 'Both level and role ID need to be numeric.'
+    ],
+
     'xp' => [
         'not-found' => 'You do not have any messages',
         'count' => 'You have :messages',
         'footer' => 'You gain :xp per message',
-        'title' => 'Message statistics',
-        'description' => 'You have :messages messages which amounts to :xp xp!',
+        'title' => 'You are level :level',
+        'description' => "You have :messages messages which amounts to :xp xp!",
+        'usage-givexp' => 'givexp `user_mention` `xp_amount`',
+        'usage-delxp' => 'removexp `user_mention` `xp_amount`',
+        'usage-resetxp' => 'resetxp `user_mention`',
+        'given' => ':xp xp given to <@:user>',
+        'removed' => ':xp xp removed from <@:user>',
+        'reset' => 'xp for <@:user> is reset',
+        'not-exist' => 'User <@:user> has no messages or experience in this server'
     ],
 
     'set' => [
@@ -90,7 +108,7 @@ return [
     ],
 
     'messages' => [
-        'title' => 'Message statistics',
+        'title' => 'xp and level statistics',
         'footer' => 'You gain :xp xp per message',
         'description' => "List of messages and xp for users\n\n:users",
     ],

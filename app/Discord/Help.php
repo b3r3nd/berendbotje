@@ -50,7 +50,7 @@ class Help extends SlashAndMessageCommand
                     `usertimeouts` `user_mention` • Show timeout history for user
                     `modstats` • Show moderator statistics
                     `config` • See server configuration
-                    `setconfig` `setting_key` `new_value` • Update server setting
+                    `set` `setting_key` `new_value` • Update server setting
                      `mediachannels` • Shows a list of channels configured for media only
                     `addmediachannel` `channel` • Mark a channel as media only
                     `delmediachannel` `channel` • Delete channel from media only list
@@ -58,6 +58,17 @@ class Help extends SlashAndMessageCommand
                     `addcmd` `command` `response` • Add a custom command
                     `delcmd` `command` • Remove a custom command";
                     $embedBuilder->setDescription($desc)->setTitle("Moderation");
+                } elseif (strtolower($parameters[1]) === 'levels') {
+                    $desc = "The bot counts messages send by users and gives xp for each message. Both the amount of XP gained by each message and the cooldown between messages can be changed with the `config` command. Role rewards for users are synced whenever they send a message to the server. When removing or adding XP from users their roles will persist until they send a message.\n
+                    `leaderboard` • Show the leaderboard with highest ranking members at the top
+                    `rank` • Show your own level, xp and messages
+                    `givexp` `user_mention` `xp_amount` • Give user xp
+                    `removexp` `user_mention` `xp_amount` • Remove user xp
+                    `resetxp` `user_mention` • Reset XP for user
+                    `rewards` • Show the role rewards for different levels
+                    `addreward` `level` `role_id` • Add a role reward to a level
+                    `delreward` `level` • Delete role rewards from this level";
+                    $embedBuilder->setDescription($desc)->setTitle("Levels and XP");
                 } elseif (strtolower($parameters[1]) === 'fun') {
                     $desc = "`cringecounter` • Show who is most cringe..
                     `addcringe` `user_mention` • Increase cringe counter
@@ -68,8 +79,8 @@ class Help extends SlashAndMessageCommand
                     `delreaction` `trigger` • Delete a reaction\n
                     `bumpstats` • Show bumper elites leaderboard
                     `emotes` • Shows scoreboard of most used emotes
-                    `messages` • Shows messages and XP gained over time
-                    `xp` • Shows your current message counter and XP
+                    `leaderboard` • Shows leaderboard based on messages and xp gained
+                    `rank` • Shows your current rank, message counter and XP
                     `urb` `search_term` • Search something on urban dictionary
                     `8ball` `question` • Ask the magic 8ball
                     `ask` `question` • Yes? No? Hmm..?";
@@ -83,8 +94,10 @@ class Help extends SlashAndMessageCommand
             ['name' => 'Help Files', 'value' => "All commands use `$` prefix, alternatively you can use slash commands `/`.\n Use `\$help <section_title>` for more extensive explanation.\n For example `\$help roles` "],
             ['name' => 'Roles', 'value' => 'Managing roles and permissions'],
             ['name' => 'Moderation', 'value' => 'Moderator actions'],
+            ['name' => 'Levels', 'value' => 'Levels and XP'],
             ['name' => 'Fun', 'value' => 'Fun commands'],
         );
         return MessageBuilder::new()->addEmbed($embedBuilder->getEmbed());
     }
 }
+

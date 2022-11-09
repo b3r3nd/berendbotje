@@ -2,11 +2,9 @@
 
 namespace App\Discord;
 
+use App\Discord\Core\Bot;
 use App\Discord\Core\Command\MessageCommand;
 use App\Discord\Core\Permission;
-use App\Models\DiscordUser;
-use App\Models\Guild;
-use App\Models\KickCounter;
 
 class TestCommand extends MessageCommand
 {
@@ -23,15 +21,28 @@ class TestCommand extends MessageCommand
 
     public function action(): void
     {
-//        $user = DiscordUser::get($this->commandUser);
-//        $guild = Guild::get($this->guildId);
+
+//        $this->message->member->addRole(995771835767607366)->done(function () {
+//            $this->message->channel->sendMessage("done??");
 //
-//        $kickCounter = $user->kickCounters()->where('guild_id', $guild->id)->get();
-//        if ($kickCounter->isEmpty()) {
-//            $user->kickCounters()->save(new KickCounter(['count' => 1, 'guild_id' => $guild->id]));
-//        } else {
-//            $kickCounter = $kickCounter->first();
-//            $kickCounter->update(['count' => $kickCounter->count + 1]);
+//        });
+
+
+//        $messages = 500;
+//
+//        if (isset($this->message)) {
+//            $parameters = explode(' ', $this->message->content);
+//            if (isset($parameters[1])) {
+//                $messages = $parameters[1];
+//            }
 //        }
+//
+//        $xpCount = Bot::get()->getGuild($this->guildId)->getSetting('xp_count');
+//        $xp = $messages * $xpCount;
+//        $level = Helper::calcLevel($messages, $xpCount);
+//
+//        $this->message->channel->sendMessage("Messages: {$messages}");
+//        $this->message->channel->sendMessage("XP: {$xp} - Count per message: {$xpCount}");
+//        $this->message->channel->sendMessage("Level: {$level}");
     }
 }
