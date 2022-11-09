@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Discord\Fun\Message;
+namespace App\Discord\Moderation\RoleRewards;
 
 use App\Discord\Core\Bot;
 use App\Discord\Core\Command\SlashAndMessageIndexCommand;

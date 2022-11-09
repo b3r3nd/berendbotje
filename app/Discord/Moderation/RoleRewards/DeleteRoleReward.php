@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Discord\Fun\Message;
+namespace App\Discord\Moderation\RoleRewards;
 
 use App\Discord\Core\Command\MessageCommand;
 use App\Discord\Core\EmbedFactory;

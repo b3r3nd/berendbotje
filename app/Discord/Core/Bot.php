@@ -18,12 +18,9 @@ use App\Discord\Fun\EightBall;
 use App\Discord\Fun\Emote\EmoteCounter;
 use App\Discord\Fun\Emote\EmoteIndex;
 use App\Discord\Fun\MentionResponder;
-use App\Discord\Fun\Message\CreateRoleReward;
-use App\Discord\Fun\Message\DeleteRoleReward;
 use App\Discord\Fun\Message\MessageCounter;
-use App\Discord\Fun\Message\MessagesIndex;
-use App\Discord\Fun\Message\RoleRewards;
-use App\Discord\Fun\Message\UserMessages;
+use App\Discord\Fun\Message\Leaderboard;
+use App\Discord\Fun\Message\UserRank;
 use App\Discord\Fun\Reaction\CreateReaction;
 use App\Discord\Fun\Reaction\DeleteReaction;
 use App\Discord\Fun\Reaction\ReactionIndex;
@@ -41,6 +38,9 @@ use App\Discord\Moderation\MediaFilter\DeleteMediaChannel;
 use App\Discord\Moderation\MediaFilter\MediaChannels;
 use App\Discord\Moderation\MediaFilter\MediaFilter;
 use App\Discord\Moderation\ModeratorStatistics;
+use App\Discord\Moderation\RoleRewards\CreateRoleReward;
+use App\Discord\Moderation\RoleRewards\DeleteRoleReward;
+use App\Discord\Moderation\RoleRewards\RoleRewards;
 use App\Discord\Moderation\Timeout\AllTimeouts;
 use App\Discord\Moderation\Timeout\DetectTimeouts;
 use App\Discord\Moderation\Timeout\SingleUserTimeouts;
@@ -128,7 +128,7 @@ class Bot
             SingleUserTimeouts::class, AllTimeouts::class, ModeratorStatistics::class,
             CreateMediaChannel::class, DeleteMediaChannel::class, MediaChannels::class,
 
-            MessagesIndex::class, UserMessages::class, RoleRewards::class, CreateRoleReward::class, DeleteRoleReward::class,
+            Leaderboard::class, UserRank::class, RoleRewards::class, CreateRoleReward::class, DeleteRoleReward::class,
 
             CringeIndex::class, IncreaseCringe::class, DecreaseCringe::class, ResetCringe::class,
             BumpStatistics::class, EmoteIndex::class,

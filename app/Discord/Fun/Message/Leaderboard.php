@@ -9,7 +9,7 @@ use App\Discord\Core\Permission;
 use App\Discord\Helper;
 use Discord\Parts\Embed\Embed;
 
-class MessagesIndex extends SlashAndMessageIndexCommand
+class Leaderboard extends SlashAndMessageIndexCommand
 {
 
     public function permission(): Permission

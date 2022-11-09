@@ -62,10 +62,13 @@ class Help extends SlashAndMessageCommand
                     $desc = "The bot counts messages send by users and gives xp for each message. Both the amount of XP gained by each message and the cooldown between messages can be changed with the `config` command.\n
                     `leaderboard` • Show the leaderboard with highest ranking members at the top
                     `rank` • Show your own level, xp and messages
+                    `givexp` `user_mention` `xp_amount` • Give user xp
+                    `removexp` `user_mention` `xp_amount` • Remove user xp
+                    `resetxp` `user_mention` • Reset XP for user
                     `rewards` • Show the role rewards for different levels
                     `addreward` `level` `role_id` • Add a role reward to a level
                     `delreward` `level` • Delete role rewards from this level";
-                    $embedBuilder->setDescription($desc)->setTitle("Fun commands");
+                    $embedBuilder->setDescription($desc)->setTitle("Levels and XP");
                 } elseif (strtolower($parameters[1]) === 'fun') {
                     $desc = "`cringecounter` • Show who is most cringe..
                     `addcringe` `user_mention` • Increase cringe counter

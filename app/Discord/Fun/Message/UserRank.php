@@ -13,7 +13,7 @@ use App\Models\Guild;
 use Discord\Builders\MessageBuilder;
 use Discord\Http\Exceptions\NoPermissionsException;
 
-class UserMessages extends SlashAndMessageCommand
+class UserRank extends SlashAndMessageCommand
 {
 
     public function permission(): Permission

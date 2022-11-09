@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Discord\Fun\Message;
+namespace App\Discord\Moderation\RoleRewards;
 
 use App\Discord\Core\Command\MessageCommand;
 use App\Discord\Core\EmbedFactory;
 use App\Discord\Core\Permission;
 use App\Models\RoleReward;
-use Discord\Parts\Interactions\Command\Option;
 
 class CreateRoleReward extends MessageCommand
 {
