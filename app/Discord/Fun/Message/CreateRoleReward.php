@@ -37,6 +37,6 @@ class CreateRoleReward extends MessageCommand
 
         $roleReward = RoleReward::create(['level' => $this->arguments[0], 'role' => $this->arguments[1], 'guild_id' => \App\Models\Guild::get($this->guildId)->id]);
         $roleReward->save();
-        $this->message->channel->sendMessage(EmbedFactory::successEmbed(__('bot.rewards.added', ['level' => $this->arguments[0], 'role' => $this->arguments[1]])));
+        $this->message->channel->sendMessage(EmbedFactory::successEmbed(__('bot.rewards.added', ['level' => $this->arguments[0], 'role' => $roleReward->roleTag()])));
     }
 }

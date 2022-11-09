@@ -50,7 +50,7 @@ class Help extends SlashAndMessageCommand
                     `usertimeouts` `user_mention` • Show timeout history for user
                     `modstats` • Show moderator statistics
                     `config` • See server configuration
-                    `setconfig` `setting_key` `new_value` • Update server setting
+                    `set` `setting_key` `new_value` • Update server setting
                      `mediachannels` • Shows a list of channels configured for media only
                     `addmediachannel` `channel` • Mark a channel as media only
                     `delmediachannel` `channel` • Delete channel from media only list
@@ -58,6 +58,14 @@ class Help extends SlashAndMessageCommand
                     `addcmd` `command` `response` • Add a custom command
                     `delcmd` `command` • Remove a custom command";
                     $embedBuilder->setDescription($desc)->setTitle("Moderation");
+                } elseif (strtolower($parameters[1]) === 'levels') {
+                    $desc = "The bot counts messages send by users and gives xp for each message. Both the amount of XP gained by each message and the cooldown between messages can be changed with the `config` command.\n
+                    `leaderboard` • Show the leaderboard with highest ranking members at the top
+                    `rank` • Show your own level, xp and messages
+                    `rewards` • Show the role rewards for different levels
+                    `addreward` `level` `role_id` • Add a role reward to a level
+                    `delreward` `level` • Delete role rewards from this level";
+                    $embedBuilder->setDescription($desc)->setTitle("Fun commands");
                 } elseif (strtolower($parameters[1]) === 'fun') {
                     $desc = "`cringecounter` • Show who is most cringe..
                     `addcringe` `user_mention` • Increase cringe counter
@@ -83,8 +91,10 @@ class Help extends SlashAndMessageCommand
             ['name' => 'Help Files', 'value' => "All commands use `$` prefix, alternatively you can use slash commands `/`.\n Use `\$help <section_title>` for more extensive explanation.\n For example `\$help roles` "],
             ['name' => 'Roles', 'value' => 'Managing roles and permissions'],
             ['name' => 'Moderation', 'value' => 'Moderator actions'],
+            ['name' => 'Levels', 'value' => 'Levels and XP'],
             ['name' => 'Fun', 'value' => 'Fun commands'],
         );
         return MessageBuilder::new()->addEmbed($embedBuilder->getEmbed());
     }
 }
+
