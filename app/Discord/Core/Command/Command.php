@@ -19,7 +19,6 @@ use Discord\Parts\Channel\Message;
  * @property string $usageString            Example usage of how to use the command, shown as error on incorrect usage.
  * @property string $messageString          String of the message received without command trigger.
  * @property string $guildId                String of the Discord Guild ID
- *
  */
 abstract class Command
 {

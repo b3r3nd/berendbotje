@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Discord\Fun\Command;
+namespace App\Discord\Moderation\Command;
 
 use App\Discord\Core\Bot;
 use App\Discord\Core\Command\SlashAndMessageCommand;
@@ -11,7 +11,7 @@ use Discord\Builders\MessageBuilder;
 use Discord\Http\Exceptions\NoPermissionsException;
 use Discord\Parts\Interactions\Command\Option;
 
-class CreateCommand extends SlashAndMessageCommand
+class DeleteCommand extends SlashAndMessageCommand
 {
     public function permission(): Permission
     {
@@ -20,28 +20,21 @@ class CreateCommand extends SlashAndMessageCommand
 
     public function trigger(): string
     {
-        return 'addcmd';
+        return 'delcmd';
     }
 
     public function __construct()
     {
-        $this->requiredArguments = 2;
-        $this->usageString = __('bot.cmd.usage-addcmd');
+        $this->requiredArguments = 1;
+        $this->usageString = __('bot.cmd.usage-delcmd');
         $this->slashCommandOptions = [
             [
                 'name' => 'command',
                 'description' => 'Command',
                 'type' => Option::STRING,
                 'required' => true,
-            ],
-            [
-                'name' => 'response',
-                'description' => 'Response',
-                'type' => Option::STRING,
-                'required' => true,
             ]
         ];
-
         parent::__construct();
     }
 
@@ -50,11 +43,8 @@ class CreateCommand extends SlashAndMessageCommand
      */
     public function action(): MessageBuilder
     {
-        $trigger = array_shift($this->arguments);
-        $response = join(' ', $this->arguments);
-        $command = \App\Models\Command::create(['trigger' => $trigger, 'response' => $response, 'guild_id' => Guild::get($this->guildId)->id]);
-        $command->save();
-        new SimpleCommand(Bot::get(), $trigger, $response, $this->guildId);
-        return EmbedFactory::successEmbed(__('bot.cmd.saved', ['trigger' => $trigger, 'response' => $response]));
+        \App\Models\Command::where(['trigger' => $this->arguments[0], 'guild_id' => Guild::get($this->guildId)->id])->delete();
+        Bot::get()->getGuild($this->guildId)->deleteCommand($this->arguments[0]);
+        return EmbedFactory::successEmbed(__('bot.cmd.deleted', ['trigger' => $this->arguments[0]]));
     }
 }

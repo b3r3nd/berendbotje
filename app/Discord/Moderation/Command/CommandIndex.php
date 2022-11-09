@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Discord\Fun\Command;
+namespace App\Discord\Moderation\Command;
 
 use App\Discord\Core\Bot;
 use App\Discord\Core\Command\SlashAndMessageIndexCommand;
