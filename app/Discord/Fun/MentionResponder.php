@@ -54,7 +54,7 @@ class MentionResponder
             "Trouble?",
             "What is it?",
             "No lollygaggin'.",
-            "Gotta keep my eyes open. Damn trolls could appear down at any time.",
+            "Gotta keep my eyes open. Damn trolls could appear at any time.",
             "My cousin's out generating code, and what do I get? discord mod duty.",
             "Fear not. Come troll or scammers, we'll be ready.",
             "Everything all right?",
