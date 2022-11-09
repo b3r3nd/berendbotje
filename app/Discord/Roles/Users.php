@@ -35,9 +35,9 @@ class Users extends SlashAndMessageIndexCommand
 
         $description = "";
         foreach ($userRoles as $user => $roles) {
-            $description .= "\n**{$user}**\n";
+            $description .= "\n**{$user}** • ";
             foreach ($roles as $role) {
-                $description .= "{$role}, ";
+                $description .= "{$role} ";
             }
         }
 
