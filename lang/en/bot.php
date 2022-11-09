@@ -73,6 +73,17 @@ return [
         'no-question' => 'You should ask me a question..',
     ],
 
+    'rewards' => [
+        'title' => 'Role rewards',
+        'footer' => 'Use help for more information',
+        'description' => "Level • Role Reward\n\n:rewards",
+        'usage-delreward' => 'Usage: delreward `level`',
+        'usage-addreward' => 'Usage: addreward `level`, `role_id`',
+        'added' => 'Role reward :role added for level :level',
+        'deleted' => 'All role rewards for :level deleted',
+        'number' => 'Both level and role ID need to be numeric.'
+    ],
+
     'xp' => [
         'not-found' => 'You do not have any messages',
         'count' => 'You have :messages',

@@ -21,6 +21,13 @@ class TestCommand extends MessageCommand
 
     public function action(): void
     {
+
+//        $this->message->member->addRole(995771835767607366)->done(function () {
+//            $this->message->channel->sendMessage("done??");
+//
+//        });
+
+
         $messages = 500;
 
         if (isset($this->message)) {

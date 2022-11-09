@@ -5,6 +5,7 @@ namespace App\Discord\Fun\Message;
 use App\Discord\Core\Bot;
 use App\Discord\Helper;
 use App\Models\DiscordUser;
+use App\Models\RoleReward;
 use Carbon\Carbon;
 use Discord\Discord;
 use Discord\Parts\Channel\Message;
@@ -38,6 +39,11 @@ class MessageCounter
                     $messageCounter->update(['count' => $messageCounter->count + 1]);
                 }
 
+                /**
+                 * @TODO move code below to separate actions/class/listener or whatever
+                 */
+
+                // Also update level and XP
                 $xpCount = $guild->getSetting('xp_count');
                 $xp = $messageCounter->count * $xpCount;
                 $level = Helper::calcLevel($messageCounter->count, $xpCount);
@@ -46,8 +52,19 @@ class MessageCounter
                     'level' => $level,
                     'xp' => $xp,
                 ]);
+
+                // Give role if a role rewarch has been reached
+                $roleRewards = RoleReward::where('level', $level)->get();
+                if (!$roleRewards->isEmpty()) {
+                    $role = $roleRewards->first()->role;
+                    $test = collect($message->member->roles);
+                    if (!$test->contains('id', $role)) {
+                        $message->member->addRole($role)->done(function () {
+                            var_dump('role given!!!');
+                        });
+                    }
+                }
             }
         });
     }
-
 }

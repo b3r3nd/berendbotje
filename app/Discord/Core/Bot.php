@@ -18,8 +18,11 @@ use App\Discord\Fun\EightBall;
 use App\Discord\Fun\Emote\EmoteCounter;
 use App\Discord\Fun\Emote\EmoteIndex;
 use App\Discord\Fun\MentionResponder;
+use App\Discord\Fun\Message\CreateRoleReward;
+use App\Discord\Fun\Message\DeleteRoleReward;
 use App\Discord\Fun\Message\MessageCounter;
 use App\Discord\Fun\Message\MessagesIndex;
+use App\Discord\Fun\Message\RoleRewards;
 use App\Discord\Fun\Message\UserMessages;
 use App\Discord\Fun\Reaction\CreateReaction;
 use App\Discord\Fun\Reaction\DeleteReaction;
@@ -125,8 +128,10 @@ class Bot
             SingleUserTimeouts::class, AllTimeouts::class, ModeratorStatistics::class,
             CreateMediaChannel::class, DeleteMediaChannel::class, MediaChannels::class,
 
+            MessagesIndex::class, UserMessages::class, RoleRewards::class, CreateRoleReward::class, DeleteRoleReward::class,
+
             CringeIndex::class, IncreaseCringe::class, DecreaseCringe::class, ResetCringe::class,
-            BumpStatistics::class, EmoteIndex::class, MessagesIndex::class, UserMessages::class,
+            BumpStatistics::class, EmoteIndex::class,
             CommandIndex::class, CreateCommand::class, DeleteCommand::class,
             ReactionIndex::class, CreateReaction::class, DeleteReaction::class,
             EightBall::class, Ask::class, Say::class, UrbanDictionary::class,
