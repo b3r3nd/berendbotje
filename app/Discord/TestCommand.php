@@ -3,6 +3,7 @@
 namespace App\Discord;
 
 use App\Discord\Core\Command\MessageCommand;
+use App\Discord\Core\Permission;
 use App\Models\DiscordUser;
 use App\Models\Guild;
 use App\Models\KickCounter;
@@ -10,9 +11,9 @@ use App\Models\KickCounter;
 class TestCommand extends MessageCommand
 {
 
-    public function permission(): string
+    public function permission(): Permission
     {
-        return "";
+        return Permission::NONE;
     }
 
     public function trigger(): string

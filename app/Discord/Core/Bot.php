@@ -10,10 +10,6 @@ use App\Discord\Core\Command\SlashCommand;
 use App\Discord\Fun\Ask;
 use App\Discord\Fun\Bump\BumpCounter;
 use App\Discord\Fun\Bump\BumpStatistics;
-use App\Discord\Fun\Command\CommandIndex;
-use App\Discord\Fun\Command\CreateCommand;
-use App\Discord\Fun\Command\DeleteCommand;
-use App\Discord\Fun\Command\SimpleCommand;
 use App\Discord\Fun\Cringe\CringeIndex;
 use App\Discord\Fun\Cringe\DecreaseCringe;
 use App\Discord\Fun\Cringe\IncreaseCringe;
@@ -21,6 +17,7 @@ use App\Discord\Fun\Cringe\ResetCringe;
 use App\Discord\Fun\EightBall;
 use App\Discord\Fun\Emote\EmoteCounter;
 use App\Discord\Fun\Emote\EmoteIndex;
+use App\Discord\Fun\MentionResponder;
 use App\Discord\Fun\Message\MessageCounter;
 use App\Discord\Fun\Message\MessagesIndex;
 use App\Discord\Fun\Message\UserMessages;
@@ -31,6 +28,10 @@ use App\Discord\Fun\Reaction\SimpleReaction;
 use App\Discord\Fun\Say;
 use App\Discord\Fun\UrbanDictionary;
 use App\Discord\Help;
+use App\Discord\Moderation\Command\CommandIndex;
+use App\Discord\Moderation\Command\CreateCommand;
+use App\Discord\Moderation\Command\DeleteCommand;
+use App\Discord\Moderation\Command\SimpleCommand;
 use App\Discord\Moderation\DetectKicksAndBans;
 use App\Discord\Moderation\MediaFilter\CreateMediaChannel;
 use App\Discord\Moderation\MediaFilter\DeleteMediaChannel;
@@ -55,7 +56,6 @@ use App\Discord\Settings\Settings;
 use App\Discord\Settings\UpdateSetting;
 use App\Discord\TestCommand;
 use App\Models\Guild;
-use App\Models\MediaChannel;
 use App\Models\Reaction;
 use Discord\Discord;
 use Discord\Exceptions\IntentException;
@@ -98,6 +98,7 @@ class Bot
             BumpCounter::class,
             EmoteCounter::class,
             MessageCounter::class,
+            MentionResponder::class,
         ];
     }
 

@@ -6,6 +6,7 @@ use App\Discord\Core\Bot;
 use App\Discord\Core\Command\SlashAndMessageCommand;
 use App\Discord\Core\EmbedFactory;
 use App\Discord\Core\Guild;
+use App\Discord\Core\Permission;
 use App\Models\Reaction;
 use Discord\Builders\MessageBuilder;
 use Discord\Http\Exceptions\NoPermissionsException;
@@ -13,9 +14,9 @@ use Discord\Parts\Interactions\Command\Option;
 
 class CreateReaction extends SlashAndMessageCommand
 {
-    public function permission(): string
+    public function permission(): Permission
     {
-        return "reactions";
+        return Permission::REACTIONS;
     }
 
     public function trigger(): string

@@ -2,9 +2,10 @@
 
 namespace App\Discord\Core;
 
+use App\Discord\Moderation\Command\SimpleCommand;
+use App\Models\Guild as GuildModel;
 use App\Models\Setting;
 use Carbon\Carbon;
-use \App\Models\Guild as GuildModel;
 
 /**
  * Guild settings are loaded on boot and only updated when the actual setting is changed using commands.

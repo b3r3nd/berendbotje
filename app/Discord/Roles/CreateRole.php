@@ -4,15 +4,16 @@ namespace App\Discord\Roles;
 
 use App\Discord\Core\Command\MessageCommand;
 use App\Discord\Core\EmbedFactory;
+use App\Discord\Core\Permission;
 use App\Models\Guild;
 use App\Models\Role;
 
 class CreateRole extends MessageCommand
 {
 
-    public function permission(): string
+    public function permission(): Permission
     {
-        return 'create-role';
+        return Permission::CREATE_ROLE;
     }
 
     public function trigger(): string

@@ -6,15 +6,16 @@ use App\Discord\Core\Bot;
 use App\Discord\Core\Command\MessageCommand;
 use App\Discord\Core\EmbedBuilder;
 use App\Discord\Core\EmbedFactory;
+use App\Discord\Core\Permission;
 use App\Models\DiscordUser;
 use Discord\Builders\MessageBuilder;
 
 class MyRoles extends MessageCommand
 {
 
-    public function permission(): string
+    public function permission(): Permission
     {
-        return "";
+        return Permission::NONE;
     }
 
     public function trigger(): string

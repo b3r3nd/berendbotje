@@ -5,14 +5,15 @@ namespace App\Discord\Moderation\MediaFilter;
 use App\Discord\Core\Bot;
 use App\Discord\Core\Command\SlashAndMessageIndexCommand;
 use App\Discord\Core\EmbedBuilder;
+use App\Discord\Core\Permission;
 use App\Models\MediaChannel;
 use Discord\Parts\Embed\Embed;
 
 class MediaChannels extends SlashAndMessageIndexCommand
 {
-    public function permission(): string
+    public function permission(): Permission
     {
-        return "media-filter";
+        return Permission::MEDIA;
     }
 
     public function trigger(): string

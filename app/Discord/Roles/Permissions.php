@@ -10,9 +10,9 @@ use Discord\Parts\Embed\Embed;
 
 class Permissions extends SlashAndMessageIndexCommand
 {
-    public function permission(): string
+    public function permission(): \App\Discord\Core\Permission
     {
-        return 'permissions';
+        return \App\Discord\Core\Permission::PERMISSIONS;
     }
 
     public function trigger(): string

@@ -5,13 +5,14 @@ namespace App\Discord\Settings;
 use App\Discord\Core\Bot;
 use App\Discord\Core\Command\MessageCommand;
 use App\Discord\Core\EmbedFactory;
+use App\Discord\Core\Permission;
 use App\Models\Setting;
 
 class UpdateSetting extends MessageCommand
 {
-    public function permission(): string
+    public function permission(): Permission
     {
-        return 'config';
+        return Permission::CONFIG;
     }
 
     public function trigger(): string

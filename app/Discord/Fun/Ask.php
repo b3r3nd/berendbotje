@@ -3,15 +3,16 @@
 namespace App\Discord\Fun;
 
 use App\Discord\Core\Command\SlashAndMessageCommand;
+use App\Discord\Core\Permission;
 use Discord\Builders\MessageBuilder;
 use Illuminate\Support\Facades\Http;
 
 class Ask extends SlashAndMessageCommand
 {
 
-    public function permission(): string
+    public function permission(): Permission
     {
-        return "";
+        return Permission::NONE;
     }
 
     public function trigger(): string

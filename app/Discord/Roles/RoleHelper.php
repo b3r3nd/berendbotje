@@ -4,11 +4,18 @@ namespace App\Discord\Roles;
 
 use App\Discord\Core\EmbedFactory;
 use App\Models\Permission;
+use Illuminate\Support\Collection;
 
 class RoleHelper
 {
-
-    public static function processPermissions($parameters)
+    /**
+     * Returns an array with given permission names or false when invalid permissions is
+     * provided.
+     *
+     * @param $parameters
+     * @return false|Collection
+     */
+    public static function processPermissions($parameters): bool|Collection
     {
         $parameters = strtolower($parameters);
         if (str_contains($parameters, ',')) {

@@ -3,13 +3,14 @@
 namespace App\Discord\Fun;
 
 use App\Discord\Core\Command\MessageCommand;
+use App\Discord\Core\Permission;
 use Discord\Http\Exceptions\NoPermissionsException;
 
 class Say extends MessageCommand
 {
-    public function permission(): string
+    public function permission(): Permission
     {
-        return "admins";
+        return Permission::ADMINS;
     }
 
     public function trigger(): string
