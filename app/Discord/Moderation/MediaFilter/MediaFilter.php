@@ -15,10 +15,9 @@ class MediaFilter
             if ($message->author->bot) {
                 return;
             }
-            if (!isset($message->channel) || !isset($message->guild_id)) {
-                return;
-            }
-            if (!in_array($message->channel, Bot::get()->getGuild($message->guild_id)->getMediaChannels())) {
+
+            $channels = Bot::get()->getGuild($message->guild_id ?? "")->getMediaChannels() ?? [];
+            if (!in_array($message->channel, $channels)) {
                 return;
             }
 
