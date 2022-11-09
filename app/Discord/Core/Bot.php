@@ -18,9 +18,6 @@ use App\Discord\Fun\EightBall;
 use App\Discord\Fun\Emote\EmoteCounter;
 use App\Discord\Fun\Emote\EmoteIndex;
 use App\Discord\Fun\MentionResponder;
-use App\Discord\Fun\Message\MessageCounter;
-use App\Discord\Fun\Message\Leaderboard;
-use App\Discord\Fun\Message\UserRank;
 use App\Discord\Fun\Reaction\CreateReaction;
 use App\Discord\Fun\Reaction\DeleteReaction;
 use App\Discord\Fun\Reaction\ReactionIndex;
@@ -28,6 +25,15 @@ use App\Discord\Fun\Reaction\SimpleReaction;
 use App\Discord\Fun\Say;
 use App\Discord\Fun\UrbanDictionary;
 use App\Discord\Help;
+use App\Discord\Levels\CreateRoleReward;
+use App\Discord\Levels\DeleteRoleReward;
+use App\Discord\Levels\GiveXp;
+use App\Discord\Levels\Leaderboard;
+use App\Discord\Levels\MessageCounter;
+use App\Discord\Levels\RemoveXp;
+use App\Discord\Levels\ResetXp;
+use App\Discord\Levels\RoleRewards;
+use App\Discord\Levels\UserRank;
 use App\Discord\Moderation\Command\CommandIndex;
 use App\Discord\Moderation\Command\CreateCommand;
 use App\Discord\Moderation\Command\DeleteCommand;
@@ -38,9 +44,6 @@ use App\Discord\Moderation\MediaFilter\DeleteMediaChannel;
 use App\Discord\Moderation\MediaFilter\MediaChannels;
 use App\Discord\Moderation\MediaFilter\MediaFilter;
 use App\Discord\Moderation\ModeratorStatistics;
-use App\Discord\Moderation\RoleRewards\CreateRoleReward;
-use App\Discord\Moderation\RoleRewards\DeleteRoleReward;
-use App\Discord\Moderation\RoleRewards\RoleRewards;
 use App\Discord\Moderation\Timeout\AllTimeouts;
 use App\Discord\Moderation\Timeout\DetectTimeouts;
 use App\Discord\Moderation\Timeout\SingleUserTimeouts;
@@ -129,6 +132,7 @@ class Bot
             CreateMediaChannel::class, DeleteMediaChannel::class, MediaChannels::class,
 
             Leaderboard::class, UserRank::class, RoleRewards::class, CreateRoleReward::class, DeleteRoleReward::class,
+            GiveXp::class, RemoveXp::class, ResetXp::class,
 
             CringeIndex::class, IncreaseCringe::class, DecreaseCringe::class, ResetCringe::class,
             BumpStatistics::class, EmoteIndex::class,

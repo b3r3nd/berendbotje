@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Discord\Fun\Message;
+namespace App\Discord\Levels;
 
 use App\Discord\Core\Bot;
 use App\Discord\Core\Command\SlashAndMessageCommand;
@@ -40,14 +40,12 @@ class UserRank extends SlashAndMessageCommand
             return EmbedFactory::failedEmbed(__('bot.xp.not-found'));
         }
 
-        $messages = $messageCounters->first()->count;
+        $messageCounter = $messageCounters->first();
         $xpCount = Bot::get()->getGuild($this->guildId)->getSetting('xp_count');
-        $xp = $messages * $xpCount;
-        $level = Helper::calcLevel($messages, $xpCount);
 
         return MessageBuilder::new()->addEmbed(EmbedBuilder::create(Bot::getDiscord())
-            ->setDescription(__('bot.xp.description', ['messages' => $messages, 'xp' => $xp]))
-            ->setTitle(__('bot.xp.title', ['level' => $level]))
+            ->setDescription(__('bot.xp.description', ['messages' => $messageCounter->count, 'xp' => $messageCounter->xp]))
+            ->setTitle(__('bot.xp.title', ['level' => $messageCounter->level]))
             ->setFooter(__('bot.xp.footer', ['xp' => $xpCount]))
             ->getEmbed());
     }

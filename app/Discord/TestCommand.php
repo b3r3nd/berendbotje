@@ -28,21 +28,21 @@ class TestCommand extends MessageCommand
 //        });
 
 
-        $messages = 500;
-
-        if (isset($this->message)) {
-            $parameters = explode(' ', $this->message->content);
-            if (isset($parameters[1])) {
-                $messages = $parameters[1];
-            }
-        }
-
-        $xpCount = Bot::get()->getGuild($this->guildId)->getSetting('xp_count');
-        $xp = $messages * $xpCount;
-        $level = Helper::calcLevel($messages, $xpCount);
-
-        $this->message->channel->sendMessage("Messages: {$messages}");
-        $this->message->channel->sendMessage("XP: {$xp} - Count per message: {$xpCount}");
-        $this->message->channel->sendMessage("Level: {$level}");
+//        $messages = 500;
+//
+//        if (isset($this->message)) {
+//            $parameters = explode(' ', $this->message->content);
+//            if (isset($parameters[1])) {
+//                $messages = $parameters[1];
+//            }
+//        }
+//
+//        $xpCount = Bot::get()->getGuild($this->guildId)->getSetting('xp_count');
+//        $xp = $messages * $xpCount;
+//        $level = Helper::calcLevel($messages, $xpCount);
+//
+//        $this->message->channel->sendMessage("Messages: {$messages}");
+//        $this->message->channel->sendMessage("XP: {$xp} - Count per message: {$xpCount}");
+//        $this->message->channel->sendMessage("Level: {$level}");
     }
 }

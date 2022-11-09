@@ -59,7 +59,7 @@ class Help extends SlashAndMessageCommand
                     `delcmd` `command` • Remove a custom command";
                     $embedBuilder->setDescription($desc)->setTitle("Moderation");
                 } elseif (strtolower($parameters[1]) === 'levels') {
-                    $desc = "The bot counts messages send by users and gives xp for each message. Both the amount of XP gained by each message and the cooldown between messages can be changed with the `config` command.\n
+                    $desc = "The bot counts messages send by users and gives xp for each message. Both the amount of XP gained by each message and the cooldown between messages can be changed with the `config` command. Role rewards for users are synced whenever they send a message to the server. When removing or adding XP from users their roles will persist until they send a message.\n
                     `leaderboard` • Show the leaderboard with highest ranking members at the top
                     `rank` • Show your own level, xp and messages
                     `givexp` `user_mention` `xp_amount` • Give user xp

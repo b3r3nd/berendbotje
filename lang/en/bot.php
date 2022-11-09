@@ -90,6 +90,13 @@ return [
         'footer' => 'You gain :xp per message',
         'title' => 'You are level :level',
         'description' => "You have :messages messages which amounts to :xp xp!",
+        'usage-givexp' => 'givexp `user_mention` `xp_amount`',
+        'usage-delxp' => 'removexp `user_mention` `xp_amount`',
+        'usage-resetxp' => 'resetxp `user_mention`',
+        'given' => ':xp xp given to <@:user>',
+        'removed' => ':xp xp removed from <@:user>',
+        'reset' => 'xp for <@:user> is reset',
+        'not-exist' => 'User <@:user> has no messages or experience in this server'
     ],
 
     'set' => [

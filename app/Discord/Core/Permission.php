@@ -28,6 +28,7 @@ enum Permission: string
     case REACTIONS = 'reactions';
 
     case ROLE_REWARDS = 'role-rewards';
+    case MANAGE_XP = 'manage-xp';
 
     // Bot Owner permissions not available in public servers
     case ADMIN_SERVER = 'servers';

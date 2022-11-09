@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Discord\Fun\Message;
+namespace App\Discord\Levels;
 
 use App\Discord\Core\Bot;
 use App\Discord\Core\Command\SlashAndMessageIndexCommand;
@@ -29,8 +29,7 @@ class Leaderboard extends SlashAndMessageIndexCommand
         $description = "";
         foreach (\App\Models\MessageCounter::byGuild($this->guildId)->orderBy('level', 'desc')->skip($this->offset)->limit($this->perPage)->get() as $index => $messageCounter) {
             $description .= Helper::indexPrefix($index, $this->offset);
-            $count = $messageCounter->count * Bot::get()->getGuild($this->guildId)->getSetting('xp_count', $this->guildId);
-            $description .= "**{$messageCounter->level} • {$messageCounter->user->tag()}** • {$messageCounter->count} messages • {$count} xp \n";
+            $description .= "**{$messageCounter->level} • {$messageCounter->user->tag()}** • {$messageCounter->count} messages • {$messageCounter->xp} xp \n";
         }
         return EmbedBuilder::create(Bot::getDiscord())
             ->setTitle(__('bot.messages.title'))
