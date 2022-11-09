@@ -17,6 +17,7 @@ use App\Discord\Fun\Cringe\ResetCringe;
 use App\Discord\Fun\EightBall;
 use App\Discord\Fun\Emote\EmoteCounter;
 use App\Discord\Fun\Emote\EmoteIndex;
+use App\Discord\Fun\MentionResponder;
 use App\Discord\Fun\Message\MessageCounter;
 use App\Discord\Fun\Message\MessagesIndex;
 use App\Discord\Fun\Message\UserMessages;
@@ -97,6 +98,7 @@ class Bot
             BumpCounter::class,
             EmoteCounter::class,
             MessageCounter::class,
+            MentionResponder::class,
         ];
     }
 
