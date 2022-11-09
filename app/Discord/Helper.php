@@ -2,6 +2,8 @@
 
 namespace App\Discord;
 
+use App\Discord\Core\Bot;
+
 class Helper
 {
     /**
@@ -29,5 +31,28 @@ class Helper
         }
         $index = $index + 1;
         return "**{$index}. ** ";
+    }
+
+
+    /**
+     * Calculate the level bases on the message amount and XP per message.
+     *
+     * 500 * (level^2) - (500 * level) to calculate level based on XP.
+     * Xp is as simple as xx amount of XP per message. (15 by default)
+     *
+     * @param int $messages
+     * @param $xpCount
+     * @return int
+     */
+    public static function calcLevel(int $messages, $xpCount): int
+    {
+        $xp = $messages * $xpCount;
+        for ($level = 0; $level < 1000; $level++) {
+            $xpRequired = 500 * pow($level, 2) - (500 * $level);
+            if ($xp < $xpRequired) {
+                return $level;
+            }
+        }
+        return 0;
     }
 }

@@ -68,8 +68,8 @@ class Help extends SlashAndMessageCommand
                     `delreaction` `trigger` • Delete a reaction\n
                     `bumpstats` • Show bumper elites leaderboard
                     `emotes` • Shows scoreboard of most used emotes
-                    `messages` • Shows messages and XP gained over time
-                    `xp` • Shows your current message counter and XP
+                    `leaderboard` • Shows leaderboard based on messages and xp gained
+                    `rank` • Shows your current rank, message counter and XP
                     `urb` `search_term` • Search something on urban dictionary
                     `8ball` `question` • Ask the magic 8ball
                     `ask` `question` • Yes? No? Hmm..?";

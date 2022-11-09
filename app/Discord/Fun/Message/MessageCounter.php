@@ -3,6 +3,7 @@
 namespace App\Discord\Fun\Message;
 
 use App\Discord\Core\Bot;
+use App\Discord\Helper;
 use App\Models\DiscordUser;
 use Carbon\Carbon;
 use Discord\Discord;
@@ -36,6 +37,15 @@ class MessageCounter
                     $messageCounter = $messageCounters->first();
                     $messageCounter->update(['count' => $messageCounter->count + 1]);
                 }
+
+                $xpCount = $guild->getSetting('xp_count');
+                $xp = $messageCounter->count * $xpCount;
+                $level = Helper::calcLevel($messageCounter->count, $xpCount);
+
+                $messageCounter->update([
+                    'level' => $level,
+                    'xp' => $xp,
+                ]);
             }
         });
     }

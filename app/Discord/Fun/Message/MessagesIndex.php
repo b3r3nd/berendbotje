@@ -19,7 +19,7 @@ class MessagesIndex extends SlashAndMessageIndexCommand
 
     public function trigger(): string
     {
-        return 'messages';
+        return 'leaderboard';
     }
 
     public function getEmbed(): Embed
@@ -27,10 +27,10 @@ class MessagesIndex extends SlashAndMessageIndexCommand
         $this->total = \App\Models\MessageCounter::byGuild($this->guildId)->count();
 
         $description = "";
-        foreach (\App\Models\MessageCounter::byGuild($this->guildId)->orderBy('count', 'desc')->skip($this->offset)->limit($this->perPage)->get() as $index => $messageCounter) {
+        foreach (\App\Models\MessageCounter::byGuild($this->guildId)->orderBy('level', 'desc')->skip($this->offset)->limit($this->perPage)->get() as $index => $messageCounter) {
             $description .= Helper::indexPrefix($index, $this->offset);
             $count = $messageCounter->count * Bot::get()->getGuild($this->guildId)->getSetting('xp_count', $this->guildId);
-            $description .= "**{$messageCounter->user->tag()}** • {$messageCounter->count} messages • {$count} xp \n";
+            $description .= "**{$messageCounter->level} • {$messageCounter->user->tag()}** • {$messageCounter->count} messages • {$count} xp \n";
         }
         return EmbedBuilder::create(Bot::getDiscord())
             ->setTitle(__('bot.messages.title'))

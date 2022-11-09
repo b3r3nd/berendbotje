@@ -77,8 +77,8 @@ return [
         'not-found' => 'You do not have any messages',
         'count' => 'You have :messages',
         'footer' => 'You gain :xp per message',
-        'title' => 'Message statistics',
-        'description' => 'You have :messages messages which amounts to :xp xp!',
+        'title' => 'You are level :level',
+        'description' => "You have :messages messages which amounts to :xp xp!",
     ],
 
     'set' => [
@@ -90,7 +90,7 @@ return [
     ],
 
     'messages' => [
-        'title' => 'Message statistics',
+        'title' => 'xp and level statistics',
         'footer' => 'You gain :xp xp per message',
         'description' => "List of messages and xp for users\n\n:users",
     ],
