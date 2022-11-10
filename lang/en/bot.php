@@ -108,6 +108,7 @@ return [
         'usage-set' => 'Usage: set `setting_key` `setting_value`',
         'not-exist' => 'Setting :key does not exist',
         'updated' => 'Setting :key is updated to value :value',
+        'not-numeric' => 'Setting values must be numeric, :value is not a numeric value',
     ],
 
     'messages' => [

@@ -104,11 +104,22 @@ class Guild
     }
 
     /**
-     * @param string $setting
+     * @param Enums\Setting $setting
      * @return false|mixed
      */
-    public function getSetting(string $setting): mixed
+    public function getSetting(\App\Discord\Core\Enums\Setting $setting): mixed
     {
+        $setting = $setting->value;
+
+        if (str_contains($setting, 'enable')) {
+            if ($this->settings[$setting] === '1') {
+                return true;
+            }
+            return false;
+        } else if (is_numeric($this->settings[$setting])) {
+            return (int)$this->settings[$setting];
+        }
+
         return $this->settings[$setting] ?? "";
     }
 

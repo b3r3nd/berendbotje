@@ -6,6 +6,7 @@ use App\Discord\Core\Bot;
 use App\Discord\Core\Builders\EmbedBuilder;
 use App\Discord\Core\Builders\EmbedFactory;
 use App\Discord\Core\Enums\Permission;
+use App\Discord\Core\Enums\Setting;
 use App\Discord\Core\SlashAndMessageCommand;
 use App\Models\DiscordUser;
 use App\Models\Guild;
@@ -40,7 +41,7 @@ class UserRank extends SlashAndMessageCommand
         }
 
         $messageCounter = $messageCounters->first();
-        $xpCount = Bot::get()->getGuild($this->guildId)->getSetting('xp_count');
+        $xpCount = Bot::get()->getGuild($this->guildId)->getSetting(Setting::XP_COUNT);
 
         return MessageBuilder::new()->addEmbed(EmbedBuilder::create(Bot::getDiscord())
             ->setDescription(__('bot.xp.description', ['messages' => $messageCounter->count, 'xp' => $messageCounter->xp]))

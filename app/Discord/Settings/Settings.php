@@ -27,9 +27,12 @@ class Settings extends MessageCommand
             ->setTitle(__('bot.set.title'))
             ->setFooter(__('bot.set.footer'));
 
+        $description = "";
         foreach (Setting::byDiscordGuildId($this->guildId)->get() as $setting) {
-            $embedBuilder->getEmbed()->addField(['name' => $setting->key, 'value' => $setting->value]);
+            $description .= "**{$setting->key}** = {$setting->value}\n";
         }
+
+        $embedBuilder->setDescription($description);
         $this->message->channel->sendEmbed($embedBuilder->getEmbed());
     }
 }

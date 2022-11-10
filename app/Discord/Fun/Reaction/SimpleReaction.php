@@ -3,6 +3,7 @@
 namespace App\Discord\Fun\Reaction;
 
 use App\Discord\Core\Bot;
+use App\Discord\Core\Enums\Setting;
 use Discord\Discord;
 use Discord\Parts\Channel\Message;
 use Discord\WebSockets\Event;
@@ -23,6 +24,11 @@ class SimpleReaction
             if ($message->guild_id != $guildId) {
                 return;
             }
+            if (!Bot::get()->getGuild($message->guild_id)->getSetting(Setting::ENABLE_REACTIONS)) {
+                return;
+            }
+
+
             if (str_contains(strtolower($message->content), strtolower($trigger))) {
                 if (!in_array($trigger, $bot->getGuild($guildId)->getDeletedReactions())) {
 

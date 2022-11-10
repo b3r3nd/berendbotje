@@ -34,6 +34,11 @@ class UpdateSetting extends MessageCommand
             $this->message->channel->sendMessage(EmbedFactory::failedEmbed(__('bot.set.not-exist', ['key' => $this->arguments[0]])));
             return;
         }
+        if (!is_numeric($this->arguments[1])) {
+            $this->message->channel->sendMessage(EmbedFactory::failedEmbed(__('bot.set.not-numeric', ['value' => $this->arguments[1]])));
+            return;
+        }
+
         Bot::get()->getGuild($this->guildId)->setSetting($this->arguments[0], $this->arguments[1]);
         $this->message->channel->sendMessage(EmbedFactory::successEmbed(__('bot.set.updated', ['key' => $this->arguments[0], 'value' => $this->arguments[1]])));
     }

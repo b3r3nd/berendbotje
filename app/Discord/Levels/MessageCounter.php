@@ -3,6 +3,7 @@
 namespace App\Discord\Levels;
 
 use App\Discord\Core\Bot;
+use App\Discord\Core\Enums\Setting;
 use Carbon\Carbon;
 use Discord\Discord;
 use Discord\Parts\Channel\Message;
@@ -18,11 +19,18 @@ class MessageCounter
             }
             $guild = Bot::get()->getGuild($message->guild_id);
             if ($guild) {
+                if (!$guild->getSetting(Setting::ENABLE_XP)) {
+                    return;
+                }
+
                 $lastMessageDate = $guild->getLastMessage($message->author->id);
-                if ($lastMessageDate->diffInSeconds(Carbon::now()) >= $guild->getSetting('xp_cooldown')) {
+                if ($lastMessageDate->diffInSeconds(Carbon::now()) >= $guild->getSetting(Setting::XP_COOLDOWN)) {
                     $guild->setLastMessage($message->author->id);
-                    (new UpdateMessageCounterAction($message, $message->author->id, $guild->getSetting('xp_count')))->execute();
-                    (new SyncRoleRewardsAction($message, $message->author->id))->execute();
+                    (new UpdateMessageCounterAction($message, $message->author->id, $guild->getSetting(Setting::XP_COUNT)))->execute();
+
+                    if ($guild->getSetting(Setting::ENABLE_ROLE_REWARDS)) {
+                        (new SyncRoleRewardsAction($message, $message->author->id))->execute();
+                    }
                 }
             }
         });

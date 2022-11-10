@@ -20,9 +20,9 @@ class UpdateMessageCounterAction implements Action
      * @param Message $message
      * @param $userId
      * @param $xpCount
-     * @param $removeXp
+     * @param bool $removeXp
      */
-    public function __construct(Message $message, $userId, $xpCount, $removeXp = false)
+    public function __construct(Message $message, $userId, $xpCount, bool $removeXp = false)
     {
         $this->message = $message;
         $this->userId = $userId;

@@ -5,6 +5,7 @@ namespace App\Discord\Levels;
 use App\Discord\Core\Bot;
 use App\Discord\Core\Builders\EmbedBuilder;
 use App\Discord\Core\Enums\Permission;
+use App\Discord\Core\Enums\Setting;
 use App\Discord\Core\SlashAndMessageIndexCommand;
 use App\Discord\Helper;
 use Discord\Parts\Embed\Embed;
@@ -33,7 +34,7 @@ class Leaderboard extends SlashAndMessageIndexCommand
         }
         return EmbedBuilder::create(Bot::getDiscord())
             ->setTitle(__('bot.messages.title'))
-            ->setFooter(__('bot.messages.footer', ['xp' => Bot::get()->getGuild($this->guildId)->getSetting('xp_count', $this->guildId)]))
+            ->setFooter(__('bot.messages.footer', ['xp' => Bot::get()->getGuild($this->guildId)->getSetting(Setting::XP_COUNT)]))
             ->setDescription(__('bot.messages.description', ['users' => $description]))
             ->getEmbed();
     }
