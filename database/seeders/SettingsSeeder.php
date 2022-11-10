@@ -28,7 +28,7 @@ class SettingsSeeder extends Seeder
             'enable_reactions' => true,
             'enable_commands' => true,
             'enable_logging' => false,
-            'log_channel' => "",
+            'log_channel_id' => "",
         ];
 
         foreach (Guild::all() as $guild) {

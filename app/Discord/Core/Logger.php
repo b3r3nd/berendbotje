@@ -4,7 +4,6 @@ namespace App\Discord\Core;
 
 use App\Discord\Core\Builders\EmbedBuilder;
 use Carbon\Carbon;
-use Discord\Http\Exceptions\NoPermissionsException;
 
 class Logger
 {
@@ -19,8 +18,9 @@ class Logger
     }
 
     /**
-     * @param string $title
      * @param string $message
+     * @param string $title
+     * @param string $type
      * @return void
      */
     public function log(string $message, string $title, string $type): void
