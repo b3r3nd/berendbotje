@@ -16,6 +16,12 @@ class UpdateMessageCounterAction implements Action
     private int $xpCount;
     private bool $removeXp;
 
+    /**
+     * @param Message $message
+     * @param $userId
+     * @param $xpCount
+     * @param $removeXp
+     */
     public function __construct(Message $message, $userId, $xpCount, $removeXp = false)
     {
         $this->message = $message;
@@ -24,7 +30,9 @@ class UpdateMessageCounterAction implements Action
         $this->removeXp = $removeXp;
     }
 
-
+    /**
+     * @return void
+     */
     public function execute(): void
     {
         $user = DiscordUser::get($this->userId);

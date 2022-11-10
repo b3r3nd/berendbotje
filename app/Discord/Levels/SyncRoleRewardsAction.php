@@ -13,13 +13,19 @@ class SyncRoleRewardsAction implements Action
     private Message $message;
     private string $userId;
 
+    /**
+     * @param Message $message
+     * @param $userId
+     */
     public function __construct(Message $message, $userId)
     {
         $this->message = $message;
         $this->userId = $userId;
     }
 
-
+    /**
+     * @return void
+     */
     public function execute(): void
     {
         $user = DiscordUser::get($this->userId);
