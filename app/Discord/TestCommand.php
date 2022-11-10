@@ -2,9 +2,8 @@
 
 namespace App\Discord;
 
-use App\Discord\Core\Bot;
-use App\Discord\Core\Command\MessageCommand;
-use App\Discord\Core\Permission;
+use App\Discord\Core\Enums\Permission;
+use App\Discord\Core\MessageCommand;
 
 class TestCommand extends MessageCommand
 {

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Discord\Core\Command;
+namespace App\Discord\Core;
 
-use App\Discord\Core\Permission;
+use App\Discord\Core\Enums\Permission;
 use Discord\Parts\Channel\Message;
 
 /**

@@ -18,6 +18,15 @@ class SettingsSeeder extends Seeder
         $settings = [
             'xp_count' => 15,
             'xp_cooldown' => 60,
+            'xp_voice_count' => 15,
+            'xp_voice_cooldown' => 60,
+            'enable_xp' => true,
+            'enable_voice_xp' => true,
+            'enable_emote_counter' => true,
+            'enable_role_rewards' => true,
+            'enable_bump_counter' => true,
+            'enable_reactions' => true,
+            'enable_commands' => true,
         ];
 
         foreach (Guild::all() as $guild) {

@@ -3,6 +3,7 @@
 namespace App\Discord\Fun\Emote;
 
 use App\Discord\Core\Bot;
+use App\Discord\Core\Enums\Setting;
 use App\Models\Emote;
 use Discord\Discord;
 use Discord\Parts\Channel\Message;
@@ -18,6 +19,9 @@ class EmoteCounter
     {
         Bot::getDiscord()->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) {
             if ($message->author->bot) {
+                return;
+            }
+            if (!Bot::get()->getGuild($message->guild_id)->getSetting(Setting::ENABLE_EMOTE)) {
                 return;
             }
 

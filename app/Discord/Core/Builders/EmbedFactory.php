@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Discord\Core;
+namespace App\Discord\Core\Builders;
 
-use Carbon\Carbon;
+use App\Discord\Core\Bot;
 use Discord\Builders\MessageBuilder;
 
 /**

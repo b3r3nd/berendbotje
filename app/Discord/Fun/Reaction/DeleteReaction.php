@@ -3,9 +3,9 @@
 namespace App\Discord\Fun\Reaction;
 
 use App\Discord\Core\Bot;
-use App\Discord\Core\Command\SlashAndMessageCommand;
-use App\Discord\Core\EmbedFactory;
-use App\Discord\Core\Permission;
+use App\Discord\Core\Builders\EmbedFactory;
+use App\Discord\Core\Enums\Permission;
+use App\Discord\Core\SlashAndMessageCommand;
 use App\Models\Guild;
 use App\Models\Reaction;
 use Discord\Builders\MessageBuilder;

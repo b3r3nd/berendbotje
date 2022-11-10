@@ -3,16 +3,16 @@
 namespace App\Discord\Roles;
 
 use App\Discord\Core\Bot;
-use App\Discord\Core\Command\SlashAndMessageIndexCommand;
-use App\Discord\Core\EmbedBuilder;
+use App\Discord\Core\Builders\EmbedBuilder;
+use App\Discord\Core\SlashAndMessageIndexCommand;
 use App\Models\Permission;
 use Discord\Parts\Embed\Embed;
 
 class Permissions extends SlashAndMessageIndexCommand
 {
-    public function permission(): \App\Discord\Core\Permission
+    public function permission(): \App\Discord\Core\Enums\Permission
     {
-        return \App\Discord\Core\Permission::PERMISSIONS;
+        return \App\Discord\Core\Enums\Permission::PERMISSIONS;
     }
 
     public function trigger(): string

@@ -3,6 +3,7 @@
 namespace App\Discord\Moderation\Command;
 
 use App\Discord\Core\Bot;
+use App\Discord\Core\Enums\Setting;
 use Discord\Discord;
 use Discord\Parts\Channel\Message;
 use Discord\WebSockets\Event;
@@ -20,10 +21,13 @@ class SimpleCommand
             if ($message->guild_id != $guildId) {
                 return;
             }
-
             if ($message->author->bot) {
                 return;
             }
+            if (!Bot::get()->getGuild($message->guild_id)->getSetting(Setting::ENABLE_COMMANDS)) {
+                return;
+            }
+
             if (strtolower($message->content) == strtolower($trigger)) {
                 if (!in_array(strtolower($message->content), $bot->getGuild($guildId)->getDeletedCommands())) {
                     $message->channel->sendMessage($response);

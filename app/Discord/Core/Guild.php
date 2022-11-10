@@ -27,6 +27,7 @@ class Guild
     private array $deletedReactions = [];
     private array $settings = [];
     private array $lastMessages = [];
+    private array $inVoice = [];
     public GuildModel $model;
 
     /**
@@ -43,7 +44,41 @@ class Guild
         foreach ($this->model->mediaChannels as $channel) {
             $this->mediaChannels[$channel->channel] = $channel->channel;
         }
+    }
 
+    /**
+     * @param string $userId
+     * @return void
+     */
+    public function joinedVoice(string $userId): void
+    {
+        $this->inVoice[$userId] = Carbon::now();
+    }
+
+
+    /**
+     * @param string $userId
+     * @return bool
+     */
+    public function isInVoice(string $userId): bool
+    {
+        return isset($this->inVoice[$userId]);
+    }
+
+
+    /**
+     * @param string $userId
+     * @return int
+     */
+    public function leftVoice(string $userId): int
+    {
+        if (isset($this->inVoice[$userId])) {
+            $joinedAt = $this->inVoice[$userId];
+            unset($this->inVoice[$userId]);
+            return $joinedAt->diffInSeconds(Carbon::now());
+        } else {
+            return 0;
+        }
     }
 
     /**
@@ -104,11 +139,22 @@ class Guild
     }
 
     /**
-     * @param string $setting
+     * @param Enums\Setting $setting
      * @return false|mixed
      */
-    public function getSetting(string $setting): mixed
+    public function getSetting(\App\Discord\Core\Enums\Setting $setting): mixed
     {
+        $setting = $setting->value;
+
+        if (str_contains($setting, 'enable')) {
+            if ($this->settings[$setting] === '1') {
+                return true;
+            }
+            return false;
+        } else if (is_numeric($this->settings[$setting])) {
+            return (int)$this->settings[$setting];
+        }
+
         return $this->settings[$setting] ?? "";
     }
 

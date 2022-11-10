@@ -3,6 +3,7 @@
 namespace App\Discord\Fun\Bump;
 
 use App\Discord\Core\Bot;
+use App\Discord\Core\Enums\Setting;
 use App\Models\Bumper;
 use App\Models\CringeCounter;
 use App\Models\DiscordUser;
@@ -18,8 +19,13 @@ class BumpCounter
     {
         Bot::getDiscord()->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) {
             if ($message->type == 20 && $message->interaction->name == 'bump') {
-                $user = DiscordUser::get($message->interaction->user->id);
+
+                if (!Bot::get()->getGuild($message->guild_id)->getSetting(Setting::ENABLE_BUMP)) {
+                    return;
+                }
                 $guild = Guild::get($message->guild_id);
+                $user = DiscordUser::get($message->interaction->user->id);
+
 
                 $bumpCounters = $user->bumpCounters()->where('guild_id', $guild->id)->get();
 

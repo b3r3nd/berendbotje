@@ -3,10 +3,7 @@
 namespace App\Discord\Core;
 
 use App\Discord\Administration\Servers;
-use App\Discord\Core\Command\MessageCommand;
-use App\Discord\Core\Command\SlashAndMessageCommand;
-use App\Discord\Core\Command\SlashAndMessageIndexCommand;
-use App\Discord\Core\Command\SlashCommand;
+use App\Discord\Core\DiscordEvents\VoiceStateUpdate;
 use App\Discord\Fun\Ask;
 use App\Discord\Fun\Bump\BumpCounter;
 use App\Discord\Fun\Bump\BumpStatistics;

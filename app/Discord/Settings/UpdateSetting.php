@@ -3,9 +3,9 @@
 namespace App\Discord\Settings;
 
 use App\Discord\Core\Bot;
-use App\Discord\Core\Command\MessageCommand;
-use App\Discord\Core\EmbedFactory;
-use App\Discord\Core\Permission;
+use App\Discord\Core\Builders\EmbedFactory;
+use App\Discord\Core\Enums\Permission;
+use App\Discord\Core\MessageCommand;
 use App\Models\Setting;
 
 class UpdateSetting extends MessageCommand
@@ -34,6 +34,11 @@ class UpdateSetting extends MessageCommand
             $this->message->channel->sendMessage(EmbedFactory::failedEmbed(__('bot.set.not-exist', ['key' => $this->arguments[0]])));
             return;
         }
+        if (!is_numeric($this->arguments[1])) {
+            $this->message->channel->sendMessage(EmbedFactory::failedEmbed(__('bot.set.not-numeric', ['value' => $this->arguments[1]])));
+            return;
+        }
+
         Bot::get()->getGuild($this->guildId)->setSetting($this->arguments[0], $this->arguments[1]);
         $this->message->channel->sendMessage(EmbedFactory::successEmbed(__('bot.set.updated', ['key' => $this->arguments[0], 'value' => $this->arguments[1]])));
     }

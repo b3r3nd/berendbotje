@@ -50,7 +50,10 @@ return [
         'perm-detached' => 'Permission :perm removed from role :role',
         'role-detached' => 'Role :role removed from user :user',
         'has-users' => 'You cannot delete roles in use by users, remove users first.',
-        'usage-userroles' => 'userroles `user_mention`'
+        'usage-userroles' => 'userroles `user_mention`',
+        'admin-role' => 'Cannot delete administrator role',
+        'admin-role-perms' => 'You cannot remove permissions from the main administrator role',
+        'admin-role-owner' => 'You cannot remove the owner from the list of admins',
     ],
 
     'permissions' => [
@@ -87,9 +90,9 @@ return [
     'xp' => [
         'not-found' => 'You do not have any messages',
         'count' => 'You have :messages',
-        'footer' => 'You gain :xp per message',
+        'footer' => 'You gain :xp xp per message',
         'title' => 'You are level :level',
-        'description' => "You have :messages messages which amounts to :xp xp!",
+        'description' => "You have :messages messages and spend about :voice in voice, which in total amounts to :xp xp!",
         'usage-givexp' => 'givexp `user_mention` `xp_amount`',
         'usage-delxp' => 'removexp `user_mention` `xp_amount`',
         'usage-resetxp' => 'resetxp `user_mention`',
@@ -105,6 +108,7 @@ return [
         'usage-set' => 'Usage: set `setting_key` `setting_value`',
         'not-exist' => 'Setting :key does not exist',
         'updated' => 'Setting :key is updated to value :value',
+        'not-numeric' => 'Setting values must be numeric, :value is not a numeric value',
     ],
 
     'messages' => [

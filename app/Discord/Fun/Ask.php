@@ -2,8 +2,8 @@
 
 namespace App\Discord\Fun;
 
-use App\Discord\Core\Command\SlashAndMessageCommand;
-use App\Discord\Core\Permission;
+use App\Discord\Core\Enums\Permission;
+use App\Discord\Core\SlashAndMessageCommand;
 use Discord\Builders\MessageBuilder;
 use Illuminate\Support\Facades\Http;
 

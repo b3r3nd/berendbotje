@@ -10,7 +10,7 @@ class MessageCounter extends Model
 {
     protected $table = 'message_counter';
 
-    protected $fillable = ['count', 'guild_id', 'xp', 'level'];
+    protected $fillable = ['count', 'voice_seconds', 'guild_id', 'xp', 'level'];
 
     /**
      * @return BelongsTo

@@ -2,9 +2,9 @@
 
 namespace App\Discord\Levels;
 
-use App\Discord\Core\Command\MessageCommand;
-use App\Discord\Core\EmbedFactory;
-use App\Discord\Core\Permission;
+use App\Discord\Core\Builders\EmbedFactory;
+use App\Discord\Core\Enums\Permission;
+use App\Discord\Core\MessageCommand;
 
 class RemoveXp extends MessageCommand
 {
@@ -29,7 +29,7 @@ class RemoveXp extends MessageCommand
 
     public function action(): void
     {
-        (new UpdateMessageCounterAction())->execute($this->message, $this->arguments[0], $this->arguments[1], true);
+        (new UpdateMessageCounterAction($this->message, $this->arguments[0], $this->arguments[1], true))->execute();
         $this->message->channel->sendMessage(EmbedFactory::successEmbed(__('bot.xp.removed', ['user' => $this->arguments[0], 'xp' => $this->arguments[1]])));
     }
 }

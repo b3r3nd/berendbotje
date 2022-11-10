@@ -2,8 +2,8 @@
 
 namespace App\Discord\Fun;
 
-use App\Discord\Core\Command\MessageCommand;
-use App\Discord\Core\Permission;
+use App\Discord\Core\Enums\Permission;
+use App\Discord\Core\MessageCommand;
 
 class EightBall extends MessageCommand
 {

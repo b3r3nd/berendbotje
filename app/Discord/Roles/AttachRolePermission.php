@@ -2,10 +2,8 @@
 
 namespace App\Discord\Roles;
 
-use App\Discord\Core\Command\MessageCommand;
-use App\Discord\Core\EmbedFactory;
-use App\Discord\Core\Permission;
-use App\Models\Role;
+use App\Discord\Core\Enums\Permission;
+use App\Discord\Core\MessageCommand;
 
 class AttachRolePermission extends MessageCommand
 {
@@ -29,20 +27,6 @@ class AttachRolePermission extends MessageCommand
 
     public function action(): void
     {
-        if (!Role::exists($this->guildId, $this->arguments[0])) {
-            $this->message->channel->sendMessage(EmbedFactory::failedEmbed(__('bot.roles.not-exist', ['role' => $this->arguments[0]])));
-            return;
-        }
-        if (!RoleHelper::processPermissions($this->arguments[1])) {
-            $this->message->channel->sendMessage(EmbedFactory::failedEmbed(__('bot.permissions.not-exist', ['perm' => $this->arguments[1]])));
-            return;
-        }
-
-        $role = Role::get($this->guildId, $this->arguments[0]);
-        $permissions = RoleHelper::processPermissions($this->arguments[1]);
-        $role->permissions()->attach($permissions->pluck('id'));
-
-
-        $this->message->channel->sendMessage(EmbedFactory::successEmbed(__('bot.roles.perm-attached', ['role' => $role->name, 'perm' => $this->arguments[1]])));
+        (new SyncRolePermissionsAction($this->message, $this->arguments, $this->guildId))->execute();
     }
 }

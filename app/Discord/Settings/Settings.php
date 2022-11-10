@@ -3,9 +3,9 @@
 namespace App\Discord\Settings;
 
 use App\Discord\Core\Bot;
-use App\Discord\Core\Command\MessageCommand;
-use App\Discord\Core\EmbedBuilder;
-use App\Discord\Core\Permission;
+use App\Discord\Core\Builders\EmbedBuilder;
+use App\Discord\Core\Enums\Permission;
+use App\Discord\Core\MessageCommand;
 use App\Models\Setting;
 
 class Settings extends MessageCommand
@@ -27,9 +27,12 @@ class Settings extends MessageCommand
             ->setTitle(__('bot.set.title'))
             ->setFooter(__('bot.set.footer'));
 
+        $description = "";
         foreach (Setting::byDiscordGuildId($this->guildId)->get() as $setting) {
-            $embedBuilder->getEmbed()->addField(['name' => $setting->key, 'value' => $setting->value]);
+            $description .= "**{$setting->key}** = {$setting->value}\n";
         }
+
+        $embedBuilder->setDescription($description);
         $this->message->channel->sendEmbed($embedBuilder->getEmbed());
     }
 }
