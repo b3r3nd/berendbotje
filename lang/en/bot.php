@@ -90,7 +90,7 @@ return [
     'xp' => [
         'not-found' => 'You do not have any messages',
         'count' => 'You have :messages',
-        'footer' => 'You gain :xp per message',
+        'footer' => 'You gain :xp xp per message',
         'title' => 'You are level :level',
         'description' => "You have :messages messages and spend about :voice in voice, which in total amounts to :xp xp!",
         'usage-givexp' => 'givexp `user_mention` `xp_amount`',
