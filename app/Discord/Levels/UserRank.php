@@ -43,8 +43,17 @@ class UserRank extends SlashAndMessageCommand
         $messageCounter = $messageCounters->first();
         $xpCount = Bot::get()->getGuild($this->guildId)->getSetting(Setting::XP_COUNT);
 
+        $voice = $messageCounter->voice_seconds / 60;
+        if ($voice >= 60) {
+            $voice = round($voice / 60);
+            $voice = "{$voice} hours";
+        } else {
+            $voice = round($voice);
+            $voice = "{$voice} minutes";
+        }
+
         return MessageBuilder::new()->addEmbed(EmbedBuilder::create(Bot::getDiscord())
-            ->setDescription(__('bot.xp.description', ['messages' => $messageCounter->count, 'xp' => $messageCounter->xp]))
+            ->setDescription(__('bot.xp.description', ['messages' => $messageCounter->count, 'xp' => $messageCounter->xp, 'voice' => $voice]))
             ->setTitle(__('bot.xp.title', ['level' => $messageCounter->level]))
             ->setFooter(__('bot.xp.footer', ['xp' => $xpCount]))
             ->getEmbed());

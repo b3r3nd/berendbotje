@@ -92,7 +92,7 @@ return [
         'count' => 'You have :messages',
         'footer' => 'You gain :xp per message',
         'title' => 'You are level :level',
-        'description' => "You have :messages messages which amounts to :xp xp!",
+        'description' => "You have :messages messages and spend about :voice in voice, which in total amounts to :xp xp!",
         'usage-givexp' => 'givexp `user_mention` `xp_amount`',
         'usage-delxp' => 'removexp `user_mention` `xp_amount`',
         'usage-resetxp' => 'resetxp `user_mention`',

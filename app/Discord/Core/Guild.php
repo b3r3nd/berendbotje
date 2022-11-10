@@ -27,6 +27,7 @@ class Guild
     private array $deletedReactions = [];
     private array $settings = [];
     private array $lastMessages = [];
+    private array $inVoice = [];
     public GuildModel $model;
 
     /**
@@ -43,7 +44,41 @@ class Guild
         foreach ($this->model->mediaChannels as $channel) {
             $this->mediaChannels[$channel->channel] = $channel->channel;
         }
+    }
 
+    /**
+     * @param string $userId
+     * @return void
+     */
+    public function joinedVoice(string $userId): void
+    {
+        $this->inVoice[$userId] = Carbon::now();
+    }
+
+
+    /**
+     * @param string $userId
+     * @return bool
+     */
+    public function isInVoice(string $userId): bool
+    {
+        return isset($this->inVoice[$userId]);
+    }
+
+
+    /**
+     * @param string $userId
+     * @return int
+     */
+    public function leftVoice(string $userId): int
+    {
+        if (isset($this->inVoice[$userId])) {
+            $joinedAt = $this->inVoice[$userId];
+            unset($this->inVoice[$userId]);
+            return $joinedAt->diffInSeconds(Carbon::now());
+        } else {
+            return 0;
+        }
     }
 
     /**
