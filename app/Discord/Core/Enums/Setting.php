@@ -17,4 +17,7 @@ enum Setting: string
     case ENABLE_BUMP = 'enable_bump_counter';
     case ENABLE_REACTIONS = 'enable_reactions';
     case ENABLE_COMMANDS = 'enable_commands';
+
+    case ENABLE_LOGGING = 'enable_logging';
+    case LOG_CHANNEL = 'log_channel_id';
 }

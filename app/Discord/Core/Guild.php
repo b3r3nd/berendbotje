@@ -2,10 +2,12 @@
 
 namespace App\Discord\Core;
 
+use App\Discord\Core\Enums\Setting as SettingEnum;
 use App\Discord\Moderation\Command\SimpleCommand;
 use App\Models\Guild as GuildModel;
 use App\Models\Setting;
 use Carbon\Carbon;
+use Discord\Http\Exceptions\NoPermissionsException;
 
 /**
  * Guild settings are loaded on boot and only updated when the actual setting is changed using commands.
@@ -29,6 +31,7 @@ class Guild
     private array $lastMessages = [];
     private array $inVoice = [];
     public GuildModel $model;
+    private Logger $logger;
 
     /**
      * @param GuildModel $guild
@@ -43,6 +46,20 @@ class Guild
 
         foreach ($this->model->mediaChannels as $channel) {
             $this->mediaChannels[$channel->channel] = $channel->channel;
+        }
+
+        $this->logger = new Logger($this->getSetting(SettingEnum::LOG_CHANNEL));
+    }
+
+    /**
+     * @param string $message
+     * @return void
+     * @throws NoPermissionsException
+     */
+    public function log(string $message): void
+    {
+        if ($this->getSetting(SettingEnum::ENABLE_LOGGING)) {
+            $this->logger->log($message);
         }
     }
 
@@ -131,9 +148,12 @@ class Guild
     {
         $this->settings[$key] = $value;
 
+        var_dump($key);
+        if ($key == SettingEnum::LOG_CHANNEL->value) {
+            $this->logger->setLogChannelId($value);
+        }
+
         $setting = Setting::getSetting($key, $this->model->guild_id);
-
-
         $setting->value = $value;
         $setting->save();
     }

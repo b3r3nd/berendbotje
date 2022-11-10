@@ -9,7 +9,7 @@ use App\Models\MessageCounter;
 class MessageObserver
 {
     /**
-     * Handle the MessageCounter "created" event.
+     * Handle the MessageXpCounter "created" event.
      *
      * @param  \App\Models\MessageCounter  $messageCounter
      * @return void
@@ -20,7 +20,7 @@ class MessageObserver
     }
 
     /**
-     * Handle the MessageCounter "updated" event.
+     * Handle the MessageXpCounter "updated" event.
      *
      * @param  \App\Models\MessageCounter  $messageCounter
      * @return void
@@ -31,7 +31,7 @@ class MessageObserver
     }
 
     /**
-     * Handle the MessageCounter "deleted" event.
+     * Handle the MessageXpCounter "deleted" event.
      *
      * @param  \App\Models\MessageCounter  $messageCounter
      * @return void
@@ -42,7 +42,7 @@ class MessageObserver
     }
 
     /**
-     * Handle the MessageCounter "restored" event.
+     * Handle the MessageXpCounter "restored" event.
      *
      * @param  \App\Models\MessageCounter  $messageCounter
      * @return void
@@ -53,7 +53,7 @@ class MessageObserver
     }
 
     /**
-     * Handle the MessageCounter "force deleted" event.
+     * Handle the MessageXpCounter "force deleted" event.
      *
      * @param  \App\Models\MessageCounter  $messageCounter
      * @return void

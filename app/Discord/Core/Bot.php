@@ -26,16 +26,18 @@ use App\Discord\Levels\CreateRoleReward;
 use App\Discord\Levels\DeleteRoleReward;
 use App\Discord\Levels\GiveXp;
 use App\Discord\Levels\Leaderboard;
-use App\Discord\Levels\MessageCounter;
+use App\Discord\Levels\MessageXpCounter;
 use App\Discord\Levels\RemoveXp;
 use App\Discord\Levels\ResetXp;
 use App\Discord\Levels\RoleRewards;
 use App\Discord\Levels\UserRank;
+use App\Discord\Levels\VoiceXpCounter;
+use App\Discord\Logger\VoiceStateLogger;
 use App\Discord\Moderation\Command\CommandIndex;
 use App\Discord\Moderation\Command\CreateCommand;
 use App\Discord\Moderation\Command\DeleteCommand;
 use App\Discord\Moderation\Command\SimpleCommand;
-use App\Discord\Moderation\DetectKicksAndBans;
+use App\Discord\Moderation\KickAndBanCounter;
 use App\Discord\Moderation\MediaFilter\CreateMediaChannel;
 use App\Discord\Moderation\MediaFilter\DeleteMediaChannel;
 use App\Discord\Moderation\MediaFilter\MediaChannels;
@@ -97,11 +99,15 @@ class Bot
             VoiceStateUpdate::class,
             DetectTimeouts::class,
             MediaFilter::class,
-            DetectKicksAndBans::class,
+            MentionResponder::class,
+
+            KickAndBanCounter::class,
             BumpCounter::class,
             EmoteCounter::class,
-            MessageCounter::class,
-            MentionResponder::class,
+            MessageXpCounter::class,
+            VoiceXpCounter::class,
+
+            VoiceStateLogger::class,
         ];
     }
 

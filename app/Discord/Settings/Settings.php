@@ -29,7 +29,11 @@ class Settings extends MessageCommand
 
         $description = "";
         foreach (Setting::byDiscordGuildId($this->guildId)->get() as $setting) {
-            $description .= "**{$setting->key}** = {$setting->value}\n";
+            if ($setting->key === \App\Discord\Core\Enums\Setting::LOG_CHANNEL->value) {
+                $description .= "**{$setting->key}** = <#{$setting->value}>\n";
+            } else {
+                $description .= "**{$setting->key}** = {$setting->value}\n";
+            }
         }
 
         $embedBuilder->setDescription($description);

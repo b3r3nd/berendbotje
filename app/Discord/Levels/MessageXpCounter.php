@@ -9,7 +9,7 @@ use Discord\Discord;
 use Discord\Parts\Channel\Message;
 use Discord\WebSockets\Event;
 
-class MessageCounter
+class MessageXpCounter
 {
     public function __construct()
     {

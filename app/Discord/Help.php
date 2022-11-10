@@ -109,6 +109,8 @@ class Help extends SlashAndMessageCommand
                     `enable_bump_counter` • Enable bump counter
                     `enable_reactions` • Enable custom reactions
                     `enable_commands` • Enable custom commands
+                    `enable_logging` • Enable general logs
+                    `log_channel` • ID of the log channel
 
                     **Examples:**
                     `set` `enable_xp` `0` • Disable message XP system
