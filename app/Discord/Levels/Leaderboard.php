@@ -28,7 +28,7 @@ class Leaderboard extends SlashAndMessageIndexCommand
         $this->total = \App\Models\MessageCounter::byGuild($this->guildId)->count();
 
         $description = "";
-        foreach (\App\Models\MessageCounter::byGuild($this->guildId)->orderBy('level', 'desc')->skip($this->offset)->limit($this->perPage)->get() as $index => $messageCounter) {
+        foreach (\App\Models\MessageCounter::byGuild($this->guildId)->orderBy('xp', 'desc')->skip($this->offset)->limit($this->perPage)->get() as $index => $messageCounter) {
             $description .= Helper::indexPrefix($index, $this->offset);
             $description .= "Level **{$messageCounter->level}** • {$messageCounter->user->tag()} • {$messageCounter->xp} xp \n";
         }
