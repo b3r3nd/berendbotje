@@ -68,7 +68,7 @@ class VoiceStateUpdate
                 'count' => 0,
                 'guild_id' => $guild->model->id,
                 'xp' => $amount,
-                'voice_seconds' => $duration / 60,
+                'voice_seconds' => $duration,
             ]);
 
             if ($messageCounters->isEmpty()) {
