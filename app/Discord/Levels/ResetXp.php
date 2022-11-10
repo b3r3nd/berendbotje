@@ -42,12 +42,7 @@ class ResetXp extends MessageCommand
             return;
         }
 
-        $tmp = $messageCounters->first();
-        dump($tmp->id);
-
-        \App\Models\MessageCounter::find($tmp->id)->delete();
-       // $tmp->delete();
-
+        $tmp = $messageCounters->first()->delete();
         $this->message->channel->sendMessage(EmbedFactory::successEmbed(__('bot.xp.reset', ['user' => $this->arguments[0]])));
     }
 }

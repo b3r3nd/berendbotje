@@ -3,7 +3,6 @@
 namespace App\Discord\Levels;
 
 use App\Discord\Core\Bot;
-use App\Discord\Core\Guild;
 use Carbon\Carbon;
 use Discord\Discord;
 use Discord\Parts\Channel\Message;
@@ -22,8 +21,8 @@ class MessageCounter
                 $lastMessageDate = $guild->getLastMessage($message->author->id);
                 if ($lastMessageDate->diffInSeconds(Carbon::now()) >= $guild->getSetting('xp_cooldown')) {
                     $guild->setLastMessage($message->author->id);
-                    (new UpdateMessageCounterAction())->execute($message, $message->author->id, $guild->getSetting('xp_count'));
-                    (new SyncRoleRewardsAction())->execute($message, $message->author->id);
+                    (new UpdateMessageCounterAction($message, $message->author->id, $guild->getSetting('xp_count')))->execute();
+                    (new SyncRoleRewardsAction($message, $message->author->id))->execute();
                 }
             }
         });

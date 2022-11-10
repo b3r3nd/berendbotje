@@ -2,24 +2,39 @@
 
 namespace App\Discord\Levels;
 
+use App\Discord\Core\Action;
 use App\Discord\Core\Bot;
 use App\Discord\Helper;
 use App\Models\DiscordUser;
 use Discord\Parts\Channel\Message;
 
 
-class UpdateMessageCounterAction
+class UpdateMessageCounterAction implements Action
 {
-    public function execute(Message $message, $userId, $xpCount, $removeXp = false): void
+    private Message $message;
+    private string $userId;
+    private int $xpCount;
+    private bool $removeXp;
+
+    public function __construct(Message $message, $userId, $xpCount, $removeXp = false)
     {
-        $user = DiscordUser::get($userId);
-        $guild = Bot::get()->getGuild($message->guild_id);
+        $this->message = $message;
+        $this->userId = $userId;
+        $this->xpCount = $xpCount;
+        $this->removeXp = $removeXp;
+    }
+
+
+    public function execute(): void
+    {
+        $user = DiscordUser::get($this->userId);
+        $guild = Bot::get()->getGuild($this->message->guild_id);
 
         $messageCounters = $user->messageCounters()->where('guild_id', $guild->model->id)->get();
         $messageCounter = new \App\Models\MessageCounter([
             'count' => 1,
             'guild_id' => $guild->model->id,
-            'xp' => $xpCount,
+            'xp' => $this->xpCount,
         ]);
 
         if ($messageCounters->isEmpty()) {
@@ -28,10 +43,10 @@ class UpdateMessageCounterAction
             $messageCounter = $messageCounters->first();
             $messageCounter->update(['count' => $messageCounter->count + 1]);
 
-            if ($removeXp) {
-                $messageCounter->update(['xp' => $messageCounter->xp - $xpCount]);
+            if ($this->removeXp) {
+                $messageCounter->update(['xp' => $messageCounter->xp - $this->xpCount]);
             } else {
-                $messageCounter->update(['xp' => $messageCounter->xp + $xpCount]);
+                $messageCounter->update(['xp' => $messageCounter->xp + $this->xpCount]);
             }
         }
         $messageCounter->update(['level' => Helper::calcLevel($messageCounter->xp)]);

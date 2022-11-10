@@ -50,7 +50,10 @@ return [
         'perm-detached' => 'Permission :perm removed from role :role',
         'role-detached' => 'Role :role removed from user :user',
         'has-users' => 'You cannot delete roles in use by users, remove users first.',
-        'usage-userroles' => 'userroles `user_mention`'
+        'usage-userroles' => 'userroles `user_mention`',
+        'admin-role' => 'Cannot delete administrator role',
+        'admin-role-perms' => 'You cannot remove permissions from the main administrator role',
+        'admin-role-owner' => 'You cannot remove the owner from the list of admins',
     ],
 
     'permissions' => [

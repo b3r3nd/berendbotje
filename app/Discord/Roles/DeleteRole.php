@@ -40,6 +40,11 @@ class DeleteRole extends MessageCommand
             return;
         }
 
+        if(strtolower($this->arguments[0]) === 'admin') {
+            $this->message->channel->sendMessage(EmbedFactory::failedEmbed(__('bot.roles.admin-role')));
+            return;
+        }
+
         Role::get($this->guildId, $this->arguments[0])->delete();
         $this->message->channel->sendMessage(EmbedFactory::successEmbed(__('bot.roles.deleted', ['role' => $this->arguments[0]])));
     }

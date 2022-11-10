@@ -29,7 +29,7 @@ class GiveXp extends MessageCommand
 
     public function action(): void
     {
-        (new UpdateMessageCounterAction())->execute($this->message, $this->arguments[0], $this->arguments[1]);
+        (new UpdateMessageCounterAction($this->message, $this->arguments[0], $this->arguments[1]))->execute();
         $this->message->channel->sendMessage(EmbedFactory::successEmbed(__('bot.xp.given', ['user' => $this->arguments[0], 'xp' => $this->arguments[1]])));
     }
 }

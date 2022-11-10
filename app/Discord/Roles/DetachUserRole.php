@@ -6,6 +6,7 @@ use App\Discord\Core\Command\MessageCommand;
 use App\Discord\Core\EmbedFactory;
 use App\Discord\Core\Permission;
 use App\Models\DiscordUser;
+use App\Models\Guild;
 use App\Models\Role;
 
 class DetachUserRole extends MessageCommand
@@ -36,6 +37,13 @@ class DetachUserRole extends MessageCommand
             $this->message->channel->sendMessage(EmbedFactory::failedEmbed(__('bot.roles.not-exist', ['role' => $this->arguments[1]])));
             return;
         }
+
+        if (strtolower($this->arguments[1]) === 'admin' && Guild::get($this->guildId)->owner->discord_id === $this->arguments[0]) {
+            $this->message->channel->sendMessage(EmbedFactory::failedEmbed(__('bot.roles.admin-role-owner')));
+            return;
+        }
+
+
         $role = Role::get($this->guildId, $this->arguments[1]);
 
         $user = DiscordUser::get($this->arguments[0]);

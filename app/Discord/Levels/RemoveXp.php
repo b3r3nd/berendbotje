@@ -29,7 +29,7 @@ class RemoveXp extends MessageCommand
 
     public function action(): void
     {
-        (new UpdateMessageCounterAction())->execute($this->message, $this->arguments[0], $this->arguments[1], true);
+        (new UpdateMessageCounterAction($this->message, $this->arguments[0], $this->arguments[1], true))->execute();
         $this->message->channel->sendMessage(EmbedFactory::successEmbed(__('bot.xp.removed', ['user' => $this->arguments[0], 'xp' => $this->arguments[1]])));
     }
 }
