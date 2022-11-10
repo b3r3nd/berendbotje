@@ -21,7 +21,9 @@ class MessageCounter
             if ($guild) {
                 $lastMessageDate = $guild->getLastMessage($message->author->id);
 
+                var_dump($lastMessageDate->diffInSeconds(Carbon::now()));
                 if ($lastMessageDate->diffInSeconds(Carbon::now()) >= $guild->getSetting('xp_cooldown')) {
+                    $guild->setLastMessage($message->author->id);
                     (new UpdateMessageCounterAction())->execute($message, $message->author->id, $guild->getSetting('xp_count'));
                     (new SyncRoleRewardsAction())->execute($message, $message->author->id);
                 }
