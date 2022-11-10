@@ -20,7 +20,7 @@ use Discord\WebSockets\Event;
  * action_type 22 = ban
  * action_type 25 = leave -> we ignore this
  */
-class DetectKicksAndBans
+class KickAndBanCounter
 {
     public function __construct()
     {

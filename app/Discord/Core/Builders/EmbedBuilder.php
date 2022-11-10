@@ -52,9 +52,27 @@ class EmbedBuilder
     /**
      * @return $this
      */
+    public function setWarning(): self
+    {
+        $this->embed->setColor(16776960);
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
     public function setSuccess(): self
     {
         $this->embed->setColor(2067276);
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function setLog(): self
+    {
+        $this->embed->setColor(3447003);
         return $this;
     }
 

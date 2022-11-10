@@ -27,6 +27,8 @@ class SettingsSeeder extends Seeder
             'enable_bump_counter' => true,
             'enable_reactions' => true,
             'enable_commands' => true,
+            'enable_logging' => false,
+            'log_channel' => "",
         ];
 
         foreach (Guild::all() as $guild) {
