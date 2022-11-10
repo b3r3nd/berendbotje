@@ -2,7 +2,7 @@
 
 namespace App\Discord\Levels;
 
-use App\Discord\Core\Action;
+use App\Discord\Core\Interfaces\Action;
 use App\Models\DiscordUser;
 use App\Models\Guild;
 use App\Models\RoleReward;

@@ -3,9 +3,9 @@
 namespace App\Discord\Roles;
 
 use App\Discord\Core\Bot;
-use App\Discord\Core\Command\SlashAndMessageIndexCommand;
-use App\Discord\Core\EmbedBuilder;
-use App\Discord\Core\Permission;
+use App\Discord\Core\Builders\EmbedBuilder;
+use App\Discord\Core\Enums\Permission;
+use App\Discord\Core\SlashAndMessageIndexCommand;
 use App\Models\Role;
 use Discord\Parts\Embed\Embed;
 

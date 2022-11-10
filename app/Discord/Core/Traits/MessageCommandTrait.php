@@ -1,15 +1,18 @@
 <?php
 
-namespace App\Discord\Core\Command;
+namespace App\Discord\Core\Traits;
 
 
 use App\Discord\Core\Bot;
-use App\Discord\Core\EmbedFactory;
-use App\Discord\Core\Permission;
+use App\Discord\Core\Builders\EmbedFactory;
+use App\Discord\Core\Enums\Permission;
+use App\Discord\Core\MessageCommand;
+use App\Discord\Core\SlashAndMessageCommand;
 use App\Models\DiscordUser;
 use Discord\Discord;
 use Discord\Http\Exceptions\NoPermissionsException;
 use Discord\Parts\Channel\Message;
+use Discord\WebSockets\Event;
 
 trait MessageCommandTrait
 {
@@ -60,5 +63,35 @@ trait MessageCommandTrait
             }
         }
         return true;
+    }
+
+    /**
+     * @return void
+     */
+    public function registerMessageCommand(): void
+    {
+        Bot::get()->discord()->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) {
+            if (!$this->validateMessage($message, $discord)) {
+                return;
+            }
+
+            $this->guildId = $message->guild_id;
+            $parameters = $this->processParameters($message);
+            $this->arguments = $parameters;
+            $this->messageString = join(' ', $this->arguments);
+            $this->message = $message;
+            $this->commandUser = $message->author->id;
+
+            /**
+             * Slash commands require and MessageBuilder to be returned to the interaction. Commands which extend the
+             * SlashAndMessageCommand wil thus have to return a MessageBuilder. Non-slash message commands do not use
+             * this, and you are free to return anything you want at anytime during the command execution.
+             */
+            if ($this instanceof MessageCommand) {
+                $this->action();
+            } elseif ($this instanceof SlashAndMessageCommand) {
+                $message->channel->sendMessage($this->action());
+            }
+        });
     }
 }

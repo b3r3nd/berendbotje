@@ -2,11 +2,9 @@
 
 namespace App\Discord\Levels;
 
-use App\Discord\Core\Bot;
-use App\Discord\Core\Command\MessageCommand;
-use App\Discord\Core\EmbedBuilder;
-use App\Discord\Core\EmbedFactory;
-use App\Discord\Core\Permission;
+use App\Discord\Core\Builders\EmbedFactory;
+use App\Discord\Core\Enums\Permission;
+use App\Discord\Core\MessageCommand;
 use App\Models\DiscordUser;
 use App\Models\Guild;
 

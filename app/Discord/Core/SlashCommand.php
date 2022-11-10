@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Discord\Core\Command;
+namespace App\Discord\Core;
 
+use App\Discord\Core\Traits\SlashCommandTrait;
 use Discord\Builders\MessageBuilder;
 
 /**

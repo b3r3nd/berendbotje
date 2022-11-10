@@ -3,7 +3,7 @@
 namespace App\Discord\Fun;
 
 use App\Discord\Core\Bot;
-use App\Discord\Core\Permission;
+use App\Discord\Core\Enums\Permission;
 use App\Models\DiscordUser;
 use App\Models\Guild;
 use Carbon\Carbon;

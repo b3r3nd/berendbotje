@@ -3,7 +3,7 @@
 namespace App\Discord\Fun\Music;
 
 use App\Discord\Core\AccessLevels;
-use App\Discord\Core\Command\MessageCommand;
+use App\Discord\Core\MessageCommand;
 
 class Stop extends MessageCommand
 {

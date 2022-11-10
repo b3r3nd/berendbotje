@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Discord\Core\Command;
+namespace App\Discord\Core;
 
-use App\Discord\Core\Bot;
+use App\Discord\Core\Interfaces\PaginationIndex;
 use Discord\Builders\Components\ActionRow;
 use Discord\Builders\Components\Button;
 use Discord\Builders\MessageBuilder;

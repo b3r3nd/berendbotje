@@ -2,10 +2,8 @@
 
 namespace App\Discord\Roles;
 
-use App\Discord\Core\Command\MessageCommand;
-use App\Discord\Core\EmbedFactory;
-use App\Discord\Core\Permission;
-use App\Models\Role;
+use App\Discord\Core\Enums\Permission;
+use App\Discord\Core\MessageCommand;
 
 class DetachRolePermission extends MessageCommand
 {

@@ -3,9 +3,9 @@
 namespace App\Discord\Settings;
 
 use App\Discord\Core\Bot;
-use App\Discord\Core\Command\MessageCommand;
-use App\Discord\Core\EmbedBuilder;
-use App\Discord\Core\Permission;
+use App\Discord\Core\Builders\EmbedBuilder;
+use App\Discord\Core\Enums\Permission;
+use App\Discord\Core\MessageCommand;
 use App\Models\Setting;
 
 class Settings extends MessageCommand

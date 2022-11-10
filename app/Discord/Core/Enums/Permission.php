@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Discord\Core;
+namespace App\Discord\Core\Enums;
 
 /**
  * Permissions are hardcoded in our permission seeder, they might change, or get updated. Use this ENUM instead of

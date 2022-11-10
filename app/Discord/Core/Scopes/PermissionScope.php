@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Discord\Core;
+namespace App\Discord\Core\Scopes;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;

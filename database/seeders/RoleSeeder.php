@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Discord\Core\PermissionScope;
+use App\Discord\Core\Scopes\PermissionScope;
 use App\Models\DiscordUser;
 use App\Models\Guild;
 use App\Models\Permission;

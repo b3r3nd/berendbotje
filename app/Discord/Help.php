@@ -3,9 +3,9 @@
 namespace App\Discord;
 
 use App\Discord\Core\Bot;
-use App\Discord\Core\Command\SlashAndMessageCommand;
-use App\Discord\Core\EmbedBuilder;
-use App\Discord\Core\Permission;
+use App\Discord\Core\Builders\EmbedBuilder;
+use App\Discord\Core\Enums\Permission;
+use App\Discord\Core\SlashAndMessageCommand;
 use Discord\Builders\MessageBuilder;
 
 class Help extends SlashAndMessageCommand

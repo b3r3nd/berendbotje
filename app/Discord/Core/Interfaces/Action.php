@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Discord\Core;
+namespace App\Discord\Core\Interfaces;
 
 interface Action
 {

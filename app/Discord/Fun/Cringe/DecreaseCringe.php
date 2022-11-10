@@ -2,9 +2,9 @@
 
 namespace App\Discord\Fun\Cringe;
 
-use App\Discord\Core\Command\SlashAndMessageCommand;
-use App\Discord\Core\EmbedFactory;
-use App\Discord\Core\Permission;
+use App\Discord\Core\Builders\EmbedFactory;
+use App\Discord\Core\Enums\Permission;
+use App\Discord\Core\SlashAndMessageCommand;
 use App\Models\DiscordUser;
 use Discord\Builders\MessageBuilder;
 use Discord\Http\Exceptions\NoPermissionsException;

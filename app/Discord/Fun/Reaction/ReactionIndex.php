@@ -3,9 +3,9 @@
 namespace App\Discord\Fun\Reaction;
 
 use App\Discord\Core\Bot;
-use App\Discord\Core\Command\SlashAndMessageIndexCommand;
-use App\Discord\Core\EmbedBuilder;
-use App\Discord\Core\Permission;
+use App\Discord\Core\Builders\EmbedBuilder;
+use App\Discord\Core\Enums\Permission;
+use App\Discord\Core\SlashAndMessageIndexCommand;
 use App\Models\Reaction;
 use Discord\Parts\Embed\Embed;
 

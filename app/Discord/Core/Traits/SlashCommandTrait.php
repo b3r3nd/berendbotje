@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Discord\Core\Command;
+namespace App\Discord\Core\Traits;
 
 use App\Discord\Core\Bot;
-use App\Discord\Core\EmbedFactory;
-use App\Discord\Core\Permission;
+use App\Discord\Core\Builders\EmbedFactory;
+use App\Discord\Core\Enums\Permission;
 use App\Models\DiscordUser;
 use Discord\Parts\Interactions\Interaction;
 use Exception;

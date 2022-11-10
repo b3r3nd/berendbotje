@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Discord\Core;
+namespace App\Discord\Core\DiscordEvents;
 
+use App\Discord\Core\Bot;
 use Discord\Discord;
-use Discord\WebSockets\Event;
 use Discord\Parts\WebSockets\VoiceStateUpdate as DVoiceStateUpdate;
+use Discord\WebSockets\Event;
 
 /**
  * For some reason the voice_states in the server is not updated after a user switches channel. It should update

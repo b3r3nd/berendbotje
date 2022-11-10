@@ -2,8 +2,8 @@
 
 namespace App\Discord\Levels;
 
-use App\Discord\Core\Action;
 use App\Discord\Core\Bot;
+use App\Discord\Core\Interfaces\Action;
 use App\Discord\Helper;
 use App\Models\DiscordUser;
 use Discord\Parts\Channel\Message;

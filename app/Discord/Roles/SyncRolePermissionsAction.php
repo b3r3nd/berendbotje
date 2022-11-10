@@ -2,8 +2,8 @@
 
 namespace App\Discord\Roles;
 
-use App\Discord\Core\Action;
-use App\Discord\Core\EmbedFactory;
+use App\Discord\Core\Builders\EmbedFactory;
+use App\Discord\Core\Interfaces\Action;
 use App\Models\Permission;
 use App\Models\Role;
 use Discord\Http\Exceptions\NoPermissionsException;
