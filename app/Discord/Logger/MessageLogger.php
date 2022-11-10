@@ -20,7 +20,7 @@ class MessageLogger
             $guild = Bot::get()->getGuild($message->guild_id);
 
             if (isset($oldMessage)) {
-                $desc = "<@{$message->member->id}> updates his message in <#{$message->channel_id}>
+                $desc = "<@{$message->member->id}> updated message in <#{$message->channel_id}>
 
             **Old Message**
             {$oldMessage->content}
@@ -40,7 +40,7 @@ class MessageLogger
                     return;
                 }
                 $guild = Bot::get()->getGuild($message->guild_id);
-                $desc = "<@{$message->member->id}> deletes his message in <#{$message->channel_id}>
+                $desc = "<@{$message->member->id}> deleted message in <#{$message->channel_id}>
 
                 **Message**
                 {$message->content}";
