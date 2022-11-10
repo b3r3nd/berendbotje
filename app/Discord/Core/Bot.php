@@ -32,6 +32,8 @@ use App\Discord\Levels\ResetXp;
 use App\Discord\Levels\RoleRewards;
 use App\Discord\Levels\UserRank;
 use App\Discord\Levels\VoiceXpCounter;
+use App\Discord\Logger\GuildMemberLogger;
+use App\Discord\Logger\MessageLogger;
 use App\Discord\Logger\VoiceStateLogger;
 use App\Discord\Moderation\Command\CommandIndex;
 use App\Discord\Moderation\Command\CreateCommand;
@@ -107,7 +109,7 @@ class Bot
             MessageXpCounter::class,
             VoiceXpCounter::class,
 
-            VoiceStateLogger::class,
+            VoiceStateLogger::class, GuildMemberLogger::class, MessageLogger::class,
         ];
     }
 
@@ -163,6 +165,7 @@ class Bot
         $this->discord = new Discord([
                 'token' => config('discord.token'),
                 'loadAllMembers' => true,
+                'storeMessages' => true,
                 'intents' => Intents::getDefaultIntents() | Intents::GUILD_VOICE_STATES | Intents::GUILD_MEMBERS |
                     Intents::MESSAGE_CONTENT | Intents::GUILDS
             ]

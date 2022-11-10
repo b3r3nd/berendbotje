@@ -17,9 +17,9 @@ class VoiceStateLogger
             $user = DiscordUser::get($state->user_id);
 
             if ($state->channel) {
-                $guild->log("{$user->tag()} has joined <#{$state->channel_id}>");
+                $guild->log("{$user->tag()} has joined <#{$state->channel_id}>", "Joined voice call", 'success');
             } else {
-                $guild->log("{$user->tag()} has left <#{$oldstate->channel_id}>");
+                $guild->log("{$user->tag()} has left <#{$oldstate->channel_id}>", "Left voice call", 'fail');
             }
         });
     }

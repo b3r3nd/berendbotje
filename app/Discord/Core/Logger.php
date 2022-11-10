@@ -2,6 +2,8 @@
 
 namespace App\Discord\Core;
 
+use App\Discord\Core\Builders\EmbedBuilder;
+use Carbon\Carbon;
 use Discord\Http\Exceptions\NoPermissionsException;
 
 class Logger
@@ -17,13 +19,29 @@ class Logger
     }
 
     /**
+     * @param string $title
      * @param string $message
      * @return void
-     * @throws NoPermissionsException
      */
-    public function log(string $message): void
+    public function log(string $message, string $title, string $type): void
     {
-        Bot::getDiscord()->getChannel($this->logChannelId)->sendMessage($message);
+        $embedBuilder = EmbedBuilder::create(Bot::getDiscord())
+            ->setTitle($title)
+            ->setDescription($message)
+            ->setFooter(Carbon::now()->toTimeString());
+
+
+        if ($type == 'fail') {
+            $embedBuilder->setFailed();
+        } elseif ($type == 'success') {
+            $embedBuilder->setSuccess();
+        } elseif ($type == 'warning') {
+            $embedBuilder->setWarning();
+        } else {
+            $embedBuilder->setLog();
+        }
+
+        Bot::getDiscord()->getChannel($this->logChannelId)->sendEmbed($embedBuilder->getEmbed());
     }
 
     /**

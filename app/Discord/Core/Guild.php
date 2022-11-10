@@ -53,13 +53,13 @@ class Guild
 
     /**
      * @param string $message
+     * @param string $title
      * @return void
-     * @throws NoPermissionsException
      */
-    public function log(string $message): void
+    public function log(string $message, string $title = 'Log', string $type = 'log'): void
     {
         if ($this->getSetting(SettingEnum::ENABLE_LOGGING)) {
-            $this->logger->log($message);
+            $this->logger->log($message, $title, $type);
         }
     }
 
