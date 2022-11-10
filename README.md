@@ -43,24 +43,11 @@ For now there are only two settings:
 ## Adding to multiple servers
 The bot works on multiple servers, if you want to add it to another server use the following command:
 * **addserver** `server_id` `owner_discord_id`
-## Admin management
-The bot works with access levels between 1 and 1000. Users can be added to
-the bot and have access to commands corresponding to their level. What
-access level is required for a command is now coded into the bot per command. In the future I will make it entirely
-dynamic, so you can change the levels required for each command per server.
+## Roles and permissions
+I will update this section soon.
 
-For now there are 5 levels predefined in the bot:
-* **Bot owner** -> 1000
-* **Server owner** -> 900
-* **Server Admin** -> 800
-* **Mod** -> 500
-* **User** -> 100
-
-Commands to manage admins are:
-* **admins**
-* **addadmin** `<user_mention>` `<access_level>`
-* **deladmin** `<user>`
-* **clvladmin** `<user>` `<access_level>`
+## Levels and XP
+I will update this section soon
 
 ## Media channels
 You can add channels to a list of channels marked as media only, in these channels only attachments and (https) urls are allowed.
