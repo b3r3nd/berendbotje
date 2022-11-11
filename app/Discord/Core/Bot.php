@@ -144,7 +144,7 @@ class Bot
 //            ReactionIndex::class, CreateReaction::class, DeleteReaction::class,
 //            EightBall::class, Ask::class, UrbanDictionary::class,
 //
-//            Help::class,
+            Help::class,
 //
         ];
     }

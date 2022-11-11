@@ -37,6 +37,7 @@ class Help extends SlashCommand
                     ['name' => 'Levels', 'value' => 'levels'],
                     ['name' => 'Fun', 'value' => 'fun'],
                     ['name' => 'Settings', 'value' => 'settings'],
+                    ['name' => 'Logs', 'value' => 'logs'],
                 ]
             ],
         ];
@@ -137,6 +138,23 @@ class Help extends SlashCommand
                     `set` `xp_count` `50` • Set the XP gain for each message to 50
                     ";
                 $embedBuilder->setDescription($desc)->setTitle("Settings");
+            } elseif (strtolower($this->arguments[0]) === 'logs') {
+                $desc = "You must enable logging by changing the following settings:
+                `set` `enable_logging` `1` • Enable the general logging
+                `set` `log_channel_id` `channel_id` • Set the log channel **use channel ID**
+
+                 **Logged Events**
+                 - Joined server
+                 - Left server
+                 - Kicked from server
+                 - Banned from server
+                 - Received timeout
+                 - Joined voice call
+                 - Left voice call
+                 - Updated username (old and new username)
+                 - Message updated (show old and new message)
+                 - Message deleted (show deleted message)";
+                $embedBuilder->setDescription($desc)->setTitle("Logs");
             }
             return MessageBuilder::new()->addEmbed($embedBuilder->getEmbed());
 
@@ -148,6 +166,7 @@ class Help extends SlashCommand
             ['name' => 'Settings', 'value' => 'Explains all the settings and values'],
             ['name' => 'Moderation', 'value' => 'Moderator actions'],
             ['name' => 'Levels', 'value' => 'Levels and XP'],
+            ['name' => 'Logs', 'value' => 'Which events are logged'],
             ['name' => 'Fun', 'value' => 'Fun commands'],
         );
         return MessageBuilder::new()->addEmbed($embedBuilder->getEmbed());
