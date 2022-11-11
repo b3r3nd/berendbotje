@@ -52,11 +52,7 @@ abstract class SlashCommand extends Command
             return $interaction->respondWithMessage($this->action());
         });
 
-        // Why you ask? I do not want to register slash commands everytime on my test bot. It takes time, it's
-        // Annoying and I don't need them!
-        // if (env('APP_ENV') != 'local') {
         Bot::getDiscord()->application->commands->save($command);
-        //  }
     }
 
 }
