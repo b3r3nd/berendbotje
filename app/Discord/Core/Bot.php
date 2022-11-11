@@ -176,7 +176,7 @@ class Bot
 
             $this->loadCoreClasses();
             $this->loadGuilds();
-            $this->deleteSlashCommands();
+            //$this->deleteSlashCommands();
             $this->loadCommands();
         });
         self::$instance = $this;
