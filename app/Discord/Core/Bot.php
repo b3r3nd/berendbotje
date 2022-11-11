@@ -124,28 +124,28 @@ class Bot
     private function commands(): array
     {
         return [
-//            Servers::class,
-//
-//            Roles::class, Permissions::class, Users::class,
-//            MyRoles::class, UserRoles::class,
-//            CreateRole::class, DeleteRole::class,
-//            AttachRolePermission::class, AttachUserRole::class, DetachRolePermission::class, DetachUserRole::class,
+            Servers::class,
+
+            Roles::class, Permissions::class, Users::class,
+            MyRoles::class, UserRoles::class,
+            CreateRole::class, DeleteRole::class,
+            AttachRolePermission::class, AttachUserRole::class, DetachRolePermission::class, DetachUserRole::class,
             Settings::class, UpdateSetting::class,
-//
-//            SingleUserTimeouts::class, AllTimeouts::class, ModeratorStatistics::class,
-            //           CreateMediaChannel::class, DeleteMediaChannel::class, MediaChannels::class,
-//
-//            Leaderboard::class, RoleRewards::class, CreateRoleReward::class, DeleteRoleReward::class,
-//            UserRank::class, GiveXp::class, RemoveXp::class, ResetXp::class,
-//
-//            CringeIndex::class, IncreaseCringe::class, DecreaseCringe::class, ResetCringe::class,
-//            BumpStatistics::class, EmoteIndex::class,
-//            CommandIndex::class, CreateCommand::class, DeleteCommand::class,
-//            ReactionIndex::class, CreateReaction::class, DeleteReaction::class,
-//            EightBall::class, Ask::class, UrbanDictionary::class,
-//
+
+            SingleUserTimeouts::class, AllTimeouts::class, ModeratorStatistics::class,
+            CreateMediaChannel::class, DeleteMediaChannel::class, MediaChannels::class,
+
+            Leaderboard::class, RoleRewards::class, CreateRoleReward::class, DeleteRoleReward::class,
+            UserRank::class, GiveXp::class, RemoveXp::class, ResetXp::class,
+
+            CringeIndex::class, IncreaseCringe::class, DecreaseCringe::class, ResetCringe::class,
+            BumpStatistics::class, EmoteIndex::class,
+            CommandIndex::class, CreateCommand::class, DeleteCommand::class,
+            ReactionIndex::class, CreateReaction::class, DeleteReaction::class,
+            EightBall::class, Ask::class, UrbanDictionary::class,
+
             Help::class,
-//
+
         ];
     }
 
@@ -176,7 +176,7 @@ class Bot
 
             $this->loadCoreClasses();
             $this->loadGuilds();
-            //$this->deleteSlashCommands();
+            $this->deleteSlashCommands();
             $this->loadCommands();
         });
         self::$instance = $this;
