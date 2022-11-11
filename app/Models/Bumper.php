@@ -11,6 +11,10 @@ class Bumper extends Model
     protected $fillable = ['count', 'guild_id'];
 
 
+    /**
+     * @param $guildId
+     * @return mixed
+     */
     public static function byGuild($guildId)
     {
         return Bumper::where('guild_id', Guild::get($guildId)->id);

@@ -12,18 +12,28 @@ class Permission extends Model
 
     protected $fillable = ['name', 'is_admin'];
 
-
-    protected static function booted()
+    /**
+     * @return void
+     */
+    protected static function booted(): void
     {
         static::addGlobalScope(new PermissionScope());
     }
 
+    /**
+     * @param string $name
+     * @return bool
+     */
     public static function exists(string $name): bool
     {
         return !Permission::where('name', strtolower($name))->get()->isEmpty();
     }
 
-    public static function get(string $name)
+    /**
+     * @param string $name
+     * @return mixed
+     */
+    public static function get(string $name): mixed
     {
         return Permission::where('name', strtolower($name))->first();
     }

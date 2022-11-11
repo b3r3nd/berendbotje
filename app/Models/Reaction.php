@@ -3,18 +3,26 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Reaction extends Model
 {
     protected $fillable = ['trigger', 'reaction', 'guild_id'];
 
-    public function guild()
+    /**
+     * @return BelongsTo
+     */
+    public function guild(): BelongsTo
     {
         return $this->belongsTo(Guild::class);
     }
 
-    public static function byGuild($guildId)
+    /**
+     * @param $guildId
+     * @return mixed
+     */
+    public static function byGuild($guildId): mixed
     {
-        return Reaction::where(['guild_id' =>  Guild::get($guildId)->id]);
+        return Reaction::where(['guild_id' => Guild::get($guildId)->id]);
     }
 }

@@ -20,7 +20,11 @@ class MessageCounter extends Model
         return $this->belongsTo(DiscordUser::class);
     }
 
-    public static function byGuild($guildId)
+    /**
+     * @param $guildId
+     * @return mixed
+     */
+    public static function byGuild($guildId): mixed
     {
         return MessageCounter::where('guild_id', Guild::get($guildId)->id);
     }

@@ -2,8 +2,6 @@
 
 namespace App\Discord;
 
-use App\Discord\Core\Bot;
-
 class Helper
 {
     /**

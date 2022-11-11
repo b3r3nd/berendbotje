@@ -11,8 +11,12 @@ class Setting extends Model
 
     protected $fillable = ['key', 'value', 'guild_id'];
 
-
-    public static function getSetting(string $key, string $guildId)
+    /**
+     * @param string $key
+     * @param string $guildId
+     * @return mixed
+     */
+    public static function getSetting(string $key, string $guildId): mixed
     {
         return Setting::where([
             ['guild_id', '=', Guild::get($guildId)->id],
@@ -20,6 +24,11 @@ class Setting extends Model
         ])->first();
     }
 
+    /**
+     * @param string $key
+     * @param string $guildId
+     * @return bool
+     */
     public static function hasSetting(string $key, string $guildId): bool
     {
         return !Setting::where([
@@ -28,7 +37,11 @@ class Setting extends Model
         ])->get()->isEmpty();
     }
 
-    public static function byDiscordGuildId(string $guildId)
+    /**
+     * @param string $guildId
+     * @return mixed
+     */
+    public static function byDiscordGuildId(string $guildId): mixed
     {
         return Setting::where(['guild_id' => Guild::get($guildId)->id]);
     }
