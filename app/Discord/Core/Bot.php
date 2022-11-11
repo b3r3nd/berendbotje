@@ -78,7 +78,6 @@ use Exception;
  * cumbersome rather quick, hence this implementation.
  *
  * @property $discord           Set with the global discord instance from DiscordPHP.
- * @property $prefix            Prefix of the bot, can be changed on the fly whenever you like.
  * @property $instance          Static instance of self (singleton) accessible through static call get().
  * @property $guilds            List of all active guilds using the bot.
  */
@@ -86,7 +85,6 @@ class Bot
 {
     private Discord $discord;
     private array $guilds;
-    private string $prefix = '$';
     private static self $instance;
 
 
@@ -154,11 +152,6 @@ class Bot
      */
     public function __construct()
     {
-        // When running local to test I want a different trigger to not trigger both bots
-        if (env('APP_ENV') === 'local') {
-            $this->prefix = '%';
-        }
-
         $this->discord = new Discord([
                 'token' => config('discord.token'),
                 'loadAllMembers' => true,
@@ -198,7 +191,7 @@ class Bot
      * @param string $id
      * @return mixed|null
      */
-    public function getGuild(string $id)
+    public function getGuild(string $id): mixed
     {
         return $this->guilds[$id] ?? null;
     }
@@ -271,21 +264,12 @@ class Bot
         return self::$instance->discord;
     }
 
-
     /**
      * @return Discord
      */
     public function discord(): Discord
     {
         return $this->discord;
-    }
-
-    /**
-     * @return string
-     */
-    public function getPrefix(): string
-    {
-        return $this->prefix;
     }
 
 }

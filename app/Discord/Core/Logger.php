@@ -6,6 +6,7 @@ use App\Discord\Core\Builders\EmbedBuilder;
 use Carbon\Carbon;
 use Discord\Parts\Embed\Embed;
 use Discord\Parts\User\Member;
+use Exception;
 
 class Logger
 {
@@ -45,7 +46,7 @@ class Logger
      * @param string $description
      * @param string $type
      * @return void
-     * @throws \Exception
+     * @throws Exception
      */
     public function logWithMember(Member $member, string $description, string $type): void
     {
