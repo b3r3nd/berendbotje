@@ -4,10 +4,12 @@ namespace App\Discord\Roles;
 
 use App\Discord\Core\Builders\EmbedFactory;
 use App\Discord\Core\Enums\Permission;
-use App\Discord\Core\MessageCommand;
+use App\Discord\Core\SlashCommand;
 use App\Models\Role;
+use Discord\Builders\MessageBuilder;
+use Discord\Parts\Interactions\Command\Option;
 
-class DeleteRole extends MessageCommand
+class DeleteRole extends SlashCommand
 {
 
     public function permission(): Permission
@@ -22,30 +24,31 @@ class DeleteRole extends MessageCommand
 
     public function __construct()
     {
-        $this->requiredArguments = 1;
-        $this->usageString = __('bot.roles.usage-delrole');
-
+        $this->description = __('bot.slash.delete-role');
+        $this->slashCommandOptions = [
+            [
+                'name' => 'role_name',
+                'description' => 'Role',
+                'type' => Option::STRING,
+                'required' => true,
+            ],
+        ];
         parent::__construct();
     }
 
-    public function action(): void
+    public function action(): MessageBuilder
     {
         if (!Role::exists($this->guildId, $this->arguments[0])) {
-            $this->message->channel->sendMessage(EmbedFactory::failedEmbed(__('bot.roles.not-exist', ['role' => $this->arguments[0]])));
-            return;
+            return EmbedFactory::failedEmbed(__('bot.roles.not-exist', ['role' => $this->arguments[0]]));
         }
-
         if (!Role::get($this->guildId, $this->arguments[0])->users->isEmpty()) {
-            $this->message->channel->sendMessage(EmbedFactory::failedEmbed(__('bot.roles.has-users')));
-            return;
+            return EmbedFactory::failedEmbed(__('bot.roles.has-users'));
         }
-
-        if(strtolower($this->arguments[0]) === 'admin') {
-            $this->message->channel->sendMessage(EmbedFactory::failedEmbed(__('bot.roles.admin-role')));
-            return;
+        if (strtolower($this->arguments[0]) === 'admin') {
+            return EmbedFactory::failedEmbed(__('bot.roles.admin-role'));
         }
 
         Role::get($this->guildId, $this->arguments[0])->delete();
-        $this->message->channel->sendMessage(EmbedFactory::successEmbed(__('bot.roles.deleted', ['role' => $this->arguments[0]])));
+        return EmbedFactory::successEmbed(__('bot.roles.deleted', ['role' => $this->arguments[0]]));
     }
 }

@@ -5,11 +5,11 @@ namespace App\Discord\Fun\Reaction;
 use App\Discord\Core\Bot;
 use App\Discord\Core\Builders\EmbedBuilder;
 use App\Discord\Core\Enums\Permission;
-use App\Discord\Core\SlashAndMessageIndexCommand;
+use App\Discord\Core\SlashIndexCommand;
 use App\Models\Reaction;
 use Discord\Parts\Embed\Embed;
 
-class ReactionIndex extends SlashAndMessageIndexCommand
+class ReactionIndex extends SlashIndexCommand
 {
     public function permission(): Permission
     {
@@ -21,6 +21,11 @@ class ReactionIndex extends SlashAndMessageIndexCommand
         return 'reactions';
     }
 
+    public function __construct()
+    {
+        $this->description = __('bot.slash.reactions');
+        parent::__construct();
+    }
 
     public function getEmbed(): Embed
     {

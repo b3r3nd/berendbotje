@@ -5,13 +5,13 @@ namespace App\Discord\Moderation\MediaFilter;
 use App\Discord\Core\Bot;
 use App\Discord\Core\Builders\EmbedFactory;
 use App\Discord\Core\Enums\Permission;
-use App\Discord\Core\SlashAndMessageCommand;
+use App\Discord\Core\SlashCommand;
 use App\Models\Guild;
 use App\Models\MediaChannel;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Command\Option;
 
-class DeleteMediaChannel extends SlashAndMessageCommand
+class DeleteMediaChannel extends SlashCommand
 {
     public function permission(): Permission
     {
@@ -25,8 +25,7 @@ class DeleteMediaChannel extends SlashAndMessageCommand
 
     public function __construct()
     {
-        $this->requiredArguments = 1;
-        $this->usageString = __('bot.media.usage-delmedia');
+        $this->description = __('bot.slash.delmediachannel');
         $this->slashCommandOptions = [
             [
                 'name' => 'channel',
@@ -41,16 +40,13 @@ class DeleteMediaChannel extends SlashAndMessageCommand
 
     public function action(): MessageBuilder
     {
-        if (!preg_match('/(<#)/', $this->arguments[0])) {
-            return EmbedFactory::failedEmbed(__('bot.media.no-channel', ['channel' => $this->arguments[0]]));
-        }
         if (!MediaChannel::where('channel', $this->arguments[0])->first()) {
-            return EmbedFactory::failedEmbed(__('bot.media.not-exists', ['channel' => $this->arguments[0]]));
+            return EmbedFactory::failedEmbed(__('bot.media.not-exists', ['channel' => "<#{$this->arguments[0]}>"]));
         }
 
         MediaChannel::where(['channel' => $this->arguments[0], 'guild_id' => Guild::get($this->guildId)->id])->first()->delete();
         Bot::get()->getGuild($this->guildId)->delMediaChannel($this->arguments[0]);
-        return EmbedFactory::successEmbed(__('bot.media.deleted', ['channel' => $this->arguments[0]]));
+        return EmbedFactory::successEmbed(__('bot.media.deleted', ['channel' => "<#{$this->arguments[0]}>"]));
 
     }
 }

@@ -4,14 +4,14 @@ namespace App\Discord\Fun\Cringe;
 
 use App\Discord\Core\Builders\EmbedFactory;
 use App\Discord\Core\Enums\Permission;
-use App\Discord\Core\SlashAndMessageCommand;
+use App\Discord\Core\SlashCommand;
 use App\Models\CringeCounter;
 use App\Models\DiscordUser;
 use Discord\Builders\MessageBuilder;
 use Discord\Http\Exceptions\NoPermissionsException;
 use Discord\Parts\Interactions\Command\Option;
 
-class IncreaseCringe extends SlashAndMessageCommand
+class IncreaseCringe extends SlashCommand
 {
     public function permission(): Permission
     {
@@ -25,9 +25,7 @@ class IncreaseCringe extends SlashAndMessageCommand
 
     public function __construct()
     {
-        $this->requiredArguments = 1;
-        $this->requiresMention = true;
-        $this->usageString = __('bot.cringe.usage-addcringe');
+        $this->description = __('bot.slash.inc-cringe');
         $this->slashCommandOptions = [
             [
                 'name' => 'user_mention',

@@ -19,7 +19,6 @@ use App\Discord\Fun\Reaction\CreateReaction;
 use App\Discord\Fun\Reaction\DeleteReaction;
 use App\Discord\Fun\Reaction\ReactionIndex;
 use App\Discord\Fun\Reaction\SimpleReaction;
-use App\Discord\Fun\Say;
 use App\Discord\Fun\UrbanDictionary;
 use App\Discord\Help;
 use App\Discord\Levels\CreateRoleReward;
@@ -34,6 +33,7 @@ use App\Discord\Levels\UserRank;
 use App\Discord\Levels\VoiceXpCounter;
 use App\Discord\Logger\GuildMemberLogger;
 use App\Discord\Logger\MessageLogger;
+use App\Discord\Logger\TimeoutLogger;
 use App\Discord\Logger\VoiceStateLogger;
 use App\Discord\Moderation\Command\CommandIndex;
 use App\Discord\Moderation\Command\CreateCommand;
@@ -61,7 +61,6 @@ use App\Discord\Roles\UserRoles;
 use App\Discord\Roles\Users;
 use App\Discord\Settings\Settings;
 use App\Discord\Settings\UpdateSetting;
-use App\Discord\TestCommand;
 use App\Models\Guild;
 use App\Models\Reaction;
 use Discord\Discord;
@@ -109,7 +108,7 @@ class Bot
             MessageXpCounter::class,
             VoiceXpCounter::class,
 
-            VoiceStateLogger::class, GuildMemberLogger::class, MessageLogger::class,
+            VoiceStateLogger::class, GuildMemberLogger::class, MessageLogger::class, TimeoutLogger::class,
         ];
     }
 
@@ -118,7 +117,7 @@ class Bot
      * @return string[]
      * @see SlashCommand
      * @see SlashAndMessageCommand
-     * @see SlashAndMessageIndexCommand
+     * @see SlashIndexCommand
      *
      * @see MessageCommand
      */
@@ -136,19 +135,17 @@ class Bot
             SingleUserTimeouts::class, AllTimeouts::class, ModeratorStatistics::class,
             CreateMediaChannel::class, DeleteMediaChannel::class, MediaChannels::class,
 
-            Leaderboard::class, UserRank::class, RoleRewards::class, CreateRoleReward::class, DeleteRoleReward::class,
-            GiveXp::class, RemoveXp::class, ResetXp::class,
+            Leaderboard::class, RoleRewards::class, CreateRoleReward::class, DeleteRoleReward::class,
+            UserRank::class, GiveXp::class, RemoveXp::class, ResetXp::class,
 
             CringeIndex::class, IncreaseCringe::class, DecreaseCringe::class, ResetCringe::class,
             BumpStatistics::class, EmoteIndex::class,
             CommandIndex::class, CreateCommand::class, DeleteCommand::class,
             ReactionIndex::class, CreateReaction::class, DeleteReaction::class,
-            EightBall::class, Ask::class, Say::class, UrbanDictionary::class,
-
+            EightBall::class, Ask::class, UrbanDictionary::class,
 
             Help::class,
 
-            TestCommand::class,
         ];
     }
 
@@ -179,7 +176,7 @@ class Bot
 
             $this->loadCoreClasses();
             $this->loadGuilds();
-            //$this->deleteSlashCommands();
+            $this->deleteSlashCommands();
             $this->loadCommands();
         });
         self::$instance = $this;
@@ -231,11 +228,7 @@ class Bot
     {
         foreach ($this->commands() as $class) {
             $instance = new $class();
-            if (method_exists($instance, 'registerMessageCommand')) {
-                $instance->registerMessageCommand();
-            }
-            if (method_exists($instance, 'registerSlashCommand'))
-                $instance->registerSlashCommand();
+            $instance->registerSlashCommand();
         }
 
         // Custom commands

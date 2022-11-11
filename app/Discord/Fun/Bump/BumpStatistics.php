@@ -5,12 +5,12 @@ namespace App\Discord\Fun\Bump;
 use App\Discord\Core\Bot;
 use App\Discord\Core\Builders\EmbedBuilder;
 use App\Discord\Core\Enums\Permission;
-use App\Discord\Core\SlashAndMessageIndexCommand;
+use App\Discord\Core\SlashIndexCommand;
 use App\Discord\Helper;
 use App\Models\Bumper;
 use Discord\Parts\Embed\Embed;
 
-class BumpStatistics extends SlashAndMessageIndexCommand
+class BumpStatistics extends SlashIndexCommand
 {
     public function permission(): Permission
     {
@@ -20,6 +20,12 @@ class BumpStatistics extends SlashAndMessageIndexCommand
     public function trigger(): string
     {
         return 'bumpstats';
+    }
+
+    public function __construct()
+    {
+        $this->description = __('bot.slash.bumpstats');
+        parent::__construct();
     }
 
 

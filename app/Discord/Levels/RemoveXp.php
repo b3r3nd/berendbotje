@@ -4,9 +4,11 @@ namespace App\Discord\Levels;
 
 use App\Discord\Core\Builders\EmbedFactory;
 use App\Discord\Core\Enums\Permission;
-use App\Discord\Core\MessageCommand;
+use App\Discord\Core\SlashCommand;
+use Discord\Builders\MessageBuilder;
+use Discord\Parts\Interactions\Command\Option;
 
-class RemoveXp extends MessageCommand
+class RemoveXp extends SlashCommand
 {
 
     public function permission(): Permission
@@ -21,15 +23,27 @@ class RemoveXp extends MessageCommand
 
     public function __construct()
     {
-        $this->requiredArguments = 2;
-        $this->requiresMention = 1;
-        $this->usageString = __('bot.xp.usage-delxp');
+        $this->description = __('bot.slash.remove-xp');
+        $this->slashCommandOptions = [
+            [
+                'name' => 'user_mention',
+                'description' => 'Mention',
+                'type' => Option::USER,
+                'required' => true,
+            ],
+            [
+                'name' => 'user_xp',
+                'description' => 'xp',
+                'type' => Option::INTEGER,
+                'required' => true,
+            ],
+        ];
         parent::__construct();
     }
 
-    public function action(): void
+    public function action(): MessageBuilder
     {
-        (new UpdateMessageCounterAction($this->message, $this->arguments[0], $this->arguments[1], true))->execute();
-        $this->message->channel->sendMessage(EmbedFactory::successEmbed(__('bot.xp.removed', ['user' => $this->arguments[0], 'xp' => $this->arguments[1]])));
+        (new UpdateMessageCounterAction($this->guildId, $this->arguments[0], $this->arguments[1], true))->execute();
+        return EmbedFactory::successEmbed(__('bot.xp.removed', ['user' => $this->arguments[0], 'xp' => $this->arguments[1]]));
     }
 }

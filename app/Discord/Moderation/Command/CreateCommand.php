@@ -5,13 +5,13 @@ namespace App\Discord\Moderation\Command;
 use App\Discord\Core\Bot;
 use App\Discord\Core\Builders\EmbedFactory;
 use App\Discord\Core\Enums\Permission;
-use App\Discord\Core\SlashAndMessageCommand;
+use App\Discord\Core\SlashCommand;
 use App\Models\Guild;
 use Discord\Builders\MessageBuilder;
 use Discord\Http\Exceptions\NoPermissionsException;
 use Discord\Parts\Interactions\Command\Option;
 
-class CreateCommand extends SlashAndMessageCommand
+class CreateCommand extends SlashCommand
 {
     public function permission(): Permission
     {
@@ -25,8 +25,7 @@ class CreateCommand extends SlashAndMessageCommand
 
     public function __construct()
     {
-        $this->requiredArguments = 2;
-        $this->usageString = __('bot.cmd.usage-addcmd');
+        $this->description = __('bot.slash.add-command');
         $this->slashCommandOptions = [
             [
                 'name' => 'command',
@@ -50,8 +49,8 @@ class CreateCommand extends SlashAndMessageCommand
      */
     public function action(): MessageBuilder
     {
-        $trigger = array_shift($this->arguments);
-        $response = join(' ', $this->arguments);
+        $trigger = $this->arguments[0];
+        $response = $this->arguments[1];
         $command = \App\Models\Command::create(['trigger' => $trigger, 'response' => $response, 'guild_id' => Guild::get($this->guildId)->id]);
         $command->save();
         new SimpleCommand(Bot::get(), $trigger, $response, $this->guildId);

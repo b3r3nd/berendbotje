@@ -54,7 +54,7 @@ class EmbedBuilder
      */
     public function setWarning(): self
     {
-        $this->embed->setColor(16776960);
+        $this->embed->setColor(15105570);
         return $this;
     }
 

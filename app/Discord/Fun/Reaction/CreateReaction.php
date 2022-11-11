@@ -5,13 +5,13 @@ namespace App\Discord\Fun\Reaction;
 use App\Discord\Core\Bot;
 use App\Discord\Core\Builders\EmbedFactory;
 use App\Discord\Core\Enums\Permission;
-use App\Discord\Core\SlashAndMessageCommand;
+use App\Discord\Core\SlashCommand;
 use App\Models\Reaction;
 use Discord\Builders\MessageBuilder;
 use Discord\Http\Exceptions\NoPermissionsException;
 use Discord\Parts\Interactions\Command\Option;
 
-class CreateReaction extends SlashAndMessageCommand
+class CreateReaction extends SlashCommand
 {
     public function permission(): Permission
     {
@@ -25,8 +25,7 @@ class CreateReaction extends SlashAndMessageCommand
 
     public function __construct()
     {
-        $this->requiredArguments = 2;
-        $this->usageString = __('bot.reactions.usage-addreaction');
+        $this->description = __('bot.slash.add-reaction');
         $this->slashCommandOptions = [
             [
                 'name' => 'trigger',

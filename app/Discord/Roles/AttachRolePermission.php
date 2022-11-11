@@ -3,9 +3,11 @@
 namespace App\Discord\Roles;
 
 use App\Discord\Core\Enums\Permission;
-use App\Discord\Core\MessageCommand;
+use App\Discord\Core\SlashCommand;
+use Discord\Builders\MessageBuilder;
+use Discord\Parts\Interactions\Command\Option;
 
-class AttachRolePermission extends MessageCommand
+class AttachRolePermission extends SlashCommand
 {
 
     public function permission(): Permission
@@ -20,13 +22,26 @@ class AttachRolePermission extends MessageCommand
 
     public function __construct()
     {
-        $this->requiredArguments = 2;
-        $this->usageString = __('bot.roles.usage-attachperm');
+        $this->description = __('bot.slash.attach-role-perm');
+        $this->slashCommandOptions = [
+            [
+                'name' => 'role_name',
+                'description' => 'Role',
+                'type' => Option::STRING,
+                'required' => true,
+            ],
+            [
+                'name' => 'permissions',
+                'description' => 'Permissions',
+                'type' => Option::STRING,
+                'required' => true,
+            ],
+        ];
         parent::__construct();
     }
 
-    public function action(): void
+    public function action(): MessageBuilder
     {
-        (new SyncRolePermissionsAction($this->message, $this->arguments, $this->guildId))->execute();
+        return (new SyncRolePermissionsAction($this->arguments, $this->guildId))->execute();
     }
 }

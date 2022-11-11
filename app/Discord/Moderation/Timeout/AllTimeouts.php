@@ -5,11 +5,12 @@ namespace App\Discord\Moderation\Timeout;
 use App\Discord\Core\Bot;
 use App\Discord\Core\Builders\EmbedBuilder;
 use App\Discord\Core\Enums\Permission;
-use App\Discord\Core\SlashAndMessageIndexCommand;
+use App\Discord\Core\SlashIndexCommand;
 use App\Models\Timeout;
 use Discord\Parts\Embed\Embed;
+use Discord\Parts\Interactions\Command\Option;
 
-class AllTimeouts extends SlashAndMessageIndexCommand
+class AllTimeouts extends SlashIndexCommand
 {
     public function permission(): Permission
     {
@@ -19,6 +20,12 @@ class AllTimeouts extends SlashAndMessageIndexCommand
     public function trigger(): string
     {
         return 'timeouts';
+    }
+
+    public function __construct()
+    {
+        $this->description = __('bot.slash.timeouts');
+        parent::__construct();
     }
 
     public function getEmbed(): Embed

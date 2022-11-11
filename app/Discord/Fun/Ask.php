@@ -3,11 +3,12 @@
 namespace App\Discord\Fun;
 
 use App\Discord\Core\Enums\Permission;
-use App\Discord\Core\SlashAndMessageCommand;
+use App\Discord\Core\SlashCommand;
 use Discord\Builders\MessageBuilder;
+use Discord\Parts\Interactions\Command\Option;
 use Illuminate\Support\Facades\Http;
 
-class Ask extends SlashAndMessageCommand
+class Ask extends SlashCommand
 {
 
     public function permission(): Permission
@@ -20,9 +21,24 @@ class Ask extends SlashAndMessageCommand
         return 'ask';
     }
 
+    public function __construct()
+    {
+        $this->description = __('bot.slash.ask');
+        $this->slashCommandOptions = [
+            [
+                'name' => 'question',
+                'description' => 'Question',
+                'type' => Option::STRING,
+                'required' => true,
+            ],
+        ];
+        parent::__construct();
+    }
+
     public function action(): MessageBuilder
     {
         $response = Http::get('https://yesno.wtf/api');
-        return MessageBuilder::new()->setContent($response->json('image'));
+
+        return MessageBuilder::new()->setContent($this->arguments[0] . "\n" . $response->json('image'));
     }
 }

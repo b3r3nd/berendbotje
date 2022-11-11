@@ -22,7 +22,7 @@ class MediaFilter
                 $channels = $guild->getMediaChannels();
             }
 
-            if (!in_array($message->channel, $channels)) {
+            if (!in_array($message->channel_id, $channels)) {
                 return;
             }
 

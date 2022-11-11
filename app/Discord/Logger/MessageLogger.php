@@ -16,20 +16,18 @@ class MessageLogger
             if ($message->author->bot) {
                 return;
             }
-
             $guild = Bot::get()->getGuild($message->guild_id);
 
             if (isset($oldMessage)) {
-                $desc = "<@{$message->member->id}> updated message in <#{$message->channel_id}>
+                $desc = "Updated message in <#{$message->channel_id}>
 
-            **Old Message**
-            {$oldMessage->content}
+                **Old Message**
+                {$oldMessage->content}
 
-            **New Message**
-            {$message->content}
-            ";
-
-                $guild->log($desc, "Message updated", 'warning');
+                **New Message**
+                {$message->content}
+                ";
+                $guild->logWithMember($message->member, $desc, 'warning');
             }
         });
 
@@ -39,13 +37,13 @@ class MessageLogger
                 if ($message->author->bot) {
                     return;
                 }
+
                 $guild = Bot::get()->getGuild($message->guild_id);
-                $desc = "<@{$message->member->id}> deleted message in <#{$message->channel_id}>
+                $desc = "Message deleted in <#{$message->channel_id}>
 
                 **Message**
                 {$message->content}";
-
-                $guild->log($desc, "Message Deleted", 'fail');
+                $guild->logWithMember($message->member, $desc, 'fail');
             }
         });
     }

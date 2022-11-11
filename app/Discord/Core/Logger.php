@@ -4,6 +4,8 @@ namespace App\Discord\Core;
 
 use App\Discord\Core\Builders\EmbedBuilder;
 use Carbon\Carbon;
+use Discord\Parts\Embed\Embed;
+use Discord\Parts\User\Member;
 
 class Logger
 {
@@ -18,19 +20,12 @@ class Logger
     }
 
     /**
-     * @param string $message
-     * @param string $title
-     * @param string $type
+     * @param $embedBuilder
+     * @param $type
      * @return void
      */
-    public function log(string $message, string $title, string $type): void
+    private function sendEmbed($embedBuilder, $type): void
     {
-        $embedBuilder = EmbedBuilder::create(Bot::getDiscord())
-            ->setTitle($title)
-            ->setDescription($message)
-            ->setFooter(Carbon::now()->toTimeString());
-
-
         if ($type == 'fail') {
             $embedBuilder->setFailed();
         } elseif ($type == 'success') {
@@ -42,6 +37,40 @@ class Logger
         }
 
         Bot::getDiscord()->getChannel($this->logChannelId)->sendEmbed($embedBuilder->getEmbed());
+    }
+
+
+    /**
+     * @param Member $member
+     * @param string $description
+     * @param string $type
+     * @return void
+     * @throws \Exception
+     */
+    public function logWithMember(Member $member, string $description, string $type): void
+    {
+        $embedBuilder = EmbedBuilder::create(Bot::getDiscord());
+        $embedBuilder->getEmbed()
+            ->setThumbnail($member->user->avatar)
+            ->setDescription($description)
+            ->setTimestamp()
+            ->setAuthor($member->user->displayname, $member->user->avatar);
+
+        $this->sendEmbed($embedBuilder, $type);
+    }
+
+    /**
+     * @param string $message
+     * @param string $type
+     * @return void
+     */
+    public function log(string $message, string $type): void
+    {
+        $embedBuilder = EmbedBuilder::create(Bot::getDiscord())
+            ->setDescription($message)
+            ->setFooter(Carbon::now()->toTimeString());
+
+        $this->sendEmbed($embedBuilder, $type);
     }
 
     /**
