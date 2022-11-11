@@ -13,27 +13,42 @@ class Guild extends Model
 
     protected $fillable = ['name', 'guild_id', 'owner_id'];
 
-
-    public static function get(string $guildId)
+    /**
+     * @param string $guildId
+     * @return mixed
+     */
+    public static function get(string $guildId): mixed
     {
         return Guild::where('guild_id', $guildId)->first();
     }
 
+    /**
+     * @return BelongsTo
+     */
     public function owner(): BelongsTo
     {
         return $this->belongsTo(DiscordUser::class, 'owner_id', 'id');
     }
 
+    /**
+     * @return HasMany
+     */
     public function roles(): HasMany
     {
         return $this->hasMany(Role::class);
     }
 
+    /**
+     * @return HasMany
+     */
     public function settings(): HasMany
     {
         return $this->hasMany(Setting::class);
     }
 
+    /**
+     * @return HasMany
+     */
     public function mediaChannels(): HasMany
     {
         return $this->hasMany(MediaChannel::class);

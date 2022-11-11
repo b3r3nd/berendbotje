@@ -37,7 +37,7 @@ class ProcessYoutubeDownload implements ShouldQueue
      *
      * @return void
      */
-    public function handle()
+    public function handle(): void
     {
         $filename = Str::random(10) . ".mp3";
         $tmpFileLocation = Storage::path($filename);

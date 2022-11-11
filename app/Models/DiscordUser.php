@@ -16,18 +16,45 @@ class DiscordUser extends Model
     protected $table = 'discord_users';
     protected $fillable = ['discord_id'];
 
-
-    public function roles(): BelongsToMany
+    /**
+     * @param string $userId
+     * @param string $guildId
+     * @param string $permissionName
+     * @return bool
+     */
+    public static function hasPermission(string $userId, string $guildId, string $permissionName): bool
     {
-        return $this->belongsToMany(Role::class, 'discord_user_roles', 'user_id');
+        $guild = Guild::get($guildId);
+        $user = DiscordUser::get($userId);
+        $permissionName = strtolower($permissionName);
+
+        return in_array($permissionName, $user->permissionsByGuild($guild) ?? []);
     }
 
-    public function rolesByGuild(string $guildId)
+    /**
+     * @param $discordId
+     * @return mixed
+     */
+    public static function get($discordId): mixed
+    {
+        return DiscordUser::firstOrCreate(['discord_id' => $discordId]);
+    }
+
+
+    /**
+     * @param string $guildId
+     * @return mixed
+     */
+    public function rolesByGuild(string $guildId): mixed
     {
         $guild = Guild::get($guildId);
         return $this->roles->where('guild_id', '=', $guild->id);
     }
 
+    /**
+     * @param Guild $guild
+     * @return array
+     */
     public function permissionsByGuild(Guild $guild): array
     {
         $permissions = [];
@@ -39,28 +66,20 @@ class DiscordUser extends Model
         return $permissions;
     }
 
-
-    public static function hasPermission(string $userId, string $guildId, string $permissionName): bool
-    {
-        $guild = Guild::get($guildId);
-        $user = DiscordUser::get($userId);
-        $permissionName = strtolower($permissionName);
-
-        return in_array($permissionName, $user->permissionsByGuild($guild) ?? []);
-    }
-
-
-    public static function get($discordId)
-    {
-        return DiscordUser::firstOrCreate(['discord_id' => $discordId]);
-    }
-
     /**
      * @return string
      */
     public function tag(): string
     {
         return "<@{$this->discord_id}>";
+    }
+
+    /**
+     * @return BelongsToMany
+     */
+    public function roles(): BelongsToMany
+    {
+        return $this->belongsToMany(Role::class, 'discord_user_roles', 'user_id');
     }
 
     /**

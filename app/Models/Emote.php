@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Emote extends Model
 {
@@ -10,12 +11,19 @@ class Emote extends Model
     protected $fillable = ['emote', 'count', 'hex', 'guild_id'];
 
 
-    public function guild()
+    /**
+     * @return BelongsTo
+     */
+    public function guild(): BelongsTo
     {
         return $this->belongsTo(Guild::class);
     }
 
-    public static function byGuild($guildId)
+    /**
+     * @param $guildId
+     * @return mixed
+     */
+    public static function byGuild($guildId): mixed
     {
         return Emote::where(['guild_id' =>  Guild::get($guildId)->id]);
     }

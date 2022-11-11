@@ -21,6 +21,11 @@ use Discord\Parts\User\Member;
  * @property $deletedCommands   List deleted commands so they do not trigger.
  * @property $deletedReactions  List of deleted reactions so they do not rigger.
  * @property $mediaChannel      List of channels marked as media, add or remove any channels whenever you like.
+ * @property $settings          List of caches settings, so we do not need to read from the database each time
+ * @property $lastMessages      Last message send by user in guild, used for the xp cooldown.
+ * @property $inVoice           List of people who are currently in voice in the guild, used to calculate xp.
+ * @property $guildModel        Eloquent model for the guild.
+ * @property $logger            Logger instance for this specific guild which can log events.
  *
  * @TODO find better solution for deleted commands and reactions.. probably step away from having a single instance per trigger
  */
@@ -71,8 +76,9 @@ class Guild
      * @param string $description
      * @param string $type
      * @return void
+     * @throws \Exception
      */
-    public function logWithMember(Member $member, string $description, $type = 'log'): void
+    public function logWithMember(Member $member, string $description, string $type = 'log'): void
     {
         if ($this->getSetting(SettingEnum::ENABLE_LOGGING)) {
             $this->logger->logWithMember($member, $description, $type);

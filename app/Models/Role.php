@@ -13,8 +13,12 @@ class Role extends Model
 
     protected $fillable = ['name', 'guild_id', 'is_admin'];
 
-
-    public static function get(string $guildId, string $roleName)
+    /**
+     * @param string $guildId
+     * @param string $roleName
+     * @return mixed
+     */
+    public static function get(string $guildId, string $roleName): mixed
     {
         $guild = Guild::get($guildId);
 
@@ -24,6 +28,11 @@ class Role extends Model
         ])->first();
     }
 
+    /**
+     * @param string $guildId
+     * @param string $roleName
+     * @return bool
+     */
     public static function exists(string $guildId, string $roleName): bool
     {
         $guild = Guild::get($guildId);
@@ -33,27 +42,44 @@ class Role extends Model
         ])->get()->isEmpty();
     }
 
-    public static function byGuildId(string $guildId)
+    /**
+     * @param string $guildId
+     * @return mixed
+     */
+    public static function byGuildId(string $guildId): mixed
     {
         return Role::where('guild_id', $guildId);
     }
 
-    public static function byDiscordGuildId(string $guildId)
+    /**
+     * @param string $guildId
+     * @return mixed
+     */
+    public static function byDiscordGuildId(string $guildId): mixed
     {
         $guild = Guild::get($guildId);
         return Role::where('guild_id', $guild->id);
     }
 
+    /**
+     * @return BelongsToMany
+     */
     public function permissions(): BelongsToMany
     {
         return $this->belongsToMany(Permission::class);
     }
 
+    /**
+     * @return BelongsToMany
+     */
     public function users(): BelongsToMany
     {
         return $this->belongsToMany(DiscordUser::class, 'discord_user_roles', 'role_id', 'user_id');
     }
 
+    /**
+     * @return BelongsTo
+     */
     public function guild(): BelongsTo
     {
         return $this->belongsTo(Guild::class);

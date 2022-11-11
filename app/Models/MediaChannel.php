@@ -11,7 +11,11 @@ class MediaChannel extends Model
 
     protected $fillable = ['channel', 'guild_id'];
 
-    public static function byGuild($guildId)
+    /**
+     * @param $guildId
+     * @return mixed
+     */
+    public static function byGuild($guildId): mixed
     {
         return MediaChannel::where(['guild_id' => Guild::get($guildId)->id]);
     }
