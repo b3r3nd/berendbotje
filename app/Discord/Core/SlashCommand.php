@@ -25,7 +25,6 @@ abstract class SlashCommand extends Command
 
     public abstract function action(): MessageBuilder;
 
-
     public function registerSlashCommand(): void
     {
         $optionsArray = [

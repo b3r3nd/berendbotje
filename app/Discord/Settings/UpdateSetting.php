@@ -35,7 +35,7 @@ class UpdateSetting extends SlashCommand
             [
                 'name' => 'setting_value',
                 'description' => 'Value',
-                'type' => Option::INTEGER,
+                'type' => Option::STRING,
                 'required' => true,
             ],
         ];

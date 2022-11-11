@@ -8,6 +8,8 @@ use App\Models\Guild as GuildModel;
 use App\Models\Setting;
 use Carbon\Carbon;
 use Discord\Http\Exceptions\NoPermissionsException;
+use Discord\Parts\Embed\Embed;
+use Discord\Parts\User\Member;
 
 /**
  * Guild settings are loaded on boot and only updated when the actual setting is changed using commands.
@@ -51,15 +53,29 @@ class Guild
         $this->logger = new Logger($this->getSetting(SettingEnum::LOG_CHANNEL));
     }
 
+
     /**
      * @param string $message
-     * @param string $title
+     * @param string $type
      * @return void
      */
-    public function log(string $message, string $title = 'Log', string $type = 'log'): void
+    public function log(string $message, string $type = 'log'): void
     {
         if ($this->getSetting(SettingEnum::ENABLE_LOGGING)) {
-            $this->logger->log($message, $title, $type);
+            $this->logger->log($message, $type);
+        }
+    }
+
+    /**
+     * @param Member $member
+     * @param string $description
+     * @param string $type
+     * @return void
+     */
+    public function logWithMember(Member $member, string $description, $type = 'log'): void
+    {
+        if ($this->getSetting(SettingEnum::ENABLE_LOGGING)) {
+            $this->logger->logWithMember($member, $description, $type);
         }
     }
 
