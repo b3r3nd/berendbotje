@@ -5,13 +5,13 @@ namespace App\Discord\Moderation\Command;
 use App\Discord\Core\Bot;
 use App\Discord\Core\Builders\EmbedFactory;
 use App\Discord\Core\Enums\Permission;
-use App\Discord\Core\SlashAndMessageCommand;
+use App\Discord\Core\SlashCommand;
 use App\Models\Guild;
 use Discord\Builders\MessageBuilder;
 use Discord\Http\Exceptions\NoPermissionsException;
 use Discord\Parts\Interactions\Command\Option;
 
-class DeleteCommand extends SlashAndMessageCommand
+class DeleteCommand extends SlashCommand
 {
     public function permission(): Permission
     {
@@ -25,8 +25,7 @@ class DeleteCommand extends SlashAndMessageCommand
 
     public function __construct()
     {
-        $this->requiredArguments = 1;
-        $this->usageString = __('bot.cmd.usage-delcmd');
+        $this->description = __('bot.slash.del-command');
         $this->slashCommandOptions = [
             [
                 'name' => 'command',

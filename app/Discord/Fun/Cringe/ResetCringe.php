@@ -4,12 +4,12 @@ namespace App\Discord\Fun\Cringe;
 
 use App\Discord\Core\Builders\EmbedFactory;
 use App\Discord\Core\Enums\Permission;
-use App\Discord\Core\SlashAndMessageCommand;
+use App\Discord\Core\SlashCommand;
 use App\Models\DiscordUser;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Command\Option;
 
-class ResetCringe extends SlashAndMessageCommand
+class ResetCringe extends SlashCommand
 {
 
     public function permission(): Permission
@@ -24,8 +24,7 @@ class ResetCringe extends SlashAndMessageCommand
 
     public function __construct()
     {
-        $this->requiredArguments = 1;
-        $this->usageString = __('bot.cringe.usage-resetcringe');
+        $this->description = __('bot.slash.reset-cringe');
         $this->slashCommandOptions = [
             [
                 'name' => 'user_mention',

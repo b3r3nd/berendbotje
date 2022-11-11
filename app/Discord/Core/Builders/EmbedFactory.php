@@ -10,6 +10,7 @@ use Discord\Builders\MessageBuilder;
  */
 class EmbedFactory
 {
+
     /**
      * @param string $message
      * @return MessageBuilder

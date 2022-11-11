@@ -5,13 +5,13 @@ namespace App\Discord\Moderation;
 use App\Discord\Core\Bot;
 use App\Discord\Core\Builders\EmbedBuilder;
 use App\Discord\Core\Enums\Permission;
-use App\Discord\Core\SlashAndMessageCommand;
+use App\Discord\Core\SlashCommand;
 use App\Models\DiscordUser;
 use App\Models\Guild;
 use Discord\Builders\MessageBuilder;
 use Illuminate\Database\Eloquent\Builder;
 
-class ModeratorStatistics extends SlashAndMessageCommand
+class ModeratorStatistics extends SlashCommand
 {
 
     public function permission(): Permission
@@ -22,6 +22,12 @@ class ModeratorStatistics extends SlashAndMessageCommand
     public function trigger(): string
     {
         return 'modstats';
+    }
+
+    public function __construct()
+    {
+        $this->description = __('bot.slash.modstats');
+        parent::__construct();
     }
 
     private function getCounter(string $counter, Guild $guild)

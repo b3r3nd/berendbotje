@@ -4,9 +4,11 @@ namespace App\Discord\Levels;
 
 use App\Discord\Core\Builders\EmbedFactory;
 use App\Discord\Core\Enums\Permission;
-use App\Discord\Core\MessageCommand;
+use App\Discord\Core\SlashCommand;
+use Discord\Builders\MessageBuilder;
+use Discord\Parts\Interactions\Command\Option;
 
-class GiveXp extends MessageCommand
+class GiveXp extends SlashCommand
 {
 
     public function permission(): Permission
@@ -21,15 +23,27 @@ class GiveXp extends MessageCommand
 
     public function __construct()
     {
-        $this->requiredArguments = 2;
-        $this->requiresMention = 1;
-        $this->usageString = __('bot.xp.usage-givexp');
+        $this->description = __('bot.slash.givexp');
+        $this->slashCommandOptions = [
+            [
+                'name' => 'user_mention',
+                'description' => 'Mention',
+                'type' => Option::USER,
+                'required' => true,
+            ],
+            [
+                'name' => 'user_xp',
+                'description' => 'xp',
+                'type' => Option::INTEGER,
+                'required' => true,
+            ],
+        ];
         parent::__construct();
     }
 
-    public function action(): void
+    public function action(): MessageBuilder
     {
-        (new UpdateMessageCounterAction($this->message, $this->arguments[0], $this->arguments[1]))->execute();
-        $this->message->channel->sendMessage(EmbedFactory::successEmbed(__('bot.xp.given', ['user' => $this->arguments[0], 'xp' => $this->arguments[1]])));
+        (new UpdateMessageCounterAction($this->guildId, $this->arguments[0], $this->arguments[1]))->execute();
+        return EmbedFactory::successEmbed(__('bot.xp.given', ['user' => $this->arguments[0], 'xp' => $this->arguments[1]]));
     }
 }

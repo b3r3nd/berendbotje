@@ -7,13 +7,13 @@ use App\Discord\Core\Builders\EmbedBuilder;
 use App\Discord\Core\Builders\EmbedFactory;
 use App\Discord\Core\Enums\Permission;
 use App\Discord\Core\Enums\Setting;
-use App\Discord\Core\SlashAndMessageCommand;
+use App\Discord\Core\SlashCommand;
 use App\Models\DiscordUser;
 use App\Models\Guild;
 use Discord\Builders\MessageBuilder;
 use Discord\Http\Exceptions\NoPermissionsException;
 
-class UserRank extends SlashAndMessageCommand
+class UserRank extends SlashCommand
 {
 
     public function permission(): Permission
@@ -24,6 +24,12 @@ class UserRank extends SlashAndMessageCommand
     public function trigger(): string
     {
         return 'rank';
+    }
+
+    public function __construct()
+    {
+        $this->description = __('bot.slash.rank');
+        parent::__construct();
     }
 
     /**

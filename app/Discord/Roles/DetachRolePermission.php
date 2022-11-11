@@ -3,9 +3,11 @@
 namespace App\Discord\Roles;
 
 use App\Discord\Core\Enums\Permission;
-use App\Discord\Core\MessageCommand;
+use App\Discord\Core\SlashCommand;
+use Discord\Builders\MessageBuilder;
+use Discord\Parts\Interactions\Command\Option;
 
-class DetachRolePermission extends MessageCommand
+class DetachRolePermission extends SlashCommand
 {
 
     public function permission(): Permission
@@ -20,14 +22,26 @@ class DetachRolePermission extends MessageCommand
 
     public function __construct()
     {
-        $this->requiredArguments = 2;
-        $this->usageString = __('bot.roles.usage-detachperm');
-
+        $this->description = __('bot.slash.detach-role-perm');
+        $this->slashCommandOptions = [
+            [
+                'name' => 'role_name',
+                'description' => 'Role',
+                'type' => Option::STRING,
+                'required' => true,
+            ],
+            [
+                'name' => 'permissions',
+                'description' => 'Permissions',
+                'type' => Option::STRING,
+                'required' => true,
+            ],
+        ];
         parent::__construct();
     }
 
-    public function action(): void
+    public function action(): MessageBuilder
     {
-        (new SyncRolePermissionsAction($this->message, $this->arguments, $this->guildId, false))->execute();
+        return (new SyncRolePermissionsAction($this->arguments, $this->guildId, false))->execute();
     }
 }

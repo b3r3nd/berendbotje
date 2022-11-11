@@ -4,11 +4,11 @@ namespace App\Discord\Roles;
 
 use App\Discord\Core\Bot;
 use App\Discord\Core\Builders\EmbedBuilder;
-use App\Discord\Core\SlashAndMessageIndexCommand;
+use App\Discord\Core\SlashIndexCommand;
 use App\Models\Permission;
 use Discord\Parts\Embed\Embed;
 
-class Permissions extends SlashAndMessageIndexCommand
+class Permissions extends SlashIndexCommand
 {
     public function permission(): \App\Discord\Core\Enums\Permission
     {
@@ -18,6 +18,12 @@ class Permissions extends SlashAndMessageIndexCommand
     public function trigger(): string
     {
         return 'permissions';
+    }
+
+    public function __construct()
+    {
+        $this->description = __('bot.slash.permissions');
+        parent::__construct();
     }
 
     public function getEmbed(): Embed

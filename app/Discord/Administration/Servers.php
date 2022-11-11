@@ -5,10 +5,11 @@ namespace App\Discord\Administration;
 use App\Discord\Core\Bot;
 use App\Discord\Core\Builders\EmbedBuilder;
 use App\Discord\Core\Enums\Permission;
-use App\Discord\Core\MessageCommand;
+use App\Discord\Core\SlashCommand;
 use App\Models\Guild;
+use Discord\Builders\MessageBuilder;
 
-class Servers extends MessageCommand
+class Servers extends SlashCommand
 {
 
     public function permission(): Permission
@@ -21,14 +22,20 @@ class Servers extends MessageCommand
         return 'servers';
     }
 
-    public function action(): void
+    public function __construct()
+    {
+        $this->description = __('bot.slash.servers');
+        parent::__construct();
+    }
+
+    public function action(): MessageBuilder
     {
         $description = "";
         foreach (Guild::all() as $guild) {
             $description .= "**{$guild->name}** • {$guild->owner->tag()}\n";
         }
 
-        $this->message->channel->sendEmbed(EmbedBuilder::create(Bot::getDiscord())
+        return MessageBuilder::new()->addEmbed(EmbedBuilder::create(Bot::getDiscord())
             ->setTitle(__('bot.server.title'))
             ->setFooter(__('bot.server.footer'))
             ->setDescription(__('bot.server.description', ['servers' => $description]))

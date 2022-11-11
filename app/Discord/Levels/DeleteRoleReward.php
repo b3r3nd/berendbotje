@@ -4,11 +4,13 @@ namespace App\Discord\Levels;
 
 use App\Discord\Core\Builders\EmbedFactory;
 use App\Discord\Core\Enums\Permission;
-use App\Discord\Core\MessageCommand;
+use App\Discord\Core\SlashCommand;
 use App\Models\Guild;
 use App\Models\RoleReward;
+use Discord\Builders\MessageBuilder;
+use Discord\Parts\Interactions\Command\Option;
 
-class DeleteRoleReward extends MessageCommand
+class DeleteRoleReward extends SlashCommand
 {
 
     public function permission(): Permission
@@ -23,14 +25,22 @@ class DeleteRoleReward extends MessageCommand
 
     public function __construct()
     {
-        $this->requiredArguments = 1;
-        $this->usageString = __('bot.rewards.usage-delreward');
+        $this->description = __('bot.slash.del-role-reward');
+        $this->slashCommandOptions = [
+            [
+                'name' => 'level',
+                'description' => 'Level',
+                'type' => Option::INTEGER,
+                'required' => true,
+            ],
+        ];
         parent::__construct();
     }
 
-    public function action(): void
+
+    public function action(): MessageBuilder
     {
         RoleReward::where(['level' => $this->arguments[0], 'guild_id' => Guild::get($this->guildId)->id])->delete();
-        $this->message->channel->sendMessage(EmbedFactory::successEmbed(__('bot.rewards.deleted', ['level' => $this->arguments[0]])));
+        return EmbedFactory::successEmbed(__('bot.rewards.deleted', ['level' => $this->arguments[0]]));
     }
 }

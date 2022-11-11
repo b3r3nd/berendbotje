@@ -5,10 +5,12 @@ namespace App\Discord\Settings;
 use App\Discord\Core\Bot;
 use App\Discord\Core\Builders\EmbedFactory;
 use App\Discord\Core\Enums\Permission;
-use App\Discord\Core\MessageCommand;
+use App\Discord\Core\SlashCommand;
 use App\Models\Setting;
+use Discord\Builders\MessageBuilder;
+use Discord\Parts\Interactions\Command\Option;
 
-class UpdateSetting extends MessageCommand
+class UpdateSetting extends SlashCommand
 {
     public function permission(): Permission
     {
@@ -22,24 +24,35 @@ class UpdateSetting extends MessageCommand
 
     public function __construct()
     {
-        $this->requiredArguments = 2;
-        $this->usageString = __('bot.set.usage-set');
+        $this->description = __('bot.slash.set');
+        $this->slashCommandOptions = [
+            [
+                'name' => 'setting_key',
+                'description' => 'Key',
+                'type' => Option::STRING,
+                'required' => true,
+            ],
+            [
+                'name' => 'setting_value',
+                'description' => 'Value',
+                'type' => Option::INTEGER,
+                'required' => true,
+            ],
+        ];
         parent::__construct();
     }
 
 
-    public function action(): void
+    public function action(): MessageBuilder
     {
         if (!Setting::hasSetting($this->arguments[0], $this->guildId)) {
-            $this->message->channel->sendMessage(EmbedFactory::failedEmbed(__('bot.set.not-exist', ['key' => $this->arguments[0]])));
-            return;
+            return EmbedFactory::failedEmbed(__('bot.set.not-exist', ['key' => $this->arguments[0]]));
         }
         if (!is_numeric($this->arguments[1])) {
-            $this->message->channel->sendMessage(EmbedFactory::failedEmbed(__('bot.set.not-numeric', ['value' => $this->arguments[1]])));
-            return;
+            return EmbedFactory::failedEmbed(__('bot.set.not-numeric', ['value' => $this->arguments[1]]));
         }
 
         Bot::get()->getGuild($this->guildId)->setSetting($this->arguments[0], $this->arguments[1]);
-        $this->message->channel->sendMessage(EmbedFactory::successEmbed(__('bot.set.updated', ['key' => $this->arguments[0], 'value' => $this->arguments[1]])));
+        return EmbedFactory::successEmbed(__('bot.set.updated', ['key' => $this->arguments[0], 'value' => $this->arguments[1]]));
     }
 }

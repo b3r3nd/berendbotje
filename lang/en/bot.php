@@ -24,11 +24,65 @@ return [
     'needhelp' => 'For more info check $help',
 
 
+    'slash' => [
+        'roles' => 'Show all roles in the server',
+        'users' => 'Show all users with their roles',
+        'permissions' => 'Show all available permissions',
+        'servers' => 'Show all servers the bot runs on',
+        'myroles' => 'Show your roles in this server',
+        'userroles' => 'Show roles of given user',
+        'delete-role' => 'Delete a role from the server',
+        'create-role' => 'Add a new role to the server',
+        'detach-role-perm' => 'Remove permissions from role',
+        'attach-role-perm' => 'Add permissions to role',
+        'attach-user-role' => 'Add user to role',
+        'detach-user-role' => 'Remove user from role',
+        'set' => 'Update setting from config',
+        'config' => 'Show the server configuration',
+        'user-timeouts' => 'Show timeouts for single user',
+        'timeouts' => 'Show all timeouts',
+        'modstats' => 'Show moderator statistics',
+        'mediachannels' => 'Overview of all channels marked for media only',
+        'addmediachannel' => 'Add a channel to media only list',
+        'delmediachannel' => 'Remove a channel from media only list',
+        'leaderboard' => 'Show leaderboard with user levels',
+        'rank' => 'Show your own level and xp',
+        'rewards' => 'Show role rewards based on levels',
+        'add-role-reward' => 'Add role reward to a level',
+        'del-role-reward' => 'Remove role rewards from a level',
+        'give-xp' => 'Give xp to a user',
+        'remove-xp' => 'Remove xp from a user',
+        'reset-xp' => 'Reset xp for a user',
+        'cringecounter' => 'Show who is most cringe..',
+        'inc-cringe' => 'Increase the cringe counter by one for someone',
+        'dec-cringe' => 'Decrease the cringe counter by one for someone',
+        'reset-cringe' => 'Reset the cringe counter for someone',
+        'bumpstats' => 'Show bumper elite statistics',
+        'emotes' => 'Show emote counter',
+        'commands' => 'Show list of custom commands',
+        'reactions' => 'Show list of custom reactions',
+        'add-command' => 'Add a new custom command',
+        'del-command' => 'Delete a custom command',
+        'add-reaction' => 'Add a new custom reaction',
+        'del-reaction' => 'Delete a custom reaction',
+        '8ball' => 'Ask the magic 8ball for advise',
+        'ask' => 'Ask a yes or no question',
+        'urb' => 'Search on urban dictionary',
+        'help' => 'Help files with optional parameters',
+    ],
+
+
     'myroles' => [
-        'title' => 'Roles in this server',
+        'title' => 'Your roles in this server',
         'footer' => 'See help for more info',
         'description' => ':roles',
         'none' => 'No roles in this server',
+    ],
+
+    'userroles' => [
+        'title' => 'User in this server',
+        'footer' => 'See help for more info',
+        'description' => ':roles',
     ],
 
     'roles' => [
@@ -69,7 +123,7 @@ return [
         'added' => 'server with ID: :id added to owner :owner',
         'title' => 'Active servers',
         'footer' => 'user addserver server_id discord_owner_id to add new servers',
-        'description' => "Server • Owner Account\n\n:servers"
+        'description' => "Server • Owner Account\n\n:servers",
     ],
 
     '8ball' => [

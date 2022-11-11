@@ -5,10 +5,11 @@ namespace App\Discord\Settings;
 use App\Discord\Core\Bot;
 use App\Discord\Core\Builders\EmbedBuilder;
 use App\Discord\Core\Enums\Permission;
-use App\Discord\Core\MessageCommand;
+use App\Discord\Core\SlashCommand;
 use App\Models\Setting;
+use Discord\Builders\MessageBuilder;
 
-class Settings extends MessageCommand
+class Settings extends SlashCommand
 {
 
     public function permission(): Permission
@@ -21,7 +22,13 @@ class Settings extends MessageCommand
         return 'config';
     }
 
-    public function action(): void
+    public function __construct()
+    {
+        $this->description = __('bot.slash.config');
+        parent::__construct();
+    }
+
+    public function action(): MessageBuilder
     {
         $embedBuilder = EmbedBuilder::create(Bot::getDiscord())
             ->setTitle(__('bot.set.title'))
@@ -35,8 +42,8 @@ class Settings extends MessageCommand
                 $description .= "**{$setting->key}** = {$setting->value}\n";
             }
         }
-
         $embedBuilder->setDescription($description);
-        $this->message->channel->sendEmbed($embedBuilder->getEmbed());
+
+        return MessageBuilder::new()->addEmbed($embedBuilder->getEmbed());
     }
 }

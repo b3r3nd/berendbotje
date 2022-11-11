@@ -2,10 +2,14 @@
 
 namespace App\Discord\Fun;
 
+use App\Discord\Core\Bot;
+use App\Discord\Core\Builders\EmbedBuilder;
 use App\Discord\Core\Enums\Permission;
-use App\Discord\Core\MessageCommand;
+use App\Discord\Core\SlashCommand;
+use Discord\Builders\MessageBuilder;
+use Discord\Parts\Interactions\Command\Option;
 
-class EightBall extends MessageCommand
+class EightBall extends SlashCommand
 {
 
     public function permission(): Permission
@@ -20,12 +24,19 @@ class EightBall extends MessageCommand
 
     public function __construct()
     {
+        $this->description = __('bot.slash.8ball');
+        $this->slashCommandOptions = [
+            [
+                'name' => 'question',
+                'description' => 'Question',
+                'type' => Option::STRING,
+                'required' => true,
+            ],
+        ];
         parent::__construct();
-        $this->requiredArguments = 1;
-        $this->usageString = __('bot.8ball.no-question');
     }
 
-    public function action(): void
+    public function action(): MessageBuilder
     {
         $options = [
             'It is certain.',
@@ -54,6 +65,8 @@ class EightBall extends MessageCommand
 
         $random = rand(0, (count($options) - 1));
 
-        $this->message->reply($options[$random]);
+        return MessageBuilder::new()->addEmbed(EmbedBuilder::create(Bot::getDiscord())
+            ->setTitle($this->arguments[0])
+            ->setDescription($options[$random])->getEmbed());
     }
 }

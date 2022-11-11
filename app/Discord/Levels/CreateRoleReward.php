@@ -4,10 +4,12 @@ namespace App\Discord\Levels;
 
 use App\Discord\Core\Builders\EmbedFactory;
 use App\Discord\Core\Enums\Permission;
-use App\Discord\Core\MessageCommand;
+use App\Discord\Core\SlashCommand;
 use App\Models\RoleReward;
+use Discord\Builders\MessageBuilder;
+use Discord\Parts\Interactions\Command\Option;
 
-class CreateRoleReward extends MessageCommand
+class CreateRoleReward extends SlashCommand
 {
 
     public function permission(): Permission
@@ -22,20 +24,29 @@ class CreateRoleReward extends MessageCommand
 
     public function __construct()
     {
-        $this->requiredArguments = 2;
-        $this->usageString = __('bot.rewards.usage-addreward');
+        $this->description = __('bot.slash.add-role-reward');
+        $this->slashCommandOptions = [
+            [
+                'name' => 'level',
+                'description' => 'Level',
+                'type' => Option::INTEGER,
+                'required' => true,
+            ],
+            [
+                'name' => 'role',
+                'description' => 'Role',
+                'type' => Option::ROLE,
+                'required' => true,
+            ],
+        ];
         parent::__construct();
     }
 
-    public function action(): void
-    {
-        if(!is_numeric($this->arguments[0]) || !is_numeric($this->arguments[1])) {
-            $this->message->channel->sendMessage(EmbedFactory::failedEmbed(__('bot.rewards.number')));
-            return;
-        }
 
+    public function action(): MessageBuilder
+    {
         $roleReward = RoleReward::create(['level' => $this->arguments[0], 'role' => $this->arguments[1], 'guild_id' => \App\Models\Guild::get($this->guildId)->id]);
         $roleReward->save();
-        $this->message->channel->sendMessage(EmbedFactory::successEmbed(__('bot.rewards.added', ['level' => $this->arguments[0], 'role' => $roleReward->roleTag()])));
+        return EmbedFactory::successEmbed(__('bot.rewards.added', ['level' => $this->arguments[0], 'role' => $roleReward->roleTag()]));
     }
 }

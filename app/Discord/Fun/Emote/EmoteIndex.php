@@ -5,12 +5,12 @@ namespace App\Discord\Fun\Emote;
 use App\Discord\Core\Bot;
 use App\Discord\Core\Builders\EmbedBuilder;
 use App\Discord\Core\Enums\Permission;
-use App\Discord\Core\SlashAndMessageIndexCommand;
+use App\Discord\Core\SlashIndexCommand;
 use App\Discord\Helper;
 use App\Models\Emote;
 use Discord\Parts\Embed\Embed;
 
-class EmoteIndex extends SlashAndMessageIndexCommand
+class EmoteIndex extends SlashIndexCommand
 {
 
     public function permission(): Permission
@@ -21,6 +21,12 @@ class EmoteIndex extends SlashAndMessageIndexCommand
     public function trigger(): string
     {
         return 'emotes';
+    }
+
+    public function __construct()
+    {
+        $this->description = __('bot.slash.emotes');
+        parent::__construct();
     }
 
     public function getEmbed(): Embed

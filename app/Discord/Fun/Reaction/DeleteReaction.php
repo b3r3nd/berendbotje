@@ -5,14 +5,14 @@ namespace App\Discord\Fun\Reaction;
 use App\Discord\Core\Bot;
 use App\Discord\Core\Builders\EmbedFactory;
 use App\Discord\Core\Enums\Permission;
-use App\Discord\Core\SlashAndMessageCommand;
+use App\Discord\Core\SlashCommand;
 use App\Models\Guild;
 use App\Models\Reaction;
 use Discord\Builders\MessageBuilder;
 use Discord\Http\Exceptions\NoPermissionsException;
 use Discord\Parts\Interactions\Command\Option;
 
-class DeleteReaction extends SlashAndMessageCommand
+class DeleteReaction extends SlashCommand
 {
     public function permission(): Permission
     {
@@ -26,9 +26,7 @@ class DeleteReaction extends SlashAndMessageCommand
 
     public function __construct()
     {
-        parent::__construct();
-        $this->requiredArguments = 1;
-        $this->usageString = __('bot.reactions.usage-delreaction');
+        $this->description = __('bot.slash.del-reaction');
         $this->slashCommandOptions = [
             [
                 'name' => 'trigger',
@@ -37,6 +35,7 @@ class DeleteReaction extends SlashAndMessageCommand
                 'required' => true,
             ]
         ];
+        parent::__construct();
     }
 
     /**

@@ -11,23 +11,23 @@ use Discord\Parts\Channel\Message;
 
 class UpdateMessageCounterAction implements Action
 {
-    private Message $message;
     private string $userId;
     private int $xpCount;
     private bool $removeXp;
+    private string $guildId;
 
     /**
-     * @param Message $message
+     * @param string $guildId
      * @param $userId
      * @param $xpCount
      * @param bool $removeXp
      */
-    public function __construct(Message $message, $userId, $xpCount, bool $removeXp = false)
+    public function __construct(string $guildId, $userId, $xpCount, bool $removeXp = false)
     {
-        $this->message = $message;
         $this->userId = $userId;
         $this->xpCount = $xpCount;
         $this->removeXp = $removeXp;
+        $this->guildId = $guildId;
     }
 
     /**
@@ -36,7 +36,7 @@ class UpdateMessageCounterAction implements Action
     public function execute(): void
     {
         $user = DiscordUser::get($this->userId);
-        $guild = Bot::get()->getGuild($this->message->guild_id);
+        $guild = Bot::get()->getGuild($this->guildId);
 
         $messageCounters = $user->messageCounters()->where('guild_id', $guild->model->id)->get();
         $messageCounter = new \App\Models\MessageCounter([

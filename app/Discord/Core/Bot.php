@@ -19,7 +19,6 @@ use App\Discord\Fun\Reaction\CreateReaction;
 use App\Discord\Fun\Reaction\DeleteReaction;
 use App\Discord\Fun\Reaction\ReactionIndex;
 use App\Discord\Fun\Reaction\SimpleReaction;
-use App\Discord\Fun\Say;
 use App\Discord\Fun\UrbanDictionary;
 use App\Discord\Help;
 use App\Discord\Levels\CreateRoleReward;
@@ -118,37 +117,37 @@ class Bot
      * @return string[]
      * @see SlashCommand
      * @see SlashAndMessageCommand
-     * @see SlashAndMessageIndexCommand
+     * @see SlashIndexCommand
      *
      * @see MessageCommand
      */
     private function commands(): array
     {
         return [
-            Servers::class,
+            //           Servers::class,
 
-            Roles::class, Permissions::class, Users::class,
-            MyRoles::class, UserRoles::class,
-            CreateRole::class, DeleteRole::class,
-            AttachRolePermission::class, AttachUserRole::class, DetachRolePermission::class, DetachUserRole::class,
-            Settings::class, UpdateSetting::class,
-
-            SingleUserTimeouts::class, AllTimeouts::class, ModeratorStatistics::class,
-            CreateMediaChannel::class, DeleteMediaChannel::class, MediaChannels::class,
-
-            Leaderboard::class, UserRank::class, RoleRewards::class, CreateRoleReward::class, DeleteRoleReward::class,
-            GiveXp::class, RemoveXp::class, ResetXp::class,
-
-            CringeIndex::class, IncreaseCringe::class, DecreaseCringe::class, ResetCringe::class,
-            BumpStatistics::class, EmoteIndex::class,
-            CommandIndex::class, CreateCommand::class, DeleteCommand::class,
-            ReactionIndex::class, CreateReaction::class, DeleteReaction::class,
-            EightBall::class, Ask::class, Say::class, UrbanDictionary::class,
-
-
+//            Roles::class, Permissions::class, //Users::class,
+            // MyRoles::class, UserRoles::class,
+            //           CreateRole::class, DeleteRole::class,
+//            AttachRolePermission::class, AttachUserRole::class, DetachRolePermission::class, DetachUserRole::class,
+            //           Settings::class, UpdateSetting::class,
+//
+            //           SingleUserTimeouts::class, AllTimeouts::class, ModeratorStatistics::class,
+//            CreateMediaChannel::class, DeleteMediaChannel::class, MediaChannels::class,
+//
+//            Leaderboard::class, RoleRewards::class, CreateRoleReward::class, DeleteRoleReward::class,
+//            UserRank::class, GiveXp::class, RemoveXp::class, ResetXp::class,
+//
+            //           CringeIndex::class, IncreaseCringe::class, DecreaseCringe::class, ResetCringe::class,
+            //           BumpStatistics::class, EmoteIndex::class,
+            //          CommandIndex::class, CreateCommand::class, DeleteCommand::class,
+            //           ReactionIndex::class, CreateReaction::class, DeleteReaction::class,
+            //          EightBall::class, Ask::class, UrbanDictionary::class,
+//
+//
             Help::class,
-
-            TestCommand::class,
+//
+//            TestCommand::class,
         ];
     }
 
@@ -231,11 +230,7 @@ class Bot
     {
         foreach ($this->commands() as $class) {
             $instance = new $class();
-            if (method_exists($instance, 'registerMessageCommand')) {
-                $instance->registerMessageCommand();
-            }
-            if (method_exists($instance, 'registerSlashCommand'))
-                $instance->registerSlashCommand();
+            $instance->registerSlashCommand();
         }
 
         // Custom commands

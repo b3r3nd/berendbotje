@@ -6,11 +6,11 @@ use App\Discord\Core\Bot;
 use App\Discord\Core\Builders\EmbedBuilder;
 use App\Discord\Core\Builders\EmbedFactory;
 use App\Discord\Core\Enums\Permission;
-use App\Discord\Core\MessageCommand;
+use App\Discord\Core\SlashCommand;
 use App\Models\DiscordUser;
 use Discord\Builders\MessageBuilder;
 
-class MyRoles extends MessageCommand
+class MyRoles extends SlashCommand
 {
 
     public function permission(): Permission
@@ -23,21 +23,26 @@ class MyRoles extends MessageCommand
         return 'myroles';
     }
 
-    public function action(): void
+    public function __construct()
+    {
+        $this->description = __('bot.slash.myroles');
+        parent::__construct();
+    }
+
+    public function action(): MessageBuilder
     {
         $description = "";
         if (DiscordUser::get($this->commandUser)->roles->isEmpty()) {
-            $this->message->channel->sendMessage(EmbedFactory::failedEmbed(__('bot.myroles.none')));
-            return;
+            return EmbedFactory::failedEmbed(__('bot.myroles.none'));
         }
         foreach (DiscordUser::get($this->commandUser)->rolesByGuild($this->guildId) as $role) {
             $description .= "{$role->name}\n";
         }
 
-        $this->message->channel->sendMessage(MessageBuilder::new()->addEmbed(EmbedBuilder::create(Bot::get()->discord())
+        return MessageBuilder::new()->addEmbed(EmbedBuilder::create(Bot::get()->discord())
             ->setTitle(__('bot.myroles.title'))
             ->setFooter(__('bot.myroles.footer'))
             ->setDescription(__('bot.myroles.description', ['roles' => $description]))
-            ->getEmbed()));
+            ->getEmbed());
     }
 }

@@ -16,7 +16,7 @@ use Discord\Parts\Interactions\Interaction;
  * @property $perPage       Can be overwritten in child to set the items shown per page.
  * @property $total         MUST BE SET in child in order to disable buttons when you are on the last page.
  */
-abstract class SlashAndMessageIndexCommand extends SlashAndMessageCommand implements PaginationIndex
+abstract class SlashIndexCommand extends SlashCommand implements PaginationIndex
 {
     public int $offset = 0;
     public int $perPage = 10;

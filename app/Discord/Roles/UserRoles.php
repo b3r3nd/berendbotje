@@ -6,11 +6,12 @@ use App\Discord\Core\Bot;
 use App\Discord\Core\Builders\EmbedBuilder;
 use App\Discord\Core\Builders\EmbedFactory;
 use App\Discord\Core\Enums\Permission;
-use App\Discord\Core\MessageCommand;
+use App\Discord\Core\SlashCommand;
 use App\Models\DiscordUser;
 use Discord\Builders\MessageBuilder;
+use Discord\Parts\Interactions\Command\Option;
 
-class UserRoles extends MessageCommand
+class UserRoles extends SlashCommand
 {
 
     public function permission(): Permission
@@ -25,28 +26,32 @@ class UserRoles extends MessageCommand
 
     public function __construct()
     {
-        $this->requiredArguments = 1;
-        $this->requiresMention = 1;
-        $this->usageString = __('bot.roles.usage-userroles');
-
+        $this->description = __('bot.slash.userroles');
+        $this->slashCommandOptions = [
+            [
+                'name' => 'user_mention',
+                'description' => 'Mention',
+                'type' => Option::USER,
+                'required' => true,
+            ],
+        ];
         parent::__construct();
     }
 
-    public function action(): void
+    public function action(): MessageBuilder
     {
         $description = "";
         if (DiscordUser::get($this->arguments[0])->roles->isEmpty()) {
-            $this->message->channel->sendMessage(EmbedFactory::failedEmbed(__('bot.myroles.none')));
-            return;
+            return EmbedFactory::failedEmbed(__('bot.myroles.none'));
         }
         foreach (DiscordUser::get($this->arguments[0])->rolesByGuild($this->guildId) as $role) {
             $description .= "{$role->name}\n";
         }
 
-        $this->message->channel->sendMessage(MessageBuilder::new()->addEmbed(EmbedBuilder::create(Bot::get()->discord())
-            ->setTitle(__('bot.myroles.title'))
-            ->setFooter(__('bot.myroles.footer'))
-            ->setDescription(__('bot.myroles.description', ['roles' => $description]))
-            ->getEmbed()));
+        return MessageBuilder::new()->addEmbed(EmbedBuilder::create(Bot::get()->discord())
+            ->setTitle(__('bot.userroles.title'))
+            ->setFooter(__('bot.userroles.footer'))
+            ->setDescription(__('bot.userroles.description', ['roles' => $description]))
+            ->getEmbed());
     }
 }

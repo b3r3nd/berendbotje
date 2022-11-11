@@ -5,12 +5,12 @@ namespace App\Discord\Moderation\Timeout;
 use App\Discord\Core\Bot;
 use App\Discord\Core\Builders\EmbedBuilder;
 use App\Discord\Core\Enums\Permission;
-use App\Discord\Core\SlashAndMessageIndexCommand;
+use App\Discord\Core\SlashIndexCommand;
 use App\Models\Timeout;
 use Discord\Parts\Embed\Embed;
 use Discord\Parts\Interactions\Command\Option;
 
-class SingleUserTimeouts extends SlashAndMessageIndexCommand
+class SingleUserTimeouts extends SlashIndexCommand
 {
     public function permission(): Permission
     {
@@ -24,10 +24,7 @@ class SingleUserTimeouts extends SlashAndMessageIndexCommand
 
     public function __construct()
     {
-        $this->requiresMention = true;
-        $this->requiredArguments = 1;
-        $this->usageString = __('bot.timeout.usage-timeouts');
-
+        $this->description = __('bot.slash.user-timeouts');
         $this->slashCommandOptions = [
             [
                 'name' => 'user_mention',

@@ -5,10 +5,11 @@ namespace App\Discord;
 use App\Discord\Core\Bot;
 use App\Discord\Core\Builders\EmbedBuilder;
 use App\Discord\Core\Enums\Permission;
-use App\Discord\Core\SlashAndMessageCommand;
+use App\Discord\Core\SlashCommand;
 use Discord\Builders\MessageBuilder;
+use Discord\Parts\Interactions\Command\Option;
 
-class Help extends SlashAndMessageCommand
+class Help extends SlashCommand
 {
 
     public function permission(): Permission
@@ -21,18 +22,36 @@ class Help extends SlashAndMessageCommand
         return 'help';
     }
 
+    public function __construct()
+    {
+        $this->description = __('bot.slash.help');
+        $this->slashCommandOptions = [
+            [
+                'name' => 'section',
+                'description' => 'Section',
+                'type' => Option::STRING,
+                'required' => false,
+                'choices' => [
+                    ['name' => 'Roles', 'value' => 'roles'],
+                    ['name' => 'Moderation', 'value' => 'moderation'],
+                    ['name' => 'Levels', 'value' => 'levels'],
+                    ['name' => 'Fun', 'value' => 'fun'],
+                    ['name' => 'Settings', 'value' => 'settings'],
+                ]
+            ],
+        ];
+        parent::__construct();
+    }
+
     public function action(): MessageBuilder
     {
         $embedBuilder = EmbedBuilder::create(Bot::getDiscord())
             ->setTitle(__('bot.help.title'))
             ->setFooter(__('bot.help.footer'));
 
-        if (isset($this->message)) {
-            $parameters = explode(' ', $this->message->content);
-
-            if (isset($parameters[1])) {
-                if (strtolower($parameters[1]) === 'roles') {
-                    $desc = "The main Admin role cannot be deleted, permissions cannot be removed from the admin role and the role cannot be removed from the owner of the guild.
+        if (isset($this->arguments[0])) {
+            if (strtolower($this->arguments[0]) === 'roles') {
+                $desc = "The main Admin role cannot be deleted, permissions cannot be removed from the admin role and the role cannot be removed from the owner of the guild.
 
                     `roles` • Overview of all roles and their permissions
                     `permissions` • Overview of all permissions
@@ -45,9 +64,9 @@ class Help extends SlashAndMessageCommand
                     `delperm` `role_name` `perm_name1,perm_name2` • Remove permission(s) from a role
                     `adduser` `user_mention` `role_name` • Add user to the given role
                     `deluser` `user_mention` `role_name` • Remove user from given role";
-                    $embedBuilder->setDescription($desc)->setTitle("Roles and Permissions");
-                } elseif (strtolower($parameters[1]) === 'moderation') {
-                    $desc = "Timeouts are automatically detected and saved, bans and kicks are only counted.\n
+                $embedBuilder->setDescription($desc)->setTitle("Roles and Permissions");
+            } elseif (strtolower($this->arguments[0]) === 'moderation') {
+                $desc = "Timeouts are automatically detected and saved, bans and kicks are only counted.\n
                     `timeouts` • Show given timeout history
                     `usertimeouts` `user_mention` • Show timeout history for user
                     `modstats` • Show moderator statistics
@@ -59,9 +78,9 @@ class Help extends SlashAndMessageCommand
                     `commands` • Show list of custom commands
                     `addcmd` `command` `response` • Add a custom command
                     `delcmd` `command` • Remove a custom command";
-                    $embedBuilder->setDescription($desc)->setTitle("Moderation");
-                } elseif (strtolower($parameters[1]) === 'levels') {
-                    $desc = "The bot counts messages send by users and gives xp for each message, it also detects users in voice who are not muted and gives XP for time spend in voice. The amount of XP gained by each message, time spend in voice and the cooldown between messages can be changed with the `config` command see `help settings` for more info.\n Role rewards for users are synced whenever they send a message to the server. When removing or adding XP from users their roles will persist until they send a message.\n
+                $embedBuilder->setDescription($desc)->setTitle("Moderation");
+            } elseif (strtolower($this->arguments[0]) === 'levels') {
+                $desc = "The bot counts messages send by users and gives xp for each message, it also detects users in voice who are not muted and gives XP for time spend in voice. The amount of XP gained by each message, time spend in voice and the cooldown between messages can be changed with the `config` command see `help settings` for more info.\n Role rewards for users are synced whenever they send a message to the server. When removing or adding XP from users their roles will persist until they send a message.\n
                     `leaderboard` • Show the leaderboard with highest ranking members at the top
                     `rank` • Show your own level, xp and messages
                     `givexp` `user_mention` `xp_amount` • Give user xp
@@ -70,9 +89,9 @@ class Help extends SlashAndMessageCommand
                     `rewards` • Show the role rewards for different levels
                     `addreward` `level` `role_id` • Add a role reward to a level
                     `delreward` `level` • Delete role rewards from this level";
-                    $embedBuilder->setDescription($desc)->setTitle("Levels and XP");
-                } elseif (strtolower($parameters[1]) === 'fun') {
-                    $desc = "`cringecounter` • Show who is most cringe..
+                $embedBuilder->setDescription($desc)->setTitle("Levels and XP");
+            } elseif (strtolower($this->arguments[0]) === 'fun') {
+                $desc = "`cringecounter` • Show who is most cringe..
                     `addcringe` `user_mention` • Increase cringe counter
                     `delcringe` `user_mention` • Decrease cringe counter
                     `resetcringe` `user_mention` • Reset cringe counter\n
@@ -86,9 +105,9 @@ class Help extends SlashAndMessageCommand
                     `urb` `search_term` • Search something on urban dictionary
                     `8ball` `question` • Ask the magic 8ball
                     `ask` `question` • Yes? No? Hmm..?";
-                    $embedBuilder->setDescription($desc)->setTitle("Fun commands");
-                } elseif (strtolower($parameters[1]) === 'settings') {
-                    $desc = "All setting values are numeric, for booleans 0 = false, 1 = true.
+                $embedBuilder->setDescription($desc)->setTitle("Fun commands");
+            } elseif (strtolower($this->arguments[0]) === 'settings') {
+                $desc = "All setting values are numeric, for booleans 0 = false, 1 = true.
 
                     **Commands**
                     `config` • Show all settings
@@ -117,14 +136,14 @@ class Help extends SlashAndMessageCommand
                     `set` `enable_xp` `1` • Enable message XP system
                     `set` `xp_count` `50` • Set the XP gain for each message to 50
                     ";
-                    $embedBuilder->setDescription($desc)->setTitle("Settings");
-                }
-                return MessageBuilder::new()->addEmbed($embedBuilder->getEmbed());
+                $embedBuilder->setDescription($desc)->setTitle("Settings");
             }
+            return MessageBuilder::new()->addEmbed($embedBuilder->getEmbed());
+
         }
 
         $embedBuilder->getEmbed()->addField(
-            ['name' => 'Help Files', 'value' => "All commands use `$` prefix, alternatively you can use slash commands `/`.\n Use `\$help <section_title>` for more extensive explanation.\n For example `\$help roles` "],
+            ['name' => 'Help Files', 'value' => "Commands are only available as slash commands `/`.\n"],
             ['name' => 'Roles', 'value' => 'Managing roles and permissions'],
             ['name' => 'Settings', 'value' => 'Explains all the settings and values'],
             ['name' => 'Moderation', 'value' => 'Moderator actions'],
