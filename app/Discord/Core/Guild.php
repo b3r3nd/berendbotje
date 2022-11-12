@@ -24,11 +24,13 @@ use Exception;
  * @see SimpleReaction
  * @property $deletedCommands   List deleted commands so they do not trigger.
  * @property $deletedReactions  List of deleted reactions so they do not rigger.
- * @property $settings          List of caches settings, so we do not need to read from the database each time
+ * @property $settings          List of cached settings, so we do not need to read from the database each time
+ * @property $logSettings       List of cached log settings, so we do not need to read from the database each time
  * @property $lastMessages      Last message send by user in guild, used for the xp cooldown.
  * @property $inVoice           List of people who are currently in voice in the guild, used to calculate xp.
  * @property $guildModel        Eloquent model for the guild.
  * @property $logger            Logger instance for this specific guild which can log events.
+ * @property $channels          List of channels which have special flags set, for example media channels
  *
  * @TODO find better solution for deleted commands and reactions.. probably step away from having a single instance per trigger
  */
