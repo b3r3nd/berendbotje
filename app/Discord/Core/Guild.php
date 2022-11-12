@@ -4,6 +4,7 @@ namespace App\Discord\Core;
 
 use App\Discord\Core\Enums\Setting as SettingEnum;
 use App\Discord\Moderation\Command\SimpleCommand;
+use App\Models\Channel;
 use App\Models\Guild as GuildModel;
 use App\Models\Setting;
 use Carbon\Carbon;
@@ -20,7 +21,6 @@ use Discord\Parts\User\Member;
  * @see SimpleReaction
  * @property $deletedCommands   List deleted commands so they do not trigger.
  * @property $deletedReactions  List of deleted reactions so they do not rigger.
- * @property $mediaChannel      List of channels marked as media, add or remove any channels whenever you like.
  * @property $settings          List of caches settings, so we do not need to read from the database each time
  * @property $lastMessages      Last message send by user in guild, used for the xp cooldown.
  * @property $inVoice           List of people who are currently in voice in the guild, used to calculate xp.
@@ -31,7 +31,6 @@ use Discord\Parts\User\Member;
  */
 class Guild
 {
-    private array $mediaChannels = [];
     private array $deletedCommands = [];
     private array $deletedReactions = [];
     private array $settings = [];
@@ -39,6 +38,7 @@ class Guild
     private array $inVoice = [];
     public GuildModel $model;
     private Logger $logger;
+    private array $channels = [];
 
     /**
      * @param GuildModel $guild
@@ -51,8 +51,8 @@ class Guild
             $this->settings[$setting->key] = $setting->value;
         }
 
-        foreach ($this->model->mediaChannels as $channel) {
-            $this->mediaChannels[$channel->channel] = $channel->channel;
+        foreach ($this->model->channels as $channel) {
+            $this->channels[$channel->channel_id] = $channel;
         }
 
         $this->logger = new Logger($this->getSetting(SettingEnum::LOG_CHANNEL));
@@ -122,20 +122,54 @@ class Guild
 
     /**
      * @param string $channel
-     * @return void
+     * @return false|mixed
      */
-    public function addMediaChannel(string $channel): void
+    public function getChannel(string $channel): mixed
     {
-        $this->mediaChannels[$channel] = $channel;
+        return $this->channels[$channel] ?? false;
     }
 
     /**
      * @param string $channel
      * @return void
      */
-    public function delMediaChannel(string $channel): void
+    public function addChannel(string $channel): void
     {
-        unset($this->mediaChannels[$channel]);
+        $channel = Channel::create(['channel_id' => $channel, 'guild_id' => $this->model->id]);
+        $this->channels[$channel] = $channel;
+    }
+
+    /**
+     * @param Channel $channel
+     * @return void
+     */
+    public function updateChannel(Channel $channel): void
+    {
+        // If the channel does not exist it means it got its first flag applied
+        if (!isset($this->channels[$channel->channel_id])) {
+            $this->channels[$channel->channel_id] = $channel;
+        }
+
+        // If all flags are disabled we can remove the channel entirely
+        if (!$channel->no_xp && !$channel->media_only) {
+            unset($this->channels[$channel->channel_id]);
+            $channel->delete();
+        } else {
+            // Becauase we "cache" the list of channels to prevent a billion DB calls, we need to refresh the model
+            $this->channels[$channel->channel_id]->refresh();
+        }
+    }
+
+    /**
+     * @param string $channel
+     * @param string $key
+     * @param bool $value
+     * @return void
+     */
+    public function setChannelValue(string $channel, string $key, bool $value): void
+    {
+        $channel = $this->guildModel->channels()->where('channel_id', $channel)->first();
+        $channel->update([$key => $value]);
     }
 
 

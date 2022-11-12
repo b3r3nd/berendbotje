@@ -35,15 +35,15 @@ use App\Discord\Logger\GuildMemberLogger;
 use App\Discord\Logger\MessageLogger;
 use App\Discord\Logger\TimeoutLogger;
 use App\Discord\Logger\VoiceStateLogger;
+use App\Discord\Moderation\Channels\ChannelIndex;
+use App\Discord\Moderation\Channels\MarkChannel;
+use App\Discord\Moderation\Channels\MediaFilter;
+use App\Discord\Moderation\Channels\UnmarkChannel;
 use App\Discord\Moderation\Command\CommandIndex;
 use App\Discord\Moderation\Command\CreateCommand;
 use App\Discord\Moderation\Command\DeleteCommand;
 use App\Discord\Moderation\Command\SimpleCommand;
 use App\Discord\Moderation\KickAndBanCounter;
-use App\Discord\Moderation\MediaFilter\CreateMediaChannel;
-use App\Discord\Moderation\MediaFilter\DeleteMediaChannel;
-use App\Discord\Moderation\MediaFilter\MediaChannels;
-use App\Discord\Moderation\MediaFilter\MediaFilter;
 use App\Discord\Moderation\ModeratorStatistics;
 use App\Discord\Moderation\Timeout\AllTimeouts;
 use App\Discord\Moderation\Timeout\DetectTimeouts;
@@ -131,7 +131,6 @@ class Bot
             Settings::class, UpdateSetting::class,
 
             SingleUserTimeouts::class, AllTimeouts::class, ModeratorStatistics::class,
-            CreateMediaChannel::class, DeleteMediaChannel::class, MediaChannels::class,
 
             Leaderboard::class, RoleRewards::class, CreateRoleReward::class, DeleteRoleReward::class,
             UserRank::class, GiveXp::class, RemoveXp::class, ResetXp::class,
@@ -141,6 +140,8 @@ class Bot
             CommandIndex::class, CreateCommand::class, DeleteCommand::class,
             ReactionIndex::class, CreateReaction::class, DeleteReaction::class,
             EightBall::class, Ask::class, UrbanDictionary::class,
+
+            ChannelIndex::class, MarkChannel::class, UnmarkChannel::class,
 
             Help::class,
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Discord\Moderation\MediaFilter;
+namespace App\Discord\Moderation\Channels;
 
 use App\Discord\Core\Bot;
 use Discord\Discord;
@@ -17,13 +17,14 @@ class MediaFilter
             }
 
             $guild = Bot::get()->getGuild($message->guild_id ?? "");
-            $channels = [];
             if ($guild) {
-                $channels = $guild->getMediaChannels();
-            }
-
-            if (!in_array($message->channel_id, $channels)) {
-                return;
+                $channel = $guild->getChannel($message->channel_id);
+                if (!$channel) {
+                    return;
+                }
+                if (!$channel->media_only) {
+                    return;
+                }
             }
 
             // If message contains Images, audio or any other file we allow it

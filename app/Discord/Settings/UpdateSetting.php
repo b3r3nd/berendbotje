@@ -6,6 +6,7 @@ use App\Discord\Core\Bot;
 use App\Discord\Core\Builders\EmbedFactory;
 use App\Discord\Core\Enums\Permission;
 use App\Discord\Core\SlashCommand;
+use App\Models\Guild;
 use App\Models\Setting;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Command\Option;
@@ -24,6 +25,11 @@ class UpdateSetting extends SlashCommand
 
     public function __construct()
     {
+        $choices = [];
+        foreach (Setting::where('guild_id', 1)->get() as $setting) {
+            $choices[] = ['name' => $setting->key, 'value' => $setting->key];
+        }
+
         $this->description = __('bot.slash.set');
         $this->slashCommandOptions = [
             [
@@ -31,6 +37,7 @@ class UpdateSetting extends SlashCommand
                 'description' => 'Key',
                 'type' => Option::STRING,
                 'required' => true,
+                'choices' => $choices,
             ],
             [
                 'name' => 'setting_value',

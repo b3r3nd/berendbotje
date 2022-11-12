@@ -73,9 +73,14 @@ class Help extends SlashCommand
                     `modstats` • Show moderator statistics
                     `config` • See server configuration
                     `set` `setting_key` `new_value` • Update server setting
-                     `mediachannels` • Shows a list of channels configured for media only
-                    `addmediachannel` `channel` • Mark a channel as media only
-                    `delmediachannel` `channel` • Delete channel from media only list
+
+                     `channels` • Shows a list of channels with their configured flags
+                    `markchannel` `channel` `flag` • Mark a channel with one of the available flags
+                    `unmarkchannel` `channel` `flag` • Unmark a channel with one of the available flags
+                    **Channel flags**:
+                    - `no_xp` • Users gain no XP in this channel
+                    - `media_only` • Channel allows only media and URLS.
+
                     `commands` • Show list of custom commands
                     `addcmd` `command` `response` • Add a custom command
                     `delcmd` `command` • Remove a custom command";
@@ -105,7 +110,8 @@ class Help extends SlashCommand
                     `rank` • Shows your current rank, message counter and XP
                     `urb` `search_term` • Search something on urban dictionary
                     `8ball` `question` • Ask the magic 8ball
-                    `ask` `question` • Yes? No? Hmm..?";
+                    `ask` `question` • Yes? No? Hmm..?
+                    ";
                 $embedBuilder->setDescription($desc)->setTitle("Fun commands");
             } elseif (strtolower($this->arguments[0]) === 'settings') {
                 $desc = "All setting values are numeric, for booleans 0 = false, 1 = true.

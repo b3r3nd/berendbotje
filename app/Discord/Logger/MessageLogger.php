@@ -28,6 +28,7 @@ class MessageLogger
                 {$message->content}
                 ";
                 $guild->logWithMember($message->member, $desc, 'warning');
+
             }
         });
 

@@ -22,6 +22,12 @@ class MessageXpCounter
                 if (!$guild->getSetting(Setting::ENABLE_XP)) {
                     return;
                 }
+                $channel = $guild->getChannel($message->channel_id);
+                if ($channel) {
+                    if ($channel->no_xp) {
+                        return;
+                    }
+                }
 
                 $lastMessageDate = $guild->getLastMessage($message->author->id);
                 if ($lastMessageDate->diffInSeconds(Carbon::now()) >= $guild->getSetting(Setting::XP_COOLDOWN)) {
