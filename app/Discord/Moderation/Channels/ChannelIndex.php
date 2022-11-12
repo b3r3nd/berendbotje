@@ -7,7 +7,6 @@ use App\Discord\Core\Builders\EmbedBuilder;
 use App\Discord\Core\Enums\Permission;
 use App\Discord\Core\SlashIndexCommand;
 use App\Models\Channel;
-use App\Models\MediaChannel;
 use Discord\Parts\Embed\Embed;
 
 class ChannelIndex extends SlashIndexCommand

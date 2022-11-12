@@ -20,19 +20,11 @@ class VoiceXpCounter
             $user = DiscordUser::get($state->user_id);
 
             if ($state->channel) {
-                if ($state->self_deaf) {
-                    if ($guild->isInvoice($state->user_id)) {
-                        $this->leaveVoice($guild, $user, $state);
-                    }
-                } else {
-                    if (!$guild->isInvoice($state->user_id)) {
-                        $guild->joinedVoice($state->user_id);
-                    }
+                if (!isset($oldstate)) {
+                    $guild->joinedVoice($state->user_id);
                 }
             } else {
-                if ($guild->isInvoice($state->user_id)) {
-                    $this->leaveVoice($guild, $user, $state);
-                }
+                $this->leaveVoice($guild, $user, $state);
             }
         });
     }
