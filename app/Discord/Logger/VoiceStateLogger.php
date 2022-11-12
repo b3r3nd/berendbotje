@@ -15,7 +15,9 @@ class VoiceStateLogger
             $guild = Bot::get()->getGuild($state->guild_id ?? $oldstate->guild_id);
 
             if ($state->channel) {
-                $guild->logWithMember($state->member, "<@{$state->member->id}> joined <#{$state->channel_id}>", 'success');
+                if (!isset($oldstate)) {
+                    $guild->logWithMember($state->member, "<@{$state->member->id}> joined <#{$state->channel_id}>", 'success');
+                }
             } else {
                 $guild->logWithMember($oldstate->member, "<@{$oldstate->member->id}> left <#{$oldstate->channel_id}>", 'fail');
             }
