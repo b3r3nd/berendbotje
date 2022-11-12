@@ -10,7 +10,12 @@ class Channel extends Model
 
     protected $casts = ['no_xp' => 'boolean', 'media_only' => 'boolean'];
 
-    public static function get(string $channelId, string $guildId)
+    /**
+     * @param string $channelId
+     * @param string $guildId
+     * @return mixed
+     */
+    public static function get(string $channelId, string $guildId): mixed
     {
         return Channel::where([
             ['guild_id', '=', Guild::get($guildId)->id],
