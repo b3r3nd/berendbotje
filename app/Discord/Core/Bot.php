@@ -2,13 +2,33 @@
 
 namespace App\Discord\Core;
 
+use App\Discord\Administration\Servers;
 use App\Discord\Core\DiscordEvents\VoiceStateUpdate;
+use App\Discord\Fun\Ask;
 use App\Discord\Fun\Bump\BumpCounter;
+use App\Discord\Fun\Bump\BumpStatistics;
+use App\Discord\Fun\Cringe\CringeIndex;
+use App\Discord\Fun\Cringe\DecreaseCringe;
+use App\Discord\Fun\Cringe\IncreaseCringe;
+use App\Discord\Fun\Cringe\ResetCringe;
+use App\Discord\Fun\EightBall;
 use App\Discord\Fun\Emote\EmoteCounter;
+use App\Discord\Fun\Emote\EmoteIndex;
 use App\Discord\Fun\MentionResponder;
+use App\Discord\Fun\Reaction\CreateReaction;
+use App\Discord\Fun\Reaction\DeleteReaction;
+use App\Discord\Fun\Reaction\ReactionIndex;
 use App\Discord\Fun\Reaction\SimpleReaction;
+use App\Discord\Fun\UrbanDictionary;
 use App\Discord\Help;
+use App\Discord\Levels\CreateRoleReward;
+use App\Discord\Levels\DeleteRoleReward;
+use App\Discord\Levels\GiveXp;
+use App\Discord\Levels\Leaderboard;
 use App\Discord\Levels\MessageXpCounter;
+use App\Discord\Levels\RemoveXp;
+use App\Discord\Levels\ResetXp;
+use App\Discord\Levels\RoleRewards;
 use App\Discord\Levels\UserRank;
 use App\Discord\Levels\VoiceXpCounter;
 use App\Discord\Logger\GuildMemberLogger;
@@ -19,9 +39,26 @@ use App\Discord\Moderation\Channels\ChannelIndex;
 use App\Discord\Moderation\Channels\MarkChannel;
 use App\Discord\Moderation\Channels\MediaFilter;
 use App\Discord\Moderation\Channels\UnmarkChannel;
+use App\Discord\Moderation\Command\CommandIndex;
+use App\Discord\Moderation\Command\CreateCommand;
+use App\Discord\Moderation\Command\DeleteCommand;
 use App\Discord\Moderation\Command\SimpleCommand;
 use App\Discord\Moderation\KickAndBanCounter;
+use App\Discord\Moderation\ModeratorStatistics;
+use App\Discord\Moderation\Timeout\AllTimeouts;
 use App\Discord\Moderation\Timeout\DetectTimeouts;
+use App\Discord\Moderation\Timeout\SingleUserTimeouts;
+use App\Discord\Roles\AttachRolePermission;
+use App\Discord\Roles\AttachUserRole;
+use App\Discord\Roles\CreateRole;
+use App\Discord\Roles\DeleteRole;
+use App\Discord\Roles\DetachRolePermission;
+use App\Discord\Roles\DetachUserRole;
+use App\Discord\Roles\MyRoles;
+use App\Discord\Roles\Permissions;
+use App\Discord\Roles\Roles;
+use App\Discord\Roles\UserRoles;
+use App\Discord\Roles\Users;
 use App\Discord\Settings\Settings;
 use App\Discord\Settings\UpdateSetting;
 use App\Models\Guild;
@@ -85,29 +122,26 @@ class Bot
     private function commands(): array
     {
         return [
-//            Servers::class,
-//
-//            Roles::class, Permissions::class, Users::class,
-//            MyRoles::class, UserRoles::class,
-//            CreateRole::class, DeleteRole::class,
-//            AttachRolePermission::class, AttachUserRole::class, DetachRolePermission::class, DetachUserRole::class,
+            Servers::class,
+
+            Roles::class, Permissions::class, Users::class,
+            MyRoles::class, UserRoles::class,
+            CreateRole::class, DeleteRole::class,
+            AttachRolePermission::class, AttachUserRole::class, DetachRolePermission::class, DetachUserRole::class,
             Settings::class, UpdateSetting::class,
-//
-//            SingleUserTimeouts::class, AllTimeouts::class, ModeratorStatistics::class,
-//            CreateMediaChannel::class, DeleteMediaChannel::class, MediaChannels::class,
-//
-//            Leaderboard::class, RoleRewards::class, CreateRoleReward::class, DeleteRoleReward::class,
-//            UserRank::class, GiveXp::class, RemoveXp::class, ResetXp::class,
-//
-//            CringeIndex::class, IncreaseCringe::class, DecreaseCringe::class, ResetCringe::class,
-//            BumpStatistics::class, EmoteIndex::class,
-//            CommandIndex::class, CreateCommand::class, DeleteCommand::class,
-//            ReactionIndex::class, CreateReaction::class, DeleteReaction::class,
-//            EightBall::class, Ask::class, UrbanDictionary::class,
+
+            SingleUserTimeouts::class, AllTimeouts::class, ModeratorStatistics::class,
+
+            Leaderboard::class, RoleRewards::class, CreateRoleReward::class, DeleteRoleReward::class,
+            UserRank::class, GiveXp::class, RemoveXp::class, ResetXp::class,
+
+            CringeIndex::class, IncreaseCringe::class, DecreaseCringe::class, ResetCringe::class,
+            BumpStatistics::class, EmoteIndex::class,
+            CommandIndex::class, CreateCommand::class, DeleteCommand::class,
+            ReactionIndex::class, CreateReaction::class, DeleteReaction::class,
+            EightBall::class, Ask::class, UrbanDictionary::class,
 
             ChannelIndex::class, MarkChannel::class, UnmarkChannel::class,
-
-            UserRank::class,
 
             Help::class,
 

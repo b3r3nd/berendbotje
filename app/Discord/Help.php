@@ -73,9 +73,14 @@ class Help extends SlashCommand
                     `modstats` • Show moderator statistics
                     `config` • See server configuration
                     `set` `setting_key` `new_value` • Update server setting
-                     `mediachannels` • Shows a list of channels configured for media only
-                    `addmediachannel` `channel` • Mark a channel as media only
-                    `delmediachannel` `channel` • Delete channel from media only list
+
+                     `channels` • Shows a list of channels with their configured flags
+                    `markchannel` `channel` `flag` • Mark a channel with one of the available flags
+                    `unmarkchannel` `channel` `flag` • Unmark a channel with one of the available flags
+                    **Channel flags**:
+                    - `no_xp` • Users gain no XP in this channel
+                    - `media_only` • Channel allows only media and URLS.
+
                     `commands` • Show list of custom commands
                     `addcmd` `command` `response` • Add a custom command
                     `delcmd` `command` • Remove a custom command";
