@@ -35,6 +35,9 @@ use App\Discord\Logger\GuildMemberLogger;
 use App\Discord\Logger\MessageLogger;
 use App\Discord\Logger\TimeoutLogger;
 use App\Discord\Logger\VoiceStateLogger;
+use App\Discord\Moderation\Channels\ChannelIndex;
+use App\Discord\Moderation\Channels\MarkChannel;
+use App\Discord\Moderation\Channels\UnmarkChannel;
 use App\Discord\Moderation\Command\CommandIndex;
 use App\Discord\Moderation\Command\CreateCommand;
 use App\Discord\Moderation\Command\DeleteCommand;
@@ -122,25 +125,27 @@ class Bot
     private function commands(): array
     {
         return [
-            Servers::class,
+//            Servers::class,
+//
+//            Roles::class, Permissions::class, Users::class,
+//            MyRoles::class, UserRoles::class,
+//            CreateRole::class, DeleteRole::class,
+//            AttachRolePermission::class, AttachUserRole::class, DetachRolePermission::class, DetachUserRole::class,
+//            Settings::class, UpdateSetting::class,
+//
+//            SingleUserTimeouts::class, AllTimeouts::class, ModeratorStatistics::class,
+//            CreateMediaChannel::class, DeleteMediaChannel::class, MediaChannels::class,
+//
+//            Leaderboard::class, RoleRewards::class, CreateRoleReward::class, DeleteRoleReward::class,
+//            UserRank::class, GiveXp::class, RemoveXp::class, ResetXp::class,
+//
+//            CringeIndex::class, IncreaseCringe::class, DecreaseCringe::class, ResetCringe::class,
+//            BumpStatistics::class, EmoteIndex::class,
+//            CommandIndex::class, CreateCommand::class, DeleteCommand::class,
+//            ReactionIndex::class, CreateReaction::class, DeleteReaction::class,
+//            EightBall::class, Ask::class, UrbanDictionary::class,
 
-            Roles::class, Permissions::class, Users::class,
-            MyRoles::class, UserRoles::class,
-            CreateRole::class, DeleteRole::class,
-            AttachRolePermission::class, AttachUserRole::class, DetachRolePermission::class, DetachUserRole::class,
-            Settings::class, UpdateSetting::class,
-
-            SingleUserTimeouts::class, AllTimeouts::class, ModeratorStatistics::class,
-            CreateMediaChannel::class, DeleteMediaChannel::class, MediaChannels::class,
-
-            Leaderboard::class, RoleRewards::class, CreateRoleReward::class, DeleteRoleReward::class,
-            UserRank::class, GiveXp::class, RemoveXp::class, ResetXp::class,
-
-            CringeIndex::class, IncreaseCringe::class, DecreaseCringe::class, ResetCringe::class,
-            BumpStatistics::class, EmoteIndex::class,
-            CommandIndex::class, CreateCommand::class, DeleteCommand::class,
-            ReactionIndex::class, CreateReaction::class, DeleteReaction::class,
-            EightBall::class, Ask::class, UrbanDictionary::class,
+            ChannelIndex::class, MarkChannel::class, UnmarkChannel::class,
 
             Help::class,
 

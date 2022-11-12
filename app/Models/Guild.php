@@ -33,6 +33,14 @@ class Guild extends Model
     /**
      * @return HasMany
      */
+    public function channels(): HasMany
+    {
+        return $this->hasMany(Channel::class);
+    }
+
+    /**
+     * @return HasMany
+     */
     public function roles(): HasMany
     {
         return $this->hasMany(Role::class);

@@ -17,7 +17,6 @@ class VoiceStateUpdate
     public function __construct()
     {
         Bot::getDiscord()->on(Event::VOICE_STATE_UPDATE, function (DVoiceStateUpdate $state, Discord $discord, $oldstate) {
-
             if ($state->channel) {
                 foreach ($state->channel->guild->voice_states as $voiceState) {
                     if ($voiceState->user_id === $state->user_id) {

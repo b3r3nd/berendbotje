@@ -26,6 +26,7 @@ enum Permission: string
     case DEL_CRINGE = 'delete-cringe';
     case COMMANDS = 'commands';
     case REACTIONS = 'reactions';
+    case CHANNEL = 'channels';
 
     case ROLE_REWARDS = 'role-rewards';
     case MANAGE_XP = 'manage-xp';

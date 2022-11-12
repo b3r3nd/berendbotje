@@ -3,10 +3,6 @@
 namespace App\Discord\Logger;
 
 use App\Discord\Core\Bot;
-use App\Discord\Core\Builders\EmbedBuilder;
-use App\Models\BanCounter;
-use App\Models\DiscordUser;
-use App\Models\KickCounter;
 use Discord\Discord;
 use Discord\Parts\Guild\AuditLog\AuditLog;
 use Discord\Parts\Guild\Guild;
@@ -17,11 +13,9 @@ class GuildMemberLogger
 {
     public function __construct()
     {
-
         Bot::getDiscord()->on(Event::GUILD_MEMBER_ADD, function (Member $member, Discord $discord) {
             $guild = Bot::get()->getGuild($member->guild_id);
             $guild->logWithMember($member, "<@{$member->id}> joined the server", 'success');
-
         });
 
         Bot::getDiscord()->on(Event::GUILD_MEMBER_REMOVE, function (Member $member, Discord $discord) {
@@ -39,8 +33,6 @@ class GuildMemberLogger
                     }
                 });
             });
-
-
         });
 
         Bot::getDiscord()->on(Event::GUILD_MEMBER_UPDATE, function (Member $member, Discord $discord, ?Member $oldMember) {

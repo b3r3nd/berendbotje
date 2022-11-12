@@ -42,9 +42,6 @@ return [
         'user-timeouts' => 'Show timeouts for single user',
         'timeouts' => 'Show all timeouts',
         'modstats' => 'Show moderator statistics',
-        'mediachannels' => 'Overview of all channels marked for media only',
-        'addmediachannel' => 'Add a channel to media only list',
-        'delmediachannel' => 'Remove a channel from media only list',
         'leaderboard' => 'Show leaderboard with user levels',
         'rank' => 'Show your own level and xp',
         'rewards' => 'Show role rewards based on levels',
@@ -69,6 +66,20 @@ return [
         'ask' => 'Ask a yes or no question',
         'urb' => 'Search on urban dictionary',
         'help' => 'Help files with optional parameters',
+        'channels' => 'Overview of all channels and their flags',
+        'mark-channel' => 'Add flags to a channel',
+        'unmark-channel' => 'Remove flags from a channel',
+    ],
+
+    'channels' => [
+        'added' => 'Channel flag :flag added to channel <#:channel>',
+        'deleted' => 'Channel flag :flag removed from channel <#:channel>',
+        'has-flag' => 'Channel :channel is already marked with that flag',
+        'no-flag' => 'Channel :channel is not marked with that flag',
+        'no-channel' => 'Please provide a valid channel.',
+        'title' => 'Channels',
+        'footer' => 'Usage: markchannel, unmarkchannel, channels',
+        'description' => "Channels with their flags, see `/help` for more information about what each flag means.\n\n:channels"
     ],
 
 
@@ -169,19 +180,6 @@ return [
         'title' => 'xp and level statistics',
         'footer' => 'You gain :xp xp per message',
         'description' => "List of messages and xp for users\n\n:users",
-    ],
-
-    'media' => [
-        'usage-addmedia' => 'Usage: addmediachannel `channel`',
-        'usage-delmedia' => 'Usage: delmediachannel `channel`',
-        'added' => 'Media channel :channel added',
-        'deleted' => 'Media channel :channel deleted',
-        'exists' => 'Channel :channel is already marked as media channel',
-        'not-exists' => 'Channel :channel is not marked as media channel',
-        'no-channel' => 'Please provide a valid channel.',
-        'title' => 'Media Channels',
-        'footer' => 'Usage: addmediachannel, delmediachannel, mediachannels',
-        'description' => "Channels marked as media only allow attachments and URLS\n\n:channels"
     ],
 
     'buttons' => [

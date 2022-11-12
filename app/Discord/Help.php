@@ -105,7 +105,8 @@ class Help extends SlashCommand
                     `rank` • Shows your current rank, message counter and XP
                     `urb` `search_term` • Search something on urban dictionary
                     `8ball` `question` • Ask the magic 8ball
-                    `ask` `question` • Yes? No? Hmm..?";
+                    `ask` `question` • Yes? No? Hmm..?
+                    ";
                 $embedBuilder->setDescription($desc)->setTitle("Fun commands");
             } elseif (strtolower($this->arguments[0]) === 'settings') {
                 $desc = "All setting values are numeric, for booleans 0 = false, 1 = true.
