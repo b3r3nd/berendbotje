@@ -37,6 +37,15 @@ class MentionResponder
         $this->lastMessages[$userId] = Carbon::now();
     }
 
+    /**
+     * @param array $array
+     * @return mixed
+     */
+    public function getRandom(array $array): mixed
+    {
+        return $array[rand(0, (count($array) - 1))];
+    }
+
     public function __construct()
     {
         $adminOptions = [
@@ -99,7 +108,7 @@ class MentionResponder
                         $message->reply('Thanks! 😎');
                         return;
                     } elseif (DiscordUser::hasPermission($message->author->id, $message->guild_id, Permission::TIMEOUTS->value)) {
-                        $message->reply($adminOptions[rand(0, (count($adminOptions) - 1))]);
+                        $message->reply($this->getRandom($adminOptions));
                         return;
                     }
 
@@ -107,7 +116,7 @@ class MentionResponder
 
                     if ($lastMessageDate->diffInSeconds(Carbon::now()) <= 5) {
                         // Annoying response when you trigger it quickly
-                        $message->reply($timeoutOptions[rand(0, (count($timeoutOptions) - 1))]);
+                        $message->reply($this->getRandom($timeoutOptions));
 
                     } else if ($lastMessageDate->diffInSeconds(Carbon::now()) >= 30) {
                         $this->setLastMessage($message->author->id);
@@ -115,9 +124,9 @@ class MentionResponder
                         $cringeCounter = $discordUser->cringeCounters()->where('guild_id', Guild::get($message->guild_id)->id)->get()->first()->count ?? 0;
 
                         if ($cringeCounter > 10) {
-                            $message->reply($cringeOptions[rand(0, (count($cringeOptions) - 1))]);
+                            $message->reply($this->getRandom($cringeOptions));
                         } else {
-                            $message->reply($options[rand(0, (count($options) - 1))]);
+                            $message->reply($this->getRandom($options));
                         }
                     }
                 }
