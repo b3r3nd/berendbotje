@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Discord\Moderation\MediaFilter;
+namespace App\Discord\Moderation\Channels;
 
 use App\Discord\Core\Bot;
 use Discord\Discord;
