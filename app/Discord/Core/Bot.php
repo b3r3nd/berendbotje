@@ -31,12 +31,13 @@ use App\Discord\Levels\ResetXp;
 use App\Discord\Levels\RoleRewards;
 use App\Discord\Levels\UserRank;
 use App\Discord\Levels\VoiceXpCounter;
-use App\Discord\Logger\EmojiLogger;
-use App\Discord\Logger\GuildMemberLogger;
-use App\Discord\Logger\InviteLogger;
-use App\Discord\Logger\MessageLogger;
-use App\Discord\Logger\TimeoutLogger;
-use App\Discord\Logger\VoiceStateLogger;
+use App\Discord\Logger\Events\GuildMemberLogger;
+use App\Discord\Logger\Events\InviteLogger;
+use App\Discord\Logger\Events\MessageLogger;
+use App\Discord\Logger\Events\TimeoutLogger;
+use App\Discord\Logger\Events\VoiceStateLogger;
+use App\Discord\Logger\LogSettings;
+use App\Discord\Logger\UpdateLogSetting;
 use App\Discord\Moderation\Channels\ChannelIndex;
 use App\Discord\Moderation\Channels\MarkChannel;
 use App\Discord\Moderation\Channels\MediaFilter;
@@ -148,6 +149,8 @@ class Bot
 
             Help::class,
 
+            LogSettings::class, UpdateLogSetting::class,
+
         ];
     }
 
@@ -173,7 +176,7 @@ class Bot
 
             $this->loadCoreClasses();
             $this->loadGuilds();
-           // $this->deleteSlashCommands();
+            // $this->deleteSlashCommands();
             $this->loadCommands();
         });
         self::$instance = $this;

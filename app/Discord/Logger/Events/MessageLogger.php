@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Discord\Logger;
+namespace App\Discord\Logger\Events;
 
 use App\Discord\Core\Bot;
+use App\Discord\Core\Enums\LogSetting;
 use Discord\Discord;
 use Discord\Parts\Channel\Message;
 use Discord\WebSockets\Event;
@@ -17,8 +18,7 @@ class MessageLogger
                 return;
             }
             $guild = Bot::get()->getGuild($message->guild_id);
-
-            if (isset($oldMessage)) {
+            if (isset($oldMessage) && $guild->getLogSetting(LogSetting::MESSAGE_UPDATED)) {
                 $desc = "Updated message in <#{$message->channel_id}>
 
                 **Old Message**
@@ -28,7 +28,6 @@ class MessageLogger
                 {$message->content}
                 ";
                 $guild->logWithMember($message->member, $desc, 'warning');
-
             }
         });
 
@@ -38,13 +37,14 @@ class MessageLogger
                 if ($message->author->bot) {
                     return;
                 }
-
                 $guild = Bot::get()->getGuild($message->guild_id);
-                $desc = "Message deleted in <#{$message->channel_id}>
+                if ($guild->getLogSetting(LogSetting::MESSAGE_DELETED)) {
+                    $desc = "Message deleted in <#{$message->channel_id}>
 
                 **Message**
                 {$message->content}";
-                $guild->logWithMember($message->member, $desc, 'fail');
+                    $guild->logWithMember($message->member, $desc, 'fail');
+                }
             }
         });
     }

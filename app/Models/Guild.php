@@ -57,6 +57,14 @@ class Guild extends Model
     /**
      * @return HasMany
      */
+    public function logSettings(): HasMany
+    {
+        return $this->hasMany(LogSetting::class);
+    }
+
+    /**
+     * @return HasMany
+     */
     public function mediaChannels(): HasMany
     {
         return $this->hasMany(MediaChannel::class);
