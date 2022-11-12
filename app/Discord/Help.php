@@ -170,6 +170,10 @@ class Help extends SlashCommand
                  - Stopped streaming in voice
                  - Enabled his webcam in voice
                  - Disabled his webcam in voice
+
+                 You can enable/disable each event as you see fit:
+                 `logconfig` • See the log config
+                 `logset` `key` `value` • Update a value in the log config
                  ";
                 $embedBuilder->setDescription($desc)->setTitle("Logs");
             }

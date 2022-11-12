@@ -69,6 +69,8 @@ return [
         'channels' => 'Overview of all channels and their flags',
         'mark-channel' => 'Add flags to a channel',
         'unmark-channel' => 'Remove flags from a channel',
+        'logconfig' => 'Configuration for log channel',
+        'logset' => 'Enable or disable parts of the log',
     ],
 
     'channels' => [
@@ -80,6 +82,12 @@ return [
         'title' => 'Channels',
         'footer' => 'Usage: markchannel, unmarkchannel, channels',
         'description' => "Channels with their flags, see `/help` for more information about what each flag means.\n\n:channels"
+    ],
+
+    'logset' => [
+        'updated' => 'Log setting :key updated',
+        'title' => 'Log Settings',
+        'footer' => 'Usage: logconfig, logset',
     ],
 
 

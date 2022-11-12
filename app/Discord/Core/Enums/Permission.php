@@ -27,6 +27,7 @@ enum Permission: string
     case COMMANDS = 'commands';
     case REACTIONS = 'reactions';
     case CHANNEL = 'channels';
+    case LOGS = 'logs';
 
     case ROLE_REWARDS = 'role-rewards';
     case MANAGE_XP = 'manage-xp';

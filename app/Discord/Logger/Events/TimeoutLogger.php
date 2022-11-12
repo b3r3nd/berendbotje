@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Discord\Logger;
+namespace App\Discord\Logger\Events;
 
 use App\Discord\Core\Bot;
+use App\Discord\Core\Enums\LogSetting;
 use Carbon\Carbon;
 use Discord\Discord;
 use Discord\Parts\User\Member;
@@ -17,7 +18,9 @@ class TimeoutLogger
                 return;
             }
             $localGuild = Bot::get()->getGuild($member->guild_id);
-            $localGuild->logWithMember($member, "<@{$member->id}> has received a timeout", 'fail');
+            if ($localGuild->getLogSetting(LogSetting::TIMEOUT)) {
+                $localGuild->logWithMember($member, "<@{$member->id}> has received a timeout", 'fail');
+            }
         });
 
     }

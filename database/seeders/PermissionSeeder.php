@@ -19,6 +19,7 @@ class PermissionSeeder extends Seeder
             'permissions', 'attach-permission', 'attach-role',
             'config', 'timeouts', 'media-filter', 'add-cringe', 'delete-cringe',
             'commands', 'reactions', 'role-rewards', 'manage-xp', 'channels',
+            'logs',
         ];
 
         $adminPermissions = [

@@ -37,7 +37,8 @@ class Logger
             $embedBuilder->setLog();
         }
 
-        Bot::getDiscord()->getChannel($this->logChannelId)->sendEmbed($embedBuilder->getEmbed());
+        $channel = Bot::getDiscord()->getChannel($this->logChannelId);
+        $channel?->sendEmbed($embedBuilder->getEmbed());
     }
 
 

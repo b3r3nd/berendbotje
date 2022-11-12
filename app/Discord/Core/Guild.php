@@ -6,6 +6,7 @@ use App\Discord\Core\Enums\Setting as SettingEnum;
 use App\Discord\Moderation\Command\SimpleCommand;
 use App\Models\Channel;
 use App\Models\Guild as GuildModel;
+use App\Models\LogSetting;
 use App\Models\Setting;
 use Carbon\Carbon;
 use Discord\Http\Exceptions\NoPermissionsException;
@@ -36,6 +37,7 @@ class Guild
     private array $deletedCommands = [];
     private array $deletedReactions = [];
     private array $settings = [];
+    private array $logSettings = [];
     private array $lastMessages = [];
     private array $inVoice = [];
     public GuildModel $model;
@@ -51,6 +53,10 @@ class Guild
 
         foreach ($this->model->settings as $setting) {
             $this->settings[$setting->key] = $setting->value;
+        }
+
+        foreach ($this->model->logSettings as $setting) {
+            $this->logSettings[$setting->key] = $setting->value;
         }
 
         foreach ($this->model->channels as $channel) {
@@ -196,6 +202,27 @@ class Guild
         $this->lastMessages[$userId] = Carbon::now();
     }
 
+    /**
+     * @param string $key
+     * @param $value
+     * @return void
+     */
+    public function setLogSetting(string $key, $value): void
+    {
+        $this->logSettings[$key] = $value;
+        $setting = LogSetting::getSetting($key, $this->model->guild_id);
+        $setting->value = $value;
+        $setting->save();
+    }
+
+    /**
+     * @param Enums\LogSetting $setting
+     * @return false|mixed
+     */
+    public function getLogSetting(\App\Discord\Core\Enums\LogSetting $setting): mixed
+    {
+        return $this->logSettings[$setting->value] ?? false;
+    }
 
     /**
      * @param string $key
@@ -206,7 +233,6 @@ class Guild
     {
         $this->settings[$key] = $value;
 
-        var_dump($key);
         if ($key == SettingEnum::LOG_CHANNEL->value) {
             $this->logger->setLogChannelId($value);
         }
