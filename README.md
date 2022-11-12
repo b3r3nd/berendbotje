@@ -38,8 +38,9 @@ I will try to update this readme with new functionality as I add it, but I canno
 The bot only uses slash commands, there used to be message commands but I moved everything to slash only.
 
 ## Multiple servers
-The bot runs on multiple servers, but each server requires some settings and values to be set in the database, 
-the plan is to let the bot do it automatically whenever he is invited and joins a server. For now it needs to be 
+
+The bot runs on multiple servers, but each server requires some settings and values to be set in the database,
+the plan is to let the bot do it automatically whenever he is invited and joins a server. For now it needs to be
 done manually or added to the seeders.
 
 ## Roles and permissions
@@ -59,13 +60,14 @@ roles.
 * `attach-role`
 * `config`
 * `timeouts`
-* `media-filter`
+* `channels`
 * `add-cringe`
 * `delete-cringe`
 * `commands`
 * `reactions`
 * `role-rewards`
 * `manage-xp`
+* `logs`
 
 ### Default Roles
 
@@ -73,7 +75,7 @@ roles.
     * All permissions
 * **Moderator**
     * `timeouts`
-    * `media-filter`
+    * `channels`
     * `add-cringe`
     * `delete-cringe`
     * `commands`
@@ -99,13 +101,15 @@ If enabled users can gain xp by sending messages and hanging out in voice. Check
 for more control how much xp people gain per message, per minute in voice and if you want to enable this functionality
 at all.
 It is possible to attach role rewards to levels, when a user reaches that specific level a new role is granted.
+
 ### Calculating Levels
+
 This is what I use to calculate required XP for each level: `XP = 500 * (level^2) - (500 * level)`
 
-Example for level 5: `500 * (5^2) - (500 * 5) = 10.000 XP` 
-
+Example for level 5: `500 * (5^2) - (500 * 5) = 10.000 XP`
 
 ### Commands
+
 * **leaderboard** • Show the leaderboard with the highest ranking members at the top
 * **rank** • Show your own level, xp and messages
 * **givexp** `user_mention` `xp_amount` • Give user xp
@@ -141,13 +145,17 @@ Right now we have the following settings:
 * `log_channel_id` - set the channel ID where the log sends messages
 
 ## Logging
+
 The bot is able to log some events to a specific log channel, you have to set the following two settings properly
 in the bot config to make it work:
+
 - `enable_logging` - Enable the general log
 - `log_channel_id` - Id of the channel where the log sends messages
 
 ### Events
+
 The following events are logged:
+
 - Joined server
 - Left server
 - Kicked from server
@@ -170,15 +178,19 @@ The following events are logged:
 - Disabled his webcam in voice
 
 You can enable/disable each event in the log config:
+
 * **logconfig** - Look at the log config
 * **logset** `key` `value` - Enable or disable one of the events
 
 ## Channels
+
 You can set flags for channels, for now there are two flags you can use:
+
 * `no_xp` - Bot does not count xp for users when they send messages in this channel
 * `media_only` - Channel allows only media and URL, anything else will be deleted.
 
 ### Commands
+
 * **channels**
 * **markchannel** `channel` `flag`
 * **unmarkchannel** `channel` `flag`
