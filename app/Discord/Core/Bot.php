@@ -127,8 +127,6 @@ class Bot
         return [
             Servers::class,
 
-            UserRank::class,
-
             Roles::class, Permissions::class, Users::class,
             MyRoles::class, UserRoles::class,
             CreateRole::class, DeleteRole::class,
@@ -175,7 +173,7 @@ class Bot
 
             $this->loadCoreClasses();
             $this->loadGuilds();
-            //$this->deleteSlashCommands();
+           // $this->deleteSlashCommands();
             $this->loadCommands();
         });
         self::$instance = $this;
