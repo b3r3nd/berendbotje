@@ -98,9 +98,6 @@ class MentionResponder
                     if (str_contains($message->content, '?give')) {
                         $message->reply('Thanks! 😎');
                         return;
-                    } else if (str_contains($message->content, Bot::get()->getPrefix() . 'addcringe')) {
-                        $message->reply('Keep on dreaming.. 🖕');
-                        return;
                     } elseif (DiscordUser::hasPermission($message->author->id, $message->guild_id, Permission::TIMEOUTS->value)) {
                         $message->reply($adminOptions[rand(0, (count($adminOptions) - 1))]);
                         return;
