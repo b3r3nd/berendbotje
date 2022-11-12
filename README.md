@@ -154,15 +154,15 @@ Following events are logged:
 - Message updated (show old and new message)
 - Message deleted (show deleted message)
 
-## Media channels
+## Channels
+You can set flags for channels, for now there are two flags you can use:
+* `no_xp` - Bot does not count xp for users when they send messages in this channel
+* `media_only` - Channel allows only media and URL, anything else will be deleted.
 
-You can add channels to a list of channels marked as media only, in these channels only attachments and (https) urls are
-allowed.
-Anything else will be deleted!
-
-* **mediachannels**
-* **addmediachannel** `channel`
-* **delmediachannel** `channel`
+### Commands
+* **channels**
+* **markchannel** `channel` `flag`
+* **unmarkchannel** `channel` `flag`
 
 ## Reactions
 
