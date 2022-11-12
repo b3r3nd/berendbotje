@@ -26,8 +26,7 @@ class FlagChannelAction implements Action
         if (!$channel) {
             $channel = Channel::create(['channel_id' => $this->arguments[0], 'guild_id' => Guild::get($this->guildId)->id]);
         }
-        $return = $channel->update([$this->arguments[1] => $this->added]);
-        var_dump($return);
+        $channel->update([$this->arguments[1] => $this->added]);
         Bot::get()->getGuild($this->guildId)->updateChannel($channel);
     }
 }

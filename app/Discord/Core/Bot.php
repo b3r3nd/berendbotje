@@ -31,7 +31,9 @@ use App\Discord\Levels\ResetXp;
 use App\Discord\Levels\RoleRewards;
 use App\Discord\Levels\UserRank;
 use App\Discord\Levels\VoiceXpCounter;
+use App\Discord\Logger\EmojiLogger;
 use App\Discord\Logger\GuildMemberLogger;
+use App\Discord\Logger\InviteLogger;
 use App\Discord\Logger\MessageLogger;
 use App\Discord\Logger\TimeoutLogger;
 use App\Discord\Logger\VoiceStateLogger;
@@ -107,6 +109,7 @@ class Bot
             VoiceXpCounter::class,
 
             VoiceStateLogger::class, GuildMemberLogger::class, MessageLogger::class, TimeoutLogger::class,
+            InviteLogger::class,
         ];
     }
 
@@ -123,6 +126,8 @@ class Bot
     {
         return [
             Servers::class,
+
+            UserRank::class,
 
             Roles::class, Permissions::class, Users::class,
             MyRoles::class, UserRoles::class,
@@ -158,7 +163,7 @@ class Bot
                 'loadAllMembers' => true,
                 'storeMessages' => true,
                 'intents' => Intents::getDefaultIntents() | Intents::GUILD_VOICE_STATES | Intents::GUILD_MEMBERS |
-                    Intents::MESSAGE_CONTENT | Intents::GUILDS
+                    Intents::MESSAGE_CONTENT | Intents::GUILDS | Intents::GUILD_INVITES | Intents::GUILD_EMOJIS_AND_STICKERS
             ]
         );
         $this->discord->on('ready', function (Discord $discord) {

@@ -4,8 +4,8 @@ namespace App\Discord\Core;
 
 use App\Discord\Core\Builders\EmbedBuilder;
 use Carbon\Carbon;
-use Discord\Parts\Embed\Embed;
 use Discord\Parts\User\Member;
+use Discord\Parts\User\User;
 use Exception;
 
 class Logger
@@ -42,20 +42,29 @@ class Logger
 
 
     /**
-     * @param Member $member
+     * @param Member|User $member
      * @param string $description
      * @param string $type
      * @return void
      * @throws Exception
      */
-    public function logWithMember(Member $member, string $description, string $type): void
+    public function logWithMember(Member|User $member, string $description, string $type): void
     {
         $embedBuilder = EmbedBuilder::create(Bot::getDiscord());
+
+        if ($member instanceof Member) {
+            $embedBuilder->getEmbed()
+                ->setThumbnail($member->user->avatar)
+                ->setAuthor($member->user->displayname, $member->user->avatar);
+        } else {
+            $embedBuilder->getEmbed()
+                ->setThumbnail($member->avatar)
+                ->setAuthor($member->displayname, $member->avatar);
+        }
+
         $embedBuilder->getEmbed()
-            ->setThumbnail($member->user->avatar)
             ->setDescription($description)
-            ->setTimestamp()
-            ->setAuthor($member->user->displayname, $member->user->avatar);
+            ->setTimestamp();
 
         $this->sendEmbed($embedBuilder, $type);
     }
