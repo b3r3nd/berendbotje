@@ -154,12 +154,23 @@ class Help extends SlashCommand
                  - Left server
                  - Kicked from server
                  - Banned from server
+                 - Unbanned from server
                  - Received timeout
                  - Joined voice call
                  - Left voice call
+                 - Switched voice call
+                 - Muted in voice by moderator
+                 - Unmuted in voice by moderator
                  - Updated username (old and new username)
                  - Message updated (show old and new message)
-                 - Message deleted (show deleted message)";
+                 - Message deleted (show deleted message)
+                 - Invite created
+                 - Invite removed
+                 - Started streaming in voice
+                 - Stopped streaming in voice
+                 - Enabled his webcam in voice
+                 - Disabled his webcam in voice
+                 ";
                 $embedBuilder->setDescription($desc)->setTitle("Logs");
             }
             return MessageBuilder::new()->addEmbed($embedBuilder->getEmbed());

@@ -11,6 +11,8 @@ use Carbon\Carbon;
 use Discord\Http\Exceptions\NoPermissionsException;
 use Discord\Parts\Embed\Embed;
 use Discord\Parts\User\Member;
+use Discord\Parts\User\User;
+use Exception;
 
 /**
  * Guild settings are loaded on boot and only updated when the actual setting is changed using commands.
@@ -72,13 +74,13 @@ class Guild
     }
 
     /**
-     * @param Member $member
+     * @param Member|User $member
      * @param string $description
      * @param string $type
      * @return void
-     * @throws \Exception
+     * @throws Exception
      */
-    public function logWithMember(Member $member, string $description, string $type = 'log'): void
+    public function logWithMember(Member|User $member, string $description, string $type = 'log'): void
     {
         if ($this->getSetting(SettingEnum::ENABLE_LOGGING)) {
             $this->logger->logWithMember($member, $description, $type);
