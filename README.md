@@ -141,18 +141,37 @@ Right now we have the following settings:
 * `log_channel_id` - set the channel ID where the log sends messages
 
 ## Logging
-The bot is able to log some events to a specific log channel, check the bot config. Enable the logging and set a proper channel.
-Following events are logged:
+The bot is able to log some events to a specific log channel, you have to set the following two settings properly
+in the bot config to make it work:
+- `enable_logging` - Enable the general log
+- `log_channel_id` - Id of the channel where the log sends messages
+
+### Events
+The following events are logged:
 - Joined server
 - Left server
 - Kicked from server
 - Banned from server
+- Unbanned from server
 - Received timeout
 - Joined voice call
 - Left voice call
+- Switched voice call
+- Muted in voice by moderator
+- Unmuted in voice by moderator
 - Updated username (old and new username)
 - Message updated (show old and new message)
 - Message deleted (show deleted message)
+- Invite created
+- Invite removed
+- Started streaming in voice
+- Stopped streaming in voice
+- Enabled his webcam in voice
+- Disabled his webcam in voice
+
+You can enable/disable each event in the log config:
+* **logconfig** - Look at the log config
+* **logset** `key` `value` - Enable or disable one of the events
 
 ## Channels
 You can set flags for channels, for now there are two flags you can use:
