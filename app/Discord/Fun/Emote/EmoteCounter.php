@@ -21,7 +21,10 @@ class EmoteCounter
             if ($message->author->bot) {
                 return;
             }
-            if (!Bot::get()->getGuild($message->guild_id)->getSetting(Setting::ENABLE_EMOTE)) {
+            if(!$message->guild_id) {
+                return;
+            }
+            if (!Bot::get()->getGuild($message->guild_id)?->getSetting(Setting::ENABLE_EMOTE)) {
                 return;
             }
 
@@ -38,7 +41,7 @@ class EmoteCounter
             if (!empty($emotes)) {
                 $usedEmotes = [];
                 foreach ($emotes as $emote) {
-                    if (!in_array($emote['hex_str'], $usedEmotes)) {
+                    if (!in_array($emote['hex_str'], $usedEmotes, true)) {
                         $emoteInstance = Emote::firstOrCreate(['hex' => $emote['hex_str'], 'emote' => $emote['emoji'], 'guild_id' => \App\Models\Guild::get($message->guild_id)->id]);
                         $this->processEmote($emoteInstance);
                         $usedEmotes[] = $emote['hex_str'];
