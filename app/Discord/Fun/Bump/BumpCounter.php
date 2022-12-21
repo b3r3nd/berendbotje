@@ -18,28 +18,21 @@ class BumpCounter
     public function __construct()
     {
         Bot::getDiscord()->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) {
-            if ($message->type == 20 && $message->interaction->name == 'bump') {
+            if ($message->type === 20 && $message->interaction->name === 'rank') {
 
-                if (!Bot::get()->getGuild($message->guild_id)->getSetting(Setting::ENABLE_BUMP)) {
+                if (!Bot::get()->getGuild($message->guild_id)?->getSetting(Setting::ENABLE_BUMP)) {
                     return;
                 }
                 $guild = Guild::get($message->guild_id);
                 $user = DiscordUser::get($message->interaction->user->id);
 
-
-                $bumpCounters = $user->bumpCounters()->where('guild_id', $guild->id)->get();
-
                 $bumpCounter = new Bumper(['count' => 1, 'guild_id' => $guild->id]);
-
-                if ($bumpCounters->isEmpty()) {
-                    $user->bumpCounters()->save($bumpCounter);
-                } else {
-                    $bumpCounter = $bumpCounters->first();
-                    $bumpCounter->update(['count' => $bumpCounter->count + 1]);
-                }
+                $user->bumpCounters()->save($bumpCounter);
 
                 $user->refresh();
-                $message->channel->sendMessage(__('bot.bump.inc', ['name' => $message->interaction->user->username, 'count' => $bumpCounter->count ?? 0]));
+
+                $count = $user->bumpCounters()->where('guild_id', $guild->id)->sum('count');
+                $message->channel->sendMessage(__('bot.bump.inc', ['name' => $message->interaction->user->username, 'count' => $count ?? 0]));
             }
         });
     }

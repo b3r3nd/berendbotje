@@ -235,7 +235,8 @@ return [
         'inc' => ":name heeft :count x de discord gebumped!",
         'footer' => 'Use /bump in #botspam',
         'title' => 'Bumper Elites',
-        'description' => "Bump counter\n\n:bumpers"
+        'description' => "Bump counters of all time!\n\n:bumpers",
+        'description-month' => "Bump counters of this month! The user with the most bumps each month will get a special role!\n\n:bumpers",
     ],
 
     'cringe' => [
