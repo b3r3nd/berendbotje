@@ -18,15 +18,15 @@ class MessageLogger
                 return;
             }
             $guild = Bot::get()->getGuild($message->guild_id);
-            if (isset($oldMessage) && $guild->getLogSetting(LogSetting::MESSAGE_UPDATED)) {
+            if (isset($oldMessage) && $guild->getLogSetting(LogSetting::MESSAGE_UPDATED) && count($oldMessage->embeds) === count($message->embeds)) {
                 $desc = "Updated message in <#{$message->channel_id}>
 
-                **Old Message**
-                {$oldMessage->content}
+            **Old Message**
+            {$oldMessage->content}
 
-                **New Message**
-                {$message->content}
-                ";
+            **New Message**
+            {$message->content}
+            ";
                 $guild->logWithMember($message->member, $desc, 'warning');
             }
         });
