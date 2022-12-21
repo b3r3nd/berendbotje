@@ -50,8 +50,8 @@ class ModeratorStatistics extends SlashCommand
         $timeouts = $this->getCounter('givenTimeouts', $guild);
 
         foreach ($kicks->merge($bans)->merge($timeouts) as $moderator) {
-            $bans = $moderator->banCounters->first()->count ?? 0;
-            $kicks = $moderator->kickCounters->first()->count ?? 0;
+            $bans = $moderator->banCounters->where('guild_id', $guild->id)->first()->count ?? 0;
+            $kicks = $moderator->kickCounters->where('guild_id', $guild->id)->first()->count ?? 0;
             $description .= "**Moderator**: {$moderator->tag()}
             **Kicks**: {$kicks}
             **Bans**: {$bans}

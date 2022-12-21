@@ -23,7 +23,7 @@ abstract class SlashCommand extends Command
     protected array $slashCommandOptions;
     protected Interaction $interaction;
 
-    public abstract function action(): MessageBuilder;
+    abstract public function action(): MessageBuilder;
 
     public function registerSlashCommand(): void
     {
