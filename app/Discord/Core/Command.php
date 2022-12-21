@@ -22,9 +22,9 @@ abstract class Command
     protected string $guildId = '';
     protected string $commandUser;
 
-    public abstract function permission(): Permission;
+    abstract public function permission(): Permission;
 
-    public abstract function trigger(): string;
+    abstract public function trigger(): string;
 
     public function __construct()
     {
