@@ -88,7 +88,8 @@ class Help extends SlashCommand
             } elseif (strtolower($this->arguments[0]) === 'levels') {
                 $desc = "The bot counts messages send by users and gives xp for each message, it also detects users in voice who are not muted and gives XP for time spend in voice. The amount of XP gained by each message, time spend in voice and the cooldown between messages can be changed with the `config` command see `help settings` for more info.\n Role rewards for users are synced whenever they send a message to the server. When removing or adding XP from users their roles will persist until they send a message.\n
                     `leaderboard` • Show the leaderboard with highest ranking members at the top
-                    `rank` • Show your own level, xp and messages
+                    `rank` • Show your own level, xp, messages and time in voice
+                    `rank` `user_tag` • Show level, xp, messages and time in voice for another user
                     `givexp` `user_mention` `xp_amount` • Give user xp
                     `removexp` `user_mention` `xp_amount` • Remove user xp
                     `resetxp` `user_mention` • Reset XP for user
