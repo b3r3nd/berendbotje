@@ -180,7 +180,6 @@ class Bot
             $this->loadCommands();
         });
         self::$instance = $this;
-        return $this;
     }
 
 

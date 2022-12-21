@@ -7,9 +7,7 @@ use App\Discord\Core\Builders\EmbedBuilder;
 use App\Discord\Core\Enums\Permission;
 use App\Discord\Core\SlashCommand;
 use App\Models\LogSetting;
-use App\Models\Setting;
 use Discord\Builders\MessageBuilder;
-use Discord\Parts\Interactions\Command\Option;
 
 class LogSettings extends SlashCommand
 {

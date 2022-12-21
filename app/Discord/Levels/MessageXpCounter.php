@@ -17,6 +17,10 @@ class MessageXpCounter
             if ($message->author->bot) {
                 return;
             }
+            if (!$message->guild_id) {
+                return;
+            }
+
             $guild = Bot::get()->getGuild($message->guild_id);
             if ($guild) {
                 if (!$guild->getSetting(Setting::ENABLE_XP)) {
