@@ -12,6 +12,7 @@ use App\Models\DiscordUser;
 use App\Models\Guild;
 use Discord\Builders\MessageBuilder;
 use Discord\Http\Exceptions\NoPermissionsException;
+use Discord\Parts\Interactions\Command\Option;
 
 class UserRank extends SlashCommand
 {
@@ -29,6 +30,15 @@ class UserRank extends SlashCommand
     public function __construct()
     {
         $this->description = __('bot.slash.rank');
+        $this->slashCommandOptions = [
+            [
+                'name' => 'user_mention',
+                'description' => 'Mention',
+                'type' => Option::USER,
+                'required' => false,
+            ],
+        ];
+
         parent::__construct();
     }
 
@@ -37,7 +47,12 @@ class UserRank extends SlashCommand
      */
     public function action(): MessageBuilder
     {
-        $user = DiscordUser::get($this->commandUser);
+        if (isset($this->arguments[0])) {
+            $user = DiscordUser::get($this->arguments[0]);
+        } else {
+            $user = DiscordUser::get($this->commandUser);
+        }
+
         $guild = Guild::get($this->guildId);
 
         $messageCounters = $user->messageCounters()->where('guild_id', $guild->id)->get();
@@ -59,7 +74,7 @@ class UserRank extends SlashCommand
         }
 
         return MessageBuilder::new()->addEmbed(EmbedBuilder::create(Bot::getDiscord())
-            ->setDescription(__('bot.xp.description', ['messages' => $messageCounter->count, 'xp' => $messageCounter->xp, 'voice' => $voice]))
+            ->setDescription(__('bot.xp.description', ['user' => $user->tag(), 'messages' => $messageCounter->count, 'xp' => $messageCounter->xp, 'voice' => $voice]))
             ->setTitle(__('bot.xp.title', ['level' => $messageCounter->level]))
             ->setFooter(__('bot.xp.footer', ['xp' => $xpCount]))
             ->getEmbed());

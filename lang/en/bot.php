@@ -163,9 +163,9 @@ return [
     'xp' => [
         'not-found' => 'You do not have any messages',
         'count' => 'You have :messages',
-        'footer' => 'You gain :xp xp per message',
-        'title' => 'You are level :level',
-        'description' => "You have :messages messages and spend about :voice in voice, which in total amounts to :xp xp!",
+        'footer' => 'Gain :xp xp per message',
+        'title' => 'Level :level',
+        'description' => ":user has :messages messages and spend about :voice in voice, which in total amounts to :xp xp!",
         'usage-givexp' => 'givexp `user_mention` `xp_amount`',
         'usage-delxp' => 'removexp `user_mention` `xp_amount`',
         'usage-resetxp' => 'resetxp `user_mention`',
@@ -233,7 +233,7 @@ return [
 
     'bump' => [
         'inc' => ":name heeft :count x de discord gebumped!",
-        'footer' => 'Use /bump in #botspam',
+        'footer' => 'Use /bump in #bump',
         'title' => 'Bumper Elites',
         'description' => "Bump counters of all time!\n\n:bumpers",
         'description-month' => "Bump counters of this month! The user with the most bumps each month will get a special role!\n\n:bumpers",
