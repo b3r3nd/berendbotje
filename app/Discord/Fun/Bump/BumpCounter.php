@@ -18,7 +18,7 @@ class BumpCounter
     public function __construct()
     {
         Bot::getDiscord()->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) {
-            if ($message->type === 20 && $message->interaction->name === 'rank') {
+            if ($message->type === 20 && $message->interaction->name === 'bump') {
 
                 if (!Bot::get()->getGuild($message->guild_id)?->getSetting(Setting::ENABLE_BUMP)) {
                     return;
