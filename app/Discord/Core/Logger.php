@@ -41,7 +41,6 @@ class Logger
         $channel?->sendEmbed($embedBuilder->getEmbed());
     }
 
-
     /**
      * @param Member|User $member
      * @param string $description
