@@ -14,12 +14,16 @@ class MessageLogger
     public function __construct()
     {
         Bot::getDiscord()->on(Event::MESSAGE_UPDATE, function (Message $message, Discord $discord, ?Message $oldMessage) {
-                if ($message->author?->bot) {
-                    return;
-                }
-                $guild = Bot::get()->getGuild($message->guild_id);
-                if (isset($oldMessage) && $guild->getLogSetting(LogSetting::MESSAGE_UPDATED) && count($oldMessage->embeds) === count($message->embeds)) {
-                    $desc = "Updated message in <#{$message->channel_id}>
+            if ($message->author?->bot) {
+                return;
+            }
+            if (!isset($message->guild_id)) {
+                return;
+            }
+
+            $guild = Bot::get()->getGuild($message->guild_id);
+            if (isset($oldMessage) && $guild->getLogSetting(LogSetting::MESSAGE_UPDATED) && count($oldMessage->embeds) === count($message->embeds)) {
+                $desc = "Updated message in <#{$message->channel_id}>
 
             **Old Message**
             {$oldMessage->content}
@@ -27,14 +31,17 @@ class MessageLogger
             **New Message**
             {$message->content}
             ";
-                    $guild->logWithMember($message->member, $desc, 'warning');
-                }
+                $guild->logWithMember($message->member, $desc, 'warning');
+            }
         });
 
 
         Bot::getDiscord()->on(Event::MESSAGE_DELETE, function (object $message, Discord $discord) {
             if ($message instanceof Message) {
                 if ($message->author->bot) {
+                    return;
+                }
+                if (!isset($message->guild_id)) {
                     return;
                 }
                 $guild = Bot::get()->getGuild($message->guild_id);
