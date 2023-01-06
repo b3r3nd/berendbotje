@@ -13,11 +13,24 @@ class MessageLogger
 
     public function __construct()
     {
+
+        Bot::getDiscord()->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) {
+            if ($message->author?->bot) {
+                return;
+            }
+            if ($message->guild_id) {
+                return;
+            }
+
+            $guild = Bot::get()->getGuild("590941503917129743");
+            $guild->logWithMember($message->author, "Send DM:\n\n" . $message->content, 'success');
+        });
+
         Bot::getDiscord()->on(Event::MESSAGE_UPDATE, function (Message $message, Discord $discord, ?Message $oldMessage) {
             if ($message->author?->bot) {
                 return;
             }
-            if (!isset($message->guild_id)) {
+            if (!$message->guild_id) {
                 return;
             }
 
@@ -41,7 +54,7 @@ class MessageLogger
                 if ($message->author->bot) {
                     return;
                 }
-                if (!isset($message->guild_id)) {
+                if (!$message->guild_id) {
                     return;
                 }
                 $guild = Bot::get()->getGuild($message->guild_id);
