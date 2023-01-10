@@ -23,4 +23,5 @@ enum Setting: string
 
     case ENABLE_BUMP_REMINDER = 'enable_bump_reminder';
     case BUMP_REMINDER_ROLE = 'bump_reminder_role';
+    case BUMP_CHANNEL = 'bump_channel';
 }
