@@ -38,6 +38,10 @@ class Settings extends SlashCommand
         foreach (Setting::byDiscordGuildId($this->guildId)->get() as $setting) {
             if ($setting->key === \App\Discord\Core\Enums\Setting::LOG_CHANNEL->value) {
                 $description .= "**{$setting->key}** = <#{$setting->value}>\n";
+            }
+            elseif ($setting->key === \App\Discord\Core\Enums\Setting::BUMP_REMINDER_ROLE->value) {
+                $description .= "**{$setting->key}** = <@&{$setting->value}>\n";
+
             } else {
                 $description .= "**{$setting->key}** = {$setting->value}\n";
             }
