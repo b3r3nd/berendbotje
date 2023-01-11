@@ -18,7 +18,7 @@ class BumpCounter
     public function __construct()
     {
         Bot::getDiscord()->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) {
-            if ($message->type === 20 && $message->interaction->name === '8ball') {
+            if ($message->type === 20 && $message->interaction->name === 'bump') {
 
                 if (!Bot::get()->getGuild($message->guild_id)?->getSetting(Setting::ENABLE_BUMP)) {
                     return;
@@ -35,7 +35,7 @@ class BumpCounter
                 $message->channel->sendMessage(__('bot.bump.inc', ['name' => $message->interaction->user->username, 'count' => $count ?? 0]));
 
                 if (Bot::get()->getGuild($message->guild_id)?->getSetting(Setting::ENABLE_BUMP_REMINDER)) {
-                    ProcessBumpReminder::dispatch($message->guild_id)->delay(now()->addMinute());
+                    ProcessBumpReminder::dispatch($message->guild_id)->delay(now()->addHours(2));
                 }
             }
         });
