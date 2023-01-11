@@ -43,9 +43,11 @@ class Helper
      */
     public static function calcLevel(int $xp): int
     {
-        for ($level = 0; $level < 1000; $level++) {
-            $xpRequired = 500 * pow($level, 2) - (500 * $level);
-            if ($xp < $xpRequired) {
+        $totalRequiredXp = 0;
+        for ($level = 0; $level < 100; $level++) {
+            $xpRequired = 5 * pow($level, 2) + (50 * $level) + 100;
+            $totalRequiredXp += $xpRequired;
+            if ($totalRequiredXp >= $xp) {
                 return $level;
             }
         }
