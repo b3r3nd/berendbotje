@@ -3,45 +3,25 @@
 Discord bot written in PHP, using laravel and the DiscordPHP package. Initially created just for our own server but
 now runs on as many serves as you like. If you have questions DM my directly by my discord tag: `berend#0579`.
 
-## Requirements
-
-* Linux machine!
-* Configured mysql database and knowing the credentials
-* Bot signed up to developers portal and knowing your bot token
-* PHP 8.0+
-* Composer to install dependencies
-
 ## Installing
-
-1. Download this repo to your linux server/pc.
-2. Run `composer install` to install all its dependencies
-3. Create the .env file using `mv .env.example .env`
-4. In the `.env` file fill in your database credentials!
-5. `BOT_TOKEN` is already added to the .env example, fill in your bot token there!
-6. Install FFMPEG using `sudo apt-get install ffmpeg` or however your package manager works.
-7. Install `youtube-dl` following the installation guide in their
-   repo https://github.com/ytdl-org/youtube-dl#installation
-8. There is a seeder file called `database\seeders\DiscordUsersSeeder`, here you can add your user id and server id to
-   setup admin account with 1000 access to a single server.
-9. Cd to your project directory and use `php artisan migrate --seed` to setup your database.
-
+1. Download this repo and install al its dependencies with `composer install`
+2. Create your env file `mv .env.example .env` and fill in database credentials and bot token
+3. You can edit the `GuldSeeder` and `DiscordUsersSeeder` to add your server and admin users
+4. Run `php artisan migrate --seed` to setup your database.
 ## Running the bot
-
 1. I added an artisan command to run the bot `php artisan bot:run`.
-2. In order to make the music player work you need to run the redis queue as well `php artisan queue:work`
+2. In order to make the bump reminder work you also need to run the queue `php artisan queue:work`
 3. Make sure both these run in the background while you exit your connection / terminal. Or keep two terminals running
    if you want to test it locally.
 
 # Functions
-
 I will try to update this readme with new functionality as I add it, but I cannot promise I keep it entirely up to date.
 The bot only uses slash commands, there used to be message commands but I moved everything to slash only.
 
 ## Multiple servers
-
 The bot runs on multiple servers, but each server requires some settings and values to be set in the database,
 the plan is to let the bot do it automatically whenever he is invited and joins a server. For now it needs to be
-done manually or added to the seeders.
+done manually or the best way is to add your guild/server to the seeder and everything will be set properly.
 
 ## Roles and permissions
 
@@ -111,7 +91,7 @@ Example for level 5: `500 * (5^2) - (500 * 5) = 10.000 XP`
 ### Commands
 
 * **leaderboard** • Show the leaderboard with the highest ranking members at the top
-* **rank** • Show your own level, xp and messages
+* **rank** `user_mention` • Show your own level, xp and messages or that of another user
 * **givexp** `user_mention` `xp_amount` • Give user xp
 * **removexp** `user_mention` `xp_amount` • Remove user xp
 * **resetxp** `user_mention` • Reset XP for user
@@ -143,6 +123,9 @@ Right now we have the following settings:
 * `enable_commands` - enable custom commands
 * `enable_logging` - enable general logging
 * `log_channel_id` - set the channel ID where the log sends messages
+* `enable_bump_reminder` - enable 2 hour tag for people who want to bump the discord
+* `bump_reminder_role` - Role to be tagged for bump reminders
+* `bump_channel` - Channel where the bump reminders are tagged
 
 ## Logging
 
@@ -153,9 +136,10 @@ in the bot config to make it work:
 - `log_channel_id` - Id of the channel where the log sends messages
 
 ### Events
+I pretty much copied the way MEE6 logs events, it looks the same but it logs more and there is no delay. Not sure
+why MEE6 is sometimes so laggy.
 
 The following events are logged:
-
 - Joined server
 - Left server
 - Kicked from server
@@ -247,26 +231,7 @@ in the future.
 
 * **modstats**
 
-## Youtube music player (currenlty broken)
-
-The bot has a simple music player with queue. I am using laravel queues to
-download the songs from youtube in the background. They are added to the queue
-and once you use the $play command it will play the entire queue and then leave the call.
-Songs obviously can be added while the bot is playing. Once a song is downloaded the job in
-the queue will create an entry in the songs table, that's the queue. It will delete the entry
-and file once the song has been played! The libraries I used to both to download and
-play songs are included at the top.
-
-Commands are:
-
-* **addsong** `<youtube_url>`
-* **play**
-* **stop**
-* **pause**
-* **resume**
-* **queue**
-
-## Bump Counter
+## Bump Counter & Reminder
 
 We use a bot to add our discord server to an external website, once every
 2 hours you can use this bot to get back on the front page. To encourage
@@ -276,7 +241,14 @@ or she will get some nice perks!
 
 Command to view the bump statistics is
 
-* **bumpcounter**
+* **bumpcounter** `time-range` • You can see bumps of all time, or only for this month. Monthly bumps are the statistics for who gets the bumper elite role!
+
+In order to make the bump reminder work, you need to set the following 3 settings:
+* `enable_bump_reminder` - Enable 2 hour tag for people who want to bump the discord
+* `bump_reminder_role` - Role to be tagged for bump reminders
+* `bump_channel` - Channel where the bump reminders are tagged
+
+Use the `set` command for it, setting names will be preloaded for you to pick from using the slash commands.
 
 ## Cringe Counter
 

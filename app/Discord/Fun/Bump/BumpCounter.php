@@ -34,7 +34,9 @@ class BumpCounter
                 $count = $user->bumpCounters()->where('guild_id', $guild->id)->sum('count');
                 $message->channel->sendMessage(__('bot.bump.inc', ['name' => $message->interaction->user->username, 'count' => $count ?? 0]));
 
-                ProcessBumpReminder::dispatch($message->guild_id)->delay(now()->addHours(2));
+                if (Bot::get()->getGuild($message->guild_id)?->getSetting(Setting::ENABLE_BUMP_REMINDER)) {
+                    ProcessBumpReminder::dispatch($message->guild_id)->delay(now()->addHours(2));
+                }
             }
         });
     }

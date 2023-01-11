@@ -55,7 +55,7 @@ class BumpStatistics extends SlashIndexCommand
             ->setFooter(__('bot.bump.footer'));
 
         if (strtolower($this->arguments[0]) === 'all-time') {
-            foreach (Bumper::byGuild($this->guildId)->groupBy('user_id')->orderBy('count', 'desc')->skip($this->offset)->limit($this->perPage)->selectRaw('*, sum(count) as total')->get() as $index => $bumper) {
+            foreach (Bumper::byGuild($this->guildId)->groupBy('user_id')->orderBy('total', 'desc')->skip($this->offset)->limit($this->perPage)->selectRaw('*, sum(count) as total')->get() as $index => $bumper) {
                 $description .= Helper::indexPrefix($index);
                 $description .= "**{$bumper->user->tag()}** •  {$bumper->total}\n";
             }
@@ -65,7 +65,7 @@ class BumpStatistics extends SlashIndexCommand
             foreach (Bumper::byGuild($this->guildId)
                          ->whereMonth('created_at', date('m'))
                          ->groupBy('user_id')
-                         ->orderBy('count', 'desc')
+                         ->orderBy('total', 'desc')
                          ->skip($this->offset)
                          ->limit($this->perPage)
                          ->selectRaw('*, sum(count) as total')
