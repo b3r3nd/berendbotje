@@ -99,6 +99,9 @@ class MentionResponder
             if ($message->author->bot) {
                 return;
             }
+            if (!$message->guild_id) {
+                return;
+            }
 
             if ($message->mentions->count() > 0) {
                 if (str_contains($message->content, $discord->user->id)) {
