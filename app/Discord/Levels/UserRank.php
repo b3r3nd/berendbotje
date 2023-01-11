@@ -58,7 +58,7 @@ class UserRank extends SlashCommand
         $messageCounters = $user->messageCounters()->where('guild_id', $guild->id)->get();
 
         if ($messageCounters->isEmpty()) {
-            return EmbedFactory::failedEmbed(__('bot.xp.not-found'));
+            return EmbedFactory::failedEmbed(__('bot.xp.not-found', ['user' => $user->tag()]));
         }
 
         $messageCounter = $messageCounters->first();

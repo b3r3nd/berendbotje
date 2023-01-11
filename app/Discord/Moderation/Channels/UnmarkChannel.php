@@ -26,7 +26,7 @@ class UnmarkChannel extends SlashCommand
 
     public function __construct()
     {
-        $this->description = __('bot.slash.unmar-kchannel');
+        $this->description = __('bot.slash.unmark-channel');
         $this->slashCommandOptions = [
             [
                 'name' => 'channel',
