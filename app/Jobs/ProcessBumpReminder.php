@@ -2,10 +2,8 @@
 
 namespace App\Jobs;
 
-use App\Discord\Core\Bot;
 use App\Models\Guild;
 use Discord\Discord;
-use Discord\Parts\User\Activity;
 use Discord\WebSockets\Intents;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -27,30 +25,17 @@ class ProcessBumpReminder implements ShouldQueue
 
     public function handle(): void
     {
-        //sleep(30);
-
         $guild = Guild::get($this->guildId);
         $roleId = $guild->settings()->where('key', 'bump_reminder_role')->first()->value;
         $channelId = $guild->settings()->where('key', 'bump_channel')->first()->value;
-
-        $this->discord = new Discord([
-                'token' => config('discord.token'),
-                'loadAllMembers' => true,
-                'storeMessages' => true,
-                'intents' => Intents::getDefaultIntents() | Intents::GUILD_VOICE_STATES | Intents::GUILD_MEMBERS |
-                    Intents::MESSAGE_CONTENT | Intents::GUILDS | Intents::GUILD_INVITES | Intents::GUILD_EMOJIS_AND_STICKERS
-            ]
-        );
+        $this->discord = new Discord(['token' => config('discord.token'), 'intents' => Intents::GUILDS]);
 
         $this->discord->on('ready', function (Discord $discord) use ($roleId, $channelId) {
             $channel = $discord->getChannel($channelId);
-            $channel?->sendMessage("11111");
-            $channel?->sendMessage("BUMP TIME!!!! <@&{$roleId}>");
-            $channel?->sendMessage("22222");
-            sleep(5);
-            $this->discord->close();
+            $channel?->sendMessage(__('bot.bump-reminder', ['role' => "<@&{$roleId}>"]))->done(function () {
+                $this->discord->close();
+            });
         });
-
         $this->discord->run();
     }
 }
