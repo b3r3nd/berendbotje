@@ -189,14 +189,15 @@ class MentionResponder
                         return;
                     }
 
+                    $responses = [];
+
                     if (DiscordUser::hasPermission($message->author->id, $message->guild_id, Permission::TIMEOUTS->value)) {
-                        $message->reply($this->getRandom($adminOptions));
-                        return;
+                        $responses = array_merge($responses, $adminOptions);
                     }
+
                     $rolesCollection = collect($message->member->roles);
                     if ($rolesCollection->contains('id', "1008136015149531278")) {
-                        $message->reply($this->getRandom($strijderOptions));
-                        return;
+                        $responses = array_merge($responses, $strijderOptions);
                     }
 
                     $discordUser = DiscordUser::get($message->author->id);
@@ -205,21 +206,21 @@ class MentionResponder
                     $timeoutCounter = Timeout::byGuild($message->guild_id)->where(['discord_id' => $message->author->id])->count();
 
                     if ($bumpCounter->total > 100) {
-                        $message->reply($this->getRandom($bumpOptions));
-                        return;
+                        $responses = array_merge($responses, $bumpOptions);
                     }
                     if ($timeoutCounter > 1) {
-                        $message->reply($this->getRandom($mutedOptions));
-                        return;
+                        $responses = array_merge($responses, $mutedOptions);
                     }
                     if ($cringeCounter > 10) {
-                        $message->reply($this->getRandom($cringeOptions));
+                        $responses = array_merge($responses, $cringeOptions);
+                    }
+
+                    if (!empty($responses)) {
+                        $message->reply($this->getRandom($responses));
                         return;
                     }
 
-
                     $lastMessageDate = $this->getLastMessage($message->author->id);
-
                     if ($lastMessageDate->diffInSeconds(Carbon::now()) <= 5) {
                         $message->reply($this->getRandom($timeoutOptions));
                     } else if ($lastMessageDate->diffInSeconds(Carbon::now()) >= 30) {
