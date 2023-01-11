@@ -208,7 +208,7 @@ class MentionResponder
                         $message->reply($this->getRandom($bumpOptions));
                         return;
                     }
-                    if ($timeoutCounter > 2) {
+                    if ($timeoutCounter > 1) {
                         $message->reply($this->getRandom($mutedOptions));
                         return;
                     }
