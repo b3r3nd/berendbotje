@@ -38,6 +38,10 @@ abstract class SlashCommand extends Command
         Bot::getDiscord()->listenCommand($this->trigger, function (Interaction $interaction) {
             $this->arguments = [];
 
+            if (!isset($interaction->member)) {
+                return $interaction->respondWithMessage(EmbedFactory::failedEmbed('Slash commands dont work in DM'));
+            }
+
             if (!DiscordUser::hasPermission($interaction->member->id, $interaction->guild_id, $this->permission->value) && $this->permission->value !== Permission::NONE->value) {
                 return $interaction->respondWithMessage(EmbedFactory::failedEmbed(__("bot.lack-access")));
             }
