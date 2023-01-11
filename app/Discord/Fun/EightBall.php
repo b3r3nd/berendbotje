@@ -65,8 +65,7 @@ class EightBall extends SlashCommand
 
         $random = rand(0, (count($options) - 1));
 
-        return MessageBuilder::new()->addEmbed(EmbedBuilder::create(Bot::getDiscord())
-            ->setTitle($this->arguments[0])
-            ->setDescription($options[$random])->getEmbed());
+
+        return MessageBuilder::new()->setContent("**{$this->arguments[0]}**\n\n{$options[$random]}");
     }
 }
