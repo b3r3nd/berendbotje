@@ -29,6 +29,9 @@ class SettingsSeeder extends Seeder
             'enable_commands' => true,
             'enable_logging' => false,
             'log_channel_id' => "",
+            'enable_bump_reminder' => false,
+            'bump_reminder_role' => "",
+            'bump_channel' => "",
         ];
 
         foreach (Guild::all() as $guild) {

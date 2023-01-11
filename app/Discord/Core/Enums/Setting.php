@@ -20,4 +20,8 @@ enum Setting: string
 
     case ENABLE_LOGGING = 'enable_logging';
     case LOG_CHANNEL = 'log_channel_id';
+
+    case ENABLE_BUMP_REMINDER = 'enable_bump_reminder';
+    case BUMP_REMINDER_ROLE = 'bump_reminder_role';
+    case BUMP_CHANNEL = 'bump_channel';
 }

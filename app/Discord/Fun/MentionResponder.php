@@ -107,7 +107,9 @@ class MentionResponder
                     if (str_contains($message->content, '?give')) {
                         $message->reply('Thanks! 😎');
                         return;
-                    } elseif (DiscordUser::hasPermission($message->author->id, $message->guild_id, Permission::TIMEOUTS->value)) {
+                    }
+
+                    if (DiscordUser::hasPermission($message->author->id, $message->guild_id, Permission::TIMEOUTS->value)) {
                         $message->reply($this->getRandom($adminOptions));
                         return;
                     }
@@ -123,7 +125,9 @@ class MentionResponder
                         $discordUser = DiscordUser::get($message->author->id);
                         $cringeCounter = $discordUser->cringeCounters()->where('guild_id', Guild::get($message->guild_id)->id)->get()->first()->count ?? 0;
 
-                        if ($cringeCounter > 10) {
+                        if ($cringeCounter > 20) {
+                            $message->reply($this->getRandom($timeoutOptions));
+                        } elseif ($cringeCounter > 10) {
                             $message->reply($this->getRandom($cringeOptions));
                         } else {
                             $message->reply($this->getRandom($options));

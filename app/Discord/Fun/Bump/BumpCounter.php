@@ -4,8 +4,8 @@ namespace App\Discord\Fun\Bump;
 
 use App\Discord\Core\Bot;
 use App\Discord\Core\Enums\Setting;
+use App\Jobs\ProcessBumpReminder;
 use App\Models\Bumper;
-use App\Models\CringeCounter;
 use App\Models\DiscordUser;
 use App\Models\Guild;
 use Discord\Discord;
@@ -33,6 +33,8 @@ class BumpCounter
 
                 $count = $user->bumpCounters()->where('guild_id', $guild->id)->sum('count');
                 $message->channel->sendMessage(__('bot.bump.inc', ['name' => $message->interaction->user->username, 'count' => $count ?? 0]));
+
+                ProcessBumpReminder::dispatch($message->guild_id)->delay(now()->addHours(2));
             }
         });
     }

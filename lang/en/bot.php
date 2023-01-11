@@ -22,6 +22,7 @@ return [
     'no-term' => 'Enter a search term',
     'no-valid-term' => 'Search term :term cannot be found',
     'needhelp' => 'For more info check $help',
+    'bump-reminder' => 'BUMP TIME :role',
 
 
     'slash' => [
