@@ -215,10 +215,8 @@ class MentionResponder
 
             foreach ($this->lastResponses as $lastResponse => $date) {
                 $now = Carbon::now();
-                var_dump($now->diffInSeconds($date));
                 if ($now->diffInSeconds($date) > 60) {
                     unset($this->lastResponses[$lastResponse]);
-                    var_dump($lastResponse);
                 }
             }
 
