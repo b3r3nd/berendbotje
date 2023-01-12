@@ -82,6 +82,8 @@ for more control how much xp people gain per message, per minute in voice and if
 at all.
 It is possible to attach role rewards to levels, when a user reaches that specific level a new role is granted.
 
+You can use the `channels` en `markchannel` commands to also mark voice channels to gain no XP (like AFK). Users in voice who have either their mic or headset muted will not gain voice.
+
 ### Calculating Levels
 
 This is what I use to calculate required XP for each level: `5 * (lvl ^ 2) + (50 * lvl) + 100 - xp` it is the exact same XP system as MEE6 uses.
