@@ -37,8 +37,7 @@ abstract class SlashCommand extends Command
         $command = new \Discord\Parts\Interactions\Command\Command(Bot::getDiscord(), $optionsArray);
         Bot::getDiscord()->listenCommand($this->trigger, function (Interaction $interaction) {
             $this->arguments = [];
-
-            var_dump($interaction->guild_id);
+            
             if ($interaction->guild_id === null) {
                 return $interaction->respondWithMessage(EmbedFactory::failedEmbed('Slash commands dont work in DM'));
             }
