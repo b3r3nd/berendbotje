@@ -15,54 +15,86 @@ use Discord\WebSockets\Event;
 
 class MentionResponder
 {
+    private array $lastResponses = [];
 
-    private array $lastMessages = [];
-
-    /**
-     * @param string $userId
-     * @return Carbon
-     */
-    public function getLastMessage(string $userId): Carbon
-    {
-        if (isset($this->lastMessages[$userId])) {
-            return $this->lastMessages[$userId];
-        }
-        return Carbon::now()->subMinutes(100);
-    }
-
-    /**
-     * @param string $userId
-     * @return void
-     */
-    public function setLastMessage(string $userId): void
-    {
-        $this->lastMessages[$userId] = Carbon::now();
-    }
 
     /**
      * @param array $array
      * @return mixed
+     * @throws \Exception
      */
     public function getRandom(array $array): mixed
     {
-        return $array[rand(0, (count($array) - 1))];
+        $response = $array[random_int(0, (count($array) - 1))];
+        while (isset($this->lastResponses[$response])) {
+            $response = $array[random_int(0, (count($array) - 1))];
+            if (count($this->lastResponses) === count($array)) {
+                $this->lastResponses = [];
+                break;
+            }
+        }
+        $this->lastResponses[$response] = Carbon::now();
+        return $response;
     }
-
-
-    /**
-     * Restoration is a perfectly valid school of magic, and don't let anyone tell you otherwise!
-     * What is better - to be born good, or to overcome your evil nature through great effort?"
-     * So, You Wish To Master The Arcane Arts.
-     * A guard might get nervous, a woman approaches with a weapon drawn...
-     * Some People Call This Junk. Me? I Call It Treasure
-     * Looking to protect yourself, or deal some damage?
-     * So, You Wish To Master The Arcane Arts.
-     * Those Warriors From Hammerfell? They've Got Curved Swords. Curved Swords!"
-     */
-
 
     public function __construct()
     {
+        $nsfwOptions = [
+            "You should be embarrassed to have that role... its not safe (for work).",
+            "Naked. Naked, naked, naked!",
+            "This one wonders - do you have no clothes, or just like the feel of the wind?",
+            "Please. Remove your naked obscenity from this discord of civilized folk.",
+            "Shameful, really. I blame the parents.",
+            "Enough already. Go back to NSFW. You're making people nervous.",
+            "You must either be crazy or supremely confident to have the NSFW role without shame.",
+            "NSFW.. Not my thing, but who am I to judge...",
+            "Oh, dear. Would you look at that? NSFW? How embarrassing.",
+        ];
+        $weebOptions = [
+            "Weebs are not welcome in the general chat, so they make their camps in the #weeb channel.",
+            "Weebs have no business in this chat, outlander.",
+            "And why should I speak with you? You are a weeb.",
+        ];
+        $highLevelOptions = [
+            "These sands are cold, but I feel warmness from your presence.",
+            "May the gods watch over your high rank on this server, friend.",
+            "Well, look at you. If only everyone was as active in the server as you.",
+            "Good to see this server still has such fine and active people. You give me hope.",
+            "I hope your parents are proud of you. Although looking at how much XP you got in this server.. I got my doubts",
+            "May your next rank be the king of the nerds, dethrone rickert!",
+            "Good to see you. At least you know how to use this discord properly.",
+            "Wow. Nice rank! Can I have it? I promise I give it back. Honest!",
+            "So you're interested in becoming king of the nerds?"
+        ];
+        $lowLevelOptions = [
+            "Disrespect the rules, and you disrespect me.",
+            "Don't ask too many questions. Safer for everyone that way.",
+            "First time here? Take my advice. You see anything, don't get involved. The moderators will take care of it.",
+            "This server is under my protection. You watch yourself, now.",
+            "Ah, so you're new here, then? Welcome, I suppose.",
+            "Keep your nose clean, and you won't have any problems with me.",
+        ];
+        $kingOfTheNerdsOptions = [
+            "Being king of the nerds is a perfectly valid way of life, don't let anyone tell you otherwise.",
+            "Some people call you nolife. Me? I call you king of the nerds.",
+            "Being king of the nerds is a perfectly valid way of life, don't let anyone tell you otherwise.",
+            "Some people call you nolife. Me? I call you king of the nerds.",
+            "Being king of the nerds is a perfectly valid way of life, don't let anyone tell you otherwise.",
+            "Some people call you nolife. Me? I call you king of the nerds.",
+            "Being king of the nerds is a perfectly valid way of life, don't let anyone tell you otherwise.",
+            "Some people call you nolife. Me? I call you king of the nerds.",
+        ];
+        $bumperEliteOptions = [
+            "Psst! Hey. I know who you are. Hail the bumper elite!",
+            "I've been wanting to say thanks for bumping. Here. It's not much, but at least you get the bumper elite role.",
+            "Psst! Hey. I know who you are. Hail the bumper elite!",
+            "I've been wanting to say thanks for bumping. Here. It's not much, but at least you get the bumper elite role.",
+            "Psst! Hey. I know who you are. Hail the bumper elite!",
+            "I've been wanting to say thanks for bumping. Here. It's not much, but at least you get the bumper elite role.",
+            "Psst! Hey. I know who you are. Hail the bumper elite!",
+            "I've been wanting to say thanks for bumping. Here. It's not much, but at least you get the bumper elite role.",
+            "Psst! Hey. I know who you are. Hail the bumper elite!",
+        ];
         $mutedOptions = [
             "What do you want? You've caused enough trouble.",
             "I don't like talking to someone who holds their honor so cheaply.",
@@ -73,8 +105,14 @@ class MentionResponder
             "Hey, you. You're finally awake. You were muted, right? Walked right into that ambush.",
             "Filth. Run to the horizon before I hunt you down.",
             "Absolutely no time to deal with lowlifes these days. Go away.",
+            "Filth. Run to the horizon before I hunt you down.",
+            "I used to be a trashtalker like you, then I took an banhammer to my face.",
+            "By Ysmir.. what?",
+            "Get away from me.",
+            "So you know how to tag me? Am I supposed to be impressed?",
+            "I am this close to muting you, I swear it.",
+            "Got something to say?",
         ];
-
         $strijderOptions = [
             "This discord belongs to the strijders!!!",
             "You've been a good friend to me. That means something.",
@@ -87,18 +125,16 @@ class MentionResponder
             "Divines smile on you, strijder.",
             "May the gods watch over your messages, friend",
             "You and me, we're the only people around who aren't complete fools.",
+            "It is our most favored strijder."
         ];
-
         $bumpOptions = [
             "By Shor, you really bump a lot.",
-            "Psst! Hey. I know who you are. Hail the bumper elite!",
             "The Gods blessed you with two hands, and you use both for bumping this discord, I can respect that.",
             "Well, look at you. If only everyone bumped like you did.",
             "Good to see you. At least you know how bump the discord properly.",
             "Wow, look at that bump counter, are you a wizard?",
+            "You're someone who can get things done, like bumping the discord. I like that."
         ];
-
-
         $adminOptions = [
             "Everything's in order.",
             "Staying safe I hope.",
@@ -109,13 +145,22 @@ class MentionResponder
             "You have the owners confidence, friend. And so you have mine.",
             "Good to have you by my side, friend. I need reliable people around.",
             "Good to see you. Finally someone useful is around.",
+            "I bet you could mute any one of those mean users. I bet you could do anything.",
+            "Good to have you by my side, friend. I need reliable moderators around."
 
         ];
-        $options = [
+        $nonStrijderOptions = [
             "Do you join the strijders vc very often? Oh, what am I saying, of course you don't.",
-            "Out with it.",
             "Let me guess... someone stole your sweetroll.",
-            "Disrespect the rules, and you disrespect me.",
+            "What are you starin' at?",
+            "Come, come. I haven't got all day.",
+            "And what might you need? Hmm?",
+            "Don't bother the other moderators.",
+            "You want something from me?",
+            "Make it quick.",
+            "Out with it.",
+        ];
+        $options = [
             "Trouble?",
             "What is it?",
             "No lollygaggin'.",
@@ -126,26 +171,18 @@ class MentionResponder
             "I'd be a lot warmer and a lot happier with a bellyful of mead...",
             "Watch the skies, traveler.",
             "You hear that? I swear, there's something out there. In the dark.",
-            "This server is under my protection. You watch yourself, now.",
-            "First time here? Take my advice. You see anything, don't get involved. The moderators will take care of it.",
-            "Don't ask too many questions. Safer for everyone that way.",
-            "Keep your nose clean, and you won't have any problems with me.",
             "Got to thinking... maybe I'm the owner, and I just don't know it yet?",
-            "I used to be a trashtalker like you, then I took an banhammer to my face.",
-            "And what might you need? Hmm?",
             "Yes, sera?",
-            "I don't owe you money, do I?",
-            "What are you starin' at?",
             "Hmph.",
             "Aye.",
             "Yeah?",
-            "Come, come. I haven't got all day.",
             "Let's hear it.",
-            "Don't bother the other moderators.",
             "If I had a sister, I'd sell her in a second.",
-
+            "Hmm?",
+            "Tidings.",
+            "I don't owe you money, do I?",
+            "Looking to protect yourself, or deal some damage? Wait what did I just say? ._."
         ];
-
         $cringeOptions = [
             "Uch. Been tending your hounds? You smell like a wet dog.",
             "Wait... I know you.",
@@ -163,22 +200,26 @@ class MentionResponder
             "Aren't you... embarrassed?",
         ];
 
-        $timeoutOptions = [
-            "By Ysmir.. what?",
-            "Get away from me.",
-            "So you know how to tag me? Am I supposed to be impressed?",
-            "I am this close to muting you, I swear it.",
-            "Got something to say?",
-        ];
+        Bot::getDiscord()->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) use (
+            $options, $adminOptions, $cringeOptions, $strijderOptions, $mutedOptions, $bumpOptions,
+            $nsfwOptions, $weebOptions, $highLevelOptions, $lowLevelOptions, $kingOfTheNerdsOptions, $bumperEliteOptions,
+            $nonStrijderOptions,
+        ) {
 
-
-        Bot::getDiscord()->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) use ($options, $adminOptions, $cringeOptions, $timeoutOptions, $strijderOptions, $mutedOptions, $bumpOptions) {
             if ($message->author->bot) {
                 return;
             }
             if (!$message->guild_id) {
                 return;
             }
+
+            foreach ($this->lastResponses as $lastResponse => $date) {
+                $now = Carbon::now();
+                if ($now->diffInSeconds($date) > 60) {
+                    unset($this->lastResponses[$lastResponse]);
+                }
+            }
+
 
             if ($message->mentions->count() > 0) {
                 if (str_contains($message->content, $discord->user->id)) {
@@ -190,14 +231,41 @@ class MentionResponder
                     }
 
                     $responses = [];
-
                     if (DiscordUser::hasPermission($message->author->id, $message->guild_id, Permission::TIMEOUTS->value)) {
                         $responses = array_merge($responses, $adminOptions);
                     }
-
                     $rolesCollection = collect($message->member->roles);
+
+                    // Strijder role
                     if ($rolesCollection->contains('id', "1008136015149531278")) {
                         $responses = array_merge($responses, $strijderOptions);
+                    } else {
+                        $responses = array_merge($responses, $nonStrijderOptions);
+                    }
+                    // NSFW role
+                    if ($rolesCollection->contains('id', "985997740356018257")) {
+                        $responses = array_merge($responses, $nsfwOptions);
+                    }
+                    // Weeb role
+                    if ($rolesCollection->contains('id', "921387543268831273")) {
+                        $responses = array_merge($responses, $weebOptions);
+                    }
+                    // King of the nerds role
+                    if ($rolesCollection->contains('id', "598945103431860256")) {
+                        $responses = array_merge($responses, $kingOfTheNerdsOptions);
+                    }
+                    // Bumper Elite role
+                    if ($rolesCollection->contains('id', "995771835767607366")) {
+                        $responses = array_merge($responses, $bumperEliteOptions);
+                    }
+
+                    // Minimal Legendary member options
+                    if ($rolesCollection->contains('id', "602121042730680339")) {
+                        $responses = array_merge($responses, $highLevelOptions);
+                    }
+                    // Max active member options (Master member ID)
+                    if (!$rolesCollection->contains('id', "602120702002200576")) {
+                        $responses = array_merge($responses, $lowLevelOptions);
                     }
 
                     $discordUser = DiscordUser::get($message->author->id);
@@ -215,18 +283,10 @@ class MentionResponder
                         $responses = array_merge($responses, $cringeOptions);
                     }
 
-                    if (!empty($responses)) {
-                        $message->reply($this->getRandom($responses));
-                        return;
+                    if (count($responses) < 10) {
+                        $responses = array_merge($responses, $options);
                     }
-
-                    $lastMessageDate = $this->getLastMessage($message->author->id);
-                    if ($lastMessageDate->diffInSeconds(Carbon::now()) <= 5) {
-                        $message->reply($this->getRandom($timeoutOptions));
-                    } else if ($lastMessageDate->diffInSeconds(Carbon::now()) >= 30) {
-                        $this->setLastMessage($message->author->id);
-                        $message->reply($this->getRandom($options));
-                    }
+                    $message->reply($this->getRandom($responses));
                 }
             }
         });
