@@ -22,6 +22,10 @@ class VoiceXpCounter
             if ($state->channel) {
                 if (!isset($oldstate)) {
                     $guild->joinedVoice($state->user_id);
+                } elseif ($guild->getChannel($state->channel_id)) {
+                    $this->leaveVoice($guild, $user, $state);
+                } else {
+                    $guild->joinedVoice($state->user_id);
                 }
             } else {
                 $this->leaveVoice($guild, $user, $state);
@@ -61,6 +65,7 @@ class VoiceXpCounter
                 ]);
             }
             $messageCounter->update(['level' => Helper::calcLevel($messageCounter->xp)]);
+            var_dump("XP SAVED");
         }
     }
 }
