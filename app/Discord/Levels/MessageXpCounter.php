@@ -27,10 +27,8 @@ class MessageXpCounter
                     return;
                 }
                 $channel = $guild->getChannel($message->channel_id);
-                if ($channel) {
-                    if ($channel->no_xp) {
-                        return;
-                    }
+                if ($channel && $channel->no_xp) {
+                    return;
                 }
 
                 $lastMessageDate = $guild->getLastMessage($message->author->id);
