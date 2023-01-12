@@ -43,12 +43,6 @@ class SyncRoleRewardsAction implements Action
                             var_dump('role given!!!');
                         });
                     }
-                } else {
-                    if ($rolesCollection->contains('id', $role)) {
-                        $this->message->member->removeRole($role)->done(function () {
-                            var_dump('role removed!!!');
-                        });
-                    }
                 }
             }
         }

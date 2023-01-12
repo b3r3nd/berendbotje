@@ -21,6 +21,14 @@ class VoiceXpCounter
 
             if ($state->channel) {
                 if (!isset($oldstate)) {
+                    if (!$guild->getChannel($state->channel_id) && !$state->self_mute && !$state->self_deaf) {
+                        $guild->joinedVoice($state->user_id);
+                    }
+                } elseif ($guild->getChannel($state->channel_id) && $guild->getChannel($state->channel_id)->no_xp) {
+                    $this->leaveVoice($guild, $user, $state);
+                } else if ($state->self_mute || $state->self_deaf) {
+                    $this->leaveVoice($guild, $user, $state);
+                } elseif ($oldstate->self_mute || $oldstate->self_deaf || $guild->getChannel($oldstate->channel_id)) {
                     $guild->joinedVoice($state->user_id);
                 }
             } else {
@@ -61,6 +69,7 @@ class VoiceXpCounter
                 ]);
             }
             $messageCounter->update(['level' => Helper::calcLevel($messageCounter->xp)]);
+            var_dump("XP SAVED");
         }
     }
 }
