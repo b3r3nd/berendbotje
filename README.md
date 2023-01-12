@@ -84,9 +84,8 @@ It is possible to attach role rewards to levels, when a user reaches that specif
 
 ### Calculating Levels
 
-This is what I use to calculate required XP for each level: `XP = 500 * (level^2) - (500 * level)`
+This is what I use to calculate required XP for each level: `5 * (lvl ^ 2) + (50 * lvl) + 100 - xp` it is the exact same XP system as MEE6 uses.
 
-Example for level 5: `500 * (5^2) - (500 * 5) = 10.000 XP`
 
 ### Commands
 
