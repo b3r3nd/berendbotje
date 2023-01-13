@@ -47,8 +47,9 @@ class DeleteRole extends SlashCommand
         if (strtolower($this->arguments[0]) === 'admin') {
             return EmbedFactory::failedEmbed(__('bot.roles.admin-role'));
         }
-
-        Role::get($this->guildId, $this->arguments[0])->delete();
+        $role = Role::get($this->guildId, $this->arguments[0]);
+        $role->permissions()->detach();
+        $role->delete();
         return EmbedFactory::successEmbed(__('bot.roles.deleted', ['role' => $this->arguments[0]]));
     }
 }
