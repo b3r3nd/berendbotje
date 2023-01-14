@@ -2,7 +2,6 @@
 
 namespace App\Discord\Core;
 
-use App\Discord\Core\Enums\Setting;
 use App\Discord\Core\Enums\Setting as SettingEnum;
 use App\Models\Channel;
 use App\Models\Guild as GuildModel;
