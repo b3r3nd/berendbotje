@@ -226,16 +226,6 @@ class Bot
             $instance = new $class();
             $instance->registerSlashCommand();
         }
-
-        // Custom commands
-        foreach (\App\Models\Command::all() as $command) {
-            SimpleCommand::create($this, $command->trigger, $command->response, $command->guild->guild_id);
-        }
-
-        // Custom reactions
-        foreach (Reaction::all() as $reaction) {
-            SimpleReaction::create($this, $reaction->trigger, $reaction->reaction, $reaction->guild->guild_id);
-        }
     }
 
     /**
