@@ -38,13 +38,13 @@ class DeleteReaction extends SlashCommand
         parent::__construct();
     }
 
+
     /**
-     * @throws NoPermissionsException
+     * @return MessageBuilder
      */
     public function action(): MessageBuilder
     {
         Reaction::where(['trigger' => $this->arguments[0], 'guild_id' => Guild::get($this->guildId)->id])->delete();
-        Bot::get()->getGuild($this->guildId)->deleteReaction($this->arguments[0]);
         return EmbedFactory::successEmbed(__('bot.reactions.deleted', ['name' => $this->arguments[0]]));
     }
 }

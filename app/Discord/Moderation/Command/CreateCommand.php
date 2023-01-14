@@ -45,15 +45,12 @@ class CreateCommand extends SlashCommand
     }
 
     /**
-     * @throws NoPermissionsException
+     * @return MessageBuilder
      */
     public function action(): MessageBuilder
     {
-        $trigger = $this->arguments[0];
-        $response = $this->arguments[1];
-        $command = \App\Models\Command::create(['trigger' => $trigger, 'response' => $response, 'guild_id' => Guild::get($this->guildId)->id]);
+        $command = \App\Models\Command::create(['trigger' => $this->arguments[0], 'response' => $this->arguments[1], 'guild_id' => Guild::get($this->guildId)->id]);
         $command->save();
-        new SimpleCommand(Bot::get(), $trigger, $response, $this->guildId);
-        return EmbedFactory::successEmbed(__('bot.cmd.saved', ['trigger' => $trigger, 'response' => $response]));
+        return EmbedFactory::successEmbed(__('bot.cmd.saved', ['trigger' => $this->arguments[0], 'response' => $this->arguments[1]]));
     }
 }
