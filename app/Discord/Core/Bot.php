@@ -146,11 +146,8 @@ class Bot
             EightBall::class, Ask::class, UrbanDictionary::class,
 
             ChannelIndex::class, MarkChannel::class, UnmarkChannel::class,
-
             Help::class,
-
             LogSettings::class, UpdateLogSetting::class,
-
         ];
     }
 
@@ -176,7 +173,7 @@ class Bot
 
             $this->loadCoreClasses();
             $this->loadGuilds();
-            //$this->deleteSlashCommands();
+            // $this->deleteSlashCommands();
             $this->loadCommands();
         });
         self::$instance = $this;
