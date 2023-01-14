@@ -36,7 +36,7 @@ class ReactionIndex extends SlashIndexCommand
             ->setTitle(__('bot.reactions.title'))
             ->setFooter(__('bot.reactions.footer'))
             ->setDescription(__('bot.reactions.description'));
-        foreach (Reaction::byGuild($this->guildId)->skip($this->offset)->limit($this->perPage)->get() as $reaction) {
+        foreach (Reaction::byGuild($this->guildId)->skip($this->getOffset($this->getLastUser()))->limit($this->perPage)->get() as $reaction) {
             $embedBuilder->getEmbed()->addField(['name' => $reaction->trigger, 'value' => $reaction->reaction, 'inline' => true]);
         }
         return $embedBuilder->getEmbed();

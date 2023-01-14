@@ -31,7 +31,7 @@ class Permissions extends SlashIndexCommand
         $this->perPage = 30;
         $this->total = Permission::count();
         $description = "";
-        foreach (Permission::orderBy('created_at', 'desc')->skip($this->offset)->limit($this->perPage)->get() as $permission) {
+        foreach (Permission::orderBy('created_at', 'desc')->skip($this->getOffset($this->getLastUser()))->limit($this->perPage)->get() as $permission) {
             $description .= "{$permission->name}\n";
         }
 

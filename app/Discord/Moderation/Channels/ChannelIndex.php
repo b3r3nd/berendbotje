@@ -32,7 +32,7 @@ class ChannelIndex extends SlashIndexCommand
     {
         $this->total = Channel::byGuild($this->guildId)->count();
         $channels = "";
-        foreach (Channel::byGuild($this->guildId)->skip($this->offset)->limit($this->perPage)->get() as $channel) {
+        foreach (Channel::byGuild($this->guildId)->skip($this->getOffset($this->getLastUser()))->limit($this->perPage)->get() as $channel) {
             $media = $channel->media_only ? 'On' : 'Off';
             $xp = $channel->no_xp ? 'On' : 'Off';
             $channels .= "** <#{$channel->channel_id}> **

@@ -38,7 +38,7 @@ class AllTimeouts extends SlashIndexCommand
 
         $embed = $embedBuilder->getEmbed();
         $description = __('bot.timeout.count', ['count' => $this->total]) . "\n\n";
-        foreach (Timeout::byGuild($this->guildId)->skip($this->offset)->limit($this->perPage)->orderBy('created_at', 'desc')->get() as $timeout) {
+        foreach (Timeout::byGuild($this->guildId)->skip($this->getOffset($this->getLastUser()))->limit($this->perPage)->orderBy('created_at', 'desc')->get() as $timeout) {
             $description .= TimeoutHelper::timeoutLength($timeout);
         }
         $embed->setDescription($description);
