@@ -148,9 +148,6 @@ class Bot
             ChannelIndex::class, MarkChannel::class, UnmarkChannel::class,
             Help::class,
             LogSettings::class, UpdateLogSetting::class,
-
-
-            EightBall::class
         ];
     }
 
