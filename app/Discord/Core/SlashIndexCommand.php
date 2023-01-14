@@ -18,17 +18,46 @@ use Discord\Parts\Interactions\Interaction;
  */
 abstract class SlashIndexCommand extends SlashCommand implements PaginationIndex
 {
-    public int $offset = 0;
-    public int $perPage = 10;
+    public array $offset = [];
+    public int $perPage = 1;
     public int $total = 0;
+
+
+    /**
+     * @return int
+     */
+    public function getOffset(): int
+    {
+        return $this->offset[$this->getCommandUser()];
+
+    }
+
+    /**
+     * @param int $offset
+     * @return void
+     */
+    public function setOffset(int $offset): void
+    {
+        $this->offset[$this->getCommandUser()] = $offset;
+
+    }
+
+    /**
+     * @param int $amount
+     * @return void
+     */
+    public function incOffset(int $amount): void
+    {
+        $this->offset[$this->getCommandUser()] = $this->offset[$this->getCommandUser()] += $amount;
+    }
 
     /**
      * @return MessageBuilder
      */
     public function action(): MessageBuilder
     {
+        $this->setOffset(0);
         $embed = $this->getEmbed();
-        $this->offset = 0;
         $next = $this->nextButton();
         $previous = $this->previousButton()->setDisabled(true);
 
@@ -48,13 +77,10 @@ abstract class SlashIndexCommand extends SlashCommand implements PaginationIndex
         return Button::new(Button::STYLE_PRIMARY)
             ->setLabel(__('bot.buttons.next'))
             ->setListener(function (Interaction $interaction) {
-                if ($interaction->user->id != $this->getCommandUser()) {
-                    return;
-                }
-                $this->offset += $this->perPage;
+                $this->incOffset($this->perPage);
                 $next = $this->nextButton();
                 $previous = $this->previousButton();
-                if (($this->offset + $this->perPage) > $this->total) {
+                if (($this->getOffset() + $this->perPage) > $this->total) {
                     $next->setDisabled(true);
                 }
                 if ($this->offset > 0) {
@@ -74,13 +100,10 @@ abstract class SlashIndexCommand extends SlashCommand implements PaginationIndex
         return Button::new(Button::STYLE_PRIMARY)
             ->setLabel(__('bot.buttons.previous'))
             ->setListener(function (Interaction $interaction) {
-                if ($interaction->user->id != $this->getCommandUser()) {
-                    return;
-                }
-                $this->offset -= $this->perPage;
+                $this->incOffset($this->perPage);
                 $next = $this->nextButton();
                 $previous = $this->previousButton();
-                if ($this->offset == 0) {
+                if ($this->getOffset() === 0) {
                     $next->setDisabled(false);
                     $previous->setDisabled(true);
                 }
@@ -88,6 +111,5 @@ abstract class SlashIndexCommand extends SlashCommand implements PaginationIndex
                 $interaction->message->edit(MessageBuilder::new()->addEmbed($this->getEmbed())->addComponent($actionRow));
 
             }, Bot::getDiscord());
-
     }
 }

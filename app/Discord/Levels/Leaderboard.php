@@ -34,8 +34,8 @@ class Leaderboard extends SlashIndexCommand
         $this->total = \App\Models\MessageCounter::byGuild($this->guildId)->count();
 
         $description = "";
-        foreach (\App\Models\MessageCounter::byGuild($this->guildId)->orderBy('xp', 'desc')->skip($this->offset)->limit($this->perPage)->get() as $index => $messageCounter) {
-            $description .= Helper::indexPrefix($index, $this->offset);
+        foreach (\App\Models\MessageCounter::byGuild($this->guildId)->orderBy('xp', 'desc')->skip($this->getOffset())->limit($this->perPage)->get() as $index => $messageCounter) {
+            $description .= Helper::indexPrefix($index, $this->getOffset());
             $description .= "Level **{$messageCounter->level}** • {$messageCounter->user->tag()} • {$messageCounter->xp} xp \n";
         }
         return EmbedBuilder::create(Bot::getDiscord())
