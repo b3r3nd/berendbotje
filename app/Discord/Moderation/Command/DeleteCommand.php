@@ -38,12 +38,11 @@ class DeleteCommand extends SlashCommand
     }
 
     /**
-     * @throws NoPermissionsException
+     * @return MessageBuilder
      */
     public function action(): MessageBuilder
     {
         \App\Models\Command::where(['trigger' => $this->arguments[0], 'guild_id' => Guild::get($this->guildId)->id])->delete();
-        Bot::get()->getGuild($this->guildId)->deleteCommand($this->arguments[0]);
         return EmbedFactory::successEmbed(__('bot.cmd.deleted', ['trigger' => $this->arguments[0]]));
     }
 }

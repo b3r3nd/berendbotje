@@ -2,28 +2,25 @@
 
 namespace App\Discord\Core;
 
+use App\Discord\Core\Enums\Setting;
 use App\Discord\Core\Enums\Setting as SettingEnum;
-use App\Discord\Moderation\Command\SimpleCommand;
 use App\Models\Channel;
 use App\Models\Guild as GuildModel;
 use App\Models\LogSetting;
 use App\Models\Setting;
 use Carbon\Carbon;
-use Discord\Http\Exceptions\NoPermissionsException;
-use Discord\Parts\Embed\Embed;
+use Discord\Discord;
+use Discord\Parts\Channel\Message;
 use Discord\Parts\User\Member;
 use Discord\Parts\User\User;
+use Discord\WebSockets\Event;
 use Exception;
 
 /**
  * Guild settings are loaded on boot and only updated when the actual setting is changed using commands.
  *
- * When a new command or reaction is added a new instance of either class is instantiated. I cannot manually destroy
- * these instances when the command or reaction is deleted, so I keep track of them here and make sure they do not fire.
  * @see SimpleCommand
  * @see SimpleReaction
- * @property $deletedCommands   List deleted commands so they do not trigger.
- * @property $deletedReactions  List of deleted reactions so they do not rigger.
  * @property $settings          List of cached settings, so we do not need to read from the database each time
  * @property $logSettings       List of cached log settings, so we do not need to read from the database each time
  * @property $lastMessages      Last message send by user in guild, used for the xp cooldown.
@@ -32,12 +29,9 @@ use Exception;
  * @property $logger            Logger instance for this specific guild which can log events.
  * @property $channels          List of channels which have special flags set, for example media channels
  *
- * @TODO find better solution for deleted commands and reactions.. probably step away from having a single instance per trigger
  */
 class Guild
 {
-    private array $deletedCommands = [];
-    private array $deletedReactions = [];
     private array $settings = [];
     private array $logSettings = [];
     private array $lastMessages = [];
@@ -66,8 +60,50 @@ class Guild
         }
 
         $this->logger = new Logger($this->getSetting(SettingEnum::LOG_CHANNEL));
+        $this->registerReactions();
+        $this->registerCommands();
     }
 
+
+    /**
+     * @return void
+     */
+    private function registerReactions(): void
+    {
+        Bot::getDiscord()->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) {
+            if ($message->author->bot || !$this->getSetting(\App\Discord\Core\Enums\Setting::ENABLE_REACTIONS)) {
+                return;
+            }
+            $this->model->refresh();
+            foreach ($this->model->reactions as $reaction) {
+                if (str_contains(strtolower($message->content), strtolower($reaction->trigger))) {
+                    if (str_contains($reaction->reaction, "<")) {
+                        $message->react(str_replace(["<", ">"], "", $reaction->reaction));
+                    } else {
+                        $message->react($reaction->reaction);
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * @return void
+     */
+    private function registerCommands(): void
+    {
+        Bot::getDiscord()->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) {
+            if ($message->author->bot || !$this->getSetting(\App\Discord\Core\Enums\Setting::ENABLE_COMMANDS)) {
+                return;
+            }
+            $this->model->refresh();
+            foreach ($this->model->commands as $command) {
+                if (strtolower($message->content) === strtolower($command->trigger)) {
+                    $message->channel->sendMessage($command->response);
+                }
+            }
+        });
+    }
 
     /**
      * @param string $message
@@ -125,9 +161,9 @@ class Guild
             $joinedAt = $this->inVoice[$userId];
             unset($this->inVoice[$userId]);
             return $joinedAt->diffInSeconds(Carbon::now());
-        } else {
-            return 0;
         }
+
+        return 0;
     }
 
     /**
@@ -265,53 +301,11 @@ class Guild
     }
 
     /**
-     * @param string $command
-     * @return void
-     */
-    public function deleteCommand(string $command): void
-    {
-        $this->deletedCommands[] = strtolower($command);
-    }
-
-    /**
-     * @param string $reaction
-     * @return void
-     */
-    public function deleteReaction(string $reaction): void
-    {
-        $this->deletedReactions[] = strtolower($reaction);
-    }
-
-    /**
      * @return array
      */
     public function getSettings(): array
     {
         return $this->settings ?? [];
-    }
-
-    /**
-     * @return array
-     */
-    public function getMediaChannels(): array
-    {
-        return $this->mediaChannels ?? [];
-    }
-
-    /**
-     * @return array
-     */
-    public function getDeletedCommands(): array
-    {
-        return $this->deletedCommands;
-    }
-
-    /**
-     * @return array
-     */
-    public function getDeletedReactions(): array
-    {
-        return $this->deletedReactions;
     }
 
     /**

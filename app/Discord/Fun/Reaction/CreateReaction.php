@@ -43,14 +43,14 @@ class CreateReaction extends SlashCommand
         parent::__construct();
     }
 
+
     /**
-     * @throws NoPermissionsException
+     * @return MessageBuilder
      */
     public function action(): MessageBuilder
     {
         $reaction = Reaction::create(['trigger' => $this->arguments[0], 'reaction' => $this->arguments[1], 'guild_id' => \App\Models\Guild::get($this->guildId)->id]);
         $reaction->save();
-        new SimpleReaction(Bot::get(), $this->arguments[0], $this->arguments[1], $this->guildId);
         return EmbedFactory::successEmbed(__('bot.reactions.saved', ['name' => $this->arguments[0], 'reaction' => $this->arguments[1]]));
     }
 }

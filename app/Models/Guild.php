@@ -41,6 +41,22 @@ class Guild extends Model
     /**
      * @return HasMany
      */
+    public function reactions(): HasMany
+    {
+        return $this->hasMany(Reaction::class);
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function commands(): HasMany
+    {
+        return $this->hasMany(Command::class);
+    }
+
+    /**
+     * @return HasMany
+     */
     public function roles(): HasMany
     {
         return $this->hasMany(Role::class);

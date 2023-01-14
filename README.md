@@ -6,7 +6,7 @@ now runs on as many serves as you like. If you have questions DM my directly by 
 ## Installing
 1. Download this repo and install al its dependencies with `composer install`
 2. Create your env file `mv .env.example .env` and fill in database credentials and bot token
-3. You can edit the `GuldSeeder` and `DiscordUsersSeeder` to add your server and admin users
+3. You can edit the `GuildSeeder` and `DiscordUsersSeeder` to add your server and admin users
 4. Run `php artisan migrate --seed` to setup your database.
 ## Running the bot
 1. I added an artisan command to run the bot `php artisan bot:run`.
@@ -16,7 +16,10 @@ now runs on as many serves as you like. If you have questions DM my directly by 
 
 # Functions
 I will try to update this readme with new functionality as I add it, but I cannot promise I keep it entirely up to date.
-The bot only uses slash commands, there used to be message commands but I moved everything to slash only.
+The bot only uses slash commands, there used to be message commands but I moved everything to slash only. I tried
+to filter incoming user input as much as possible with the slash commands itself. For example allowing only roles
+when roles are required, integers when levels are required etc. Even with changing bot settings it reads the settings 
+from the database and will be preloaded in the slash command so you do not have to remember each one.
 
 ## Multiple servers
 The bot runs on multiple servers, but each server requires some settings and values to be set in the database,
@@ -56,8 +59,6 @@ roles.
 * **Moderator**
     * `timeouts`
     * `channels`
-    * `add-cringe`
-    * `delete-cringe`
     * `commands`
     * `reactions`
 
@@ -79,14 +80,18 @@ roles.
 
 If enabled users can gain xp by sending messages and hanging out in voice. Check the Bot config section below
 for more control how much xp people gain per message, per minute in voice and if you want to enable this functionality
-at all.
-It is possible to attach role rewards to levels, when a user reaches that specific level a new role is granted.
+at all. It is possible to attach role rewards to levels, when a user reaches that specific level a new role is granted.
 
-You can use the `channels` en `markchannel` commands to also mark voice channels to gain no XP (like AFK). Users in voice who have either their mic or headset muted will not gain voice.
+For gaining xp in voice we have two extra rules:
+- Muted users (either mic muted or both) do not gain XP.
+- Users in a voice channel marked as `no_xp` will not gain XP.
+
+More on how to set the no_xp flag to a channel later.
 
 ### Calculating Levels
 
-This is what I use to calculate required XP for each level: `5 * (lvl ^ 2) + (50 * lvl) + 100 - xp` it is the exact same XP system as MEE6 uses.
+This is what I use to calculate required XP for each level: `5 * (lvl ^ 2) + (50 * lvl) + 100 - xp` it is the exact same 
+XP system as MEE6 uses. You can read more here ->  https://github.com/Mee6/Mee6-documentation/blob/master/docs/levels_xp.md
 
 
 ### Commands
@@ -102,9 +107,8 @@ This is what I use to calculate required XP for each level: `5 * (lvl ^ 2) + (50
 
 ## Bot Config
 
-The bot loads a config from the settings table which can be viewed and changed, it allows anything to be changed to
-anything
-you want so make sure you know what you are doing.
+The bot loads a config from the settings table which can be viewed and changed, it allows only integer values! So when 
+setting channels or roles make sure to use the IDS.
 
 * **config**
 * **set** `setting_name` `new_value`
@@ -264,6 +268,24 @@ commands to use cringe is:
 * **delcringe** `<user>`
 * **cringecounter**
 
+## Mention Responder
+Small funny feature, when you tag the bot you will get a random reply from a list of lines from skyrim, changed a bit to fit discord.
+There are some basic replies for everyone, but others are included based on:
+- If you have a high rank in the server (according to the xp system)
+- If you are the highest person on the leaderboard (according to the xp system)
+- If you bumped the discord the most (all time)
+- If you bumped the discord a lot
+- If you had timeouts in the past
+- If you are highly ranked on the cringe counter leaderboard
+- If you do or do not have the strijder role
+- If you have the NSFW role
+- If you are at least moderator in the server
+- if you have the weeb role
+
+Responses are hardcoded and some roles are custom to our server. I plan to change it so you can add both roles to look 
+out for and their responses in the discord server itself, with some default responses being there already, for example
+high and low xp, or bumpers.
+
 ## Fun commands
 
 A few fun commands you can use
@@ -272,5 +294,10 @@ A few fun commands you can use
 * **8ball** `question` - Ask a question to the 8ball
 * **ask** `question` - Ask a question and get a gif response
 * **say** `something` - say something
+
+## Help command
+
+You can write `/help` on discord to get information on most commands in the bot and explanation how they work. There are
+different categories which are preloaded for you to pick from.
 
 That's it for now! Enjoy! :)
