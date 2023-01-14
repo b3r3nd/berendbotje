@@ -2,6 +2,7 @@
 
 namespace App\Discord\Core;
 
+use App\Discord\Core\Enums\Setting;
 use App\Discord\Core\Enums\Setting as SettingEnum;
 use App\Models\Channel;
 use App\Models\Guild as GuildModel;
@@ -92,7 +93,7 @@ class Guild
     private function registerCommands(): void
     {
         Bot::getDiscord()->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) {
-            if ($message->author->bot || !$this->getSetting(\App\Discord\Core\Enums\Setting::ENABLE_REACTIONS)) {
+            if ($message->author->bot || !$this->getSetting(\App\Discord\Core\Enums\Setting::ENABLE_COMMANDS)) {
                 return;
             }
             $this->model->refresh();
