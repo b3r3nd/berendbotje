@@ -33,7 +33,7 @@ class RoleRewards extends SlashIndexCommand
         $this->total = RoleReward::byGuild($this->guildId)->count();
 
         $description = "";
-        foreach (RoleReward::byGuild($this->guildId)->orderBy('level', 'desc')->skip($this->offset)->limit($this->perPage)->get() as $index => $roleReward) {
+        foreach (RoleReward::byGuild($this->guildId)->orderBy('level', 'desc')->skip($this->getOffset($this->getLastUser()))->limit($this->perPage)->get() as $index => $roleReward) {
             $description .= "**Level {$roleReward->level}** • {$roleReward->roleTag()} \n";
         }
         return EmbedBuilder::create(Bot::getDiscord())

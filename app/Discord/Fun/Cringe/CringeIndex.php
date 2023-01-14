@@ -34,8 +34,8 @@ class CringeIndex extends SlashIndexCommand
         $this->total = CringeCounter::byGuild($this->guildId)->count();
 
         $description = "";
-        foreach (CringeCounter::byGuild($this->guildId)->orderBy('count', 'desc')->skip($this->offset)->limit($this->perPage)->get() as $index => $cringeCounter) {
-            $description .= Helper::indexPrefix($index, $this->offset);
+        foreach (CringeCounter::byGuild($this->guildId)->orderBy('count', 'desc')->skip($this->getOffset($this->getLastUser()))->limit($this->perPage)->get() as $index => $cringeCounter) {
+            $description .= Helper::indexPrefix($index, $this->getOffset($this->getLastUser()));
             $description .= "**{$cringeCounter->user->tag()}** • {$cringeCounter->count} \n";
         }
         return EmbedBuilder::create(Bot::getDiscord())

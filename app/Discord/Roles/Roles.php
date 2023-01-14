@@ -31,7 +31,7 @@ class Roles extends SlashIndexCommand
     {
         $this->total = Role::byDiscordGuildId($this->guildId)->count();
         $description = "";
-        foreach (Role::byDiscordGuildId(($this->guildId))->orderBy('created_at', 'desc')->skip($this->offset)->limit($this->perPage)->get() as $role) {
+        foreach (Role::byDiscordGuildId(($this->guildId))->orderBy('created_at', 'desc')->skip($this->getOffset($this->getLastUser()))->limit($this->perPage)->get() as $role) {
             $perms = "";
             foreach ($role->permissions as $permission) {
                 $perms .= "{$permission->name}, ";
