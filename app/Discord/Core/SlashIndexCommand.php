@@ -19,7 +19,7 @@ use Discord\Parts\Interactions\Interaction;
 abstract class SlashIndexCommand extends SlashCommand implements PaginationIndex
 {
     public array $offset = [];
-    public int $perPage = 1;
+    public int $perPage = 15;
     public int $total = 0;
 
     /**
