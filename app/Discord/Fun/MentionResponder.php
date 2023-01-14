@@ -41,10 +41,7 @@ class MentionResponder
     {
         $nsfwOptions = [
             "You should be embarrassed to have that role... its not safe (for work).",
-            "Naked. Naked, naked, naked!",
-            "This one wonders - do you have no clothes, or just like the feel of the wind?",
             "Please. Remove your naked obscenity from this discord of civilized folk.",
-            "Shameful, really. I blame the parents.",
             "Enough already. Go back to NSFW. You're making people nervous.",
             "You must either be crazy or supremely confident to have the NSFW role without shame.",
             "NSFW.. Not my thing, but who am I to judge...",
@@ -112,6 +109,7 @@ class MentionResponder
             "So you know how to tag me? Am I supposed to be impressed?",
             "I am this close to muting you, I swear it.",
             "Got something to say?",
+            "Shameful, really. I blame the parents.",
         ];
         $strijderOptions = [
             "This discord belongs to the strijders!!!",
