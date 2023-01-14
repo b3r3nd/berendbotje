@@ -66,7 +66,7 @@ class BumpStatistics extends SlashIndexCommand
                          ->whereMonth('created_at', date('m'))
                          ->groupBy('user_id')
                          ->orderBy('total', 'desc')
-                         ->skip($this->offset)
+                         ->skip($this->getOffset($this->getLastUser()))
                          ->limit($this->perPage)
                          ->selectRaw('*, sum(count) as total')
                          ->get() as $index => $bumper) {
