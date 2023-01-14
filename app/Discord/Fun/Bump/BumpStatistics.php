@@ -56,7 +56,7 @@ class BumpStatistics extends SlashIndexCommand
 
         if (strtolower($this->arguments[0]) === 'all-time') {
             foreach (Bumper::byGuild($this->guildId)->groupBy('user_id')->orderBy('total', 'desc')->skip($this->getOffset($this->getLastUser()))->limit($this->perPage)->selectRaw('*, sum(count) as total')->get() as $index => $bumper) {
-                $description .= Helper::indexPrefix($index);
+                $description .= Helper::indexPrefix($index, $this->getOffset($this->getLastUser()));
                 $description .= "**{$bumper->user->tag()}** •  {$bumper->total}\n";
             }
             $builder->setDescription(__('bot.bump.description', ['bumpers' => $description]));
@@ -66,12 +66,12 @@ class BumpStatistics extends SlashIndexCommand
                          ->whereMonth('created_at', date('m'))
                          ->groupBy('user_id')
                          ->orderBy('total', 'desc')
-                         ->skip($this->offset)
+                         ->skip($this->getOffset($this->getLastUser()))
                          ->limit($this->perPage)
                          ->selectRaw('*, sum(count) as total')
                          ->get() as $index => $bumper) {
 
-                $description .= Helper::indexPrefix($index);
+                $description .= Helper::indexPrefix($index, $this->getOffset($this->getLastUser()));
                 $description .= "**{$bumper->user->tag()}** •  {$bumper->total}\n";
             }
             $builder->setDescription(__('bot.bump.description-month', ['bumpers' => $description]));
