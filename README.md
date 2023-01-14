@@ -169,7 +169,7 @@ You can enable/disable each event in the log config:
 
 ## Channels
 
-You can set flags for channels, for now there are two flags you can use:
+You can set flags for channels, the no_xp flag can also be used for voice channels! For now there are two flags you can use:
 
 * `no_xp` - Bot does not count xp for users when they send messages in this channel
 * `media_only` - Channel allows only media and URL, anything else will be deleted.
