@@ -46,6 +46,8 @@ class MentionResponder
             "You must either be crazy or supremely confident to have the NSFW role without shame.",
             "NSFW.. Not my thing, but who am I to judge...",
             "Oh, dear. Would you look at that? NSFW? How embarrassing.",
+            "NSFW role huh? Was it your ma or pa that left you?",
+            "Keep your hands to yourself, pervert.",
         ];
         $weebOptions = [
             "Weebs are not welcome in the general chat, so they make their camps in the #weeb channel.",
@@ -70,6 +72,7 @@ class MentionResponder
             "This server is under my protection. You watch yourself, now.",
             "Ah, so you're new here, then? Welcome, I suppose.",
             "Keep your nose clean, and you won't have any problems with me.",
+            "Look at all the newcomers! I want to go muting! Or banning!",
         ];
         $kingOfTheNerdsOptions = [
             "Being king of the nerds is a perfectly valid way of life, don't let anyone tell you otherwise.",
@@ -123,7 +126,9 @@ class MentionResponder
             "Divines smile on you, strijder.",
             "May the gods watch over your messages, friend",
             "You and me, we're the only people around who aren't complete fools.",
-            "It is our most favored strijder."
+            "It is our most favored strijder.",
+            "Power. You have it, as do all strijders. But power is inert without action and choice.",
+
         ];
         $bumpOptions = [
             "By Shor, you really bump a lot.",
@@ -131,7 +136,8 @@ class MentionResponder
             "Well, look at you. If only everyone bumped like you did.",
             "Good to see you. At least you know how bump the discord properly.",
             "Wow, look at that bump counter, are you a wizard?",
-            "You're someone who can get things done, like bumping the discord. I like that."
+            "You're someone who can get things done, like bumping the discord. I like that.",
+            "Hail bumper, bump me up a warm bed would you?",
         ];
         $adminOptions = [
             "Everything's in order.",
@@ -144,8 +150,8 @@ class MentionResponder
             "Good to have you by my side, friend. I need reliable people around.",
             "Good to see you. Finally someone useful is around.",
             "I bet you could mute any one of those mean users. I bet you could do anything.",
-            "Good to have you by my side, friend. I need reliable moderators around."
-
+            "Good to have you by my side, friend. I need reliable moderators around.",
+            "you know the old saying: When life gives you lemons, go ban some trolls.",
         ];
         $nonStrijderOptions = [
             "Do you join the strijders vc very often? Oh, what am I saying, of course you don't.",
@@ -179,7 +185,15 @@ class MentionResponder
             "Hmm?",
             "Tidings.",
             "I don't owe you money, do I?",
-            "Looking to protect yourself, or deal some damage? Wait what did I just say? ._."
+            "Looking to protect yourself, or deal some damage? Wait what did I just say? ._.",
+            "The Dutch are so serious about hair. So much hair. Berend thinks they wish they had a glorious bald head like him.",
+            "I do swear my blood and honour to the service of the mods.",
+            "I’m not a man, I’m a bot in human form. Just release me and point me at the trolls.",
+            "I like living here. Berend is so pretty.",
+            "The strijders channel looks so pretty. I wish they'd let me inside...",
+            "I climbed all the way up to the strijders channel, but they said I wasn't good enough to get in. They're just mean.",
+            "You are such a milk-drinker. You can't even stand up to a bot.",
+            "Martijn let me see his basement. It's really nice.",
         ];
         $cringeOptions = [
             "Uch. Been tending your hounds? You smell like a wet dog.",
@@ -196,6 +210,9 @@ class MentionResponder
             "Every time I think of you, I imagine a Saber Cat closing its claws around your face.",
             "Don't like those eyes you got. There's a bad hunger to them.",
             "Aren't you... embarrassed?",
+            "My God, you're hauling around a lot of cringe.",
+            "And the troll was boastful no more, when his ugly head rolled around on the floor!",
+
         ];
 
         Bot::getDiscord()->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) use (
@@ -281,9 +298,8 @@ class MentionResponder
                         $responses = array_merge($responses, $cringeOptions);
                     }
 
-                    if (count($responses) < 10) {
-                        $responses = array_merge($responses, $options);
-                    }
+                    $responses = array_merge($responses, $options);
+
                     $message->reply($this->getRandom($responses));
                 }
             }
