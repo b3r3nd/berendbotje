@@ -36,6 +36,7 @@ class Help extends SlashCommand
                     ['name' => 'Moderation', 'value' => 'moderation'],
                     ['name' => 'Levels', 'value' => 'levels'],
                     ['name' => 'Fun', 'value' => 'fun'],
+                    ['name' => 'MentionResponder', 'value' => 'mentions'],
                     ['name' => 'Settings', 'value' => 'settings'],
                     ['name' => 'Logs', 'value' => 'logs'],
                 ]
@@ -105,7 +106,7 @@ class Help extends SlashCommand
                     `reactions` • Show list custom reactions
                     `addreaction` `trigger` `emoji` • Add new reactions
                     `delreaction` `trigger` • Delete a reaction\n
-                    `bumpstats` • Show bumper elites leaderboard
+                    `bumpstats` `monthly/all time`• Show bumper elites leaderboard
                     `emotes` • Shows scoreboard of most used emotes
                     `leaderboard` • Shows leaderboard based on messages and xp gained
                     `rank` • Shows your current rank, message counter and XP
@@ -138,6 +139,10 @@ class Help extends SlashCommand
                     `enable_commands` • Enable custom commands
                     `enable_logging` • Enable general logs
                     `log_channel` • ID of the log channel
+                    `enable_bump_reminder` • Enable the bump reminder
+                    `bump_reminder_role` • What role should be tagged for the bump reminder
+                    `bump_channel` • Channel where to tag the role
+                    `enable_mention_responder` • Enable the mention responder
 
                     **Examples:**
                     `set` `enable_xp` `0` • Disable message XP system
@@ -177,6 +182,33 @@ class Help extends SlashCommand
                  `logset` `key` `value` • Update a value in the log config
                  ";
                 $embedBuilder->setDescription($desc)->setTitle("Logs");
+            } elseif (strtolower($this->arguments[0]) === 'mentions') {
+                $desc = "
+                Small funny feature, when you tag the bot you will get a random reply from a list of mention replies. There are default replies, but you can also add your own replies based on certain roles in the server, for example (our server):
+                - Weeb role
+                - NSFW role
+                - Moderator role
+                - Admin role
+                - Strijder Role
+
+                The bot comes with some default groups and replies:
+                - If you have a high rank in the server (according to the xp system)
+                - If you are the highest person on the leaderboard (according to the xp system)
+                - If you bumped the discord the most (all time)
+                - If you bumped the discord a lot
+                - If you had timeouts in the past
+                - If you are highly ranked on the cringe counter leaderboard
+
+                You can manage all groups and their replies by using these commands:
+                - `replies` - show all replies grouped by available categories
+                - `replies` `group_id` - Show all replies for a single group
+                - `replygroups` - Show all groups
+                - `addgroup` `discord_role` - Add a group
+                - `delgroup` `group_id` - Delete a group and its replies (!!!)
+                - `addreply` `group_id` `reply_line` - Add a reply to a group
+                - `delreply` `reply_id`- Delete a reply
+                 ";
+                $embedBuilder->setDescription($desc)->setTitle("Mention Responder");
             }
             return MessageBuilder::new()->addEmbed($embedBuilder->getEmbed());
 
@@ -189,6 +221,7 @@ class Help extends SlashCommand
             ['name' => 'Moderation', 'value' => 'Moderator actions'],
             ['name' => 'Levels', 'value' => 'Levels and XP'],
             ['name' => 'Logs', 'value' => 'Which events are logged'],
+            ['name' => 'MentionResponder', 'value' => 'Manage the responses when you tag the bot'],
             ['name' => 'Fun', 'value' => 'Fun commands'],
         );
         return MessageBuilder::new()->addEmbed($embedBuilder->getEmbed());

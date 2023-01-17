@@ -269,22 +269,31 @@ commands to use cringe is:
 * **cringecounter**
 
 ## Mention Responder
-Small funny feature, when you tag the bot you will get a random reply from a list of lines from skyrim, changed a bit to fit discord.
-There are some basic replies for everyone, but others are included based on:
+Small funny feature, when you tag the bot you will get a random reply from a list of mention replies. There are default
+replies, but you can also add your own replies based on certain roles in the server, for example (our server):
+- Weeb role
+- NSFW role
+- Moderator role
+- Admin role
+- Strijder Role
+
+The bot comes with some default groups and replies:
 - If you have a high rank in the server (according to the xp system)
 - If you are the highest person on the leaderboard (according to the xp system)
 - If you bumped the discord the most (all time)
 - If you bumped the discord a lot
 - If you had timeouts in the past
 - If you are highly ranked on the cringe counter leaderboard
-- If you do or do not have the strijder role
-- If you have the NSFW role
-- If you are at least moderator in the server
-- if you have the weeb role
 
-Responses are hardcoded and some roles are custom to our server. I plan to change it so you can add both roles to look 
-out for and their responses in the discord server itself, with some default responses being there already, for example
-high and low xp, or bumpers.
+You can manage all groups and their replies by using these commands:
+- `replies` - show all replies grouped by available categories
+- `replies` `group_id` - Show all replies for a single group
+- `replygroups` - Show all groups
+- `addgroup` `discord_role` - Add a group 
+- `delgroup` `group_id` - Delete a group and its replies (!!!)
+- `addreply` `group_id` `reply_line` - Add a reply to a group
+- `delreply` `reply_id`- Delete a reply 
+
 
 ## Fun commands
 
