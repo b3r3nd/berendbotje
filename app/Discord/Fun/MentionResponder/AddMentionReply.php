@@ -23,7 +23,6 @@ class AddMentionReply extends SlashCommand
     {
         return 'addreply';
     }
-
     public function __construct()
     {
         $this->description = __('bot.slash.addreply');
@@ -44,6 +43,7 @@ class AddMentionReply extends SlashCommand
         ];
         parent::__construct();
     }
+
 
     public function action(): MessageBuilder
     {

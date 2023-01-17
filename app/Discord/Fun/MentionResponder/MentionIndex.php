@@ -6,6 +6,7 @@ use App\Discord\Core\Bot;
 use App\Discord\Core\Builders\EmbedBuilder;
 use App\Discord\Core\Enums\Permission;
 use App\Discord\Core\SlashIndexCommand;
+use App\Discord\Helper;
 use App\Models\MentionGroup;
 use Discord\Parts\Embed\Embed;
 use Discord\Parts\Interactions\Command\Option;
@@ -54,12 +55,7 @@ class MentionIndex extends SlashIndexCommand
 
         $description = "";
         foreach ($mentionGroups as $mentionGroup) {
-            if (is_numeric($mentionGroup->name)) {
-                $description .= "{$mentionGroup->id} - **<@&{$mentionGroup->name}>** \n";
-            } else {
-                $description .= "{$mentionGroup->id} - **{$mentionGroup->name}** \n";
-            }
-
+            $description .= Helper::getGroupName($mentionGroup);
 
             foreach ($mentionGroup->replies as $mentionReply) {
                 $description .= "** {$mentionReply->id} ** - {$mentionReply->reply} \n";

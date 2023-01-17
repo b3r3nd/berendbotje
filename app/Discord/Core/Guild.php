@@ -43,7 +43,8 @@ class Guild
     public GuildModel $model;
     private Logger $logger;
     private array $channels = [];
-    private array $mentionReplies = [];
+    private array $roleReplies = [];
+    private array $noRoleReplies = [];
     private array $lastResponses = [];
 
     /**
@@ -73,13 +74,20 @@ class Guild
 
 
     /**
+     * Function is not only called on guild load, also whenever a new group or reply is added to update it in this class.
+     *
      * @return void
      */
     public function loadReplies(): void
     {
-        $this->mentionReplies = [];
+        $this->roleReplies = [];
+        $this->noRoleReplies = [];
         foreach (MentionGroup::byGuild($this->model->guild_id)->get() as $mentionGroup) {
-            $this->mentionReplies[$mentionGroup->name] = $mentionGroup->replies->pluck('reply')->toArray();
+            if ($mentionGroup->has_role) {
+                $this->roleReplies[$mentionGroup->name] = $mentionGroup->replies->pluck('reply')->toArray();
+            } else {
+                $this->noRoleReplies[$mentionGroup->name] = $mentionGroup->replies->pluck('reply')->toArray();
+            }
         }
     }
 
@@ -99,6 +107,7 @@ class Guild
                 return;
             }
 
+            // @TODO need to find better way to do this nasty shit
             foreach ($this->lastResponses as $lastResponse => $date) {
                 $now = Carbon::now();
                 if ($now->diffInSeconds($date) > 60) {
@@ -107,11 +116,17 @@ class Guild
             }
 
             $roles = collect($message->member->roles);
-            $finalReplies = [];
+            $responses = [];
 
-            foreach ($this->mentionReplies as $group => $replies) {
+            foreach ($this->roleReplies as $group => $replies) {
                 if (is_int($group) && $roles->contains('id', $group)) {
-                    $finalReplies = array_merge($finalReplies, $replies);
+                    $responses = array_merge($responses, $replies);
+                }
+            }
+
+            foreach ($this->noRoleReplies as $group => $replies) {
+                if (is_int($group) && !$roles->contains('id', $group)) {
+                    $responses = array_merge($responses, $replies);
                 }
             }
 
@@ -122,18 +137,18 @@ class Guild
             $timeoutCounter = Timeout::byGuild($message->guild_id)->where(['discord_id' => $message->author->id])->count();
 
             if ($bumpCounter->total > 100) {
-                $finalReplies = array_merge($finalReplies, $this->mentionReplies['BumpCounter']);
+                $responses = array_merge($responses, $this->roleReplies['BumpCounter']);
             }
             if ($timeoutCounter > 1) {
-                $finalReplies = array_merge($finalReplies, $this->mentionReplies['Muted']);
+                $responses = array_merge($responses, $this->roleReplies['Muted']);
             }
             if ($cringeCounter > 10) {
-                $finalReplies = array_merge($finalReplies, $this->mentionReplies['CringeCounter']);
+                $responses = array_merge($responses, $this->roleReplies['CringeCounter']);
             }
 
             // Replies for everyone
-            $finalReplies = array_merge($finalReplies, $this->mentionReplies['Default']);
-            $message->reply($this->getRandom($finalReplies));
+            $responses = array_merge($responses, $this->roleReplies['Default']);
+            $message->reply($this->getRandom($responses));
         });
     }
 

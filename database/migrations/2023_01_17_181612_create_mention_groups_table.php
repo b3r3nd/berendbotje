@@ -18,6 +18,7 @@ return new class extends Migration {
             $table->unsignedBigInteger('guild_id');
             $table->foreign('guild_id')->references('id')->on('guilds');
             $table->boolean('is_custom')->default(true);
+            $table->boolean('has_role')->default(true);
             $table->timestamps();
         });
     }
