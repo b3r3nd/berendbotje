@@ -4,9 +4,12 @@ namespace App\Discord\Core;
 
 use App\Discord\Core\Enums\Setting as SettingEnum;
 use App\Models\Channel;
+use App\Models\DiscordUser;
 use App\Models\Guild as GuildModel;
 use App\Models\LogSetting;
+use App\Models\MentionGroup;
 use App\Models\Setting;
+use App\Models\Timeout;
 use Carbon\Carbon;
 use Discord\Discord;
 use Discord\Parts\Channel\Message;
@@ -27,6 +30,8 @@ use Exception;
  * @property $guildModel        Eloquent model for the guild.
  * @property $logger            Logger instance for this specific guild which can log events.
  * @property $channels          List of channels which have special flags set, for example media channels
+ * @property $mentionReplies    List of mention replies for this guild, cached in this class to prevent a billion DB calls.
+ * @property $lastResponses     List of responses recently used (60 sec) so no duplicates are send
  *
  */
 class Guild
@@ -38,6 +43,8 @@ class Guild
     public GuildModel $model;
     private Logger $logger;
     private array $channels = [];
+    private array $mentionReplies = [];
+    private array $lastResponses = [];
 
     /**
      * @param GuildModel $guild
@@ -61,8 +68,94 @@ class Guild
         $this->logger = new Logger($this->getSetting(SettingEnum::LOG_CHANNEL));
         $this->registerReactions();
         $this->registerCommands();
+        $this->registerMentionResponder();
     }
 
+
+    /**
+     * @return void
+     */
+    public function loadReplies(): void
+    {
+        $this->mentionReplies = [];
+        foreach (MentionGroup::byGuild($this->model->guild_id)->get() as $mentionGroup) {
+            $this->mentionReplies[$mentionGroup->name] = $mentionGroup->replies->pluck('reply')->toArray();
+        }
+    }
+
+    /**
+     * @return void
+     */
+    private function registerMentionResponder(): void
+    {
+        $this->loadReplies();
+        Bot::getDiscord()->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) {
+            if ($message->author->bot || !$message->guild_id || !str_contains($message->content, $discord->user->id)) {
+                return;
+            }
+
+            if (str_contains($message->content, '?give')) {
+                $message->reply('Thanks! 😎');
+                return;
+            }
+
+            foreach ($this->lastResponses as $lastResponse => $date) {
+                $now = Carbon::now();
+                if ($now->diffInSeconds($date) > 60) {
+                    unset($this->lastResponses[$lastResponse]);
+                }
+            }
+
+            $roles = collect($message->member->roles);
+            $finalReplies = [];
+
+            foreach ($this->mentionReplies as $group => $replies) {
+                if (is_int($group) && $roles->contains('id', $group)) {
+                    $finalReplies = array_merge($finalReplies, $replies);
+                }
+            }
+
+
+            $discordUser = DiscordUser::get($message->author->id);
+            $cringeCounter = $discordUser->cringeCounters()->where('guild_id', \App\Models\Guild::get($message->guild_id)->id)->get()->first()->count ?? 0;
+            $bumpCounter = $discordUser->bumpCounters()->where('guild_id', GuildModel::get($message->guild_id)->id)->selectRaw('*, sum(count) as total')->first();
+            $timeoutCounter = Timeout::byGuild($message->guild_id)->where(['discord_id' => $message->author->id])->count();
+
+            if ($bumpCounter->total > 100) {
+                $finalReplies = array_merge($finalReplies, $this->mentionReplies['BumpCounter']);
+            }
+            if ($timeoutCounter > 1) {
+                $finalReplies = array_merge($finalReplies, $this->mentionReplies['Muted']);
+            }
+            if ($cringeCounter > 10) {
+                $finalReplies = array_merge($finalReplies, $this->mentionReplies['CringeCounter']);
+            }
+
+            // Replies for everyone
+            $finalReplies = array_merge($finalReplies, $this->mentionReplies['Default']);
+            $message->reply($this->getRandom($finalReplies));
+        });
+    }
+
+
+    /**
+     * @param array $array
+     * @return mixed
+     * @throws \Exception
+     */
+    private function getRandom(array $array): mixed
+    {
+        $response = $array[random_int(0, (count($array) - 1))];
+        while (isset($this->lastResponses[$response])) {
+            $response = $array[random_int(0, (count($array) - 1))];
+            if (count($this->lastResponses) === count($array)) {
+                $this->lastResponses = [];
+                break;
+            }
+        }
+        $this->lastResponses[$response] = Carbon::now();
+        return $response;
+    }
 
     /**
      * @return void

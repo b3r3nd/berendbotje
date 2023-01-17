@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             SettingsSeeder::class,
             LogSettingsSeeder::class,
+            MentionResponderSeeder::class,
         ]);
     }
 }

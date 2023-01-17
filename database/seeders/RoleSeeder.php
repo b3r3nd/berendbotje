@@ -22,10 +22,21 @@ class RoleSeeder extends Seeder
         $roles = [
             'admin' => Permission::all(),
             'moderator' => collect([]),
+            'cringecounter' => collect([]),
+            'mentionresponder' => collect([]),
         ];
 
-        foreach (['timeouts', 'media-filter', 'add-cringe', 'delete-cringe', 'commands', 'reactions'] as $permName) {
+        foreach (['timeouts', 'media-filter', 'add-cringe',
+                     'delete-cringe', 'commands', 'reactions',
+                     'add-mention', 'delete-mention'] as $permName) {
             $roles['moderator']->push(Permission::get($permName));
+        }
+
+        $roles['cringecounter']->push(Permission::get('add-cringe'));
+
+
+        foreach (['add-mention', 'delete-mention'] as $permName) {
+            $roles['mentionresponder']->push(Permission::get($permName));
         }
 
         $user = DiscordUser::find(1);

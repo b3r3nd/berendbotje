@@ -21,7 +21,7 @@ return [
     'media-deleted' => 'Your message in :channel has been deleted. Only media and URLs are allowed.',
     'no-term' => 'Enter a search term',
     'no-valid-term' => 'Search term :term cannot be found',
-    'needhelp' => 'For more info check $help',
+    'needhelp' => 'For more info check /help',
     'bump-reminder' => 'BUMP TIME :role',
 
 
@@ -72,6 +72,13 @@ return [
         'unmark-channel' => 'Remove flags from a channel',
         'logconfig' => 'Configuration for log channel',
         'logset' => 'Enable or disable parts of the log',
+        'mentionindex' => 'List of all replies used by the mention responder',
+        'addgroup ' => 'Create a new mention group',
+        'delgroup' => 'Delete a mention group',
+        'addreply' => 'Add a new reply to a mention group',
+        'delreply' => 'Delete a new reply from a mention group',
+        'searchreply ' => 'Search for a reply',
+        'mentiongroups' => 'Mention responder group',
     ],
 
     'channels' => [
@@ -312,4 +319,24 @@ return [
     ],
 
     'say-usage' => "Usage: say `text_string`",
+
+
+    'mention' => [
+        'title' => 'Mention Responses',
+        'footer' => 'List of mention groups and their responses',
+        'description' => ':data',
+        'added' => "**Reply:** \n :reply \n\n **Group:** :group",
+        'deleted' => 'Reply has been deleted',
+        'no-group' => 'Group not found, use the group ID',
+        'no-reply' => 'Reply not found, use the reply ID',
+    ],
+    'mentiongroup' => [
+        'title' => 'Mention Groups',
+        'footer' => 'List of mention groups',
+        'description' => ':data',
+        'added' => 'Mention group :group added',
+        'deleted' => 'Mention group and all of its replies deleted',
+        'not-found' => 'Group with id :ID not found',
+        'integer' => 'A group must be the ID of a server role! (for now)',
+    ]
 ];

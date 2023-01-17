@@ -31,6 +31,9 @@ enum Permission: string
 
     case ROLE_REWARDS = 'role-rewards';
     case MANAGE_XP = 'manage-xp';
+    case ADD_MENTION = 'add-mention';
+    case DEL_MENTION = 'delete-mention';
+    case MANAGE_MENTION_GROUP = 'manage-mention-groups';
 
     // Bot Owner permissions not available in public servers
     case ADMIN_SERVER = 'servers';

@@ -136,18 +136,12 @@ class Bot
 
             SingleUserTimeouts::class, AllTimeouts::class, ModeratorStatistics::class,
 
-            Leaderboard::class, RoleRewards::class, CreateRoleReward::class, DeleteRoleReward::class,
-            UserRank::class, GiveXp::class, RemoveXp::class, ResetXp::class,
-
-            CringeIndex::class, IncreaseCringe::class, DecreaseCringe::class, ResetCringe::class,
-            BumpStatistics::class, EmoteIndex::class,
-            CommandIndex::class, CreateCommand::class, DeleteCommand::class,
-            ReactionIndex::class, CreateReaction::class, DeleteReaction::class,
-            EightBall::class, Ask::class, UrbanDictionary::class,
-
-            ChannelIndex::class, MarkChannel::class, UnmarkChannel::class,
-            Help::class,
-            LogSettings::class, UpdateLogSetting::class,
+            MentionResponder\MentionIndex::class,
+            MentionResponder\AddMentionReply::class,
+            MentionResponder\DelMentionReply::class,
+            MentionResponder\MentionGroupIndex::class,
+            MentionResponder\AddMentionGroup::class,
+            MentionResponder\DelMentionGroup::class,
         ];
     }
 
