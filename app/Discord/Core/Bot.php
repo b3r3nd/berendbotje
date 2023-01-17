@@ -15,6 +15,12 @@ use App\Discord\Fun\EightBall;
 use App\Discord\Fun\Emote\EmoteCounter;
 use App\Discord\Fun\Emote\EmoteIndex;
 use App\Discord\Fun\MentionResponder;
+use App\Discord\Fun\MentionResponder\AddMentionGroup;
+use App\Discord\Fun\MentionResponder\AddMentionReply;
+use App\Discord\Fun\MentionResponder\DelMentionGroup;
+use App\Discord\Fun\MentionResponder\DelMentionReply;
+use App\Discord\Fun\MentionResponder\MentionGroupIndex;
+use App\Discord\Fun\MentionResponder\MentionIndex;
 use App\Discord\Fun\Reaction\CreateReaction;
 use App\Discord\Fun\Reaction\DeleteReaction;
 use App\Discord\Fun\Reaction\ReactionIndex;
@@ -101,7 +107,6 @@ class Bot
             VoiceStateUpdate::class,
             DetectTimeouts::class,
             MediaFilter::class,
-            MentionResponder::class,
 
             KickAndBanCounter::class,
             BumpCounter::class,
@@ -131,17 +136,26 @@ class Bot
             Roles::class, Permissions::class, Users::class,
             MyRoles::class, UserRoles::class,
             CreateRole::class, DeleteRole::class,
-            AttachRolePermission::class, AttachUserRole::class, DetachRolePermission::class, DetachUserRole::class,
+            DetachUserRole::class, AttachUserRole::class, AttachRolePermission::class, DetachRolePermission::class,
             Settings::class, UpdateSetting::class,
 
             SingleUserTimeouts::class, AllTimeouts::class, ModeratorStatistics::class,
 
-            MentionResponder\MentionIndex::class,
-            MentionResponder\AddMentionReply::class,
-            MentionResponder\DelMentionReply::class,
-            MentionResponder\MentionGroupIndex::class,
-            MentionResponder\AddMentionGroup::class,
-            MentionResponder\DelMentionGroup::class,
+            Leaderboard::class, RoleRewards::class, CreateRoleReward::class, DeleteRoleReward::class,
+            UserRank::class, GiveXp::class, RemoveXp::class, ResetXp::class,
+
+            CringeIndex::class, IncreaseCringe::class, DecreaseCringe::class, ResetCringe::class,
+            BumpStatistics::class, EmoteIndex::class,
+            CommandIndex::class, CreateCommand::class, DeleteCommand::class,
+            ReactionIndex::class, CreateReaction::class, DeleteReaction::class,
+            EightBall::class, Ask::class, UrbanDictionary::class,
+
+            ChannelIndex::class, MarkChannel::class, UnmarkChannel::class,
+            Help::class,
+            LogSettings::class, UpdateLogSetting::class,
+
+            MentionIndex::class, AddMentionReply::class, DelMentionReply::class,
+            MentionGroupIndex::class, AddMentionGroup::class, DelMentionGroup::class,
         ];
     }
 
@@ -167,7 +181,7 @@ class Bot
 
             $this->loadCoreClasses();
             $this->loadGuilds();
-            // $this->deleteSlashCommands();
+            //  $this->deleteSlashCommands();
             $this->loadCommands();
         });
         self::$instance = $this;
