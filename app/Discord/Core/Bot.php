@@ -24,7 +24,6 @@ use App\Discord\Fun\MentionResponder\MentionIndex;
 use App\Discord\Fun\Reaction\CreateReaction;
 use App\Discord\Fun\Reaction\DeleteReaction;
 use App\Discord\Fun\Reaction\ReactionIndex;
-use App\Discord\Fun\Reaction\SimpleReaction;
 use App\Discord\Fun\UrbanDictionary;
 use App\Discord\Help;
 use App\Discord\Levels\CreateRoleReward;
@@ -51,7 +50,6 @@ use App\Discord\Moderation\Channels\UnmarkChannel;
 use App\Discord\Moderation\Command\CommandIndex;
 use App\Discord\Moderation\Command\CreateCommand;
 use App\Discord\Moderation\Command\DeleteCommand;
-use App\Discord\Moderation\Command\SimpleCommand;
 use App\Discord\Moderation\KickAndBanCounter;
 use App\Discord\Moderation\ModeratorStatistics;
 use App\Discord\Moderation\Timeout\AllTimeouts;
@@ -120,13 +118,14 @@ class Bot
     }
 
     /**
-     * Define all command classes, command classes are implementations of either of the 4 abstract classes below.
-     * @return string[]
-     * @see SlashCommand
-     * @see SlashAndMessageCommand
-     * @see SlashIndexCommand
+     * Define all command classes, command classes are implementations of either of the 2 abstract classes below.
+     * Which both extend the general Command class.
      *
-     * @see MessageCommand
+     * @return string[]
+     *
+     * @see Command
+     * @see SlashCommand
+     * @see SlashIndexCommand
      */
     private function commands(): array
     {
@@ -181,7 +180,7 @@ class Bot
 
             $this->loadCoreClasses();
             $this->loadGuilds();
-            //  $this->deleteSlashCommands();
+            //$this->deleteSlashCommands();
             $this->loadCommands();
         });
         self::$instance = $this;
@@ -240,7 +239,7 @@ class Bot
      * @return void
      * @throws Exception
      */
-    function deleteSlashCommands(): void
+    private function deleteSlashCommands(): void
     {
         $this->discord->application->commands->freshen()->done(function ($commands) {
             foreach ($commands as $command) {

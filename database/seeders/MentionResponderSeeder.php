@@ -8,29 +8,9 @@ use Illuminate\Database\Seeder;
 
 class MentionResponderSeeder extends Seeder
 {
-
     /**
      * @return void
-     * LOW LEVEL
-     * "Ummm… you got no xp. You should get some."
-     *
-     *
-     *
-     *
-     *
-     *
-     *
-     * NON STRIJDER
-     *
-     *
-     *
-     *
-     *
-     *
-     *
-     *
      */
-
     public function run()
     {
 

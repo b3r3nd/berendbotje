@@ -26,7 +26,7 @@ class MessageCounter extends Model
      */
     public static function byGuild($guildId): mixed
     {
-        return MessageCounter::where('guild_id', Guild::get($guildId)->id);
+        return self::where('guild_id', Guild::get($guildId)->id);
     }
 
 }

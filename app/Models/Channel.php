@@ -13,11 +13,11 @@ class Channel extends Model
     /**
      * @param string $channelId
      * @param string $guildId
-     * @return mixed
+     * @return Channel
      */
-    public static function get(string $channelId, string $guildId): mixed
+    public static function get(string $channelId, string $guildId): Channel
     {
-        return Channel::where([
+        return self::where([
             ['guild_id', '=', Guild::get($guildId)->id],
             ['channel_id', '=', $channelId],
         ])->first();
@@ -29,7 +29,7 @@ class Channel extends Model
      */
     public static function byGuild($guildId): mixed
     {
-        return Channel::where('guild_id', Guild::get($guildId)->id);
+        return self::where('guild_id', Guild::get($guildId)->id);
     }
 
 }

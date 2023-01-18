@@ -58,7 +58,7 @@ class EmoteCounter
     private function processEmote(Emote $emote): void
     {
         if (isset($emote->count)) {
-            $emote->count = $emote->count + 1;
+            ++$emote->count;
         } else {
             $emote->count = 1;
         }

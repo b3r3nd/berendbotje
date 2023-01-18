@@ -18,6 +18,12 @@ use Discord\Parts\Interactions\Interaction;
  */
 abstract class SlashIndexCommand extends SlashCommand implements PaginationIndex
 {
+    /**
+     * @var array
+     *
+     * We keep track of the page offset per user because multiple people can press buttons and in the meantime other users
+     * can also retrieve pages and press buttons.
+     */
     public array $offset = [];
     public int $perPage = 15;
     public int $total = 0;
@@ -25,10 +31,10 @@ abstract class SlashIndexCommand extends SlashCommand implements PaginationIndex
     /**
      * @var int
      *
-     * The user of the command is usually already available. However when using interaction commands with buttons, I
+     * The user of the command is usually already available. However, when using interaction commands with buttons, I
      * need to make sure to set the user to whoever last CLICKED a button, in order to show the right data. Not the
      * last person which used the command (which is $this->getCommandUser()). This data is available in the button
-     * listener but I cannot pass it directly through the getEmbed() function (which retrieves the actual data)
+     * listener, but I cannot pass it directly through the getEmbed() function (which retrieves the actual data)
      * since its rules are defined in the interface.
      */
     public int $lastUser = 0;
@@ -135,7 +141,6 @@ abstract class SlashIndexCommand extends SlashCommand implements PaginationIndex
     public function getOffset(int $memberId): int
     {
         return $this->offset[$memberId];
-
     }
 
     /**

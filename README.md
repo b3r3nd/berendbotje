@@ -3,6 +3,11 @@
 Discord bot written in PHP, using laravel and the DiscordPHP package. Initially created just for our own server but
 now runs on as many serves as you like. If you have questions DM my directly by my discord tag: `berend#0579`.
 
+Special thanks to:
+- Angel for writing most of the Skyrim lines used in the MentionResponder.
+- Richard for bug testing.
+- Ricardo for working out ideas to implement.
+
 ## Installing
 1. Download this repo and install al its dependencies with `composer install`
 2. Create your env file `mv .env.example .env` and fill in database credentials and bot token

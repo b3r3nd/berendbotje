@@ -21,17 +21,17 @@ use Exception;
 /**
  * Guild settings are loaded on boot and only updated when the actual setting is changed using commands.
  *
- * @see SimpleCommand
- * @see SimpleReaction
- * @property $settings          List of cached settings, so we do not need to read from the database each time
- * @property $logSettings       List of cached log settings, so we do not need to read from the database each time
+ * @property $settings          List of cached settings, so we do not need to read from the database each time.
+ * @property $logSettings       List of cached log settings, so we do not need to read from the database each time.
  * @property $lastMessages      Last message send by user in guild, used for the xp cooldown.
  * @property $inVoice           List of people who are currently in voice in the guild, used to calculate xp.
  * @property $guildModel        Eloquent model for the guild.
  * @property $logger            Logger instance for this specific guild which can log events.
- * @property $channels          List of channels which have special flags set, for example media channels
- * @property $mentionReplies    List of mention replies for this guild, cached in this class to prevent a billion DB calls.
- * @property $lastResponses     List of responses recently used (60 sec) so no duplicates are send
+ * @property $channels          List of channels which have special flags set, for example media channels.
+ *
+ * @property $roleReplies       List of mention replies for this guild which require a certain role.
+ * @property $noRoleReplies     List of mention replies for this guild which require NOT to have a certain role.
+ * @property $lastResponses     List of responses recently used (60 sec) so no duplicates are send.
  *
  */
 class Guild
@@ -74,8 +74,6 @@ class Guild
 
 
     /**
-     * Function is not only called on guild load, also whenever a new group or reply is added to update it in this class.
-     *
      * @return void
      */
     public function loadReplies(): void
@@ -133,8 +131,8 @@ class Guild
 
 
             $discordUser = DiscordUser::get($message->author->id);
-            $cringeCounter = $discordUser->cringeCounters()->where('guild_id', \App\Models\Guild::get($message->guild_id)->id)->get()->first()->count ?? 0;
-            $bumpCounter = $discordUser->bumpCounters()->where('guild_id', GuildModel::get($message->guild_id)->id)->selectRaw('*, sum(count) as total')->first();
+            $cringeCounter = $discordUser->cringeCounters()->where('guild_id', $this->model->id)->get()->first()->count ?? 0;
+            $bumpCounter = $discordUser->bumpCounters()->where('guild_id', $this->model->id)->selectRaw('*, sum(count) as total')->first();
             $timeoutCounter = Timeout::byGuild($message->guild_id)->where(['discord_id' => $message->author->id])->count();
 
             if ($bumpCounter->total > 100) {
@@ -284,16 +282,6 @@ class Guild
     }
 
     /**
-     * @param string $channel
-     * @return void
-     */
-    public function addChannel(string $channel): void
-    {
-        $channel = Channel::create(['channel_id' => $channel, 'guild_id' => $this->model->id]);
-        $this->channels[$channel] = $channel;
-    }
-
-    /**
      * @param Channel $channel
      * @return void
      */
@@ -313,19 +301,6 @@ class Guild
             $this->channels[$channel->channel_id]->refresh();
         }
     }
-
-    /**
-     * @param string $channel
-     * @param string $key
-     * @param bool $value
-     * @return void
-     */
-    public function setChannelValue(string $channel, string $key, bool $value): void
-    {
-        $channel = $this->guildModel->channels()->where('channel_id', $channel)->first();
-        $channel->update([$key => $value]);
-    }
-
 
     /**
      * @param string $userId
@@ -379,7 +354,7 @@ class Guild
     {
         $this->settings[$key] = $value;
 
-        if ($key == SettingEnum::LOG_CHANNEL->value) {
+        if ($key === SettingEnum::LOG_CHANNEL->value) {
             $this->logger->setLogChannelId($value);
         }
 
@@ -389,19 +364,18 @@ class Guild
     }
 
     /**
-     * @param Enums\Setting $setting
+     * @param SettingEnum $settingEnum
      * @return false|mixed
      */
-    public function getSetting(\App\Discord\Core\Enums\Setting $setting): mixed
+    public function getSetting(SettingEnum $settingEnum): mixed
     {
-        $setting = $setting->value;
+        $setting = $settingEnum->value;
 
         if (str_contains($setting, 'enable')) {
-            if ($this->settings[$setting] === '1') {
-                return true;
-            }
-            return false;
-        } else if (is_numeric($this->settings[$setting])) {
+            return $this->settings[$setting] === '1';
+        }
+
+        if (is_numeric($this->settings[$setting])) {
             return (int)$this->settings[$setting];
         }
 

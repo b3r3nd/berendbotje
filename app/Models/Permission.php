@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection ALL */
 
 namespace App\Models;
 
@@ -26,7 +26,7 @@ class Permission extends Model
      */
     public static function exists(string $name): bool
     {
-        return !Permission::where('name', strtolower($name))->get()->isEmpty();
+        return !self::where('name', strtolower($name))->get()->isEmpty();
     }
 
     /**
@@ -35,6 +35,6 @@ class Permission extends Model
      */
     public static function get(string $name): mixed
     {
-        return Permission::where('name', strtolower($name))->first();
+        return self::where('name', strtolower($name))->first();
     }
 }

@@ -18,7 +18,7 @@ class Setting extends Model
      */
     public static function getSetting(string $key, string $guildId): mixed
     {
-        return Setting::where([
+        return self::where([
             ['guild_id', '=', Guild::get($guildId)->id],
             ['key', '=', $key],
         ])->first();
@@ -31,7 +31,7 @@ class Setting extends Model
      */
     public static function hasSetting(string $key, string $guildId): bool
     {
-        return !Setting::where([
+        return !self::where([
             ['guild_id', '=', Guild::get($guildId)->id],
             ['key', '=', $key],
         ])->get()->isEmpty();
@@ -43,6 +43,6 @@ class Setting extends Model
      */
     public static function byDiscordGuildId(string $guildId): mixed
     {
-        return Setting::where(['guild_id' => Guild::get($guildId)->id]);
+        return self::where(['guild_id' => Guild::get($guildId)->id]);
     }
 }

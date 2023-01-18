@@ -27,11 +27,11 @@ class Logger
      */
     private function sendEmbed($embedBuilder, $type): void
     {
-        if ($type == 'fail') {
+        if ($type === 'fail') {
             $embedBuilder->setFailed();
-        } elseif ($type == 'success') {
+        } elseif ($type === 'success') {
             $embedBuilder->setSuccess();
-        } elseif ($type == 'warning') {
+        } elseif ($type === 'warning') {
             $embedBuilder->setWarning();
         } else {
             $embedBuilder->setLog();

@@ -24,7 +24,7 @@ class RoleReward extends Model
      */
     public static function byGuild($guildId): mixed
     {
-        return RoleReward::where(['guild_id' => Guild::get($guildId)->id]);
+        return self::where(['guild_id' => Guild::get($guildId)->id]);
     }
 
     /**

@@ -19,7 +19,7 @@ class Guild extends Model
      */
     public static function get(string $guildId): mixed
     {
-        return Guild::where('guild_id', $guildId)->first();
+        return self::where('guild_id', $guildId)->first();
     }
 
     /**

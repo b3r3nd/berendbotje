@@ -69,7 +69,6 @@ class VoiceXpCounter
                 ]);
             }
             $messageCounter->update(['level' => Helper::calcLevel($messageCounter->xp)]);
-            var_dump("XP SAVED");
         }
     }
 }

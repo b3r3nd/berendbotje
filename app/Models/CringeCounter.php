@@ -27,7 +27,7 @@ class CringeCounter extends Model
      */
     public static function byGuild($guildId): mixed
     {
-        return CringeCounter::where('guild_id', Guild::get($guildId)->id);
+        return self::where('guild_id', Guild::get($guildId)->id);
     }
 
 }

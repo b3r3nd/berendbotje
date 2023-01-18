@@ -13,11 +13,11 @@ class Bumper extends Model
 
     /**
      * @param $guildId
-     * @return mixed
+     * @return Bumper
      */
     public static function byGuild($guildId)
     {
-        return Bumper::where('guild_id', Guild::get($guildId)->id);
+        return self::where('guild_id', Guild::get($guildId)->id);
     }
 
     /**

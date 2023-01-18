@@ -37,12 +37,8 @@ class SyncRoleRewardsAction implements Action
             foreach ($roleRewards as $reward) {
                 $role = $reward->role;
                 $rolesCollection = collect($this->message->member->roles);
-                if ($messageCounter->level >= $reward->level) {
-                    if (!$rolesCollection->contains('id', $role)) {
-                        $this->message->member->addRole($role)->done(function () {
-                            var_dump('role given!!!');
-                        });
-                    }
+                if (($messageCounter->level >= $reward->level) && !$rolesCollection->contains('id', $role)) {
+                    $this->message->member->addRole($role);
                 }
             }
         }

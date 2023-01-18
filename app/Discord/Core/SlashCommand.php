@@ -25,6 +25,7 @@ abstract class SlashCommand extends Command
 
     abstract public function action(): MessageBuilder;
 
+    /** @noinspection NotOptimalIfConditionsInspection */
     public function registerSlashCommand(): void
     {
         $optionsArray = [
@@ -37,7 +38,7 @@ abstract class SlashCommand extends Command
         $command = new \Discord\Parts\Interactions\Command\Command(Bot::getDiscord(), $optionsArray);
         Bot::getDiscord()->listenCommand($this->trigger, function (Interaction $interaction) {
             $this->arguments = [];
-            
+
             if ($interaction->guild_id === null) {
                 return $interaction->respondWithMessage(EmbedFactory::failedEmbed('Slash commands dont work in DM'));
             }
@@ -46,11 +47,14 @@ abstract class SlashCommand extends Command
                 return $interaction->respondWithMessage(EmbedFactory::failedEmbed(__("bot.lack-access")));
             }
 
+            // Left over from previous stucture, should probably delete this and access data directly from the interaction!
             foreach ($interaction->data->options as $option) {
                 $this->arguments[] = $option->value;
             }
             $this->commandUser = $interaction->member->id;
             $this->guildId = $interaction->guild_id;
+
+
             $this->interaction = $interaction;
 
             return $interaction->respondWithMessage($this->action());

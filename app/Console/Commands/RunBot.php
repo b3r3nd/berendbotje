@@ -19,7 +19,7 @@ class RunBot extends Command
      *
      * @var string
      */
-    protected $description = 'SimpleCommand description';
+    protected $description = 'Command to run BerendBotje!';
 
     /**
      * Execute the console command.

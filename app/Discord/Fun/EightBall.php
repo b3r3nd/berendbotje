@@ -36,6 +36,9 @@ class EightBall extends SlashCommand
         parent::__construct();
     }
 
+    /**
+     * @throws \Exception
+     */
     public function action(): MessageBuilder
     {
         $options = [
@@ -63,7 +66,7 @@ class EightBall extends SlashCommand
             'Very doubtful.',
         ];
 
-        $random = rand(0, (count($options) - 1));
+        $random = random_int(0, (count($options) - 1));
 
 
         return MessageBuilder::new()->setContent("**{$this->arguments[0]}**\n\n{$options[$random]}");

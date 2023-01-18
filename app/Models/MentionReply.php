@@ -27,6 +27,6 @@ class MentionReply extends Model
      */
     public static function byGuild($guildId): mixed
     {
-        return MentionReply::where('guild_id', Guild::get($guildId)->id);
+        return self::where('guild_id', Guild::get($guildId)->id);
     }
 }

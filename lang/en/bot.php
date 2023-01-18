@@ -240,7 +240,7 @@ return [
     ],
 
     'bump' => [
-        'inc' => ":name heeft :count x de discord gebumped!",
+        'inc' => ":name has bumped this discord :count times!",
         'footer' => 'Use /bump in #bump',
         'title' => 'Bumper Elites',
         'description' => "Bump counters of all time!\n\n:bumpers",
