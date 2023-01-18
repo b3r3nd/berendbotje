@@ -81,7 +81,7 @@ class Guild
         $this->roleReplies = [];
         $this->noRoleReplies = [];
         foreach (MentionGroup::byGuild($this->model->guild_id)->get() as $mentionGroup) {
-            if ($mentionGroup->has_role) {
+            if ($mentionGroup->has_role === '1') {
                 $this->roleReplies[$mentionGroup->name] = $mentionGroup->replies->pluck('reply')->toArray();
             } else {
                 $this->noRoleReplies[$mentionGroup->name] = $mentionGroup->replies->pluck('reply')->toArray();
