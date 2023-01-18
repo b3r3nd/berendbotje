@@ -81,7 +81,7 @@ class Guild
         $this->roleReplies = [];
         $this->noRoleReplies = [];
         foreach (MentionGroup::byGuild($this->model->guild_id)->get() as $mentionGroup) {
-            if ($mentionGroup->has_role === '1') {
+            if ($mentionGroup->has_role) {
                 $this->roleReplies[$mentionGroup->name] = $mentionGroup->replies->pluck('reply')->toArray();
             } else {
                 $this->noRoleReplies[$mentionGroup->name] = $mentionGroup->replies->pluck('reply')->toArray();
@@ -96,7 +96,8 @@ class Guild
     {
         $this->loadReplies();
         Bot::getDiscord()->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) {
-            if ($message->author->bot || !$message->guild_id || !str_contains($message->content, $discord->user->id) ||
+            if ($message->author->bot || !$message->guild_id || $message->guild_id !== $this->model->guild_id ||
+                !str_contains($message->content, $discord->user->id) ||
                 !$this->getSetting(SettingEnum::ENABLE_MENTION_RESPONDER)) {
                 return;
             }
