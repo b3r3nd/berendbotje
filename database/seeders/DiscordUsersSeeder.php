@@ -17,10 +17,8 @@ class DiscordUsersSeeder extends Seeder
     public function run()
     {
         $ids = [
-            // First is main admin account
             '259461260645629953', // berend
             '964503537495191582', // pewpew
-
         ];
 
 

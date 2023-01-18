@@ -15,10 +15,15 @@ use App\Discord\Fun\EightBall;
 use App\Discord\Fun\Emote\EmoteCounter;
 use App\Discord\Fun\Emote\EmoteIndex;
 use App\Discord\Fun\MentionResponder;
+use App\Discord\Fun\MentionResponder\AddMentionGroup;
+use App\Discord\Fun\MentionResponder\AddMentionReply;
+use App\Discord\Fun\MentionResponder\DelMentionGroup;
+use App\Discord\Fun\MentionResponder\DelMentionReply;
+use App\Discord\Fun\MentionResponder\MentionGroupIndex;
+use App\Discord\Fun\MentionResponder\MentionIndex;
 use App\Discord\Fun\Reaction\CreateReaction;
 use App\Discord\Fun\Reaction\DeleteReaction;
 use App\Discord\Fun\Reaction\ReactionIndex;
-use App\Discord\Fun\Reaction\SimpleReaction;
 use App\Discord\Fun\UrbanDictionary;
 use App\Discord\Help;
 use App\Discord\Levels\CreateRoleReward;
@@ -45,7 +50,6 @@ use App\Discord\Moderation\Channels\UnmarkChannel;
 use App\Discord\Moderation\Command\CommandIndex;
 use App\Discord\Moderation\Command\CreateCommand;
 use App\Discord\Moderation\Command\DeleteCommand;
-use App\Discord\Moderation\Command\SimpleCommand;
 use App\Discord\Moderation\KickAndBanCounter;
 use App\Discord\Moderation\ModeratorStatistics;
 use App\Discord\Moderation\Timeout\AllTimeouts;
@@ -101,7 +105,6 @@ class Bot
             VoiceStateUpdate::class,
             DetectTimeouts::class,
             MediaFilter::class,
-            MentionResponder::class,
 
             KickAndBanCounter::class,
             BumpCounter::class,
@@ -115,13 +118,14 @@ class Bot
     }
 
     /**
-     * Define all command classes, command classes are implementations of either of the 4 abstract classes below.
-     * @return string[]
-     * @see SlashCommand
-     * @see SlashAndMessageCommand
-     * @see SlashIndexCommand
+     * Define all command classes, command classes are implementations of either of the 2 abstract classes below.
+     * Which both extend the general Command class.
      *
-     * @see MessageCommand
+     * @return string[]
+     *
+     * @see Command
+     * @see SlashCommand
+     * @see SlashIndexCommand
      */
     private function commands(): array
     {
@@ -131,7 +135,7 @@ class Bot
             Roles::class, Permissions::class, Users::class,
             MyRoles::class, UserRoles::class,
             CreateRole::class, DeleteRole::class,
-            AttachRolePermission::class, AttachUserRole::class, DetachRolePermission::class, DetachUserRole::class,
+            DetachUserRole::class, AttachUserRole::class, AttachRolePermission::class, DetachRolePermission::class,
             Settings::class, UpdateSetting::class,
 
             SingleUserTimeouts::class, AllTimeouts::class, ModeratorStatistics::class,
@@ -148,6 +152,9 @@ class Bot
             ChannelIndex::class, MarkChannel::class, UnmarkChannel::class,
             Help::class,
             LogSettings::class, UpdateLogSetting::class,
+
+            MentionIndex::class, AddMentionReply::class, DelMentionReply::class,
+            MentionGroupIndex::class, AddMentionGroup::class, DelMentionGroup::class,
         ];
     }
 
@@ -173,7 +180,7 @@ class Bot
 
             $this->loadCoreClasses();
             $this->loadGuilds();
-            // $this->deleteSlashCommands();
+            //$this->deleteSlashCommands();
             $this->loadCommands();
         });
         self::$instance = $this;
@@ -232,7 +239,7 @@ class Bot
      * @return void
      * @throws Exception
      */
-    function deleteSlashCommands(): void
+    private function deleteSlashCommands(): void
     {
         $this->discord->application->commands->freshen()->done(function ($commands) {
             foreach ($commands as $command) {

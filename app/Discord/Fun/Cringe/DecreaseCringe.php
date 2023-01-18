@@ -52,7 +52,7 @@ class DecreaseCringe extends SlashCommand
 
         $cringeCounter = $cringeCounters->first();
         $count = $cringeCounter->count - 1;
-        if ($count == 0) {
+        if ($count === 0) {
             $cringeCounter->delete();
         } else {
             $cringeCounter->count = $count;

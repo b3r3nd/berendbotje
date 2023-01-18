@@ -24,7 +24,7 @@ class Timeout extends Model
      */
     public static function byGuild($guildId): mixed
     {
-        return Timeout::where(['guild_id' => Guild::get($guildId)->id]);
+        return self::where(['guild_id' => Guild::get($guildId)->id]);
     }
 
 }

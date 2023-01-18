@@ -27,18 +27,16 @@ class GuildMemberLogger
             $discord->guilds->fetch($member->guild_id)->done(function (Guild $guild) use ($member, $localGuild) {
                 $guild->getAuditLog(['limit' => 1])->done(function (AuditLog $auditLog) use ($member, $guild, $localGuild) {
                     foreach ($auditLog->audit_log_entries as $entry) {
-                        if ($entry->action_type == 20) {
+                        if ($entry->action_type === 20) {
                             if ($localGuild->getLogSetting(LogSetting::KICKED_SERVER)) {
                                 $localGuild->logWithMember($member, "<@{$member->id}> kicked from the server", 'fail');
                             }
-                        } elseif ($entry->action_type == 22) {
+                        } elseif ($entry->action_type === 22) {
                             if ($localGuild->getLogSetting(LogSetting::BANNED_SERVER)) {
                                 $localGuild->logWithMember($member, "<@{$member->id}> banned from the server", 'fail');
                             }
-                        } else {
-                            if ($localGuild->getLogSetting(LogSetting::LEFT_SERVER)) {
-                                $localGuild->logWithMember($member, "<@{$member->id}> left the server", 'fail');
-                            }
+                        } else if ($localGuild->getLogSetting(LogSetting::LEFT_SERVER)) {
+                            $localGuild->logWithMember($member, "<@{$member->id}> left the server", 'fail');
                         }
                     }
                 });
@@ -53,9 +51,12 @@ class GuildMemberLogger
         });
 
         Bot::getDiscord()->on(Event::GUILD_MEMBER_UPDATE, function (Member $member, Discord $discord, ?Member $oldMember) {
+            if (!$oldMember) {
+                return;
+            }
             $guild = Bot::get()->getGuild($member->guild_id);
             if ($guild->getLogSetting(LogSetting::UPDATED_USERNAME)) {
-                if ($member->displayname != $oldMember->displayname) {
+                if ($member->displayname !== $oldMember->displayname) {
                     $desc = "**Username changed**
 
                 **From**

@@ -27,6 +27,6 @@ class Command extends Model
      */
     public static function byGuild($guildId): mixed
     {
-        return Command::where(['guild_id' => Guild::get($guildId)->id]);
+        return self::where(['guild_id' => Guild::get($guildId)->id]);
     }
 }

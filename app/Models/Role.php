@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpParamsInspection */
 
 namespace App\Models;
 
@@ -22,7 +22,7 @@ class Role extends Model
     {
         $guild = Guild::get($guildId);
 
-        return Role::where([
+        return self::where([
             ['guild_id', '=', $guild->id],
             ['name', '=', strtolower($roleName)]
         ])->first();
@@ -36,7 +36,7 @@ class Role extends Model
     public static function exists(string $guildId, string $roleName): bool
     {
         $guild = Guild::get($guildId);
-        return !Role::where([
+        return !self::where([
             ['guild_id', '=', $guild->id],
             ['name', '=', strtolower($roleName)]
         ])->get()->isEmpty();
@@ -48,7 +48,7 @@ class Role extends Model
      */
     public static function byGuildId(string $guildId): mixed
     {
-        return Role::where('guild_id', $guildId);
+        return self::where('guild_id', $guildId);
     }
 
     /**
@@ -58,7 +58,7 @@ class Role extends Model
     public static function byDiscordGuildId(string $guildId): mixed
     {
         $guild = Guild::get($guildId);
-        return Role::where('guild_id', $guild->id);
+        return self::where('guild_id', $guild->id);
     }
 
     /**

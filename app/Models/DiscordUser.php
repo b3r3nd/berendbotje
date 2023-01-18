@@ -28,7 +28,7 @@ class DiscordUser extends Model
         $user = DiscordUser::get($userId);
         $permissionName = strtolower($permissionName);
 
-        return in_array($permissionName, $user->permissionsByGuild($guild) ?? []);
+        return in_array($permissionName, $user->permissionsByGuild($guild) ?? [], true);
     }
 
     /**
@@ -37,7 +37,7 @@ class DiscordUser extends Model
      */
     public static function get($discordId): mixed
     {
-        return DiscordUser::firstOrCreate(['discord_id' => $discordId]);
+        return self::firstOrCreate(['discord_id' => $discordId]);
     }
 
 

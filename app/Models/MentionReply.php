@@ -2,22 +2,23 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class MessageCounter extends Model
+class MentionReply extends Model
 {
-    protected $table = 'message_counter';
+    use HasFactory;
 
-    protected $fillable = ['count', 'voice_seconds', 'guild_id', 'xp', 'level'];
+
+    protected $fillable = ['reply', 'guild_id'];
 
     /**
      * @return BelongsTo
      */
-    public function user(): BelongsTo
+    public function group(): BelongsTo
     {
-        return $this->belongsTo(DiscordUser::class);
+        return $this->belongsTo(MentionGroup::class);
     }
 
     /**
@@ -28,5 +29,4 @@ class MessageCounter extends Model
     {
         return self::where('guild_id', Guild::get($guildId)->id);
     }
-
 }

@@ -16,9 +16,9 @@ class SettingsSeeder extends Seeder
     public function run()
     {
         $settings = [
-            'xp_count' => 15,
+            'xp_count' => 20,
             'xp_cooldown' => 60,
-            'xp_voice_count' => 15,
+            'xp_voice_count' => 4,
             'xp_voice_cooldown' => 60,
             'enable_xp' => true,
             'enable_voice_xp' => true,
@@ -32,6 +32,7 @@ class SettingsSeeder extends Seeder
             'enable_bump_reminder' => false,
             'bump_reminder_role' => "",
             'bump_channel' => "",
+            'enable_mention_responder' => true,
         ];
 
         foreach (Guild::all() as $guild) {

@@ -4,9 +4,12 @@ namespace App\Discord\Core;
 
 use App\Discord\Core\Enums\Setting as SettingEnum;
 use App\Models\Channel;
+use App\Models\DiscordUser;
 use App\Models\Guild as GuildModel;
 use App\Models\LogSetting;
+use App\Models\MentionGroup;
 use App\Models\Setting;
+use App\Models\Timeout;
 use Carbon\Carbon;
 use Discord\Discord;
 use Discord\Parts\Channel\Message;
@@ -18,15 +21,17 @@ use Exception;
 /**
  * Guild settings are loaded on boot and only updated when the actual setting is changed using commands.
  *
- * @see SimpleCommand
- * @see SimpleReaction
- * @property $settings          List of cached settings, so we do not need to read from the database each time
- * @property $logSettings       List of cached log settings, so we do not need to read from the database each time
+ * @property $settings          List of cached settings, so we do not need to read from the database each time.
+ * @property $logSettings       List of cached log settings, so we do not need to read from the database each time.
  * @property $lastMessages      Last message send by user in guild, used for the xp cooldown.
  * @property $inVoice           List of people who are currently in voice in the guild, used to calculate xp.
  * @property $guildModel        Eloquent model for the guild.
  * @property $logger            Logger instance for this specific guild which can log events.
- * @property $channels          List of channels which have special flags set, for example media channels
+ * @property $channels          List of channels which have special flags set, for example media channels.
+ *
+ * @property $roleReplies       List of mention replies for this guild which require a certain role.
+ * @property $noRoleReplies     List of mention replies for this guild which require NOT to have a certain role.
+ * @property $lastResponses     List of responses recently used (60 sec) so no duplicates are send.
  *
  */
 class Guild
@@ -38,6 +43,9 @@ class Guild
     public GuildModel $model;
     private Logger $logger;
     private array $channels = [];
+    private array $roleReplies = [];
+    private array $noRoleReplies = [];
+    private array $lastResponses = [];
 
     /**
      * @param GuildModel $guild
@@ -61,8 +69,107 @@ class Guild
         $this->logger = new Logger($this->getSetting(SettingEnum::LOG_CHANNEL));
         $this->registerReactions();
         $this->registerCommands();
+        $this->registerMentionResponder();
     }
 
+
+    /**
+     * @return void
+     */
+    public function loadReplies(): void
+    {
+        $this->roleReplies = [];
+        $this->noRoleReplies = [];
+        foreach (MentionGroup::byGuild($this->model->guild_id)->get() as $mentionGroup) {
+            if ($mentionGroup->has_role) {
+                $this->roleReplies[$mentionGroup->name] = $mentionGroup->replies->pluck('reply')->toArray();
+            } else {
+                $this->noRoleReplies[$mentionGroup->name] = $mentionGroup->replies->pluck('reply')->toArray();
+            }
+        }
+    }
+
+    /**
+     * @return void
+     */
+    private function registerMentionResponder(): void
+    {
+        $this->loadReplies();
+        Bot::getDiscord()->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) {
+            if ($message->author->bot || !$message->guild_id || !str_contains($message->content, $discord->user->id) ||
+                !$this->getSetting(SettingEnum::ENABLE_MENTION_RESPONDER)) {
+                return;
+            }
+
+            if (str_contains($message->content, '?give')) {
+                $message->reply('Thanks! 😎');
+                return;
+            }
+
+            // @TODO need to find better way to do this nasty shit
+            foreach ($this->lastResponses as $lastResponse => $date) {
+                $now = Carbon::now();
+                if ($now->diffInSeconds($date) > 60) {
+                    unset($this->lastResponses[$lastResponse]);
+                }
+            }
+
+            $roles = collect($message->member->roles);
+            $responses = [];
+
+            foreach ($this->roleReplies as $group => $replies) {
+                if (is_int($group) && $roles->contains('id', $group)) {
+                    $responses = array_merge($responses, $replies);
+                }
+            }
+
+            foreach ($this->noRoleReplies as $group => $replies) {
+                if (is_int($group) && !$roles->contains('id', $group)) {
+                    $responses = array_merge($responses, $replies);
+                }
+            }
+
+
+            $discordUser = DiscordUser::get($message->author->id);
+            $cringeCounter = $discordUser->cringeCounters()->where('guild_id', $this->model->id)->get()->first()->count ?? 0;
+            $bumpCounter = $discordUser->bumpCounters()->where('guild_id', $this->model->id)->selectRaw('*, sum(count) as total')->first();
+            $timeoutCounter = Timeout::byGuild($message->guild_id)->where(['discord_id' => $message->author->id])->count();
+
+            if ($bumpCounter->total > 100) {
+                $responses = array_merge($responses, $this->roleReplies['BumpCounter']);
+            }
+            if ($timeoutCounter > 1) {
+                $responses = array_merge($responses, $this->roleReplies['Muted']);
+            }
+            if ($cringeCounter > 10) {
+                $responses = array_merge($responses, $this->roleReplies['CringeCounter']);
+            }
+
+            // Replies for everyone
+            $responses = array_merge($responses, $this->roleReplies['Default']);
+            $message->reply($this->getRandom($responses));
+        });
+    }
+
+
+    /**
+     * @param array $array
+     * @return mixed
+     * @throws \Exception
+     */
+    private function getRandom(array $array): mixed
+    {
+        $response = $array[random_int(0, (count($array) - 1))];
+        while (isset($this->lastResponses[$response])) {
+            $response = $array[random_int(0, (count($array) - 1))];
+            if (count($this->lastResponses) === count($array)) {
+                $this->lastResponses = [];
+                break;
+            }
+        }
+        $this->lastResponses[$response] = Carbon::now();
+        return $response;
+    }
 
     /**
      * @return void
@@ -175,16 +282,6 @@ class Guild
     }
 
     /**
-     * @param string $channel
-     * @return void
-     */
-    public function addChannel(string $channel): void
-    {
-        $channel = Channel::create(['channel_id' => $channel, 'guild_id' => $this->model->id]);
-        $this->channels[$channel] = $channel;
-    }
-
-    /**
      * @param Channel $channel
      * @return void
      */
@@ -204,19 +301,6 @@ class Guild
             $this->channels[$channel->channel_id]->refresh();
         }
     }
-
-    /**
-     * @param string $channel
-     * @param string $key
-     * @param bool $value
-     * @return void
-     */
-    public function setChannelValue(string $channel, string $key, bool $value): void
-    {
-        $channel = $this->guildModel->channels()->where('channel_id', $channel)->first();
-        $channel->update([$key => $value]);
-    }
-
 
     /**
      * @param string $userId
@@ -270,7 +354,7 @@ class Guild
     {
         $this->settings[$key] = $value;
 
-        if ($key == SettingEnum::LOG_CHANNEL->value) {
+        if ($key === SettingEnum::LOG_CHANNEL->value) {
             $this->logger->setLogChannelId($value);
         }
 
@@ -280,19 +364,18 @@ class Guild
     }
 
     /**
-     * @param Enums\Setting $setting
+     * @param SettingEnum $settingEnum
      * @return false|mixed
      */
-    public function getSetting(\App\Discord\Core\Enums\Setting $setting): mixed
+    public function getSetting(SettingEnum $settingEnum): mixed
     {
-        $setting = $setting->value;
+        $setting = $settingEnum->value;
 
         if (str_contains($setting, 'enable')) {
-            if ($this->settings[$setting] === '1') {
-                return true;
-            }
-            return false;
-        } else if (is_numeric($this->settings[$setting])) {
+            return $this->settings[$setting] === '1';
+        }
+
+        if (is_numeric($this->settings[$setting])) {
             return (int)$this->settings[$setting];
         }
 

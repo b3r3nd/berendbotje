@@ -50,10 +50,10 @@ class SyncRolePermissionsAction
         if ($this->attach) {
             $role->permissions()->attach($permissions->pluck('id'));
             return EmbedFactory::successEmbed(__('bot.roles.perm-attached', ['role' => $role->name, 'perm' => $this->arguments[1]]));
-        } else {
-            $role->permissions()->detach($permissions->pluck('id'));
-            return EmbedFactory::successEmbed(__('bot.roles.perm-detached', ['role' => $role->name, 'perm' => $this->arguments[1]]));
         }
+
+        $role->permissions()->detach($permissions->pluck('id'));
+        return EmbedFactory::successEmbed(__('bot.roles.perm-detached', ['role' => $role->name, 'perm' => $this->arguments[1]]));
     }
 
     /**
@@ -73,9 +73,8 @@ class SyncRolePermissionsAction
         foreach ($permissions as $permission) {
             if (!Permission::exists($permission)) {
                 return false;
-            } else {
-                $attach->push(Permission::get($permission));
             }
+            $attach->push(Permission::get($permission));
         }
         return $attach;
     }

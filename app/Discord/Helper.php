@@ -2,6 +2,8 @@
 
 namespace App\Discord;
 
+use App\Models\MentionGroup;
+
 class Helper
 {
     /**
@@ -52,5 +54,27 @@ class Helper
             }
         }
         return 0;
+    }
+
+
+    /**
+     * @param MentionGroup $mentionGroup
+     * @return string
+     */
+    public static function getGroupName(MentionGroup $mentionGroup): string
+    {
+        $description = "{$mentionGroup->id} -";
+
+        if (!$mentionGroup->has_role) {
+            $description .= "Non-";
+        }
+
+        if (is_numeric($mentionGroup->name)) {
+            $description .= "**<@&{$mentionGroup->name}>** \n";
+        } else {
+            $description .= "**{$mentionGroup->name}** \n";
+        }
+
+        return $description;
     }
 }

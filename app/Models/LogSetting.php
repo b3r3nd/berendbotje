@@ -17,7 +17,7 @@ class LogSetting extends Model
      */
     public static function getSetting(string $key, string $guildId): mixed
     {
-        return LogSetting::where([
+        return self::where([
             ['guild_id', '=', Guild::get($guildId)->id],
             ['key', '=', $key],
         ])->first();
@@ -30,7 +30,7 @@ class LogSetting extends Model
      */
     public static function hasSetting(string $key, string $guildId): bool
     {
-        return !LogSetting::where([
+        return !self::where([
             ['guild_id', '=', Guild::get($guildId)->id],
             ['key', '=', $key],
         ])->get()->isEmpty();
@@ -42,6 +42,6 @@ class LogSetting extends Model
      */
     public static function byDiscordGuildId(string $guildId): mixed
     {
-        return LogSetting::where(['guild_id' => Guild::get($guildId)->id]);
+        return self::where(['guild_id' => Guild::get($guildId)->id]);
     }
 }
