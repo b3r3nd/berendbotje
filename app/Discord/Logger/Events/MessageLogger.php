@@ -21,7 +21,7 @@ class MessageLogger
             if ($message->guild_id) {
                 return;
             }
-            
+
             $guild = Bot::get()->getGuild("590941503917129743");
             $guild->logWithMember($message->author, "Send DM:\n\n" . $message->content, 'success');
         });
