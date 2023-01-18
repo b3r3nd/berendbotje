@@ -17,7 +17,7 @@ class MentionGroupIndex extends SlashIndexCommand
 
     public function permission(): Permission
     {
-        return Permission::MANAGE_MENTION_GROUP;
+        return Permission::ADD_MENTION;
     }
 
     public function trigger(): string
