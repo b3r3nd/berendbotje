@@ -1,4 +1,4 @@
-# Introdcution
+# Introduction
 
 Discord bot written in PHP, using laravel and the DiscordPHP package. Initially created just for our own server but
 now runs on as many serves as you like. If you have questions DM my directly by my discord tag: `berend#0579`.
@@ -293,7 +293,7 @@ The bot comes with some default groups and replies:
 You can manage all groups and their replies by using these commands:
 - `replies` - show all replies grouped by available categories
 - `replies` `group_id` - Show all replies for a single group
-- `replygroups` - Show all groups
+- `groups` - Show all groups
 - `addgroup` `discord_role` - Add a group 
 - `delgroup` `group_id` - Delete a group and its replies (!!!)
 - `addreply` `group_id` `reply_line` - Add a reply to a group
