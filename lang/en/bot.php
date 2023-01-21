@@ -15,7 +15,7 @@ return [
     'provide-args' => 'Provide arguments noOo0Oo0Ob',
     'provide-arguments' => 'This command requires :count arguments to be given',
     'provide-mention' => 'This command requires a user to be mentioned',
-    'lack-access' => 'You lack access to use this command',
+    'lack-access' => 'You do not have permission to run this command. Use `/role` to check your roles in this server.',
     'error' => 'Error',
     'done' => 'Done!',
     'media-deleted' => 'Your message in :channel has been deleted. Only media and URLs are allowed.',

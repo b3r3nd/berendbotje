@@ -44,7 +44,7 @@ abstract class SlashCommand extends Command
             }
 
             if (!DiscordUser::hasPermission($interaction->member->id, $interaction->guild_id, $this->permission->value) && $this->permission->value !== Permission::NONE->value) {
-                return $interaction->respondWithMessage(EmbedFactory::failedEmbed(__("bot.lack-access")));
+                return $interaction->respondWithMessage(EmbedFactory::lackAccessEmbed(__("bot.lack-access")));
             }
 
             // Left over from previous stucture, should probably delete this and access data directly from the interaction!
