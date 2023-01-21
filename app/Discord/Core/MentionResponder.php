@@ -23,6 +23,7 @@ class MentionResponder
     private array $roleReplies = [];
     private array $noRoleReplies = [];
     private array $lastResponses = [];
+    private array $lastMessages = [];
 
     public function __construct(string $guildId)
     {
@@ -65,13 +66,35 @@ class MentionResponder
                 return;
             }
 
-            // @TODO need to find better way to do this nasty shit
-            foreach ($this->lastResponses as $lastResponse => $date) {
+            $this->checkLastResponses();
+
+            if (isset($this->lastMessages[$message->author->id])) {
+                $messages = $this->lastMessages[$message->author->id];
                 $now = Carbon::now();
-                if ($now->diffInSeconds($date) > 60) {
-                    unset($this->lastResponses[$lastResponse]);
+
+                foreach ($messages as $index => $lastMessage) {
+                    if ($now->diffInSeconds($lastMessage) > 60) {
+                        unset($this->lastMessages[$message->author->id][$index]);
+                    }
+                }
+
+                if(count($messages) === 4) {
+                    $message->reply("Alright, you are now blocked.");
+                    $this->lastMessages[$message->author->id][] = Carbon::now();
+                    return;
+                }
+
+                if (count($messages) >= 5) {
+                    return;
+                }
+
+                if (count($messages) >= 3) {
+                    $message->reply($this->getRandom($this->roleReplies['Annoyed']));
+                    $this->lastMessages[$message->author->id][] = Carbon::now();
+                    return;
                 }
             }
+
 
             $roles = collect($message->member->roles);
             $responses = [];
@@ -107,7 +130,21 @@ class MentionResponder
             // Replies for everyone
             $responses = array_merge($responses, $this->roleReplies['Default']);
             $message->reply($this->getRandom($responses));
+            $this->lastMessages[$message->author->id][] = Carbon::now();
         });
+    }
+
+    /**
+     * @return void
+     */
+    private function checkLastResponses(): void
+    {
+        foreach ($this->lastResponses as $lastResponse => $date) {
+            $now = Carbon::now();
+            if ($now->diffInSeconds($date) > 60) {
+                unset($this->lastResponses[$lastResponse]);
+            }
+        }
     }
 
     /**
