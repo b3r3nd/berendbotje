@@ -32,7 +32,8 @@ class Permissions extends SlashIndexCommand
         $this->total = Permission::count();
         $description = "";
         foreach (Permission::orderBy('created_at', 'desc')->skip($this->getOffset($this->getLastUser()))->limit($this->perPage)->get() as $permission) {
-            $description .= "{$permission->name}\n";
+            $label = __("bot.permissions-enum.{$permission->name}");
+            $description .= "`{$permission->name}` - {$label}\n";
         }
 
         return EmbedBuilder::create(Bot::get()->discord())

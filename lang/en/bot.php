@@ -24,6 +24,29 @@ return [
     'needhelp' => 'For more info check /help',
     'bump-reminder' => 'BUMP TIME :role',
 
+    'permissions-enum' => [
+        'roles' => 'Roles',
+        'create-role' => 'Create role',
+        'delete-role' => 'Delete role',
+        'update-role' => 'Update role',
+        'permissions' => 'Permissions',
+        'attach-permission' => 'Update permission from role',
+        'attach-role' => 'Update roles from user',
+        'config' => 'See and update the config',
+        'timeouts' => 'See timeout history',
+        'add-cringe' => 'Increase the cringe counter',
+        'delete-cringe' => 'Decrease the cringe counter',
+        'commands' => 'Create and delete custom commands',
+        'reactions' => 'Create and delete custom reactions',
+        'role-rewards' => 'Create and update role rewards',
+        'manage-xp' => 'Modify XP for users',
+        'channels' => 'Set and update channel flags',
+        'logs' => 'Update the log config',
+        'add-mention' => 'Add new mention replies',
+        'delete-mention' => 'Remove mention replies',
+        'manage-mention-groups' => 'Manage mention reply groups',
+        'media-filter' => 'Media filter',
+    ],
 
     'slash' => [
         'roles' => 'Show all roles in the server',
@@ -31,7 +54,7 @@ return [
         'permissions' => 'Show all available permissions',
         'servers' => 'Show all servers the bot runs on',
         'myroles' => 'Show your roles in this server',
-        'userroles' => 'Show roles of given user',
+        'userroles' => 'Show roles of yourself or given user',
         'delete-role' => 'Delete a role from the server',
         'create-role' => 'Add a new role to the server',
         'detach-role-perm' => 'Remove permissions from role',
@@ -99,17 +122,11 @@ return [
     ],
 
 
-    'myroles' => [
-        'title' => 'Your roles in this server',
-        'footer' => 'See help for more info',
-        'description' => ':roles',
-        'none' => 'No roles in this server',
-    ],
-
     'userroles' => [
-        'title' => 'User in this server',
+        'title' => 'Roles in this server',
         'footer' => 'See help for more info',
-        'description' => ':roles',
+        'description' => "Roles for :user \n\n :roles",
+        'none' => ':user has no roles in this server',
     ],
 
     'roles' => [

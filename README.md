@@ -72,12 +72,11 @@ roles.
 * **roles** • Overview of all roles and their permissions
 * **permissions** • Overview of all permissions
 * **users** • Overview of all users and their roles
-* **myroles** • See your roles
-* **userroles** `user_mention` • See roles from user
+* **role** `user_mention` • See your roles or those from another user
 * **addrole** `role_name` • Add a new role
 * **delrole** `role_name` • Delete a role
-* **addperm** `role_name` `perm_name1,perm_name2` • Add permission(s) to a role
-* **delperm** `role_name` `perm_name1,perm_name2` • Remove permission(s) from a role
+* **addperm** `role_name` `perm_name` • Add permission(s) to a role
+* **delperm** `role_name` `perm_name` • Remove permission(s) from a role
 * **adduser** `user_mention` `role_name` • Add user to the given role
 * **deluser** `user_mention` `role_name` • Remove user from given role";
 
@@ -231,8 +230,7 @@ of timeouts + filter timeouts only for specific users.
 
 Commands to show timeouts are:
 
-* **timeouts**
-* **usertimeouts** `<user_mention>`
+* **timeouts** `<user_mention>` - All timeouts or those from a specific user
 
 ## Moderator statistics
 
