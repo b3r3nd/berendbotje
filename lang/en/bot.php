@@ -188,9 +188,9 @@ return [
     'xp' => [
         'not-found' => ':user do not have any messages',
         'count' => 'You have :messages',
-        'footer' => 'Gain :xp xp per message',
+        'footer' => ':xp xp per message',
         'title' => 'Level :level',
-        'description' => ":user has :messages messages and spend about :voice in voice, which in total amounts to :xp xp!",
+        'description' => "User: :user\nLevel: :level \nXP: :xp\nMessages: :messages \nVoice: :voice",
         'usage-givexp' => 'givexp `user_mention` `xp_amount`',
         'usage-delxp' => 'removexp `user_mention` `xp_amount`',
         'usage-resetxp' => 'resetxp `user_mention`',
