@@ -64,7 +64,7 @@ return [
         'set' => 'Update setting from config',
         'config' => 'Show the server configuration',
         'user-timeouts' => 'Show timeouts for single user',
-        'timeouts' => 'Show all timeouts',
+        'timeouts' => 'Show all timeouts or by single user',
         'modstats' => 'Show moderator statistics',
         'leaderboard' => 'Show leaderboard with user levels',
         'rank' => 'Show your own level and xp',
@@ -301,7 +301,7 @@ return [
         'footer' => 'Timeouts given through discord are automatically added',
         'title' => 'Timeouts',
         'count' => "Total timeouts: :count",
-        'usage-timeouts' => 'Usage: usertimeouts `user_mention`',
+        'usage-timeouts' => 'Usage: timeouts `user_mention`',
     ],
 
     'music' => [
