@@ -259,7 +259,39 @@ class MentionResponderSeeder extends Seeder
             ],
             // Server boost
             '665890948340908043' => [
-                'Nog niks',
+                "I've been wanting to say thanks for boosting the server. Here, its not much, but I gave you some free xp.",
+                "Are you a server booster? Or did you just steal that icon?" .
+                "You must be one of those nitro users. Who pay for discord?",
+                "Fancy icon, are you a server booster or somethin'?",
+                "I like that icon. Are you a server booster? Actual nitro user?",
+                "Ah, so you're a server booster then?",
+                "Beautiful booster icon for beautiful people",
+                "Icons and roles for those with the money to buy it.",
+                "Look at you, wearing that server booster icon, are you rich?",
+                "Is that a server booster icon? I'm schocked not more people have it..",
+                "That icon. I've seen people wear these when they are supporting the server. With your strength, this server should have no trouble.",
+                "They say you boosted this server.. with nitro! Even paid for it!",
+                "No matter what else happens, we will always be grateful to you for boosting the server.",
+                "You wear the badge of server booster. Now that's the life.",
+                "You're the one that has been boosting the server, impressive.",
+                "Fine role you got there, server booster, am I right?",
+                "Judging by your profile, you're a server booster. Well met, friend.",
+                "You wear the icon of a true supporter of this server. I salute you.",
+            ],
+            // Bot tester
+            '1041061399125831740' => [
+                "What could it mean? BerendBotje tester? And who among us could possibily hold that honor? And such responsibility?",
+                "By Ysmir, you did it. You actually help test me..",
+                "There's been talk amongs the moderators, that you are.. BerendBotje beta tester.. Such a thing.. Surely that is not possible..?",
+                "I have to wonder.. what does a Berendbotje tester do once he is summoned by berend to berendbotje?",
+            ],
+            // Contributor
+            '641750834874417202' => [
+                "Now I remember - you're a contributor to this server. So you what - fetch the mead?",
+                "So you are contributor here? Am I suppose to be impressed?",
+                "You're the one that helped contribute to the server! I remember!",
+                "I know of your deeds, and am honored to address a contributor to this server.",
+                "You've been seen contributing to this discord. That's an honorable path you're on friend.",
             ],
             // Moderator
             '650972176765288448' => [
