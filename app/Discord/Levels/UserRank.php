@@ -10,6 +10,7 @@ use App\Discord\Core\Enums\Setting;
 use App\Discord\Core\SlashCommand;
 use App\Models\DiscordUser;
 use App\Models\Guild;
+use App\Models\MessageCounter;
 use Discord\Builders\MessageBuilder;
 use Discord\Http\Exceptions\NoPermissionsException;
 use Discord\Parts\Interactions\Command\Option;
@@ -74,8 +75,8 @@ class UserRank extends SlashCommand
         }
 
         return MessageBuilder::new()->addEmbed(EmbedBuilder::create(Bot::getDiscord())
-            ->setDescription(__('bot.xp.description', ['user' => $user->tag(), 'messages' => $messageCounter->count, 'xp' => $messageCounter->xp, 'voice' => $voice]))
-            ->setTitle(__('bot.xp.title', ['level' => $messageCounter->level]))
+            ->setDescription(__('bot.xp.description', ['user' => $user->tag(), 'messages' => $messageCounter->count, 'xp' => $messageCounter->xp, 'voice' => $voice, 'level' => $messageCounter->level]))
+            ->setTitle(__('bot.xp.title', ['level' => $messageCounter->level, 'xp' => $messageCounter->xp]))
             ->setFooter(__('bot.xp.footer', ['xp' => $xpCount]))
             ->getEmbed());
     }

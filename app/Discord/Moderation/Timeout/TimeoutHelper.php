@@ -10,12 +10,19 @@ class TimeoutHelper
     public static function timeoutLength($timeout)
     {
         $length = $timeout->length;
-        if ($length >= 60) {
-            $length = round($length / 60);
-            return "**User**: <@{$timeout->discord_id}>\n**Length**: {$length} hours\n**By**: {$timeout->giver->tag()}\n**Reason**:\n{$timeout->reason}\n\n";
-        } else {
-            return "**User**: <@{$timeout->discord_id}>\n**Length**: {$length} minutes\n**By**: {$timeout->giver->tag()}\n**Reason**:\n{$timeout->reason}\n\n";
+        $units = 'seconds';
+
+        if ($timeout->length >= 3600) {
+            $length /= 60;
+            $units = 'minutes';
         }
+        if ($timeout->length >= 86400) {
+            $length = $timeout->length / 24 / 60 / 60;
+            $units = 'days';
+        }
+
+
+        return "**User**: <@{$timeout->discord_id}>\n**Length**: {$length} {$units}\n**By**: {$timeout->giver->tag()}\n**Reason**:\n{$timeout->reason}\n\n";
     }
 
 }

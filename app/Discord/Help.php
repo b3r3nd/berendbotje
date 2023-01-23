@@ -58,19 +58,17 @@ class Help extends SlashCommand
                     `roles` • Overview of all roles and their permissions
                     `permissions` • Overview of all permissions
                     `users` • Overview of all users and their roles
-                    `myroles` • See your roles
-                    `userroles` `user_mention` • See roles from user
+                    `role` `user_mention`• See your roles or from another user
                     `addrole` `role_name` • Add a new role
                     `delrole` `role_name` • Delete a role
-                    `addperm` `role_name` `perm_name1,perm_name2` • Add permission(s) to a role
-                    `delperm` `role_name` `perm_name1,perm_name2` • Remove permission(s) from a role
+                    `addperm` `role_name` `perm_name` • Add permission(s) to a role
+                    `delperm` `role_name` `perm_name` • Remove permission(s) from a role
                     `adduser` `user_mention` `role_name` • Add user to the given role
                     `deluser` `user_mention` `role_name` • Remove user from given role";
                 $embedBuilder->setDescription($desc)->setTitle("Roles and Permissions");
             } elseif (strtolower($this->arguments[0]) === 'moderation') {
                 $desc = "Timeouts are automatically detected and saved, bans and kicks are only counted.\n
-                    `timeouts` • Show given timeout history
-                    `usertimeouts` `user_mention` • Show timeout history for user
+                    `timeouts` `user_mention` • Show given timeout history or from a specific user
                     `modstats` • Show moderator statistics
                     `config` • See server configuration
                     `set` `setting_key` `new_value` • Update server setting

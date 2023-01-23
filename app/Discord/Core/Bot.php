@@ -52,16 +52,14 @@ use App\Discord\Moderation\Command\CreateCommand;
 use App\Discord\Moderation\Command\DeleteCommand;
 use App\Discord\Moderation\KickAndBanCounter;
 use App\Discord\Moderation\ModeratorStatistics;
-use App\Discord\Moderation\Timeout\AllTimeouts;
+use App\Discord\Moderation\Timeout\Timeouts;
 use App\Discord\Moderation\Timeout\DetectTimeouts;
-use App\Discord\Moderation\Timeout\SingleUserTimeouts;
 use App\Discord\Roles\AttachRolePermission;
 use App\Discord\Roles\AttachUserRole;
 use App\Discord\Roles\CreateRole;
 use App\Discord\Roles\DeleteRole;
 use App\Discord\Roles\DetachRolePermission;
 use App\Discord\Roles\DetachUserRole;
-use App\Discord\Roles\MyRoles;
 use App\Discord\Roles\Permissions;
 use App\Discord\Roles\Roles;
 use App\Discord\Roles\UserRoles;
@@ -69,7 +67,6 @@ use App\Discord\Roles\Users;
 use App\Discord\Settings\Settings;
 use App\Discord\Settings\UpdateSetting;
 use App\Models\Guild;
-use App\Models\Reaction;
 use Discord\Discord;
 use Discord\Exceptions\IntentException;
 use Discord\Parts\User\Activity;
@@ -133,12 +130,13 @@ class Bot
             Servers::class,
 
             Roles::class, Permissions::class, Users::class,
-            MyRoles::class, UserRoles::class,
+            UserRoles::class,
+            AttachRolePermission::class, DetachRolePermission::class,
             CreateRole::class, DeleteRole::class,
-            DetachUserRole::class, AttachUserRole::class, AttachRolePermission::class, DetachRolePermission::class,
+            DetachUserRole::class, AttachUserRole::class,
             Settings::class, UpdateSetting::class,
 
-            SingleUserTimeouts::class, AllTimeouts::class, ModeratorStatistics::class,
+            Timeouts::class, ModeratorStatistics::class,
 
             Leaderboard::class, RoleRewards::class, CreateRoleReward::class, DeleteRoleReward::class,
             UserRank::class, GiveXp::class, RemoveXp::class, ResetXp::class,
@@ -180,7 +178,7 @@ class Bot
 
             $this->loadCoreClasses();
             $this->loadGuilds();
-            //$this->deleteSlashCommands();
+            // $this->deleteSlashCommands();
             $this->loadCommands();
         });
         self::$instance = $this;

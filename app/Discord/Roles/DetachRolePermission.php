@@ -22,6 +22,11 @@ class DetachRolePermission extends SlashCommand
 
     public function __construct()
     {
+        $choices = [];
+        foreach (\App\Models\Permission::all() as $permission) {
+            $choices[] = ['name' => __("bot.permissions-enum.{$permission->name}"), 'value' => $permission->name];
+        }
+
         $this->description = __('bot.slash.detach-role-perm');
         $this->slashCommandOptions = [
             [
@@ -35,6 +40,7 @@ class DetachRolePermission extends SlashCommand
                 'description' => 'Permissions',
                 'type' => Option::STRING,
                 'required' => true,
+                'choices' => $choices,
             ],
         ];
         parent::__construct();

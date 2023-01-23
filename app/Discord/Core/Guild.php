@@ -28,11 +28,6 @@ use Exception;
  * @property $guildModel        Eloquent model for the guild.
  * @property $logger            Logger instance for this specific guild which can log events.
  * @property $channels          List of channels which have special flags set, for example media channels.
- *
- * @property $roleReplies       List of mention replies for this guild which require a certain role.
- * @property $noRoleReplies     List of mention replies for this guild which require NOT to have a certain role.
- * @property $lastResponses     List of responses recently used (60 sec) so no duplicates are send.
- *
  */
 class Guild
 {
@@ -43,9 +38,6 @@ class Guild
     public GuildModel $model;
     private Logger $logger;
     private array $channels = [];
-    private array $roleReplies = [];
-    private array $noRoleReplies = [];
-    private array $lastResponses = [];
 
     /**
      * @param GuildModel $guild
@@ -69,107 +61,8 @@ class Guild
         $this->logger = new Logger($this->getSetting(SettingEnum::LOG_CHANNEL));
         $this->registerReactions();
         $this->registerCommands();
-        $this->registerMentionResponder();
-    }
 
-
-    /**
-     * @return void
-     */
-    public function loadReplies(): void
-    {
-        $this->roleReplies = [];
-        $this->noRoleReplies = [];
-        foreach (MentionGroup::byGuild($this->model->guild_id)->get() as $mentionGroup) {
-            if ($mentionGroup->has_role) {
-                $this->roleReplies[$mentionGroup->name] = $mentionGroup->replies->pluck('reply')->toArray();
-            } else {
-                $this->noRoleReplies[$mentionGroup->name] = $mentionGroup->replies->pluck('reply')->toArray();
-            }
-        }
-    }
-
-    /**
-     * @return void
-     */
-    private function registerMentionResponder(): void
-    {
-        $this->loadReplies();
-        Bot::getDiscord()->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) {
-            if ($message->author->bot || !$message->guild_id || $message->guild_id !== $this->model->guild_id ||
-                !str_contains($message->content, $discord->user->id) ||
-                !$this->getSetting(SettingEnum::ENABLE_MENTION_RESPONDER)) {
-                return;
-            }
-
-            if (str_contains($message->content, '?give')) {
-                $message->reply('Thanks! 😎');
-                return;
-            }
-
-            // @TODO need to find better way to do this nasty shit
-            foreach ($this->lastResponses as $lastResponse => $date) {
-                $now = Carbon::now();
-                if ($now->diffInSeconds($date) > 60) {
-                    unset($this->lastResponses[$lastResponse]);
-                }
-            }
-
-            $roles = collect($message->member->roles);
-            $responses = [];
-
-            foreach ($this->roleReplies as $group => $replies) {
-                if (is_int($group) && $roles->contains('id', $group)) {
-                    $responses = array_merge($responses, $replies);
-                }
-            }
-
-            foreach ($this->noRoleReplies as $group => $replies) {
-                if (is_int($group) && !$roles->contains('id', $group)) {
-                    $responses = array_merge($responses, $replies);
-                }
-            }
-
-
-            $discordUser = DiscordUser::get($message->author->id);
-            $cringeCounter = $discordUser->cringeCounters()->where('guild_id', $this->model->id)->get()->first()->count ?? 0;
-            $bumpCounter = $discordUser->bumpCounters()->where('guild_id', $this->model->id)->selectRaw('*, sum(count) as total')->first();
-            $timeoutCounter = Timeout::byGuild($message->guild_id)->where(['discord_id' => $message->author->id])->count();
-
-            if ($bumpCounter->total > 100) {
-                $responses = array_merge($responses, $this->roleReplies['BumpCounter']);
-            }
-            if ($timeoutCounter > 1) {
-                $responses = array_merge($responses, $this->roleReplies['Muted']);
-            }
-            if ($cringeCounter > 10) {
-                $responses = array_merge($responses, $this->roleReplies['CringeCounter']);
-            }
-
-            // Replies for everyone
-            $responses = array_merge($responses, $this->roleReplies['Default']);
-            $message->reply($this->getRandom($responses));
-        });
-    }
-
-
-    /**
-     * @param array $array
-     * @return mixed
-     * @throws \Exception
-     */
-    private function getRandom(array $array): mixed
-    {
-        $response = $array[random_int(0, (count($array) - 1))];
-        while (isset($this->lastResponses[$response])) {
-            $response = $array[random_int(0, (count($array) - 1))];
-            if (count($this->lastResponses) === count($array)) {
-                $this->lastResponses = [];
-                break;
-            }
-        }
-        $this->lastResponses[$response] = Carbon::now();
-        return $response;
+        new MentionResponder($this->model->guild_id);
     }
 
     /**

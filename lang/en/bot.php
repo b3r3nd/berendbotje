@@ -15,7 +15,7 @@ return [
     'provide-args' => 'Provide arguments noOo0Oo0Ob',
     'provide-arguments' => 'This command requires :count arguments to be given',
     'provide-mention' => 'This command requires a user to be mentioned',
-    'lack-access' => 'You lack access to use this command',
+    'lack-access' => 'You do not have permission to run this command. Use `/role` to check your roles in this server.',
     'error' => 'Error',
     'done' => 'Done!',
     'media-deleted' => 'Your message in :channel has been deleted. Only media and URLs are allowed.',
@@ -24,6 +24,29 @@ return [
     'needhelp' => 'For more info check /help',
     'bump-reminder' => 'BUMP TIME :role',
 
+    'permissions-enum' => [
+        'roles' => 'Roles',
+        'create-role' => 'Create role',
+        'delete-role' => 'Delete role',
+        'update-role' => 'Update role',
+        'permissions' => 'Permissions',
+        'attach-permission' => 'Update permission from role',
+        'attach-role' => 'Update roles from user',
+        'config' => 'See and update the config',
+        'timeouts' => 'See timeout history',
+        'add-cringe' => 'Increase the cringe counter',
+        'delete-cringe' => 'Decrease the cringe counter',
+        'commands' => 'Create and delete custom commands',
+        'reactions' => 'Create and delete custom reactions',
+        'role-rewards' => 'Create and update role rewards',
+        'manage-xp' => 'Modify XP for users',
+        'channels' => 'Set and update channel flags',
+        'logs' => 'Update the log config',
+        'add-mention' => 'Add new mention replies',
+        'delete-mention' => 'Remove mention replies',
+        'manage-mention-groups' => 'Manage mention reply groups',
+        'media-filter' => 'Media filter',
+    ],
 
     'slash' => [
         'roles' => 'Show all roles in the server',
@@ -31,7 +54,7 @@ return [
         'permissions' => 'Show all available permissions',
         'servers' => 'Show all servers the bot runs on',
         'myroles' => 'Show your roles in this server',
-        'userroles' => 'Show roles of given user',
+        'userroles' => 'Show roles of yourself or given user',
         'delete-role' => 'Delete a role from the server',
         'create-role' => 'Add a new role to the server',
         'detach-role-perm' => 'Remove permissions from role',
@@ -41,7 +64,7 @@ return [
         'set' => 'Update setting from config',
         'config' => 'Show the server configuration',
         'user-timeouts' => 'Show timeouts for single user',
-        'timeouts' => 'Show all timeouts',
+        'timeouts' => 'Show all timeouts or by single user',
         'modstats' => 'Show moderator statistics',
         'leaderboard' => 'Show leaderboard with user levels',
         'rank' => 'Show your own level and xp',
@@ -99,17 +122,11 @@ return [
     ],
 
 
-    'myroles' => [
-        'title' => 'Your roles in this server',
-        'footer' => 'See help for more info',
-        'description' => ':roles',
-        'none' => 'No roles in this server',
-    ],
-
     'userroles' => [
-        'title' => 'User in this server',
+        'title' => 'Roles in this server',
         'footer' => 'See help for more info',
-        'description' => ':roles',
+        'description' => "Roles for :user \n\n :roles",
+        'none' => ':user has no roles in this server',
     ],
 
     'roles' => [
@@ -171,9 +188,9 @@ return [
     'xp' => [
         'not-found' => ':user do not have any messages',
         'count' => 'You have :messages',
-        'footer' => 'Gain :xp xp per message',
+        'footer' => ':xp xp per message',
         'title' => 'Level :level',
-        'description' => ":user has :messages messages and spend about :voice in voice, which in total amounts to :xp xp!",
+        'description' => "User: :user\nLevel: :level \nXP: :xp\nMessages: :messages \nVoice: :voice",
         'usage-givexp' => 'givexp `user_mention` `xp_amount`',
         'usage-delxp' => 'removexp `user_mention` `xp_amount`',
         'usage-resetxp' => 'resetxp `user_mention`',
@@ -284,7 +301,7 @@ return [
         'footer' => 'Timeouts given through discord are automatically added',
         'title' => 'Timeouts',
         'count' => "Total timeouts: :count",
-        'usage-timeouts' => 'Usage: usertimeouts `user_mention`',
+        'usage-timeouts' => 'Usage: timeouts `user_mention`',
     ],
 
     'music' => [

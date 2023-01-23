@@ -33,7 +33,7 @@ class DetectTimeouts
                         $startTime = Carbon::now();
                         if ($endTime) {
                             $user = DiscordUser::get($entry->user->id);
-                            $diff = $endTime->diffInMinutes($startTime) + 1;
+                            $diff = $endTime->diffInSeconds($startTime);
                             \App\Models\Timeout::create([
                                 'discord_id' => $member->id,
                                 'discord_username' => $member->username,

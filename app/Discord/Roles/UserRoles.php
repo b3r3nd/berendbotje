@@ -21,7 +21,7 @@ class UserRoles extends SlashCommand
 
     public function trigger(): string
     {
-        return 'userroles';
+        return 'role';
     }
 
     public function __construct()
@@ -32,7 +32,7 @@ class UserRoles extends SlashCommand
                 'name' => 'user_mention',
                 'description' => 'Mention',
                 'type' => Option::USER,
-                'required' => true,
+                'required' => false,
             ],
         ];
         parent::__construct();
@@ -41,17 +41,20 @@ class UserRoles extends SlashCommand
     public function action(): MessageBuilder
     {
         $description = "";
-        if (DiscordUser::get($this->arguments[0])->roles->isEmpty()) {
-            return EmbedFactory::failedEmbed(__('bot.myroles.none'));
+
+        $user = DiscordUser::get($this->arguments[0] ?? $this->commandUser);
+
+        if ($user->roles->isEmpty()) {
+            return EmbedFactory::failedEmbed(__('bot.userroles.none', ['user' => $user->tag()]));
         }
-        foreach (DiscordUser::get($this->arguments[0])->rolesByGuild($this->guildId) as $role) {
+        foreach ($user->rolesByGuild($this->guildId) as $role) {
             $description .= "{$role->name}\n";
         }
 
         return MessageBuilder::new()->addEmbed(EmbedBuilder::create(Bot::get()->discord())
             ->setTitle(__('bot.userroles.title'))
             ->setFooter(__('bot.userroles.footer'))
-            ->setDescription(__('bot.userroles.description', ['roles' => $description]))
+            ->setDescription(__('bot.userroles.description', ['roles' => $description, 'user' => $user->tag()]))
             ->getEmbed());
     }
 }

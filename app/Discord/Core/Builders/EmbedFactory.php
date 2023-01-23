@@ -12,6 +12,18 @@ class EmbedFactory
 {
 
     /**
+     * When a user lacks access to a certain command we use the EPHEMERAL flag to hide the response from other users.
+     *
+     * @param string $message
+     * @return MessageBuilder
+     */
+    public static function lackAccessEmbed(string $message): MessageBuilder
+    {
+        return self::failedEmbed($message)->_setFlags(00000100);
+
+    }
+
+    /**
      * @param string $message
      * @return MessageBuilder
      */

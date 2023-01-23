@@ -4,6 +4,7 @@ namespace App\Discord\Roles;
 
 use App\Discord\Core\Enums\Permission;
 use App\Discord\Core\SlashCommand;
+use App\Models\Setting;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Command\Option;
 
@@ -22,6 +23,11 @@ class AttachRolePermission extends SlashCommand
 
     public function __construct()
     {
+        $choices = [];
+        foreach (\App\Models\Permission::all() as $permission) {
+            $choices[] = ['name' => __("bot.permissions-enum.{$permission->name}"), 'value' => $permission->name];
+        }
+
         $this->description = __('bot.slash.attach-role-perm');
         $this->slashCommandOptions = [
             [
@@ -35,6 +41,8 @@ class AttachRolePermission extends SlashCommand
                 'description' => 'Permissions',
                 'type' => Option::STRING,
                 'required' => true,
+                'choices' => $choices,
+
             ],
         ];
         parent::__construct();
