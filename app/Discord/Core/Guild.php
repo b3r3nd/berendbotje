@@ -38,6 +38,7 @@ class Guild
     public GuildModel $model;
     private Logger $logger;
     private array $channels = [];
+    public MentionResponder $mentionResponder;
 
     /**
      * @param GuildModel $guild
@@ -62,7 +63,7 @@ class Guild
         $this->registerReactions();
         $this->registerCommands();
 
-        new MentionResponder($this->model->guild_id);
+        $this->mentionResponder = new MentionResponder($this->model->guild_id);
     }
 
     /**

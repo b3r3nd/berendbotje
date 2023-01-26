@@ -79,7 +79,7 @@ class MentionResponder
                 }
 
                 $messages = $this->lastMessages[$message->author->id];
-                if(count($messages) === 4) {
+                if (count($messages) === 4) {
                     $message->reply("Alright, you are now blocked.");
                     $this->lastMessages[$message->author->id][] = Carbon::now();
                     return;
@@ -119,19 +119,24 @@ class MentionResponder
             $timeoutCounter = Timeout::byGuild($message->guild_id)->where(['discord_id' => $message->author->id])->count();
 
             if ($bumpCounter->total > 100) {
-                $responses = array_merge($responses, $this->roleReplies['BumpCounter']);
+                $responses = array_merge($responses, $this->roleReplies['BumpCounter'] ?? []);
             }
             if ($timeoutCounter > 1) {
-                $responses = array_merge($responses, $this->roleReplies['Muted']);
+                $responses = array_merge($responses, $this->roleReplies['Muted'] ?? []);
             }
             if ($cringeCounter > 10) {
-                $responses = array_merge($responses, $this->roleReplies['CringeCounter']);
+                $responses = array_merge($responses, $this->roleReplies['CringeCounter'] ?? []);
             }
 
             // Replies for everyone
-            $responses = array_merge($responses, $this->roleReplies['Default']);
-            $message->reply($this->getRandom($responses));
-            $this->lastMessages[$message->author->id][] = Carbon::now();
+
+            $responses = array_merge($responses, $this->roleReplies['Default'] ?? []);
+
+
+            if (!empty($responses)) {
+                $message->reply($this->getRandom($responses));
+                $this->lastMessages[$message->author->id][] = Carbon::now();
+            }
         });
     }
 

@@ -170,11 +170,11 @@ class Bot
             ]
         );
         $this->discord->on('ready', function (Discord $discord) {
-            $activity = new Activity($this->discord, [
-                'type' => Activity::TYPE_WATCHING,
-                'name' => __('bot.status'),
-            ]);
-            $discord->updatePresence($activity);
+//            $activity = new Activity($this->discord, [
+//                'type' => Activity::TYPE_WATCHING,
+//                'name' => __('bot.status'),
+//            ]);
+//            $discord->updatePresence($activity);
 
             $this->loadCoreClasses();
             $this->loadGuilds();
