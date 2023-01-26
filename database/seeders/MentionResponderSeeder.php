@@ -138,10 +138,10 @@ class MentionResponderSeeder extends Seeder
                 "Tidings.",
                 "I don't owe you money, do I?",
                 "Looking to protect yourself, or deal some damage?",
-                "The Dutch are so serious about hair . So much hair . Berend thinks they wish they had a glorious bald head like him.",
+                "The Dutch are so serious about hair. So much hair. Berend thinks they wish they had a glorious bald head like him.",
                 "I do swear my blood and honour to the service of the mods.",
-                "I’m not a man, I’m a bot in human form . Just release me and point me at the trolls.",
-                "I like living here . Berend is so pretty.",
+                "I’m not a man, I’m a bot in human form. Just release me and point me at the trolls.",
+                "I like living here. Berend is so pretty.",
                 "The strijders channel looks so pretty. I wish they'd let me inside...",
                 "I climbed all the way up to the strijders channel, but they said I wasn't good enough to get in. They're just mean.",
                 "You are such a milk-drinker. You can't even stand up to a bot.",
@@ -304,7 +304,7 @@ class MentionResponderSeeder extends Seeder
                 "Good to have you by my side, friend. I need reliable moderators around.",
                 "you know the old saying: When life gives you lemons, go ban some trolls.",
                 "I look forward to hearing about the next person you mute/ban!",
-                "I am sworn to carry your burdens",
+                "I am sworn to carry your burdens.",
             ],
             // Admin
             '595323250959974451' => [
