@@ -53,7 +53,7 @@ class AddMentionReply extends SlashCommand
             return EmbedFactory::failedEmbed(__('bot.mention.no-group'));
         }
         $mentionGroup->replies()->save(new MentionReply(['reply' => $this->arguments[1], 'guild_id' => $guildModel->id]));
-        Bot::get()->getGuild($this->guildId)?->loadReplies();
+        Bot::get()->getGuild($this->guildId)?->mentionResponder->loadReplies();
         return EmbedFactory::successEmbed(__('bot.mention.added', ['group' => $mentionGroup->name, 'reply' => $this->arguments[1]]));
 
     }
