@@ -65,11 +65,12 @@ class Helper
     {
         $description = "{$mentionGroup->id} -";
 
-        if (!$mentionGroup->has_role) {
+        if (!$mentionGroup->has_role && !$mentionGroup->has_user) {
             $description .= "Non-";
         }
-
-        if (is_numeric($mentionGroup->name)) {
+        if ($mentionGroup->has_user) {
+            $description .= "**<@{$mentionGroup->name}>** \n";
+        } else if (is_numeric($mentionGroup->name)) {
             $description .= "**<@&{$mentionGroup->name}>** \n";
         } else {
             $description .= "**{$mentionGroup->name}** \n";

@@ -22,6 +22,7 @@ class MentionResponder
     private int $guildModelId;
     private array $roleReplies = [];
     private array $noRoleReplies = [];
+    private array $userReplies = [];
     private array $lastResponses = [];
     private array $lastMessages = [];
 
@@ -43,6 +44,8 @@ class MentionResponder
         foreach (MentionGroup::byGuild($this->guildId)->get() as $mentionGroup) {
             if ($mentionGroup->has_role) {
                 $this->roleReplies[$mentionGroup->name] = $mentionGroup->replies->pluck('reply')->toArray();
+            } elseif ($mentionGroup->has_user) {
+                $this->userReplies[$mentionGroup->name] = $mentionGroup->replies->pluck('reply')->toArray();
             } else {
                 $this->noRoleReplies[$mentionGroup->name] = $mentionGroup->replies->pluck('reply')->toArray();
             }
@@ -66,7 +69,7 @@ class MentionResponder
                 return;
             }
 
-           // $this->checkLastResponses();
+            // $this->checkLastResponses();
 
             if (isset($this->lastMessages[$message->author->id])) {
                 $messages = $this->lastMessages[$message->author->id];
@@ -108,6 +111,12 @@ class MentionResponder
 
             foreach ($this->noRoleReplies as $group => $replies) {
                 if (is_int($group) && !$roles->contains('id', $group)) {
+                    $responses = array_merge($responses, $replies);
+                }
+            }
+
+            foreach ($this->userReplies as $user => $replies) {
+                if (is_int($user) && $message->author->id == $user) {
                     $responses = array_merge($responses, $replies);
                 }
             }
