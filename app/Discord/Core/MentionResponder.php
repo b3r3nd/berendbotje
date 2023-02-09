@@ -66,7 +66,7 @@ class MentionResponder
                 return;
             }
 
-            $this->checkLastResponses();
+           // $this->checkLastResponses();
 
             if (isset($this->lastMessages[$message->author->id])) {
                 $messages = $this->lastMessages[$message->author->id];
@@ -160,16 +160,16 @@ class MentionResponder
      */
     private function getRandom(array $array): mixed
     {
-        $response = $array[random_int(0, (count($array) - 1))];
-        while (isset($this->lastResponses[$response])) {
-            $response = $array[random_int(0, (count($array) - 1))];
-            if (count($this->lastResponses) === count($array)) {
-                $this->lastResponses = [];
-                break;
-            }
-        }
-        $this->lastResponses[$response] = Carbon::now();
-        return $response;
+        return $array[random_int(0, (count($array) - 1))];
+//        while (isset($this->lastResponses[$response])) {
+//            $response = $array[random_int(0, (count($array) - 1))];
+//            if (count($this->lastResponses) === count($array)) {
+//                $this->lastResponses = [];
+//                break;
+//            }
+//        }
+//        $this->lastResponses[$response] = Carbon::now();
+//        return $response;
     }
 
 }
