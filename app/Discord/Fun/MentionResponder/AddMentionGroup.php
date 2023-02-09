@@ -30,10 +30,20 @@ class AddMentionGroup extends SlashCommand
 
         $this->slashCommandOptions = [
             [
-                'name' => 'group_id',
-                'description' => 'Group ID',
-                'type' => Option::ROLE,
+                'name' => 'id',
+                'description' => 'Group or User ID',
+                'type' => Option::STRING,
                 'required' => true,
+            ],
+            [
+                'name' => 'group_type',
+                'description' => 'User Or Group',
+                'type' => Option::STRING,
+                'required' => true,
+                'choices' => [
+                    ['name' => "Role", 'value' => 'has_role'],
+                    ['name' => "User", 'value' => 'has_user']
+                ],
             ],
         ];
         parent::__construct();
@@ -41,7 +51,8 @@ class AddMentionGroup extends SlashCommand
 
     public function action(): MessageBuilder
     {
-        MentionGroup::create(['name' => $this->arguments[0], 'guild_id' => Guild::get($this->guildId)->id]);
+        $group = MentionGroup::create(['name' => $this->arguments[0], 'guild_id' => Guild::get($this->guildId)->id]);
+        $group->update([$this->arguments[1] => true]);
         Bot::get()->getGuild($this->guildId)?->mentionResponder->loadReplies();
         return EmbedFactory::successEmbed(__('bot.mentiongroup.added', ['group' => $this->arguments[0]]));
     }
