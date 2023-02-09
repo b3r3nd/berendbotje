@@ -80,7 +80,7 @@ class MentionResponder
 
                 $messages = $this->lastMessages[$message->author->id];
                 if (count($messages) === 5) {
-                    $message->reply("Alright, you are now blocked.");
+                    $message->reply($this->getRandom($this->roleReplies['Blocked'] ?? []));
                     $this->lastMessages[$message->author->id][] = Carbon::now();
                     return;
                 }
@@ -90,7 +90,7 @@ class MentionResponder
                 }
 
                 if (count($messages) >= 3) {
-                    $message->reply($this->getRandom($this->roleReplies['Annoyed']));
+                    $message->reply($this->getRandom($this->roleReplies['Annoyed'] ?? []));
                     $this->lastMessages[$message->author->id][] = Carbon::now();
                     return;
                 }
