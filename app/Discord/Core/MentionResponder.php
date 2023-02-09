@@ -79,13 +79,13 @@ class MentionResponder
                 }
 
                 $messages = $this->lastMessages[$message->author->id];
-                if (count($messages) === 4) {
+                if (count($messages) === 5) {
                     $message->reply("Alright, you are now blocked.");
                     $this->lastMessages[$message->author->id][] = Carbon::now();
                     return;
                 }
 
-                if (count($messages) >= 5) {
+                if (count($messages) >= 6) {
                     return;
                 }
 
