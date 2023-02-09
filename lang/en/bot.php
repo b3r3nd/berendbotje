@@ -275,6 +275,7 @@ return [
         'usage-addcringe' => "Usage: addcringe `user_mention`",
         'usage-resetcringe' => "Usage: resetcringe `user_mention`",
         'reset' => "Cringe for :user is reset to 0",
+        'fail' => "Nice try noob, I increased your cringe counter instead. Count is now :count"
     ],
 
     'cmd' => [

@@ -45,9 +45,15 @@ class IncreaseCringe extends SlashCommand
     {
         $user = DiscordUser::get($this->arguments[0]);
         $guildModel = \App\Models\Guild::get($this->guildId);
+        $fail = false;
+
+
+        if (in_array($user->discord_id, ['259461260645629953', '651378995245613056', '1034642309289091207'], true)) {
+            $user = DiscordUser::get($this->commandUser);
+            $fail = true;
+        }
 
         $cringeCounters = $user->cringeCounters()->where('guild_id', $guildModel->id)->get();
-
         if ($cringeCounters->isEmpty()) {
             $cringeCounter = new CringeCounter(['count' => 1, 'guild_id' => $guildModel->id]);
             $user->cringeCounters()->save($cringeCounter);
@@ -57,6 +63,9 @@ class IncreaseCringe extends SlashCommand
         }
 
         $cringeCounter->refresh();
+        if ($fail) {
+            return EmbedFactory::successEmbed(__('bot.cringe.fail', ['name' => $user->tag(), 'count' => $cringeCounter->count]));
+        }
         return EmbedFactory::successEmbed(__('bot.cringe.change', ['name' => $user->tag(), 'count' => $cringeCounter->count]));
     }
 }
