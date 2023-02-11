@@ -4,6 +4,7 @@ namespace App\Discord\Moderation\Timeout;
 
 use App\Discord\Core\Bot;
 use App\Models\DiscordUser;
+use App\Models\Timeout;
 use Carbon\Carbon;
 use Discord\Discord;
 use Discord\Parts\Guild\AuditLog\AuditLog;
@@ -34,14 +35,25 @@ class DetectTimeouts
                         if ($endTime) {
                             $user = DiscordUser::get($entry->user->id);
                             $diff = $endTime->diffInSeconds($startTime);
-                            \App\Models\Timeout::create([
+                            $timeout = Timeout::byGuild($guild->id)->where(['discord_id' => $member->id])->get()->last();
+                            $timeoutData = [
                                 'discord_id' => $member->id,
                                 'discord_username' => $member->username,
                                 'length' => $diff ?? 0,
                                 'reason' => $entry->reason ?? "Empty",
                                 'giver_id' => $user->id,
                                 'guild_id' => \App\Models\Guild::get($guild->id)->id,
-                            ]);
+                            ];
+
+                            if (!$timeout) {
+                                \App\Models\Timeout::create($timeoutData);
+                            } else {
+                                $createdAt = Carbon::create($timeout->created_at);
+                                $timeoutEnd = $createdAt->addSeconds($timeout->length);
+                                if ($timeoutEnd->isBefore(Carbon::now())) {
+                                    \App\Models\Timeout::create($timeoutData);
+                                }
+                            }
                         }
                     }
                 });
