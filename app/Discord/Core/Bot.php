@@ -20,6 +20,7 @@ use App\Discord\Fun\MentionResponder\DelMentionGroup;
 use App\Discord\Fun\MentionResponder\DelMentionReply;
 use App\Discord\Fun\MentionResponder\MentionGroupIndex;
 use App\Discord\Fun\MentionResponder\MentionIndex;
+use App\Discord\Fun\MentionResponder\UpdateMentionGroup;
 use App\Discord\Fun\Reaction\CreateReaction;
 use App\Discord\Fun\Reaction\DeleteReaction;
 use App\Discord\Fun\Reaction\ReactionIndex;
@@ -101,13 +102,11 @@ class Bot
             VoiceStateUpdate::class,
             DetectTimeouts::class,
             MediaFilter::class,
-
             KickAndBanCounter::class,
             BumpCounter::class,
             EmoteCounter::class,
             MessageXpCounter::class,
             VoiceXpCounter::class,
-
             VoiceStateLogger::class, GuildMemberLogger::class, MessageLogger::class, TimeoutLogger::class,
             InviteLogger::class,
         ];
@@ -126,7 +125,6 @@ class Bot
     private function commands(): array
     {
         return [
-
             GenerateImage::class,
             Servers::class,
 
