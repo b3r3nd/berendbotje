@@ -111,6 +111,7 @@ class Help extends SlashCommand
                     `urb` `search_term` • Search something on urban dictionary
                     `8ball` `question` • Ask the magic 8ball
                     `ask` `question` • Yes? No? Hmm..?
+                    `image` `term` • Generate an Image using OpenAI
                     ";
                 $embedBuilder->setDescription($desc)->setTitle("Fun commands");
             } elseif (strtolower($this->arguments[0]) === 'settings') {
