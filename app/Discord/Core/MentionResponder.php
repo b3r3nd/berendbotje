@@ -42,12 +42,22 @@ class MentionResponder
         $this->roleReplies = [];
         $this->noRoleReplies = [];
         foreach (MentionGroup::byGuild($this->guildId)->get() as $mentionGroup) {
+
+            $replies = [];
+            foreach ($mentionGroup->replies as $reply) {
+                if ($mentionGroup->multiplier > 1) {
+                    $replies = array_merge($replies, array_fill(0, $mentionGroup->multiplier, $reply->reply));
+                } else {
+                    $replies[] = $reply->reply;
+                }
+            }
+
             if ($mentionGroup->has_role) {
-                $this->roleReplies[$mentionGroup->name] = $mentionGroup->replies->pluck('reply')->toArray();
+                $this->roleReplies[$mentionGroup->name] = $replies;
             } elseif ($mentionGroup->has_user) {
-                $this->userReplies[$mentionGroup->name] = $mentionGroup->replies->pluck('reply')->toArray();
+                $this->userReplies[$mentionGroup->name] = $replies;
             } else {
-                $this->noRoleReplies[$mentionGroup->name] = $mentionGroup->replies->pluck('reply')->toArray();
+                $this->noRoleReplies[$mentionGroup->name] = $replies;
             }
         }
     }
@@ -55,7 +65,8 @@ class MentionResponder
     /**
      * @return void
      */
-    private function registerMentionResponder(): void
+    private
+    function registerMentionResponder(): void
     {
         Bot::getDiscord()->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) {
             if ($message->author->bot || !$message->guild_id || $message->guild_id !== $this->guildId ||
@@ -81,22 +92,22 @@ class MentionResponder
                     }
                 }
 
-                $messages = $this->lastMessages[$message->author->id];
-                if (count($messages) === 5) {
-                    $message->reply($this->getRandom($this->roleReplies['Blocked'] ?? []));
-                    $this->lastMessages[$message->author->id][] = Carbon::now();
-                    return;
-                }
-
-                if (count($messages) >= 6) {
-                    return;
-                }
-
-                if (count($messages) >= 3) {
-                    $message->reply($this->getRandom($this->roleReplies['Annoyed'] ?? []));
-                    $this->lastMessages[$message->author->id][] = Carbon::now();
-                    return;
-                }
+//                $messages = $this->lastMessages[$message->author->id];
+//                if (count($messages) === 5) {
+//                    $message->reply($this->getRandom($this->roleReplies['Blocked'] ?? []));
+//                    $this->lastMessages[$message->author->id][] = Carbon::now();
+//                    return;
+//                }
+//
+//                if (count($messages) >= 6) {
+//                    return;
+//                }
+//
+//                if (count($messages) >= 3) {
+//                    $message->reply($this->getRandom($this->roleReplies['Annoyed'] ?? []));
+//                    $this->lastMessages[$message->author->id][] = Carbon::now();
+//                    return;
+//                }
             }
 
 
@@ -121,7 +132,6 @@ class MentionResponder
                 }
             }
 
-
             $discordUser = DiscordUser::get($message->author->id);
             $cringeCounter = $discordUser->cringeCounters()->where('guild_id', $this->guildModelId)->get()->first()->count ?? 0;
             $bumpCounter = $discordUser->bumpCounters()->where('guild_id', $this->guildModelId)->selectRaw('*, sum(count) as total')->first();
@@ -138,7 +148,6 @@ class MentionResponder
             }
 
             // Replies for everyone
-
             $responses = array_merge($responses, $this->roleReplies['Default'] ?? []);
 
 
@@ -152,7 +161,8 @@ class MentionResponder
     /**
      * @return void
      */
-    private function checkLastResponses(): void
+    private
+    function checkLastResponses(): void
     {
         foreach ($this->lastResponses as $lastResponse => $date) {
             $now = Carbon::now();
@@ -167,7 +177,8 @@ class MentionResponder
      * @return mixed
      * @throws \Exception
      */
-    private function getRandom(array $array): mixed
+    private
+    function getRandom(array $array): mixed
     {
         return $array[random_int(0, (count($array) - 1))];
 //        while (isset($this->lastResponses[$response])) {

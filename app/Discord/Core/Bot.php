@@ -153,7 +153,7 @@ class Bot
             LogSettings::class, UpdateLogSetting::class,
 
             MentionIndex::class, AddMentionReply::class, DelMentionReply::class,
-            MentionGroupIndex::class, AddMentionGroup::class, DelMentionGroup::class,
+            MentionGroupIndex::class, AddMentionGroup::class, DelMentionGroup::class, UpdateMentionGroup::class,
         ];
     }
 

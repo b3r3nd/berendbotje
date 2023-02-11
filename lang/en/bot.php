@@ -98,6 +98,7 @@ return [
         'mentionindex' => 'List of all replies used by the mention responder',
         'addgroup ' => 'Create a new mention group',
         'delgroup' => 'Delete a mention group',
+        'updategroup' => 'Update a mention group',
         'addreply' => 'Add a new reply to a mention group',
         'delreply' => 'Delete a new reply from a mention group',
         'searchreply ' => 'Search for a reply',
@@ -356,5 +357,7 @@ return [
         'deleted' => 'Mention group and all of its replies deleted',
         'not-found' => 'Group with id :ID not found',
         'integer' => 'A group must be the ID of a server role! (for now)',
+        'notexist' => 'No mention group found for id :group',
+        'updated' => 'Mention group updated'
     ]
 ];

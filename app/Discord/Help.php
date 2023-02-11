@@ -201,7 +201,8 @@ class Help extends SlashCommand
                 - `replies` - show all replies grouped by available categories
                 - `replies` `group_id` - Show all replies for a single group
                 - `groups` - Show all groups
-                - `addgroup` `discord_role` - Add a group
+                - `addgroup` `discord_role` `user/role` `multiplier` - Add a group
+                - `updategroup` `id` `user/role` `multiplier` - update a group
                 - `delgroup` `group_id` - Delete a group and its replies (!!!)
                 - `addreply` `group_id` `reply_line` - Add a reply to a group
                 - `delreply` `reply_id`- Delete a reply

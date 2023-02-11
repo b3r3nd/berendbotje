@@ -10,7 +10,7 @@ class MentionGroup extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'guild_id', 'is_custom', 'has_role', 'has_user'];
+    protected $fillable = ['name', 'guild_id', 'is_custom', 'has_role', 'has_user', 'multiplier'];
 
 
     /**
