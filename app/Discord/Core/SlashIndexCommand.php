@@ -74,7 +74,7 @@ abstract class SlashIndexCommand extends SlashCommand implements PaginationIndex
                 $this->incOffset($interaction->member->id, $this->perPage);
                 $next = $this->nextButton();
                 $previous = $this->previousButton();
-                if (($this->getOffset($interaction->member->id) + $this->perPage) > $this->total) {
+                if (($this->getOffset($interaction->member->id) + $this->perPage) >= $this->total) {
                     $next->setDisabled(true);
                 }
                 if ($this->getOffset($interaction->member->id) > 0) {
