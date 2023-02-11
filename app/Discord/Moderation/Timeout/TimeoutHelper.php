@@ -12,15 +12,20 @@ class TimeoutHelper
         $length = $timeout->length;
         $units = 'seconds';
 
-        if ($timeout->length >= 3600) {
-            $length /= 60;
-            $units = 'minutes';
-        }
-        if ($timeout->length >= 86400) {
-            $length = $timeout->length / 24 / 60 / 60;
-            $units = 'days';
+        if ($length >= 60) {
+            $length = round($length / 60);
+            $units = 'minute(s)';
         }
 
+        if ($length >= 60) {
+            $length = round($length / 60);
+            $units = 'hour(s)';
+        }
+
+        if ($length >= 24) {
+            $length = round($length / 24);
+            $units = 'day(s)';
+        }
 
         return "**User**: <@{$timeout->discord_id}>\n**Length**: {$length} {$units}\n**By**: {$timeout->giver->tag()}\n**Reason**:\n{$timeout->reason}\n\n";
     }
