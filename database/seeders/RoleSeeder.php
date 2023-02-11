@@ -28,7 +28,7 @@ class RoleSeeder extends Seeder
 
         foreach (['timeouts', 'media-filter', 'add-cringe',
                      'delete-cringe', 'commands', 'reactions',
-                     'add-mention', 'delete-mention'] as $permName) {
+                     'add-mention', 'channels', 'delete-mention', 'openai'] as $permName) {
             $roles['moderator']->push(Permission::get($permName));
         }
 

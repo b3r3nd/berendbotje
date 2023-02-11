@@ -49,7 +49,6 @@ class UpdateSetting extends SlashCommand
         parent::__construct();
     }
 
-
     public function action(): MessageBuilder
     {
         if (!Setting::hasSetting($this->arguments[0], $this->guildId)) {

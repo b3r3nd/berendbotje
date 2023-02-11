@@ -69,12 +69,14 @@ class Helper
             $description .= "Non-";
         }
         if ($mentionGroup->has_user) {
-            $description .= "**<@{$mentionGroup->name}>** \n";
+            $description .= "**<@{$mentionGroup->name}>**";
         } else if (is_numeric($mentionGroup->name)) {
-            $description .= "**<@&{$mentionGroup->name}>** \n";
+            $description .= "**<@&{$mentionGroup->name}>**";
         } else {
-            $description .= "**{$mentionGroup->name}** \n";
+            $description .= "**{$mentionGroup->name}**";
         }
+
+        $description .= " • {$mentionGroup->multiplier}x \n";
 
         return $description;
     }

@@ -14,7 +14,6 @@ use App\Discord\Fun\Cringe\ResetCringe;
 use App\Discord\Fun\EightBall;
 use App\Discord\Fun\Emote\EmoteCounter;
 use App\Discord\Fun\Emote\EmoteIndex;
-use App\Discord\Fun\MentionResponder;
 use App\Discord\Fun\MentionResponder\AddMentionGroup;
 use App\Discord\Fun\MentionResponder\AddMentionReply;
 use App\Discord\Fun\MentionResponder\DelMentionGroup;
@@ -54,6 +53,7 @@ use App\Discord\Moderation\KickAndBanCounter;
 use App\Discord\Moderation\ModeratorStatistics;
 use App\Discord\Moderation\Timeout\Timeouts;
 use App\Discord\Moderation\Timeout\DetectTimeouts;
+use App\Discord\OpenAi\GenerateImage;
 use App\Discord\Roles\AttachRolePermission;
 use App\Discord\Roles\AttachUserRole;
 use App\Discord\Roles\CreateRole;
@@ -69,7 +69,6 @@ use App\Discord\Settings\UpdateSetting;
 use App\Models\Guild;
 use Discord\Discord;
 use Discord\Exceptions\IntentException;
-use Discord\Parts\User\Activity;
 use Discord\WebSockets\Intents;
 use Exception;
 
@@ -127,6 +126,8 @@ class Bot
     private function commands(): array
     {
         return [
+
+            GenerateImage::class,
             Servers::class,
 
             Roles::class, Permissions::class, Users::class,
@@ -152,7 +153,7 @@ class Bot
             LogSettings::class, UpdateLogSetting::class,
 
             MentionIndex::class, AddMentionReply::class, DelMentionReply::class,
-            MentionGroupIndex::class, AddMentionGroup::class, DelMentionGroup::class,
+            MentionGroupIndex::class, AddMentionGroup::class, DelMentionGroup::class, UpdateMentionGroup::class,
         ];
     }
 

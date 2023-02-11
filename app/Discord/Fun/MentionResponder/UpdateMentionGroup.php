@@ -11,7 +11,7 @@ use App\Models\MentionGroup;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Command\Option;
 
-class AddMentionGroup extends SlashCommand
+class UpdateMentionGroup extends SlashCommand
 {
 
     public function permission(): Permission
@@ -21,18 +21,18 @@ class AddMentionGroup extends SlashCommand
 
     public function trigger(): string
     {
-        return 'addgroup';
+        return 'updategroup';
     }
 
     public function __construct()
     {
-        $this->description = __('bot.slash.addgroup');
+        $this->description = __('bot.slash.updategroup');
 
         $this->slashCommandOptions = [
             [
                 'name' => 'id',
-                'description' => 'Group or User ID',
-                'type' => Option::STRING,
+                'description' => 'Group ID',
+                'type' => Option::INTEGER,
                 'required' => true,
             ],
             [
@@ -57,9 +57,14 @@ class AddMentionGroup extends SlashCommand
 
     public function action(): MessageBuilder
     {
-        $group = MentionGroup::create(['name' => $this->arguments[0], 'guild_id' => Guild::get($this->guildId)->id]);
+        $group = MentionGroup::find($this->arguments[0]);
+        if (!$group) {
+            return EmbedFactory::failedEmbed(__('bot.mentiongroup.notexist', ['group' => $this->arguments[0]]));
+        }
+
         (new UpdateMentionGroupAction($group, $this->arguments))->execute();
+
         Bot::get()->getGuild($this->guildId)?->mentionResponder->loadReplies();
-        return EmbedFactory::successEmbed(__('bot.mentiongroup.added', ['group' => $this->arguments[0]]));
+        return EmbedFactory::successEmbed(__('bot.mentiongroup.updated', ['group' => $this->arguments[0]]));
     }
 }

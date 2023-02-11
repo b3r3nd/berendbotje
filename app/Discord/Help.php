@@ -111,6 +111,7 @@ class Help extends SlashCommand
                     `urb` `search_term` • Search something on urban dictionary
                     `8ball` `question` • Ask the magic 8ball
                     `ask` `question` • Yes? No? Hmm..?
+                    `image` `term` • Generate an Image using OpenAI
                     ";
                 $embedBuilder->setDescription($desc)->setTitle("Fun commands");
             } elseif (strtolower($this->arguments[0]) === 'settings') {
@@ -201,7 +202,8 @@ class Help extends SlashCommand
                 - `replies` - show all replies grouped by available categories
                 - `replies` `group_id` - Show all replies for a single group
                 - `groups` - Show all groups
-                - `addgroup` `discord_role` - Add a group
+                - `addgroup` `discord_role` `user/role` `multiplier` - Add a group
+                - `updategroup` `id` `user/role` `multiplier` - update a group
                 - `delgroup` `group_id` - Delete a group and its replies (!!!)
                 - `addreply` `group_id` `reply_line` - Add a reply to a group
                 - `delreply` `reply_id`- Delete a reply
