@@ -92,22 +92,22 @@ class MentionResponder
                     }
                 }
 
-//                $messages = $this->lastMessages[$message->author->id];
-//                if (count($messages) === 5) {
-//                    $message->reply($this->getRandom($this->roleReplies['Blocked'] ?? []));
-//                    $this->lastMessages[$message->author->id][] = Carbon::now();
-//                    return;
-//                }
-//
-//                if (count($messages) >= 6) {
-//                    return;
-//                }
-//
-//                if (count($messages) >= 3) {
-//                    $message->reply($this->getRandom($this->roleReplies['Annoyed'] ?? []));
-//                    $this->lastMessages[$message->author->id][] = Carbon::now();
-//                    return;
-//                }
+                $messages = $this->lastMessages[$message->author->id];
+                if (count($messages) === 5) {
+                    $message->reply($this->getRandom($this->roleReplies['Blocked'] ?? []));
+                    $this->lastMessages[$message->author->id][] = Carbon::now();
+                    return;
+                }
+
+                if (count($messages) >= 6) {
+                    return;
+                }
+
+                if (count($messages) >= 3) {
+                    $message->reply($this->getRandom($this->roleReplies['Annoyed'] ?? []));
+                    $this->lastMessages[$message->author->id][] = Carbon::now();
+                    return;
+                }
             }
 
 
