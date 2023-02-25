@@ -8,6 +8,7 @@ use App\Discord\Core\Enums\Permission;
 use App\Discord\Core\SlashIndexCommand;
 use App\Discord\Helper;
 use App\Models\MentionGroup;
+use App\Models\MentionReply;
 use Discord\Parts\Embed\Embed;
 use Discord\Parts\Interactions\Command\Option;
 
@@ -32,7 +33,7 @@ class MentionIndex extends SlashIndexCommand
                 'name' => 'group_id',
                 'description' => 'Group',
                 'type' => Option::INTEGER,
-                'required' => false,
+                'required' => true,
             ],
         ];
 
@@ -42,26 +43,17 @@ class MentionIndex extends SlashIndexCommand
 
     public function getEmbed(): Embed
     {
-        $this->perPage = 1;
+        $this->perPage = 20;
 
-        if (isset($this->arguments[0])) {
-            $mentionGroups = MentionGroup::byGuild($this->guildId)->where('id', $this->arguments[0])->get();
-            $this->total = MentionGroup::byGuild($this->guildId)->where('id', $this->arguments[0])->count();
-        } else {
-            $mentionGroups = MentionGroup::byGuild($this->guildId)->skip($this->getOffset($this->getLastUser()))->limit($this->perPage)->get();
-            $this->total = MentionGroup::byGuild($this->guildId)->count();
+        $mentionGroup = MentionGroup::byGuild($this->guildId)->where('id', $this->arguments[0])->first();
+        $mentionReplies = MentionReply::byGuild($this->guildId)->where('group_id', $this->arguments[0])->skip($this->getOffset($this->getLastUser()))->limit($this->perPage)->get();
+        $this->total = MentionReply::byGuild($this->guildId)->where('group_id', $this->arguments[0])->count();
+
+        $description = Helper::getGroupName($mentionGroup);
+        foreach ($mentionReplies as $mentionReply) {
+            $description .= "** {$mentionReply->id} ** - {$mentionReply->reply} \n";
         }
 
-
-        $description = "";
-        foreach ($mentionGroups as $mentionGroup) {
-            $description .= Helper::getGroupName($mentionGroup);
-
-            foreach ($mentionGroup->replies as $mentionReply) {
-                $description .= "** {$mentionReply->id} ** - {$mentionReply->reply} \n";
-            }
-            $description .= "\n";
-        }
         return EmbedBuilder::create(Bot::getDiscord())
             ->setTitle(__('bot.mention.title'))
             ->setFooter(__('bot.mention.footer'))
