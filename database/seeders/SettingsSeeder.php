@@ -33,6 +33,9 @@ class SettingsSeeder extends Seeder
             'bump_reminder_role' => "",
             'bump_channel' => "",
             'enable_mention_responder' => true,
+            'enable_qotd_reminder' => true,
+            'qotd_channel' => "",
+            'qotd_role' => "",
         ];
 
         foreach (Guild::all() as $guild) {

@@ -3,6 +3,7 @@
 namespace App\Discord\Core;
 
 use App\Discord\Core\Enums\Setting as SettingEnum;
+use App\Discord\Fun\QuestionOfTheDayReminder;
 use App\Models\Channel;
 use App\Models\DiscordUser;
 use App\Models\Guild as GuildModel;
@@ -39,6 +40,7 @@ class Guild
     private Logger $logger;
     private array $channels = [];
     public MentionResponder $mentionResponder;
+    public QuestionOfTheDayReminder $questionOfTheDayReminder;
 
     /**
      * @param GuildModel $guild
@@ -64,6 +66,7 @@ class Guild
         $this->registerCommands();
 
         $this->mentionResponder = new MentionResponder($this->model->guild_id);
+        $this->questionOfTheDayReminder = new QuestionOfTheDayReminder($this->model->guild_id);
     }
 
     /**
