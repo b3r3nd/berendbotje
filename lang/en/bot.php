@@ -263,7 +263,7 @@ return [
         'footer' => 'Use /bump in #bump',
         'title' => 'Bumper Elites',
         'description' => "Bump counters of all time!\n\n:bumpers",
-        'description-month' => "Bump counters of this month! The user with the most bumps each month will get a special role!\n\n:bumpers",
+        'description-month' => "Bump counters of this month!\n\n:bumpers",
     ],
 
     'cringe' => [
