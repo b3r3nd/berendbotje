@@ -79,8 +79,15 @@ class Guild
                 return;
             }
             $this->model->refresh();
+
+
+            $msg = strtolower($message->content);
+
             foreach ($this->model->reactions as $reaction) {
-                if (str_contains(strtolower($message->content), strtolower($reaction->trigger))) {
+                if ((str_starts_with($msg, strtolower($reaction->trigger)) && strlen($msg) === strlen($reaction->trigger)) ||
+                    str_ends_with($msg, strtolower(" {$reaction->trigger}")) ||
+                    str_contains($msg, strtolower(" {$reaction->trigger} "))) {
+
                     if (str_contains($reaction->reaction, "<")) {
                         $message->react(str_replace(["<", ">"], "", $reaction->reaction));
                     } else {
