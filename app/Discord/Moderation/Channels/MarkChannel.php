@@ -42,6 +42,7 @@ class MarkChannel extends SlashCommand
                 'choices' => [
                     ['name' => 'Gain no XP', 'value' => 'no_xp'],
                     ['name' => 'Media and URLs only', 'value' => 'media_only'],
+                    ['name' => 'Delete stickers', 'value' => 'no_stickers'],
                 ]
             ],
         ];

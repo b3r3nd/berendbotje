@@ -46,6 +46,7 @@ use App\Discord\Logger\UpdateLogSetting;
 use App\Discord\Moderation\Channels\ChannelIndex;
 use App\Discord\Moderation\Channels\MarkChannel;
 use App\Discord\Moderation\Channels\MediaFilter;
+use App\Discord\Moderation\Channels\StickerFilter;
 use App\Discord\Moderation\Channels\UnmarkChannel;
 use App\Discord\Moderation\Command\CommandIndex;
 use App\Discord\Moderation\Command\CreateCommand;
@@ -70,6 +71,7 @@ use App\Discord\Settings\UpdateSetting;
 use App\Models\Guild;
 use Discord\Discord;
 use Discord\Exceptions\IntentException;
+use Discord\Parts\Guild\Sticker;
 use Discord\WebSockets\Intents;
 use Exception;
 
@@ -102,6 +104,7 @@ class Bot
             VoiceStateUpdate::class,
             DetectTimeouts::class,
             MediaFilter::class,
+            StickerFilter::class,
             KickAndBanCounter::class,
             BumpCounter::class,
             EmoteCounter::class,
@@ -174,10 +177,9 @@ class Bot
 //                'name' => __('bot.status'),
 //            ]);
 //            $discord->updatePresence($activity);
-
             $this->loadCoreClasses();
             $this->loadGuilds();
-            // $this->deleteSlashCommands();
+            //    $this->deleteSlashCommands();
             $this->loadCommands();
         });
         self::$instance = $this;
@@ -229,6 +231,7 @@ class Bot
         foreach ($this->commands() as $class) {
             $instance = new $class();
             $instance->registerSlashCommand();
+            echo "Command Added";
         }
     }
 
@@ -241,6 +244,7 @@ class Bot
         $this->discord->application->commands->freshen()->done(function ($commands) {
             foreach ($commands as $command) {
                 $this->discord->application->commands->delete($command);
+                echo "Command deleted";
             }
         });
     }
