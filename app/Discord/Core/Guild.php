@@ -84,17 +84,16 @@ class Guild
             $msg = strtolower($message->content);
 
             foreach ($this->model->reactions as $reaction) {
-                if ((str_starts_with($msg, strtolower($reaction->trigger)) && strlen($msg) === strlen($reaction->trigger)) ||
-                    str_starts_with($msg, strtolower("{$reaction->trigger} ")) ||
-                    str_ends_with($msg, strtolower(" {$reaction->trigger}")) ||
-                    str_contains($msg, strtolower(" {$reaction->trigger} "))) {
+                preg_match("/\b{$reaction->trigger}\b|^{$reaction->trigger}\b|\b{$reaction->trigger}$/", $msg, $result);
 
+                if (!empty($result)) {
                     if (str_contains($reaction->reaction, "<")) {
                         $message->react(str_replace(["<", ">"], "", $reaction->reaction));
                     } else {
                         $message->react($reaction->reaction);
                     }
                 }
+
             }
         });
     }
