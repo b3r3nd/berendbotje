@@ -41,11 +41,12 @@ class Timeouts extends SlashIndexCommand
         $this->perPage = 5;
         if(isset($this->arguments[0])) {
             $timeouts = Timeout::byGuild($this->guildId)->where(['discord_id' => $this->arguments[0]])->skip($this->getOffset($this->getLastUser()))->limit($this->perPage)->orderBy('created_at', 'desc')->get();
+            $this->total = Timeout::byGuild($this->guildId)->where(['discord_id' => $this->arguments[0]])->count();
         } else {
             $timeouts = Timeout::byGuild($this->guildId)->skip($this->getOffset($this->getLastUser()))->limit($this->perPage)->orderBy('created_at', 'desc')->get();
+            $this->total = Timeout::byGuild($this->guildId)->count();
         }
 
-        $this->total = $timeouts->count();
         $embedBuilder = EmbedBuilder::create(Bot::getDiscord())
             ->setTitle(__('bot.timeout.title'))
             ->setFooter(__('bot.timeout.footer'));
