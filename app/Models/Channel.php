@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Channel extends Model
 {
-    protected $fillable = ['channel_id', 'guild_id', 'no_xp', 'media_only', 'no_stickers'];
+    protected $fillable = ['channel_id', 'guild_id', 'no_xp', 'media_only', 'no_stickers', 'no_log'];
 
-    protected $casts = ['no_xp' => 'boolean', 'media_only' => 'boolean', 'no_stickers' => 'boolean'];
+    protected $casts = ['no_xp' => 'boolean', 'media_only' => 'boolean', 'no_stickers' => 'boolean', 'no_log' => 'boolean'];
 
     /**
      * @param string $channelId
