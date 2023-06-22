@@ -56,6 +56,12 @@ roles.
 * `role-rewards`
 * `manage-xp`
 * `logs`
+* `role_rewards`
+* `manage_xp`
+* `add_mention`
+* `del_mention`
+* `manage_mention_group`
+* `openai`
 
 ### Default Roles
 
@@ -135,6 +141,10 @@ Right now we have the following settings:
 * `enable_bump_reminder` - enable 2 hour tag for people who want to bump the discord
 * `bump_reminder_role` - Role to be tagged for bump reminders
 * `bump_channel` - Channel where the bump reminders are tagged
+* `enable_mention_responder` - Enable the responses when you mention the bot
+* `enable_qotd_reminder` - Enable the role mention in set question of the day channel
+* `qotd_channel` - Channel to tag qotd role
+* `qotd_role` - Role to tag in qotd channel
 
 ## Logging
 
@@ -242,10 +252,8 @@ in the future.
 ## Bump Counter & Reminder
 
 We use a bot to add our discord server to an external website, once every
-2 hours you can use this bot to get back on the front page. To encourage
-people in our server to use the bump our bot counts for every member how often
-they bump. At the end of the month we will check the highest member and he
-or she will get some nice perks!
+2 hours you can use this bot to get back on the front page. Its fun to keep track of who does
+this the most!
 
 Command to view the bump statistics is
 
@@ -306,6 +314,22 @@ A few fun commands you can use
 * **8ball** `question` - Ask a question to the 8ball
 * **ask** `question` - Ask a question and get a gif response
 * **say** `something` - say something
+
+
+## Question of the day
+In our server some people post questions every day, when they do the bot tags people who want to be reminded
+that a new question is posted. This way I do not have to give mention permissions which can be abuses easily.
+
+Check these settings:
+* `qotd_channel`
+* `qotd_role`
+* `enable_qotd_reminder`
+
+## Open AI
+So far I implemented only a single openAI command quickly to test, to generate images. I added a new
+permission `open_ai` for it because each call costs me money. You can generate images using the `image` command. 
+More to be added soon!
+
 
 ## Help command
 
