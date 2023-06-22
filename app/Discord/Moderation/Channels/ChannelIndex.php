@@ -35,9 +35,11 @@ class ChannelIndex extends SlashIndexCommand
         foreach (Channel::byGuild($this->guildId)->skip($this->getOffset($this->getLastUser()))->limit($this->perPage)->get() as $channel) {
             $media = $channel->media_only ? 'On' : 'Off';
             $xp = $channel->no_xp ? 'On' : 'Off';
+            $stickers = $channel->no_stickers ? 'On' : 'Off';
             $channels .= "** <#{$channel->channel_id}> **
             **Media only**: {$media}
             **No XP**: {$xp}
+            **No Stickers**: {$stickers}
             \n";
         }
         return EmbedBuilder::create(Bot::getDiscord())

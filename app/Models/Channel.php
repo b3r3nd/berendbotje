@@ -6,16 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Channel extends Model
 {
-    protected $fillable = ['channel_id', 'guild_id', 'no_xp', 'media_only'];
+    protected $fillable = ['channel_id', 'guild_id', 'no_xp', 'media_only', 'no_stickers'];
 
-    protected $casts = ['no_xp' => 'boolean', 'media_only' => 'boolean'];
+    protected $casts = ['no_xp' => 'boolean', 'media_only' => 'boolean', 'no_stickers' => 'boolean'];
 
     /**
      * @param string $channelId
      * @param string $guildId
      * @return Channel
      */
-    public static function get(string $channelId, string $guildId): Channel
+    public static function get(string $channelId, string $guildId): ?Channel
     {
         return self::where([
             ['guild_id', '=', Guild::get($guildId)->id],

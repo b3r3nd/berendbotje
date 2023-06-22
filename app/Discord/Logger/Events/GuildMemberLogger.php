@@ -27,11 +27,11 @@ class GuildMemberLogger
             $discord->guilds->fetch($member->guild_id)->done(function (Guild $guild) use ($member, $localGuild) {
                 $guild->getAuditLog(['limit' => 1])->done(function (AuditLog $auditLog) use ($member, $guild, $localGuild) {
                     foreach ($auditLog->audit_log_entries as $entry) {
-                        if ($entry->action_type === 20) {
+                        if ($entry->action_type === 20 && $entry->target_id === $member->id) {
                             if ($localGuild->getLogSetting(LogSetting::KICKED_SERVER)) {
                                 $localGuild->logWithMember($member, "<@{$member->id}> kicked from the server", 'fail');
                             }
-                        } elseif ($entry->action_type === 22) {
+                        } elseif ($entry->action_type === 22 && $entry->target_id === $member->id) {
                             if ($localGuild->getLogSetting(LogSetting::BANNED_SERVER)) {
                                 $localGuild->logWithMember($member, "<@{$member->id}> banned from the server", 'fail');
                             }
