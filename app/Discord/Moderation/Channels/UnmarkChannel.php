@@ -43,6 +43,7 @@ class UnmarkChannel extends SlashCommand
                     ['name' => 'Gain no XP', 'value' => 'no_xp'],
                     ['name' => 'Media and URLs only', 'value' => 'media_only'],
                     ['name' => 'Delete stickers', 'value' => 'no_stickers'],
+                    ['name' => 'Disable message logging', 'value' => 'no_log'],
                 ]
             ],
         ];

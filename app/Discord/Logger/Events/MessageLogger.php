@@ -33,8 +33,12 @@ class MessageLogger
             if (!$message->guild_id) {
                 return;
             }
-
             $guild = Bot::get()->getGuild($message->guild_id);
+            $channel = $guild->getChannel($message->channel_id);
+            if ($channel && !$channel->no_stickers) {
+                return;
+            }
+
             if (isset($oldMessage) && $guild->getLogSetting(LogSetting::MESSAGE_UPDATED) && count($oldMessage->embeds) === count($message->embeds)) {
                 $desc = "Updated message in <#{$message->channel_id}>
 
@@ -58,6 +62,10 @@ class MessageLogger
                     return;
                 }
                 $guild = Bot::get()->getGuild($message->guild_id);
+                $channel = $guild->getChannel($message->channel_id);
+                if ($channel && !$channel->no_stickers) {
+                    return;
+                }
                 if ($guild->getLogSetting(LogSetting::MESSAGE_DELETED)) {
                     $desc = "Message deleted in <#{$message->channel_id}>
 

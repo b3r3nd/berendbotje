@@ -198,7 +198,7 @@ class Guild
         }
 
         // If all flags are disabled we can remove the channel entirely
-        if (!$channel->no_xp && !$channel->media_only && !$channel->no_stickers) {
+        if (!$channel->no_xp && !$channel->media_only && !$channel->no_stickers && !$channel->no_log) {
             unset($this->channels[$channel->channel_id]);
             $channel->delete();
         } else {

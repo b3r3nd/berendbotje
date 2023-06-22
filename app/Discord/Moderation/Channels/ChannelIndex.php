@@ -36,10 +36,12 @@ class ChannelIndex extends SlashIndexCommand
             $media = $channel->media_only ? 'On' : 'Off';
             $xp = $channel->no_xp ? 'On' : 'Off';
             $stickers = $channel->no_stickers ? 'On' : 'Off';
+            $noLog = $channel->no_log ? 'On' : 'Off';
             $channels .= "** <#{$channel->channel_id}> **
             **Media only**: {$media}
             **No XP**: {$xp}
             **No Stickers**: {$stickers}
+             **No Logging**: {$noLog}
             \n";
         }
         return EmbedBuilder::create(Bot::getDiscord())
