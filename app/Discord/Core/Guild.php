@@ -85,6 +85,7 @@ class Guild
 
             foreach ($this->model->reactions as $reaction) {
                 if ((str_starts_with($msg, strtolower($reaction->trigger)) && strlen($msg) === strlen($reaction->trigger)) ||
+                    str_starts_with($msg, strtolower("{$reaction->trigger} ")) ||
                     str_ends_with($msg, strtolower(" {$reaction->trigger}")) ||
                     str_contains($msg, strtolower(" {$reaction->trigger} "))) {
 
