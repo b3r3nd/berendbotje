@@ -26,7 +26,7 @@ class UpdateLogSetting extends SlashCommand
     public function __construct()
     {
         $choices = [];
-        foreach (LogSetting::where('guild_id', 1)->get() as $setting) {
+        foreach (LogSetting::where('guild_id', 2)->get() as $setting) {
             $choices[] = ['name' => $setting->key, 'value' => $setting->key];
         }
 

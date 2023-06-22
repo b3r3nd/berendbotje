@@ -26,7 +26,7 @@ class UpdateSetting extends SlashCommand
     public function __construct()
     {
         $choices = [];
-        foreach (Setting::where('guild_id', 1)->get() as $setting) {
+        foreach (Setting::where('guild_id', 2)->get() as $setting) {
             $choices[] = ['name' => $setting->key, 'value' => $setting->key];
         }
 
@@ -58,7 +58,7 @@ class UpdateSetting extends SlashCommand
             return EmbedFactory::failedEmbed(__('bot.set.not-numeric', ['value' => $this->arguments[1]]));
         }
 
-        Bot::get()->getGuild($this->guildId)->setSetting($this->arguments[0], $this->arguments[1]);
+        Bot::get()->getGuild($this->guildId)?->setSetting($this->arguments[0], $this->arguments[1]);
         return EmbedFactory::successEmbed(__('bot.set.updated', ['key' => $this->arguments[0], 'value' => $this->arguments[1]]));
     }
 }
