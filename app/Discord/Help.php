@@ -142,6 +142,9 @@ class Help extends SlashCommand
                     `bump_reminder_role` • What role should be tagged for the bump reminder
                     `bump_channel` • Channel where to tag the role
                     `enable_mention_responder` • Enable the mention responder
+                    `enable_qotd_reminder` - Enable the role mention in set question of the day channel
+                    `qotd_channel` - Channel to tag qotd role
+                    `qotd_role` - Role to tag in qotd channel
 
                     **Examples:**
                     `set` `enable_xp` `0` • Disable message XP system
