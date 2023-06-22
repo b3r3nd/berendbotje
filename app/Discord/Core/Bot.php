@@ -179,7 +179,7 @@ class Bot
 //            $discord->updatePresence($activity);
             $this->loadCoreClasses();
             $this->loadGuilds();
-            //    $this->deleteSlashCommands();
+            // $this->deleteSlashCommands();
             $this->loadCommands();
         });
         self::$instance = $this;
