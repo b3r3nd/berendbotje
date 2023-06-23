@@ -1,12 +1,16 @@
 # Introduction
+Discord bot written in PHP using laravel and the DiscordPHP package. Initially created just for our own server but
+is now able to run on multiple servers. This project is still a work in progress and not everything might be 
+completely user-friendly. Even though it is a general purpose discord bot, I try to add on top what discord already
+offers instead of replacing functionality entirely.
 
-Discord bot written in PHP, using laravel and the DiscordPHP package. Initially created just for our own server but
-now runs on as many serves as you like. If you have questions DM my directly by my discord tag: `drerrievandebuurt`.
+If you have questions DM me directly by my discord tag: `drerrievandebuurt`.
 
 Special thanks to:
 - Angel for writing most of the Skyrim lines used in the MentionResponder.
 - Richard for bug testing.
 - Ricardo for working out ideas to implement.
+- Justin & Stefan for mental support.
 
 ## Installing
 1. Download this repo and install al its dependencies with `composer install`
@@ -18,18 +22,18 @@ Special thanks to:
 2. In order to make the bump reminder work you also need to run the queue `php artisan queue:work`
 3. Make sure both these run in the background while you exit your connection / terminal. Or keep two terminals running
    if you want to test it locally.
-
+4. 
 # Functions
-I will try to update this readme with new functionality as I add it, but I cannot promise I keep it entirely up to date.
-The bot only uses slash commands, there used to be message commands but I moved everything to slash only. I tried
+I will try to update this readme with new functionality as I add it, however I cannot promise I keep it entirely up to date.
+The bot only uses slash commands, there used to be message commands, however I moved everything to slash only. I tried
 to filter incoming user input as much as possible with the slash commands itself. For example allowing only roles
 when roles are required, integers when levels are required etc. Even with changing bot settings it reads the settings 
-from the database and will be preloaded in the slash command so you do not have to remember each one.
+from the database and will be preloaded in the slash command, so you do not have to remember each one.
 
 ## Multiple servers
 The bot runs on multiple servers, but each server requires some settings and values to be set in the database,
-the plan is to let the bot do it automatically whenever he is invited and joins a server. For now it needs to be
-done manually or the best way is to add your guild/server to the seeder and everything will be set properly.
+the plan is to let the bot do it automatically whenever he is invited and joins a server. For now, it needs to be
+done manually. The best way is to add your guild/server to the seeder and everything will be set properly.
 
 ## Roles and permissions
 
@@ -187,10 +191,12 @@ You can enable/disable each event in the log config:
 
 ## Channels
 
-You can set flags for channels, the no_xp flag can also be used for voice channels! For now there are two flags you can use:
+You can set flags for channels, the no_xp flag can also be used for voice channels! For now there are four flags you can use:
 
 * `no_xp` - Bot does not count xp for users when they send messages in this channel
 * `media_only` - Channel allows only media and URL, anything else will be deleted.
+* `no_stickers` - Stickers will be removed from the chat
+* `no_log` - Message logging is disabled for this channel
 
 ### Commands
 
@@ -215,8 +221,8 @@ Commands to manage reactions are:
 
 Simple commands such as $ping -> response pong can be added in discord as well.
 Same as with the reactions you can add and remove and view as many as you like
-without the necessity to enter any code. By default these command trigger do not include the bot
-prefix ($), so if you want to trigger on prefix you need to include the bot prefix in the command.
+without the necessity to enter any code. By default, these command triggers do not include the bot
+prefix, so if you want to trigger on prefix you need to include the bot prefix in the command.
 
 Commands to manage simple commands are:
 

@@ -79,6 +79,8 @@ class Help extends SlashCommand
                     **Channel flags**:
                     - `no_xp` • Users gain no XP in this channel
                     - `media_only` • Channel allows only media and URLS.
+                    - `no_stickers` • Stickers will be removed from the chat
+                    - `no_log` • Message logging is disabled for this channel
 
                     `commands` • Show list of custom commands
                     `addcmd` `command` `response` • Add a custom command
