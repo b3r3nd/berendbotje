@@ -79,8 +79,6 @@ class Guild
                 return;
             }
             $this->model->refresh();
-
-
             $msg = strtolower($message->content);
 
             foreach ($this->model->reactions as $reaction) {
@@ -93,7 +91,6 @@ class Guild
                         $message->react($reaction->reaction);
                     }
                 }
-
             }
         });
     }
