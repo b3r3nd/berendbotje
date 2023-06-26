@@ -55,7 +55,7 @@ class GuildMemberLogger
                 return;
             }
             $guild = Bot::get()->getGuild($member->guild_id);
-            if ($guild->getLogSetting(LogSetting::UPDATED_USERNAME)) {
+            if ($guild?->getLogSetting(LogSetting::UPDATED_USERNAME)) {
                 if ($member->displayname !== $oldMember->displayname) {
                     $desc = "**Username changed**
 
