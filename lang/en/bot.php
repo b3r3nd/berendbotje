@@ -334,8 +334,8 @@ return [
     ],
 
     'help' => [
-        'title' => 'BerendBotje Commands',
-        'footer' => 'Bot written by berend using DiscordPHP.',
+        'title' => 'Help',
+        'footer' => 'Switch between sections below',
     ],
 
     'say-usage' => "Usage: say `text_string`",

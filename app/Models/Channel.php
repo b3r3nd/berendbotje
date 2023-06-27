@@ -13,7 +13,7 @@ class Channel extends Model
     /**
      * @param string $channelId
      * @param string $guildId
-     * @return Channel
+     * @return ?Channel
      */
     public static function get(string $channelId, string $guildId): ?Channel
     {
