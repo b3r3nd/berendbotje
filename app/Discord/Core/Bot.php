@@ -2,76 +2,12 @@
 
 namespace App\Discord\Core;
 
-use App\Discord\Administration\Servers;
-use App\Discord\Core\DiscordEvents\VoiceStateUpdate;
-use App\Discord\Fun\Ask;
-use App\Discord\Fun\Bump\BumpCounter;
 use App\Discord\Fun\Bump\BumpStatistics;
-use App\Discord\Fun\Cringe\CringeIndex;
-use App\Discord\Fun\Cringe\DecreaseCringe;
-use App\Discord\Fun\Cringe\IncreaseCringe;
-use App\Discord\Fun\Cringe\ResetCringe;
-use App\Discord\Fun\EightBall;
-use App\Discord\Fun\Emote\EmoteCounter;
-use App\Discord\Fun\Emote\EmoteIndex;
-use App\Discord\Fun\MentionResponder\AddMentionGroup;
-use App\Discord\Fun\MentionResponder\AddMentionReply;
-use App\Discord\Fun\MentionResponder\DelMentionGroup;
-use App\Discord\Fun\MentionResponder\DelMentionReply;
-use App\Discord\Fun\MentionResponder\MentionGroupIndex;
-use App\Discord\Fun\MentionResponder\MentionIndex;
-use App\Discord\Fun\MentionResponder\UpdateMentionGroup;
-use App\Discord\Fun\Reaction\CreateReaction;
-use App\Discord\Fun\Reaction\DeleteReaction;
-use App\Discord\Fun\Reaction\ReactionIndex;
-use App\Discord\Fun\UrbanDictionary;
 use App\Discord\Help;
-use App\Discord\Levels\CreateRoleReward;
-use App\Discord\Levels\DeleteRoleReward;
-use App\Discord\Levels\GiveXp;
-use App\Discord\Levels\Leaderboard;
-use App\Discord\Levels\MessageXpCounter;
-use App\Discord\Levels\RemoveXp;
-use App\Discord\Levels\ResetXp;
-use App\Discord\Levels\RoleRewards;
-use App\Discord\Levels\UserRank;
-use App\Discord\Levels\VoiceXpCounter;
-use App\Discord\Logger\Events\GuildMemberLogger;
-use App\Discord\Logger\Events\InviteLogger;
-use App\Discord\Logger\Events\MessageLogger;
-use App\Discord\Logger\Events\TimeoutLogger;
-use App\Discord\Logger\Events\VoiceStateLogger;
-use App\Discord\Logger\LogSettings;
-use App\Discord\Logger\UpdateLogSetting;
-use App\Discord\Moderation\Channels\ChannelIndex;
-use App\Discord\Moderation\Channels\MarkChannel;
-use App\Discord\Moderation\Channels\MediaFilter;
-use App\Discord\Moderation\Channels\StickerFilter;
-use App\Discord\Moderation\Channels\UnmarkChannel;
-use App\Discord\Moderation\Command\CommandIndex;
-use App\Discord\Moderation\Command\CreateCommand;
-use App\Discord\Moderation\Command\DeleteCommand;
-use App\Discord\Moderation\KickAndBanCounter;
-use App\Discord\Moderation\ModeratorStatistics;
-use App\Discord\Moderation\Timeout\Timeouts;
-use App\Discord\Moderation\Timeout\DetectTimeouts;
-use App\Discord\OpenAi\GenerateImage;
-use App\Discord\Roles\AttachRolePermission;
-use App\Discord\Roles\AttachUserRole;
-use App\Discord\Roles\CreateRole;
-use App\Discord\Roles\DeleteRole;
-use App\Discord\Roles\DetachRolePermission;
-use App\Discord\Roles\DetachUserRole;
-use App\Discord\Roles\Permissions;
-use App\Discord\Roles\Roles;
-use App\Discord\Roles\UserRoles;
-use App\Discord\Roles\Users;
-use App\Discord\Settings\Settings;
-use App\Discord\Settings\UpdateSetting;
+use App\Discord\JustinTest;
 use App\Models\Guild;
 use Discord\Discord;
 use Discord\Exceptions\IntentException;
-use Discord\Parts\Guild\Sticker;
 use Discord\WebSockets\Intents;
 use Exception;
 
@@ -101,17 +37,17 @@ class Bot
     private function coreClasses(): array
     {
         return [
-            VoiceStateUpdate::class,
-            DetectTimeouts::class,
-            MediaFilter::class,
-            StickerFilter::class,
-            KickAndBanCounter::class,
-            BumpCounter::class,
-            EmoteCounter::class,
-            MessageXpCounter::class,
-            VoiceXpCounter::class,
-            VoiceStateLogger::class, GuildMemberLogger::class, MessageLogger::class, TimeoutLogger::class,
-            InviteLogger::class,
+//            VoiceStateUpdate::class,
+//            DetectTimeouts::class,
+//            MediaFilter::class,
+//            StickerFilter::class,
+//            KickAndBanCounter::class,
+//            BumpCounter::class,
+//            EmoteCounter::class,
+//            MessageXpCounter::class,
+            //           VoiceXpCounter::class,
+            //           VoiceStateLogger::class, GuildMemberLogger::class, MessageLogger::class, TimeoutLogger::class,
+//            InviteLogger::class,
         ];
     }
 
@@ -128,33 +64,35 @@ class Bot
     private function commands(): array
     {
         return [
-            GenerateImage::class,
-            Servers::class,
+            JustinTest::class,
 
-            Roles::class, Permissions::class, Users::class,
-            UserRoles::class,
-            AttachRolePermission::class, DetachRolePermission::class,
-            CreateRole::class, DeleteRole::class,
-            DetachUserRole::class, AttachUserRole::class,
-            Settings::class, UpdateSetting::class,
-
-            Timeouts::class, ModeratorStatistics::class,
-
-            Leaderboard::class, RoleRewards::class, CreateRoleReward::class, DeleteRoleReward::class,
-            UserRank::class, GiveXp::class, RemoveXp::class, ResetXp::class,
-
-            CringeIndex::class, IncreaseCringe::class, DecreaseCringe::class, ResetCringe::class,
-            BumpStatistics::class, EmoteIndex::class,
-            CommandIndex::class, CreateCommand::class, DeleteCommand::class,
-            ReactionIndex::class, CreateReaction::class, DeleteReaction::class,
-            EightBall::class, Ask::class, UrbanDictionary::class,
-
-            ChannelIndex::class, MarkChannel::class, UnmarkChannel::class,
-            Help::class,
-            LogSettings::class, UpdateLogSetting::class,
-
-            MentionIndex::class, AddMentionReply::class, DelMentionReply::class,
-            MentionGroupIndex::class, AddMentionGroup::class, DelMentionGroup::class, UpdateMentionGroup::class,
+//            GenerateImage::class,
+//            Servers::class,
+//
+//            Roles::class, Permissions::class, Users::class,
+//            UserRoles::class,
+//            AttachRolePermission::class, DetachRolePermission::class,
+//            CreateRole::class, DeleteRole::class,
+//            DetachUserRole::class, AttachUserRole::class,
+//            Settings::class, //UpdateSetting::class,
+//
+//            Timeouts::class, ModeratorStatistics::class,
+//
+//            Leaderboard::class, RoleRewards::class, CreateRoleReward::class, DeleteRoleReward::class,
+//            UserRank::class, GiveXp::class, RemoveXp::class, ResetXp::class,
+//
+//            CringeIndex::class, IncreaseCringe::class, DecreaseCringe::class, ResetCringe::class,
+ //           BumpStatistics::class, //EmoteIndex::class,
+//            CommandIndex::class, CreateCommand::class, DeleteCommand::class,
+            //           ReactionIndex::class, CreateReaction::class, DeleteReaction::class,
+//            EightBall::class, Ask::class, UrbanDictionary::class,
+//
+            //           ChannelIndex::class, MarkChannel::class, UnmarkChannel::class,
+ //           Help::class,
+            //          LogSettings::class, UpdateLogSetting::class,
+//
+//            MentionIndex::class, AddMentionReply::class, DelMentionReply::class,
+//            MentionGroupIndex::class, AddMentionGroup::class, DelMentionGroup::class, UpdateMentionGroup::class,
         ];
     }
 
@@ -179,7 +117,7 @@ class Bot
 //            $discord->updatePresence($activity);
             $this->loadCoreClasses();
             $this->loadGuilds();
-            // $this->deleteSlashCommands();
+            //$this->deleteSlashCommands();
             $this->loadCommands();
         });
         self::$instance = $this;
