@@ -4,29 +4,30 @@ namespace App\Discord\Fun\MentionResponder;
 
 use App\Discord\Core\Interfaces\Action;
 use App\Models\MentionGroup;
+use Discord\Repository\Interaction\OptionRepository;
 
 class UpdateMentionGroupAction implements Action
 {
-    private array $arguments;
+    private OptionRepository $options;
     private MentionGroup $mentionGroup;
 
 
-    public function __construct(MentionGroup $mentionGroup, array $arguments)
+    public function __construct(MentionGroup $mentionGroup, OptionRepository $options)
     {
-        $this->arguments = $arguments;
+        $this->options = $options;
         $this->mentionGroup = $mentionGroup;
 
     }
 
     public function execute(): void
     {
-        if ($this->arguments[1] === 'has_role') {
+        if ($this->options->get('name', 'has_role')) {
             $this->mentionGroup->update(['has_role' => true, 'has_user' => false]);
         } else {
             $this->mentionGroup->update(['has_role' => false, 'has_user' => true]);
         }
-        if ($this->arguments[2]) {
-            $this->mentionGroup->update(['multiplier' => $this->arguments[2]]);
+        if ($this->options->get('name', 'multiplier')) {
+            $this->mentionGroup->update(['multiplier' => $this->options->get('name', 'multiplier')]);
         }
     }
 }

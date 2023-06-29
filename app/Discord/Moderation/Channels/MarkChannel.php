@@ -52,7 +52,7 @@ class MarkChannel extends SlashCommand
 
     public function action(): MessageBuilder
     {
-        (new FlagChannelAction($this->arguments, $this->guildId, true, $this->bot))->execute();
-        return EmbedFactory::successEmbed(__('bot.channels.added', ['channel' => $this->arguments[0], 'flag' => $this->arguments[1]]));
+        (new FlagChannelAction($this->interaction->data->options, $this->guildId, true, $this->bot))->execute();
+        return EmbedFactory::successEmbed($this->discord, __('bot.channels.added', ['channel' => $this->getOption('channel'), 'flag' => $this->getOption('flag')]));
     }
 }

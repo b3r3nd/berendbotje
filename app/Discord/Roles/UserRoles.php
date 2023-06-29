@@ -42,10 +42,10 @@ class UserRoles extends SlashCommand
     {
         $description = "";
 
-        $user = DiscordUser::get($this->arguments[0] ?? $this->commandUser);
+        $user = DiscordUser::get($this->getOption('user_mention') ?? $this->commandUser);
 
         if ($user->roles->isEmpty()) {
-            return EmbedFactory::failedEmbed(__('bot.userroles.none', ['user' => $user->tag()]));
+             return EmbedFactory::failedEmbed($this->discord, __('bot.userroles.none', ['user' => $user->tag()]));
         }
         foreach ($user->rolesByGuild($this->guildId) as $role) {
             $description .= "{$role->name}\n";

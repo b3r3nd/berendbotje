@@ -39,15 +39,15 @@ class CreateRole extends SlashCommand
 
     public function action(): MessageBuilder
     {
-        if (Role::exists($this->guildId, $this->arguments[0])) {
-            return EmbedFactory::failedEmbed(__('bot.roles.exist'));
+        if (Role::exists($this->guildId, $this->getOption('role_name'))) {
+             return EmbedFactory::failedEmbed($this->discord, __('bot.roles.exist'));
         }
 
         $role = Role::create([
-            'name' => $this->arguments[0],
+            'name' => $this->getOption('role_name'),
             'guild_id' => Guild::get($this->guildId)->id,
         ]);
 
-        return EmbedFactory::successEmbed(__('bot.roles.created', ['role' => $role->name]));
+        return EmbedFactory::successEmbed($this->discord, __('bot.roles.created', ['role' => $role->name]));
     }
 }

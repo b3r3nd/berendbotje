@@ -40,7 +40,7 @@ class DeleteRoleReward extends SlashCommand
 
     public function action(): MessageBuilder
     {
-        RoleReward::where(['level' => $this->arguments[0], 'guild_id' => Guild::get($this->guildId)->id])->delete();
-        return EmbedFactory::successEmbed(__('bot.rewards.deleted', ['level' => $this->arguments[0]]));
+        RoleReward::where(['level' => $this->getOption('level'), 'guild_id' => Guild::get($this->guildId)->id])->delete();
+        return EmbedFactory::successEmbed($this->discord, __('bot.rewards.deleted', ['level' => $this->getOption('level')]));
     }
 }

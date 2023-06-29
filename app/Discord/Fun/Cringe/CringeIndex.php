@@ -38,7 +38,7 @@ class CringeIndex extends SlashIndexCommand
             $description .= Helper::indexPrefix($index, $this->getOffset($this->getLastUser()));
             $description .= "**{$cringeCounter->user->tag()}** • {$cringeCounter->count} \n";
         }
-        return EmbedBuilder::create(Bot::getDiscord())
+        return EmbedBuilder::create($this->discord)
             ->setTitle(__('bot.cringe.title'))
             ->setFooter(__('bot.cringe.footer'))
             ->setDescription(__('bot.cringe.description', ['users' => $description]))

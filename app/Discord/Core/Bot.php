@@ -130,8 +130,13 @@ class Bot
             DeleteRole::class,
             DetachUserRole::class,
             AttachUserRole::class,
+        ],
+        'settings' => [
             Settings::class,
             UpdateSetting::class,
+            LogSettings::class,
+            UpdateLogSetting::class,
+            Help::class,
         ],
         'xp' => [
             Leaderboard::class,
@@ -147,30 +152,26 @@ class Bot
             ChannelIndex::class,
             MarkChannel::class,
             UnmarkChannel::class,
-            Help::class,
-            LogSettings::class,
-            UpdateLogSetting::class,
             Timeouts::class,
             ModeratorStatistics::class,
         ],
-        'fun' =>
-            [
-                CringeIndex::class,
-                IncreaseCringe::class,
-                DecreaseCringe::class,
-                ResetCringe::class,
-                BumpStatistics::class,
-                EmoteIndex::class,
-                CommandIndex::class,
-                CreateCommand::class,
-                DeleteCommand::class,
-                ReactionIndex::class,
-                CreateReaction::class,
-                DeleteReaction::class,
-                EightBall::class,
-                Ask::class,
-                UrbanDictionary::class,
-            ],
+        'fun' => [
+            CringeIndex::class,
+            IncreaseCringe::class,
+            DecreaseCringe::class,
+            ResetCringe::class,
+            BumpStatistics::class,
+            EmoteIndex::class,
+            CommandIndex::class,
+            CreateCommand::class,
+            DeleteCommand::class,
+            ReactionIndex::class,
+            CreateReaction::class,
+            DeleteReaction::class,
+            EightBall::class,
+            Ask::class,
+            UrbanDictionary::class,
+        ],
         'mention' => [
             MentionIndex::class,
             AddMentionReply::class,
@@ -186,9 +187,9 @@ class Bot
     /**
      * @param bool $devMode
      * @param bool $updateCommands
-     * @param $deleteCommands
+     * @param bool $deleteCommands
      */
-    public function __construct(bool $devMode = false, bool $updateCommands = false, $deleteCommands = false)
+    public function __construct(bool $devMode = false, bool $updateCommands = false, bool $deleteCommands = false)
     {
         $this->devMode = $devMode;
         $this->updateCommands = $updateCommands;

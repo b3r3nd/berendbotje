@@ -49,8 +49,8 @@ class CreateCommand extends SlashCommand
      */
     public function action(): MessageBuilder
     {
-        $command = \App\Models\Command::create(['trigger' => $this->arguments[0], 'response' => $this->arguments[1], 'guild_id' => Guild::get($this->guildId)->id]);
+        $command = \App\Models\Command::create(['trigger' => $this->getOption('command'), 'response' => $this->getOption('response'), 'guild_id' => Guild::get($this->guildId)->id]);
         $command->save();
-        return EmbedFactory::successEmbed(__('bot.cmd.saved', ['trigger' => $this->arguments[0], 'response' => $this->arguments[1]]));
+        return EmbedFactory::successEmbed($this->discord, __('bot.cmd.saved', ['trigger' => $this->getOption('command'), 'response' => $this->getOption('response')]));
     }
 }

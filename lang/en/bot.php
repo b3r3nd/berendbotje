@@ -188,7 +188,7 @@ return [
     ],
 
     'xp' => [
-        'not-found' => ':user do not have any messages',
+        'not-found' => ':user does not have any messages',
         'count' => 'You have :messages',
         'footer' => ':xp xp per message',
         'title' => 'Level :level',

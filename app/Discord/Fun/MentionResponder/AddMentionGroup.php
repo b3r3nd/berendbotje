@@ -49,7 +49,7 @@ class AddMentionGroup extends SlashCommand
                 'name' => 'multiplier',
                 'description' => 'Usage Mutliplier',
                 'type' => Option::INTEGER,
-                'required' => false,
+                'required' => true,
             ],
         ];
         parent::__construct();
@@ -57,9 +57,9 @@ class AddMentionGroup extends SlashCommand
 
     public function action(): MessageBuilder
     {
-        $group = MentionGroup::create(['name' => $this->arguments[0], 'guild_id' => Guild::get($this->guildId)->id]);
-        (new UpdateMentionGroupAction($group, $this->arguments))->execute();
+        $group = MentionGroup::create(['name' => $this->getOption('id'), 'guild_id' => Guild::get($this->guildId)->id]);
+        (new UpdateMentionGroupAction($group, $this->interaction->data->options))->execute();
         $this->bot->getGuild($this->guildId)?->mentionResponder->loadReplies();
-        return EmbedFactory::successEmbed(__('bot.mentiongroup.added', ['group' => $this->arguments[0]]));
+        return EmbedFactory::successEmbed($this->discord, __('bot.mentiongroup.added', ['group' => $this->getOption('id')]));
     }
 }

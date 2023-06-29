@@ -48,6 +48,6 @@ class DetachRolePermission extends SlashCommand
 
     public function action(): MessageBuilder
     {
-        return (new SyncRolePermissionsAction($this->arguments, $this->guildId, false))->execute();
+        return (new SyncRolePermissionsAction($this->interaction->data->options, $this->discord, $this->guildId, false))->execute();
     }
 }

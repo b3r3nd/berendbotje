@@ -48,8 +48,9 @@ class UserRank extends SlashCommand
      */
     public function action(): MessageBuilder
     {
-        if (isset($this->arguments[0])) {
-            $user = DiscordUser::get($this->arguments[0]);
+
+        if ($this->getOption('user_mention')) {
+            $user = DiscordUser::get($this->getOption('user_mention'));
         } else {
             $user = DiscordUser::get($this->commandUser);
         }
@@ -59,7 +60,7 @@ class UserRank extends SlashCommand
         $messageCounters = $user->messageCounters()->where('guild_id', $guild->id)->get();
 
         if ($messageCounters->isEmpty()) {
-            return EmbedFactory::failedEmbed(__('bot.xp.not-found', ['user' => $user->tag()]));
+            return EmbedFactory::failedEmbed($this->discord, __('bot.xp.not-found', ['user' => $user->tag()]));
         }
 
         $messageCounter = $messageCounters->first();

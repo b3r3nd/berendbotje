@@ -53,7 +53,7 @@ class BumpStatistics extends SlashIndexCommand
             ->setTitle(__('bot.bump.title'))
             ->setFooter(__('bot.bump.footer'));
 
-        if (strtolower($this->arguments[0]) === 'all-time') {
+        if (strtolower($this->getOption('date-range')) === 'all-time') {
             foreach (Bumper::byGuild($this->guildId)->groupBy('user_id')->orderBy('total', 'desc')->skip($this->getOffset($this->getLastUser()))->limit($this->perPage)->selectRaw('*, sum(count) as total')->get() as $index => $bumper) {
                 $description .= Helper::indexPrefix($index, $this->getOffset($this->getLastUser()));
                 $description .= "**{$bumper->user->tag()}** •  {$bumper->total}\n";

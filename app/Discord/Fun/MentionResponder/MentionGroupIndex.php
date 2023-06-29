@@ -42,7 +42,7 @@ class MentionGroupIndex extends SlashIndexCommand
             $description .= Helper::getGroupName($mentionGroup);
         }
 
-        return EmbedBuilder::create(Bot::getDiscord())
+        return EmbedBuilder::create($this->discord)
             ->setTitle(__('bot.mentiongroup.title'))
             ->setFooter(__('bot.mentiongroup.footer'))
             ->setDescription(__('bot.mentiongroup.description', ['data' => $description]))

@@ -57,14 +57,14 @@ class UpdateMentionGroup extends SlashCommand
 
     public function action(): MessageBuilder
     {
-        $group = MentionGroup::find($this->arguments[0]);
+        $group = MentionGroup::find($this->getOption('id'));
         if (!$group) {
-            return EmbedFactory::failedEmbed(__('bot.mentiongroup.notexist', ['group' => $this->arguments[0]]));
+             return EmbedFactory::failedEmbed($this->discord, __('bot.mentiongroup.notexist', ['group' => $this->getOption('id')]));
         }
 
-        (new UpdateMentionGroupAction($group, $this->arguments))->execute();
+        (new UpdateMentionGroupAction($group, $this->interaction->data->options))->execute();
 
         $this->bot->getGuild($this->guildId)?->mentionResponder->loadReplies();
-        return EmbedFactory::successEmbed(__('bot.mentiongroup.updated', ['group' => $this->arguments[0]]));
+        return EmbedFactory::successEmbed($this->discord, __('bot.mentiongroup.updated', ['group' => $this->getOption('id')]));
     }
 }

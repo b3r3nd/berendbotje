@@ -58,11 +58,14 @@ class Helper
 
 
     /**
-     * @param MentionGroup $mentionGroup
+     * @param MentionGroup|null $mentionGroup
      * @return string
      */
-    public static function getGroupName(MentionGroup $mentionGroup): string
+    public static function getGroupName(?MentionGroup $mentionGroup): string
     {
+        if (!$mentionGroup) {
+            return " ";
+        }
         $description = "{$mentionGroup->id} -";
 
         if (!$mentionGroup->has_role && !$mentionGroup->has_user) {

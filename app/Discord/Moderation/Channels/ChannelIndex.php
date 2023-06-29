@@ -44,7 +44,7 @@ class ChannelIndex extends SlashIndexCommand
              **No Logging**: {$noLog}
             \n";
         }
-        return EmbedBuilder::create(Bot::getDiscord())
+        return EmbedBuilder::create($this->discord)
             ->setTitle(__('bot.channels.title'))
             ->setFooter(__('bot.channels.footer'))
             ->setDescription(__('bot.channels.description', ['channels' => $channels]))

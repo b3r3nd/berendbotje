@@ -39,6 +39,6 @@ class Ask extends SlashCommand
     {
         $response = Http::get('https://yesno.wtf/api');
 
-        return MessageBuilder::new()->setContent($this->arguments[0] . "\n" . $response->json('image'));
+        return MessageBuilder::new()->setContent($this->getOption('question') . "\n" . $response->json('image'));
     }
 }

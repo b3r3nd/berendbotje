@@ -49,8 +49,8 @@ class CreateReaction extends SlashCommand
      */
     public function action(): MessageBuilder
     {
-        $reaction = Reaction::create(['trigger' => $this->arguments[0], 'reaction' => $this->arguments[1], 'guild_id' => \App\Models\Guild::get($this->guildId)->id]);
+        $reaction = Reaction::create(['trigger' => $this->getOption('trigger'), 'reaction' => $this->getOption('reaction'), 'guild_id' => \App\Models\Guild::get($this->guildId)->id]);
         $reaction->save();
-        return EmbedFactory::successEmbed(__('bot.reactions.saved', ['name' => $this->arguments[0], 'reaction' => $this->arguments[1]]));
+        return EmbedFactory::successEmbed($this->discord, __('bot.reactions.saved', ['name' => $this->getOption('trigger'), 'reaction' => $this->getOption('reaction')]));
     }
 }

@@ -43,7 +43,7 @@ class DelMentionGroup extends SlashCommand
         $mentionGroup = MentionGroup::find($this->arguments[0]);
 
         if (!$mentionGroup) {
-            return EmbedFactory::failedEmbed(__('bot.mentiongroup.not-found', ['id' => $this->arguments[0]]));
+             return EmbedFactory::failedEmbed($this->discord, __('bot.mentiongroup.not-found', ['id' => $this->getOption('group_id')]));
         }
 
         $mentionGroup->replies()->delete();
@@ -51,6 +51,6 @@ class DelMentionGroup extends SlashCommand
 
         $this->bot->getGuild($this->guildId)?->mentionResponder->loadReplies();
 
-        return EmbedFactory::successEmbed(__('bot.mentiongroup.deleted'));
+        return EmbedFactory::successEmbed($this->discord, __('bot.mentiongroup.deleted'));
     }
 }

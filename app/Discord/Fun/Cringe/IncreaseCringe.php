@@ -43,7 +43,7 @@ class IncreaseCringe extends SlashCommand
      */
     public function action(): MessageBuilder
     {
-        $user = DiscordUser::get($this->arguments[0]);
+        $user = DiscordUser::get($this->getOption('user_mention'));
         $guildModel = \App\Models\Guild::get($this->guildId);
         $fail = false;
 
@@ -64,8 +64,8 @@ class IncreaseCringe extends SlashCommand
 
         $cringeCounter->refresh();
         if ($fail) {
-            return EmbedFactory::successEmbed(__('bot.cringe.fail', ['name' => $user->tag(), 'count' => $cringeCounter->count]));
+            return EmbedFactory::successEmbed($this->discord, __('bot.cringe.fail', ['name' => $user->tag(), 'count' => $cringeCounter->count]));
         }
-        return EmbedFactory::successEmbed(__('bot.cringe.change', ['name' => $user->tag(), 'count' => $cringeCounter->count]));
+        return EmbedFactory::successEmbed($this->discord, __('bot.cringe.change', ['name' => $user->tag(), 'count' => $cringeCounter->count]));
     }
 }

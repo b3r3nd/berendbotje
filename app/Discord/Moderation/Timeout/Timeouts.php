@@ -39,15 +39,15 @@ class Timeouts extends SlashIndexCommand
     public function getEmbed(): Embed
     {
         $this->perPage = 5;
-        if(isset($this->arguments[0])) {
-            $timeouts = Timeout::byGuild($this->guildId)->where(['discord_id' => $this->arguments[0]])->skip($this->getOffset($this->getLastUser()))->limit($this->perPage)->orderBy('created_at', 'desc')->get();
-            $this->total = Timeout::byGuild($this->guildId)->where(['discord_id' => $this->arguments[0]])->count();
+        if($this->getOption('user_mention')) {
+            $timeouts = Timeout::byGuild($this->guildId)->where(['discord_id' => $this->getOption('user_mention')])->skip($this->getOffset($this->getLastUser()))->limit($this->perPage)->orderBy('created_at', 'desc')->get();
+            $this->total = Timeout::byGuild($this->guildId)->where(['discord_id' => $this->getOption('user_mention')])->count();
         } else {
             $timeouts = Timeout::byGuild($this->guildId)->skip($this->getOffset($this->getLastUser()))->limit($this->perPage)->orderBy('created_at', 'desc')->get();
             $this->total = Timeout::byGuild($this->guildId)->count();
         }
 
-        $embedBuilder = EmbedBuilder::create(Bot::getDiscord())
+        $embedBuilder = EmbedBuilder::create($this->discord)
             ->setTitle(__('bot.timeout.title'))
             ->setFooter(__('bot.timeout.footer'));
 

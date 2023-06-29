@@ -8,6 +8,8 @@ use App\Models\DiscordUser;
 use Discord\Builders\MessageBuilder;
 use Discord\Discord;
 use Discord\Parts\Interactions\Interaction;
+use Discord\Repository\Interaction\OptionRepository;
+use PhpOption\Option;
 
 /**
  * Extendable class to easily create new Slash ONLY commands. For better understanding:
@@ -18,7 +20,6 @@ use Discord\Parts\Interactions\Interaction;
  * @property Discord $discord               Easy reference to the discord instance
  * @property string $permission             Required permission level for this command.
  * @property string $trigger                Trigger for the command, both slash and text.
- * @property array $arguments               Array of all the given arguments by either slash or text commands.
  * @property string $guildId                String of the Discord Guild ID
  * @property string $commandUser            ID of the user using the command
  * @property string $description            Description for the (slash) command.
@@ -40,7 +41,9 @@ abstract class SlashCommand
     protected Interaction $interaction;
 
     abstract public function permission(): Permission;
+
     abstract public function trigger(): string;
+
     abstract public function action(): MessageBuilder;
 
     public function __construct()
@@ -64,27 +67,33 @@ abstract class SlashCommand
             $this->arguments = [];
 
             if ($interaction->guild_id === null) {
-                return $interaction->respondWithMessage(EmbedFactory::failedEmbed('Slash commands dont work in DM'));
+                return $interaction->respondWithMessage(EmbedFactory::failedEmbed($this->discord,'Slash commands dont work in DM'));
             }
 
             if (!DiscordUser::hasPermission($interaction->member->id, $interaction->guild_id, $this->permission->value) && $this->permission->value !== Permission::NONE->value) {
-                return $interaction->respondWithMessage(EmbedFactory::lackAccessEmbed(__("bot.lack-access")));
+                return $interaction->respondWithMessage(EmbedFactory::lackAccessEmbed($this->discord, __("bot.lack-access")));
             }
 
-            // Left over from previous stucture, should probably delete this and access data directly from the interaction!
-            foreach ($interaction->data->options as $option) {
-                $this->arguments[] = $option->value;
-            }
+
+            // Set some data so it is more easily accessible
             $this->commandUser = $interaction->member->id;
             $this->guildId = $interaction->guild_id;
-
-
             $this->interaction = $interaction;
 
             return $interaction->respondWithMessage($this->action());
         });
 
         $this->discord->application->commands->save($command);
+    }
+
+
+    /**
+     * @param string $key
+     * @return mixed|null
+     */
+    public function getOption(string $key): mixed
+    {
+        return $this->interaction->data->options->get('name', $key)?->value;
     }
 
     /**
@@ -95,13 +104,5 @@ abstract class SlashCommand
     {
         $this->bot = $bot;
         $this->discord = $bot->discord;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCommandUser(): string
-    {
-        return $this->commandUser;
     }
 }
