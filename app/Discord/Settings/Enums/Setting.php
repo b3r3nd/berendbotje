@@ -21,7 +21,7 @@ enum Setting: string
     case BUMP_REMINDER_ROLE = 'bump_reminder_role';
     case BUMP_CHANNEL = 'bump_channel';
     case ENABLE_MENTION_RESPONDER = 'enable_mention_responder';
-    case ENABLE_QOTD_REMINDER = 'enable_qotd_reminder';
-    case QOTD_CHANNEL = 'qotd_channel';
-    case QOTD_ROLE = 'qotd_role';
+    case ENABLE_REMINDER = 'enable_qotd_reminder';
+    case REMINDER_CHANNEL = 'qotd_channel';
+    case REMINDER_ROLE = 'qotd_role';
 }
