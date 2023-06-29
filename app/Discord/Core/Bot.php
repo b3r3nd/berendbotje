@@ -2,9 +2,73 @@
 
 namespace App\Discord\Core;
 
+use App\Discord\Administration\Servers;
+use App\Discord\Core\DiscordEvents\VoiceStateUpdate;
+use App\Discord\Fun\Ask;
+use App\Discord\Fun\Bump\BumpCounter;
 use App\Discord\Fun\Bump\BumpStatistics;
+use App\Discord\Fun\Cringe\CringeIndex;
+use App\Discord\Fun\Cringe\DecreaseCringe;
+use App\Discord\Fun\Cringe\IncreaseCringe;
+use App\Discord\Fun\Cringe\ResetCringe;
+use App\Discord\Fun\EightBall;
+use App\Discord\Fun\Emote\EmoteCounter;
+use App\Discord\Fun\Emote\EmoteIndex;
+use App\Discord\Fun\MentionResponder\AddMentionGroup;
+use App\Discord\Fun\MentionResponder\AddMentionReply;
+use App\Discord\Fun\MentionResponder\DelMentionGroup;
+use App\Discord\Fun\MentionResponder\DelMentionReply;
+use App\Discord\Fun\MentionResponder\MentionGroupIndex;
+use App\Discord\Fun\MentionResponder\MentionIndex;
+use App\Discord\Fun\MentionResponder\UpdateMentionGroup;
+use App\Discord\Fun\Reaction\CreateReaction;
+use App\Discord\Fun\Reaction\DeleteReaction;
+use App\Discord\Fun\Reaction\ReactionIndex;
+use App\Discord\Fun\UrbanDictionary;
 use App\Discord\Help;
-use App\Discord\JustinTest;
+use App\Discord\JobTest;
+use App\Discord\Levels\CreateRoleReward;
+use App\Discord\Levels\DeleteRoleReward;
+use App\Discord\Levels\GiveXp;
+use App\Discord\Levels\Leaderboard;
+use App\Discord\Levels\MessageXpCounter;
+use App\Discord\Levels\RemoveXp;
+use App\Discord\Levels\ResetXp;
+use App\Discord\Levels\RoleRewards;
+use App\Discord\Levels\UserRank;
+use App\Discord\Levels\VoiceXpCounter;
+use App\Discord\Logger\Events\GuildMemberLogger;
+use App\Discord\Logger\Events\InviteLogger;
+use App\Discord\Logger\Events\MessageLogger;
+use App\Discord\Logger\Events\TimeoutLogger;
+use App\Discord\Logger\Events\VoiceStateLogger;
+use App\Discord\Logger\LogSettings;
+use App\Discord\Logger\UpdateLogSetting;
+use App\Discord\Moderation\Channels\ChannelIndex;
+use App\Discord\Moderation\Channels\MarkChannel;
+use App\Discord\Moderation\Channels\MediaFilter;
+use App\Discord\Moderation\Channels\StickerFilter;
+use App\Discord\Moderation\Channels\UnmarkChannel;
+use App\Discord\Moderation\Command\CommandIndex;
+use App\Discord\Moderation\Command\CreateCommand;
+use App\Discord\Moderation\Command\DeleteCommand;
+use App\Discord\Moderation\KickAndBanCounter;
+use App\Discord\Moderation\ModeratorStatistics;
+use App\Discord\Moderation\Timeout\DetectTimeouts;
+use App\Discord\Moderation\Timeout\Timeouts;
+use App\Discord\OpenAi\GenerateImage;
+use App\Discord\Roles\AttachRolePermission;
+use App\Discord\Roles\AttachUserRole;
+use App\Discord\Roles\CreateRole;
+use App\Discord\Roles\DeleteRole;
+use App\Discord\Roles\DetachRolePermission;
+use App\Discord\Roles\DetachUserRole;
+use App\Discord\Roles\Permissions;
+use App\Discord\Roles\Roles;
+use App\Discord\Roles\UserRoles;
+use App\Discord\Roles\Users;
+use App\Discord\Settings\Settings;
+use App\Discord\Settings\UpdateSetting;
 use App\Models\Guild;
 use Discord\Discord;
 use Discord\Exceptions\IntentException;
@@ -20,86 +84,130 @@ use Exception;
  * cumbersome rather quick, hence this implementation.
  *
  * @property $discord           Set with the global discord instance from DiscordPHP.
- * @property $instance          Static instance of self (singleton) accessible through static call get().
  * @property $guilds            List of all active guilds using the bot.
+ *
+ * @property $instance          Static instance of self (singleton) accessible through static call get().
+ * @property $devMode           If the bot runs in dev mode.
+ * @property $events            Event listeners
+ * @property $commands          Commands by category
+ * @property $devCommands       Commands only in dev mode
+ *
  */
 class Bot
 {
     private Discord $discord;
     private array $guilds;
     private static self $instance;
+    private bool $devMode, $updateCommands, $deleteCommands;
+
+    private array $events = [
+        VoiceStateUpdate::class,
+        DetectTimeouts::class,
+        MediaFilter::class,
+        StickerFilter::class,
+        KickAndBanCounter::class,
+        BumpCounter::class,
+        EmoteCounter::class,
+        MessageXpCounter::class,
+        VoiceXpCounter::class,
+        VoiceStateLogger::class,
+        GuildMemberLogger::class,
+        MessageLogger::class,
+        TimeoutLogger::class,
+        InviteLogger::class,
+    ];
+
+    private array $devCommands = [
+        JobTest::class,
+    ];
+
+    private array $commands = [
+        'openai' => [
+            GenerateImage::class,
+        ],
+        'roles' => [
+            Roles::class,
+            Permissions::class,
+            Users::class,
+            UserRoles::class,
+            AttachRolePermission::class,
+            DetachRolePermission::class,
+            CreateRole::class,
+            DeleteRole::class,
+            DetachUserRole::class,
+            AttachUserRole::class,
+            Settings::class,
+            UpdateSetting::class,
+        ],
+        'xp' => [
+            Leaderboard::class,
+            RoleRewards::class,
+            CreateRoleReward::class,
+            DeleteRoleReward::class,
+            UserRank::class,
+            GiveXp::class,
+            RemoveXp::class,
+            ResetXp::class,
+        ],
+        'mods' => [
+            ChannelIndex::class,
+            MarkChannel::class,
+            UnmarkChannel::class,
+            Help::class,
+            LogSettings::class,
+            UpdateLogSetting::class,
+            Timeouts::class,
+            ModeratorStatistics::class,
+        ],
+        'fun' =>
+            [
+                CringeIndex::class,
+                IncreaseCringe::class,
+                DecreaseCringe::class,
+                ResetCringe::class,
+                BumpStatistics::class,
+                EmoteIndex::class,
+                CommandIndex::class,
+                CreateCommand::class,
+                DeleteCommand::class,
+                ReactionIndex::class,
+                CreateReaction::class,
+                DeleteReaction::class,
+                EightBall::class,
+                Ask::class,
+                UrbanDictionary::class,
+            ],
+        'mention' => [
+            MentionIndex::class,
+            AddMentionReply::class,
+            DelMentionReply::class,
+            MentionGroupIndex::class,
+            AddMentionGroup::class,
+            DelMentionGroup::class,
+            UpdateMentionGroup::class,
+        ],
+    ];
 
 
-    /**
-     * Define all events that do not require commands to be triggered, for example the media filter or voice states.
-     * @return string[]
-     */
-    private function coreClasses(): array
-    {
-        return [
-//            VoiceStateUpdate::class,
-//            DetectTimeouts::class,
-//            MediaFilter::class,
-//            StickerFilter::class,
-//            KickAndBanCounter::class,
-//            BumpCounter::class,
-//            EmoteCounter::class,
-//            MessageXpCounter::class,
-            //           VoiceXpCounter::class,
-            //           VoiceStateLogger::class, GuildMemberLogger::class, MessageLogger::class, TimeoutLogger::class,
-//            InviteLogger::class,
-        ];
-    }
-
-    /**
-     * Define all command classes, command classes are implementations of either of the 2 abstract classes below.
-     * Which both extend the general Command class.
-     *
-     * @return string[]
-     *
-     * @see Command
-     * @see SlashCommand
-     * @see SlashIndexCommand
-     */
-    private function commands(): array
-    {
-        return [
-            JustinTest::class,
-
-//            GenerateImage::class,
-//            Servers::class,
-//
-//            Roles::class, Permissions::class, Users::class,
-//            UserRoles::class,
-//            AttachRolePermission::class, DetachRolePermission::class,
-//            CreateRole::class, DeleteRole::class,
-//            DetachUserRole::class, AttachUserRole::class,
-//            Settings::class, //UpdateSetting::class,
-//
-//            Timeouts::class, ModeratorStatistics::class,
-//
-//            Leaderboard::class, RoleRewards::class, CreateRoleReward::class, DeleteRoleReward::class,
-//            UserRank::class, GiveXp::class, RemoveXp::class, ResetXp::class,
-//
-//            CringeIndex::class, IncreaseCringe::class, DecreaseCringe::class, ResetCringe::class,
- //           BumpStatistics::class, //EmoteIndex::class,
-//            CommandIndex::class, CreateCommand::class, DeleteCommand::class,
-            //           ReactionIndex::class, CreateReaction::class, DeleteReaction::class,
-//            EightBall::class, Ask::class, UrbanDictionary::class,
-//
-            //           ChannelIndex::class, MarkChannel::class, UnmarkChannel::class,
- //           Help::class,
-            //          LogSettings::class, UpdateLogSetting::class,
-//
-//            MentionIndex::class, AddMentionReply::class, DelMentionReply::class,
-//            MentionGroupIndex::class, AddMentionGroup::class, DelMentionGroup::class, UpdateMentionGroup::class,
-        ];
-    }
 
     /**
      * @throws IntentException
      */
-    public function __construct()
+    public function __construct(bool $devMode = false, bool $updateCommands = false, $deleteCommands = false)
+    {
+        $this->devMode = $devMode;
+        $this->updateCommands = $updateCommands;
+        $this->deleteCommands = $deleteCommands;
+
+        $this->connect();
+        self::$instance = $this;
+    }
+
+    /**
+     * @return void
+     * @throws IntentException
+     */
+    private function connect(): void
     {
         $this->discord = new Discord([
                 'token' => config('discord.token'),
@@ -110,17 +218,17 @@ class Bot
             ]
         );
         $this->discord->on('ready', function (Discord $discord) {
-//            $activity = new Activity($this->discord, [
-//                'type' => Activity::TYPE_WATCHING,
-//                'name' => __('bot.status'),
-//            ]);
-//            $discord->updatePresence($activity);
-            $this->loadCoreClasses();
+            $this->loadEvents();
             $this->loadGuilds();
-            //$this->deleteSlashCommands();
-            $this->loadCommands();
+
+            if ($this->deleteCommands) {
+                $this->deleteSlashCommands();
+            }
+            if ($this->updateCommands || $this->devMode) {
+                $this->updateSlashCommands();
+            }
         });
-        self::$instance = $this;
+
     }
 
 
@@ -154,22 +262,37 @@ class Bot
     /**
      * @return void
      */
-    private function loadCoreClasses(): void
+    private function loadEvents(): void
     {
-        foreach ($this->coreClasses() as $class) {
+        foreach ($this->events as $class) {
             new $class();
+        }
+    }
+
+
+    /**
+     * @param array $commands
+     * @return void
+     */
+    private function loadCommands(array $commands): void
+    {
+        foreach ($commands as $class) {
+            $instance = new $class();
+            $instance->registerSlashCommand($this->discord);
         }
     }
 
     /**
      * @return void
      */
-    private function loadCommands(): void
+    private function updateSlashCommands(): void
     {
-        foreach ($this->commands() as $class) {
-            $instance = new $class();
-            $instance->registerSlashCommand();
-            echo "Command Added";
+        if ($this->devMode) {
+            $this->loadCommands($this->devCommands);
+        } else {
+            foreach ($this->commands as $category => $commands) {
+                $this->loadCommands($commands);
+            }
         }
     }
 
@@ -182,7 +305,6 @@ class Bot
         $this->discord->application->commands->freshen()->done(function ($commands) {
             foreach ($commands as $command) {
                 $this->discord->application->commands->delete($command);
-                echo "Command deleted";
             }
         });
     }

@@ -7,7 +7,7 @@ use App\Discord\Core\SlashCommand;
 use App\Jobs\ProcessTest;
 use Discord\Builders\MessageBuilder;
 
-class JustinTest extends SlashCommand
+class JobTest extends SlashCommand
 {
 
     public function permission(): Permission
@@ -17,12 +17,12 @@ class JustinTest extends SlashCommand
 
     public function trigger(): string
     {
-        return "justin";
+        return "test";
     }
 
     public function __construct()
     {
-        $this->description = "Justin!!!!!!";
+        $this->description = "test";
         parent::__construct();
     }
 
@@ -31,7 +31,7 @@ class JustinTest extends SlashCommand
      */
     public function action(): MessageBuilder
     {
-        ProcessTest::dispatch()->delay(now()->addSeconds(5));
+        ProcessTest::dispatch()->delay(now()->addSeconds(2));
         return MessageBuilder::new()->setContent("Loading...");
     }
 }

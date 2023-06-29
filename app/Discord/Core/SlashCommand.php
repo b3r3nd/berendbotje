@@ -6,6 +6,7 @@ use App\Discord\Core\Builders\EmbedFactory;
 use App\Discord\Core\Enums\Permission;
 use App\Models\DiscordUser;
 use Discord\Builders\MessageBuilder;
+use Discord\Discord;
 use Discord\Parts\Interactions\Interaction;
 
 /**
@@ -26,7 +27,7 @@ abstract class SlashCommand extends Command
     abstract public function action(): MessageBuilder;
 
     /** @noinspection NotOptimalIfConditionsInspection */
-    public function registerSlashCommand(): void
+    public function registerSlashCommand(Discord $discord): void
     {
         $optionsArray = [
             'name' => $this->trigger,
@@ -35,8 +36,8 @@ abstract class SlashCommand extends Command
         if (isset($this->slashCommandOptions)) {
             $optionsArray['options'] = $this->slashCommandOptions;
         }
-        $command = new \Discord\Parts\Interactions\Command\Command(Bot::getDiscord(), $optionsArray);
-        Bot::getDiscord()->listenCommand($this->trigger, function (Interaction $interaction) {
+        $command = new \Discord\Parts\Interactions\Command\Command($discord, $optionsArray);
+        $discord->listenCommand($this->trigger, function (Interaction $interaction) {
             $this->arguments = [];
 
             if ($interaction->guild_id === null) {
@@ -60,7 +61,7 @@ abstract class SlashCommand extends Command
             return $interaction->respondWithMessage($this->action());
         });
 
-        Bot::getDiscord()->application->commands->save($command);
+        $discord->application->commands->save($command);
     }
 
 }

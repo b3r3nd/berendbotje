@@ -27,7 +27,7 @@ class ProcessTest implements ShouldQueue
      */
     public function __construct()
     {
-      //
+
     }
 
     /**
@@ -36,6 +36,8 @@ class ProcessTest implements ShouldQueue
      */
     public function handle(): void
     {
+
+
         $this->discord = new Discord(['token' => config('discord.token'), 'intents' => Intents::GUILDS]);
         $this->discord->on('ready', function (Discord $discord) {
             $channel = $discord->getChannel(1030402514786459718);
