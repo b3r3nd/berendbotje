@@ -19,20 +19,22 @@ use Exception;
 /**
  * Guild settings are loaded on boot and only updated when the actual setting is changed using commands.
  *
- * @property $settings                  List of cached settings, so we do not need to read from the database each time.
- * @property $logSettings               List of cached log settings, so we do not need to read from the database each time.
- * @property $lastMessages              Last message send by user in guild, used for the xp cooldown.
- * @property $inVoice                   List of people who are currently in voice in the guild, used to calculate xp.
- * @property $guildModel                Eloquent model for the guild.
- * @property $logger                    Logger instance for this specific guild which can log events.
- * @property $channels                  List of channels which have special flags set, for example media channels.
- * @property $model                     Reference to the actual guild model
+ * @property Discord $discord                 Set with the global discord instance from DiscordPHP.
+ * @property Bot $bot                       Easy reference to the bot this guild runs in
+ * @property array $guilds                    List of all active guilds using the bot.
+ * @property array $settings                  List of cached settings, so we do not need to read from the database each time.
+ * @property array $logSettings               List of cached log settings, so we do not need to read from the database each time.
+ * @property array $lastMessages              Last message send by user in guild, used for the xp cooldown.
+ * @property array $inVoice                   List of people who are currently in voice in the guild, used to calculate xp.
+ * @property Logger$logger                    Logger instance for this specific guild which can log events.
+ * @property array $channels                  List of channels which have special flags set, for example media channels.
+ * @property GuildModel $model                Eloquent model for the guild.
+ *
  */
 class Guild
 {
     protected Discord $discord;
     protected Bot $bot;
-
     private array $settings = [];
     private array $logSettings = [];
     private array $lastMessages = [];

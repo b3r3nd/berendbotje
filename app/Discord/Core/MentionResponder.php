@@ -13,9 +13,15 @@ use Discord\WebSockets\Event;
 use Exception;
 
 /**
- * @property $roleReplies       List of mention replies for this guild which require a certain role.
- * @property $noRoleReplies     List of mention replies for this guild which require NOT to have a certain role.
- * @property $lastResponses     List of responses recently used (60 sec) so no duplicates are send.
+ * @property Bot $bot               Bot the event belongs to
+ * @property Discord $discord       Easy to access discord instance
+ * @property string $guildId        Discord ID for the guild this responder belongs to
+ * @property int $guildModelId      Model ID for the guild this responder belongs to
+ * @property array $roleReplies     List of mention replies for this guild which require a certain role
+ * @property array $noRoleReplies   List of mention replies for this guild which require NOT to have a certain role
+ * @property array $lastResponses   List of responses recently used (60 sec) so no duplicates are send
+ * @property array $userReplies     List of mention replies for this guild for specific users
+ * @property array $lastMessages    List of last replies for each user to determine cooldowns
  */
 class MentionResponder
 {
@@ -26,7 +32,6 @@ class MentionResponder
     private array $roleReplies = [];
     private array $noRoleReplies = [];
     private array $userReplies = [];
-    private array $lastResponses = [];
     private array $lastMessages = [];
 
     /**
@@ -87,8 +92,6 @@ class MentionResponder
                 $message->reply('Thanks! 😎');
                 return;
             }
-
-            // $this->checkLastResponses();
 
             if (isset($this->lastMessages[$message->author->id])) {
                 $messages = $this->lastMessages[$message->author->id];
@@ -167,19 +170,6 @@ class MentionResponder
     }
 
     /**
-     * @return void
-     */
-    private function checkLastResponses(): void
-    {
-        foreach ($this->lastResponses as $lastResponse => $date) {
-            $now = Carbon::now();
-            if ($now->diffInSeconds($date) > 60) {
-                unset($this->lastResponses[$lastResponse]);
-            }
-        }
-    }
-
-    /**
      * @param array $array
      * @return mixed
      * @throws Exception
@@ -187,15 +177,6 @@ class MentionResponder
     private function getRandom(array $array): mixed
     {
         return $array[random_int(0, (count($array) - 1))];
-//        while (isset($this->lastResponses[$response])) {
-//            $response = $array[random_int(0, (count($array) - 1))];
-//            if (count($this->lastResponses) === count($array)) {
-//                $this->lastResponses = [];
-//                break;
-//            }
-//        }
-//        $this->lastResponses[$response] = Carbon::now();
-//        return $response;
     }
 
 }

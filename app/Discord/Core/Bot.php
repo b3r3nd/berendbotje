@@ -36,7 +36,7 @@ use App\Discord\Fun\Reaction\DeleteReaction;
 use App\Discord\Fun\Reaction\ReactionIndex;
 use App\Discord\Fun\UrbanDictionary;
 use App\Discord\Help;
-use App\Discord\JobTest;
+use App\Discord\Test;
 use App\Discord\Levels\CreateRoleReward;
 use App\Discord\Levels\DeleteRoleReward;
 use App\Discord\Levels\GiveXp;
@@ -77,15 +77,15 @@ use Exception;
 /**
  * Main bot class, theoretically you could create more instances from this class to have multiple bots running.
  *
- * @property $discord           Set with the global discord instance from DiscordPHP.
- * @property $guilds            List of all active guilds using the bot.
+ * @property Discord $discord           Set with the global discord instance from DiscordPHP.
+ * @property array $guilds            List of all active guilds using the bot.
  *
- * @property $devMode           If the bot runs in dev mode.
- * @property $updateCommands    If we need to update commands
- * @property $deleteCommands    If we need to delete commands
- * @property $events            DiscordEvent listeners
- * @property $commands          Commands by category
- * @property $devCommands       Commands only in dev mode
+ * @property bool $devMode           If the bot runs in dev mode.
+ * @property bool $updateCommands    If we need to update commands
+ * @property bool $deleteCommands    If we need to delete commands
+ * @property array $events            DiscordEvent listeners
+ * @property array $commands          Commands by category
+ * @property array $devCommands       Commands only in dev mode
  *
  */
 class Bot
@@ -112,7 +112,7 @@ class Bot
     ];
 
     private array $devCommands = [
-        JobTest::class,
+        Test::class,
     ];
 
     private array $commands = [
