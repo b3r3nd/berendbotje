@@ -81,6 +81,8 @@ use Exception;
  * @property $guilds            List of all active guilds using the bot.
  *
  * @property $devMode           If the bot runs in dev mode.
+ * @property $updateCommands    If we need to update commands
+ * @property $deleteCommands    If we need to delete commands
  * @property $events            DiscordEvent listeners
  * @property $commands          Commands by category
  * @property $devCommands       Commands only in dev mode

@@ -19,13 +19,14 @@ use Exception;
 /**
  * Guild settings are loaded on boot and only updated when the actual setting is changed using commands.
  *
- * @property $settings          List of cached settings, so we do not need to read from the database each time.
- * @property $logSettings       List of cached log settings, so we do not need to read from the database each time.
- * @property $lastMessages      Last message send by user in guild, used for the xp cooldown.
- * @property $inVoice           List of people who are currently in voice in the guild, used to calculate xp.
- * @property $guildModel        Eloquent model for the guild.
- * @property $logger            Logger instance for this specific guild which can log events.
- * @property $channels          List of channels which have special flags set, for example media channels.
+ * @property $settings                  List of cached settings, so we do not need to read from the database each time.
+ * @property $logSettings               List of cached log settings, so we do not need to read from the database each time.
+ * @property $lastMessages              Last message send by user in guild, used for the xp cooldown.
+ * @property $inVoice                   List of people who are currently in voice in the guild, used to calculate xp.
+ * @property $guildModel                Eloquent model for the guild.
+ * @property $logger                    Logger instance for this specific guild which can log events.
+ * @property $channels                  List of channels which have special flags set, for example media channels.
+ * @property $model                     Reference to the actual guild model
  */
 class Guild
 {
@@ -36,11 +37,9 @@ class Guild
     private array $logSettings = [];
     private array $lastMessages = [];
     private array $inVoice = [];
-    public GuildModel $model;
     private Logger $logger;
     private array $channels = [];
-    public MentionResponder $mentionResponder;
-    public QuestionOfTheDayReminder $questionOfTheDayReminder;
+    public GuildModel $model;
 
     /**
      * @param GuildModel $guild
@@ -69,8 +68,8 @@ class Guild
         $this->registerReactions();
         $this->registerCommands();
 
-        $this->mentionResponder = new MentionResponder($this->model->guild_id, $this->bot);
-        $this->questionOfTheDayReminder = new QuestionOfTheDayReminder($this->bot, $this->model->guild_id);
+       new MentionResponder($this->model->guild_id, $this->bot);
+       new QuestionOfTheDayReminder($this->bot, $this->model->guild_id);
     }
 
     /**
