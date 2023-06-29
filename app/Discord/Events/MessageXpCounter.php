@@ -36,7 +36,7 @@ class MessageXpCounter extends DiscordEvent
                 $lastMessageDate = $guild->getLastMessage($message->author->id);
                 if ($lastMessageDate->diffInSeconds(Carbon::now()) >= $guild->getSetting(Setting::XP_COOLDOWN)) {
                     $guild->setLastMessage($message->author->id);
-                    (new UpdateMessageCounterAction($message->guild_id, $message->author->id, $guild->getSetting(Setting::XP_COUNT)))->execute();
+                    (new UpdateMessageCounterAction($message->guild_id, $message->author->id, $guild->getSetting(Setting::XP_COUNT), $this->bot))->execute();
 
                     if ($guild->getSetting(Setting::ENABLE_ROLE_REWARDS)) {
                         (new SyncRoleRewardsAction($message, $message->author->id))->execute();

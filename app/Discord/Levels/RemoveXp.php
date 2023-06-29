@@ -43,7 +43,7 @@ class RemoveXp extends SlashCommand
 
     public function action(): MessageBuilder
     {
-        (new UpdateMessageCounterAction($this->guildId, $this->arguments[0], $this->arguments[1], true))->execute();
+        (new UpdateMessageCounterAction($this->guildId, $this->arguments[0], $this->arguments[1], $this->bot, true))->execute();
         return EmbedFactory::successEmbed(__('bot.xp.removed', ['user' => $this->arguments[0], 'xp' => $this->arguments[1]]));
     }
 }
