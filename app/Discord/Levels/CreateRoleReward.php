@@ -45,8 +45,8 @@ class CreateRoleReward extends SlashCommand
 
     public function action(): MessageBuilder
     {
-        $roleReward = RoleReward::create(['level' => $this->arguments[0], 'role' => $this->arguments[1], 'guild_id' => \App\Models\Guild::get($this->guildId)->id]);
+        $roleReward = RoleReward::create(['level' => $this->getOption('level'), 'role' => $this->getOption('role'), 'guild_id' => \App\Models\Guild::get($this->guildId)->id]);
         $roleReward->save();
-        return EmbedFactory::successEmbed(__('bot.rewards.added', ['level' => $this->arguments[0], 'role' => $roleReward->roleTag()]));
+        return EmbedFactory::successEmbed($this->discord, __('bot.rewards.added', ['level' => $this->getOption('level'), 'role' => $roleReward->roleTag()]));
     }
 }

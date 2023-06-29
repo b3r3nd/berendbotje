@@ -69,6 +69,6 @@ class EightBall extends SlashCommand
         $random = random_int(0, (count($options) - 1));
 
 
-        return MessageBuilder::new()->setContent("**{$this->arguments[0]}**\n\n{$options[$random]}");
+        return MessageBuilder::new()->setContent("**{$this->getOption('question')}**\n\n{$options[$random]}");
     }
 }

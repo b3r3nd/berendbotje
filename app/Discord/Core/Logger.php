@@ -4,6 +4,7 @@ namespace App\Discord\Core;
 
 use App\Discord\Core\Builders\EmbedBuilder;
 use Carbon\Carbon;
+use Discord\Discord;
 use Discord\Parts\User\Member;
 use Discord\Parts\User\User;
 use Exception;
@@ -11,13 +12,16 @@ use Exception;
 class Logger
 {
     private string $logChannelId;
+    private Discord $discord;
 
     /**
      * @param string $logChannelId
+     * @param Discord $discord
      */
-    public function __construct(string $logChannelId)
+    public function __construct(string $logChannelId, Discord $discord)
     {
         $this->logChannelId = $logChannelId;
+        $this->discord = $discord;
     }
 
     /**
@@ -37,7 +41,7 @@ class Logger
             $embedBuilder->setLog();
         }
 
-        $channel = Bot::getDiscord()->getChannel($this->logChannelId);
+        $channel = $this->discord->getChannel($this->logChannelId);
         $channel?->sendEmbed($embedBuilder->getEmbed());
     }
 
@@ -50,7 +54,7 @@ class Logger
      */
     public function logWithMember(Member|User $member, string $description, string $type): void
     {
-        $embedBuilder = EmbedBuilder::create(Bot::getDiscord());
+        $embedBuilder = EmbedBuilder::create($this->discord);
 
         if ($member instanceof Member) {
             $embedBuilder->getEmbed()
@@ -76,7 +80,7 @@ class Logger
      */
     public function log(string $message, string $type): void
     {
-        $embedBuilder = EmbedBuilder::create(Bot::getDiscord())
+        $embedBuilder = EmbedBuilder::create($this->discord)
             ->setDescription($message)
             ->setFooter(Carbon::now()->toTimeString());
 

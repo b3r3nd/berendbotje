@@ -39,15 +39,15 @@ class ResetXp extends SlashCommand
 
     public function action(): MessageBuilder
     {
-        $user = DiscordUser::get($this->arguments[0]);
+        $user = DiscordUser::get($this->getOption('user_mention'));
         $guild = Guild::get($this->guildId);
         $messageCounters = $user->messageCounters()->where('guild_id', $guild->id)->get();
 
         if ($messageCounters->isEmpty()) {
-            return EmbedFactory::failedEmbed(__('bot.xp.not-exist', ['user' => $this->arguments[0]]));
+             return EmbedFactory::failedEmbed($this->discord, __('bot.xp.not-exist', ['user' => $this->getOption('user_mention')]));
         }
 
         $messageCounters->first()->delete();
-        return EmbedFactory::successEmbed(__('bot.xp.reset', ['user' => $this->arguments[0]]));
+        return EmbedFactory::successEmbed($this->discord, __('bot.xp.reset', ['user' => $this->getOption('user_mention')]));
     }
 }

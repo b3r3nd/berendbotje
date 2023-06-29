@@ -41,12 +41,12 @@ class DelMentionReply extends SlashCommand
 
     public function action(): MessageBuilder
     {
-        $mentionReply = MentionReply::find($this->arguments[0]);
+        $mentionReply = MentionReply::find($this->getOption('reply'));
         if (!$mentionReply) {
-            return EmbedFactory::failedEmbed(__('bot.mention.no-reply'));
+             return EmbedFactory::failedEmbed($this->discord, __('bot.mention.no-reply'));
         }
         $mentionReply->delete();
-        Bot::get()->getGuild($this->guildId)?->mentionResponder->loadReplies();
-        return EmbedFactory::successEmbed(__('bot.mention.deleted'));
+        $this->bot->getGuild($this->guildId)?->mentionResponder->loadReplies();
+        return EmbedFactory::successEmbed($this->discord, __('bot.mention.deleted'));
     }
 }

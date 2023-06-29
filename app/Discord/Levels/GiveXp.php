@@ -43,7 +43,7 @@ class GiveXp extends SlashCommand
 
     public function action(): MessageBuilder
     {
-        (new UpdateMessageCounterAction($this->guildId, $this->arguments[0], $this->arguments[1]))->execute();
-        return EmbedFactory::successEmbed(__('bot.xp.given', ['user' => $this->arguments[0], 'xp' => $this->arguments[1]]));
+        (new UpdateMessageCounterAction($this->guildId, $this->getOption('user_mention'), $this->getOption('user_xp'), $this->bot))->execute();
+        return EmbedFactory::successEmbed($this->discord, __('bot.xp.given', ['user' => $this->getOption('user_mention'), 'xp' => $this->getOption('user_xp')]));
     }
 }

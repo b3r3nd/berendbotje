@@ -1,24 +1,25 @@
 <?php
 
-namespace App\Discord\Moderation\Channels;
+namespace App\Discord\Events;
 
 use App\Discord\Core\Bot;
+use App\Discord\Core\DiscordEvent;
 use Discord\Discord;
 use Discord\Parts\Channel\Message;
 use Discord\WebSockets\Event;
 
-class StickerFilter
+class StickerFilter extends DiscordEvent
 {
-    public function __construct()
+    public function registerEvent(): void
     {
-        Bot::getDiscord()->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) {
+        $this->discord->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) {
             if ($message->author->bot) {
                 return;
             }
             if (!$message->guild_id) {
                 return;
             }
-            $guild = Bot::get()->getGuild($message->guild_id ?? "");
+            $guild = $this->bot->getGuild($message->guild_id ?? "");
             if ($guild) {
                 $channel = $guild->getChannel($message->channel_id);
                 if (!$channel) {
@@ -35,6 +36,4 @@ class StickerFilter
             }
         });
     }
-
-
 }

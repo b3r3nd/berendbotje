@@ -48,8 +48,9 @@ class UserRank extends SlashCommand
      */
     public function action(): MessageBuilder
     {
-        if (isset($this->arguments[0])) {
-            $user = DiscordUser::get($this->arguments[0]);
+
+        if ($this->getOption('user_mention')) {
+            $user = DiscordUser::get($this->getOption('user_mention'));
         } else {
             $user = DiscordUser::get($this->commandUser);
         }
@@ -59,11 +60,11 @@ class UserRank extends SlashCommand
         $messageCounters = $user->messageCounters()->where('guild_id', $guild->id)->get();
 
         if ($messageCounters->isEmpty()) {
-            return EmbedFactory::failedEmbed(__('bot.xp.not-found', ['user' => $user->tag()]));
+            return EmbedFactory::failedEmbed($this->discord, __('bot.xp.not-found', ['user' => $user->tag()]));
         }
 
         $messageCounter = $messageCounters->first();
-        $xpCount = Bot::get()->getGuild($this->guildId)?->getSetting(Setting::XP_COUNT);
+        $xpCount = $this->bot->getGuild($this->guildId)?->getSetting(Setting::XP_COUNT);
 
         $voice = $messageCounter->voice_seconds / 60;
         if ($voice >= 60) {
@@ -74,7 +75,7 @@ class UserRank extends SlashCommand
             $voice = "{$voice} minutes";
         }
 
-        return MessageBuilder::new()->addEmbed(EmbedBuilder::create(Bot::getDiscord())
+        return MessageBuilder::new()->addEmbed(EmbedBuilder::create($this->bot->discord)
             ->setDescription(__('bot.xp.description', ['user' => $user->tag(), 'messages' => $messageCounter->count, 'xp' => $messageCounter->xp, 'voice' => $voice, 'level' => $messageCounter->level]))
             ->setTitle(__('bot.xp.title', ['level' => $messageCounter->level, 'xp' => $messageCounter->xp]))
             ->setFooter(__('bot.xp.footer', ['xp' => $xpCount]))

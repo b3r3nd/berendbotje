@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Discord\Levels;
+namespace App\Discord\Events;
 
-use App\Discord\Core\Bot;
+use App\Discord\Core\DiscordEvent;
 use App\Discord\Core\Enums\Setting;
 use App\Discord\Helper;
 use App\Models\DiscordUser;
@@ -10,33 +10,8 @@ use Discord\Discord;
 use Discord\Parts\WebSockets\VoiceStateUpdate as DVoiceStateUpdate;
 use Discord\WebSockets\Event;
 
-class VoiceXpCounter
+class VoiceXpCounter extends DiscordEvent
 {
-
-    public function __construct()
-    {
-        Bot::getDiscord()->on(Event::VOICE_STATE_UPDATE, function (DVoiceStateUpdate $state, Discord $discord, $oldstate) {
-            $guild = Bot::get()->getGuild($state->guild_id ?? $oldstate->guild_id);
-            $user = DiscordUser::get($state->user_id);
-
-            if ($state->channel) {
-                if (!isset($oldstate)) {
-                    if (!$guild->getChannel($state->channel_id) && !$state->self_mute && !$state->self_deaf) {
-                        $guild->joinedVoice($state->user_id);
-                    }
-                } elseif ($guild->getChannel($state->channel_id) && $guild->getChannel($state->channel_id)->no_xp) {
-                    $this->leaveVoice($guild, $user, $state);
-                } else if ($state->self_mute || $state->self_deaf) {
-                    $this->leaveVoice($guild, $user, $state);
-                } elseif ($oldstate->self_mute || $oldstate->self_deaf || $guild->getChannel($oldstate->channel_id)) {
-                    $guild->joinedVoice($state->user_id);
-                }
-            } else {
-                $this->leaveVoice($guild, $user, $state);
-            }
-        });
-    }
-
     /**
      * @param $guild
      * @param $user
@@ -70,5 +45,29 @@ class VoiceXpCounter
             }
             $messageCounter->update(['level' => Helper::calcLevel($messageCounter->xp)]);
         }
+    }
+
+    public function registerEvent(): void
+    {
+        $this->discord->on(Event::VOICE_STATE_UPDATE, function (DVoiceStateUpdate $state, Discord $discord, $oldstate) {
+            $guild = $this->bot->getGuild($state->guild_id ?? $oldstate->guild_id);
+            $user = DiscordUser::get($state->user_id);
+
+            if ($state->channel) {
+                if (!isset($oldstate)) {
+                    if (!$guild->getChannel($state->channel_id) && !$state->self_mute && !$state->self_deaf) {
+                        $guild->joinedVoice($state->user_id);
+                    }
+                } elseif ($guild->getChannel($state->channel_id) && $guild->getChannel($state->channel_id)->no_xp) {
+                    $this->leaveVoice($guild, $user, $state);
+                } else if ($state->self_mute || $state->self_deaf) {
+                    $this->leaveVoice($guild, $user, $state);
+                } elseif ($oldstate->self_mute || $oldstate->self_deaf || $guild->getChannel($oldstate->channel_id)) {
+                    $guild->joinedVoice($state->user_id);
+                }
+            } else {
+                $this->leaveVoice($guild, $user, $state);
+            }
+        });
     }
 }

@@ -4,6 +4,7 @@ namespace App\Discord\Fun\MentionResponder;
 
 use App\Discord\Core\Bot;
 use App\Discord\Core\Builders\EmbedBuilder;
+use App\Discord\Core\Builders\EmbedFactory;
 use App\Discord\Core\Enums\Permission;
 use App\Discord\Core\SlashIndexCommand;
 use App\Discord\Helper;
@@ -45,16 +46,18 @@ class MentionIndex extends SlashIndexCommand
     {
         $this->perPage = 20;
 
-        $mentionGroup = MentionGroup::byGuild($this->guildId)->where('id', $this->arguments[0])->first();
-        $mentionReplies = MentionReply::byGuild($this->guildId)->where('group_id', $this->arguments[0])->skip($this->getOffset($this->getLastUser()))->limit($this->perPage)->get();
-        $this->total = MentionReply::byGuild($this->guildId)->where('group_id', $this->arguments[0])->count();
+        $groupId = $this->getOption('group_id');
+
+        $mentionGroup = MentionGroup::byGuild($this->guildId)->where('id', $groupId)->first();
+        $mentionReplies = MentionReply::byGuild($this->guildId)->where('group_id', $groupId)->skip($this->getOffset($this->getLastUser()))->limit($this->perPage)->get();
+        $this->total = MentionReply::byGuild($this->guildId)->where('group_id', $groupId)->count();
 
         $description = Helper::getGroupName($mentionGroup);
         foreach ($mentionReplies as $mentionReply) {
             $description .= "** {$mentionReply->id} ** - {$mentionReply->reply} \n";
         }
 
-        return EmbedBuilder::create(Bot::getDiscord())
+        return EmbedBuilder::create($this->discord)
             ->setTitle(__('bot.mention.title'))
             ->setFooter(__('bot.mention.footer'))
             ->setDescription(__('bot.mention.description', ['data' => $description]))

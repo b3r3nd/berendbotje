@@ -5,12 +5,9 @@ namespace App\Discord\Core;
 use App\Discord\Core\Enums\Setting as SettingEnum;
 use App\Discord\Fun\QuestionOfTheDayReminder;
 use App\Models\Channel;
-use App\Models\DiscordUser;
 use App\Models\Guild as GuildModel;
 use App\Models\LogSetting;
-use App\Models\MentionGroup;
 use App\Models\Setting;
-use App\Models\Timeout;
 use Carbon\Carbon;
 use Discord\Discord;
 use Discord\Parts\Channel\Message;
@@ -22,32 +19,41 @@ use Exception;
 /**
  * Guild settings are loaded on boot and only updated when the actual setting is changed using commands.
  *
- * @property $settings          List of cached settings, so we do not need to read from the database each time.
- * @property $logSettings       List of cached log settings, so we do not need to read from the database each time.
- * @property $lastMessages      Last message send by user in guild, used for the xp cooldown.
- * @property $inVoice           List of people who are currently in voice in the guild, used to calculate xp.
- * @property $guildModel        Eloquent model for the guild.
- * @property $logger            Logger instance for this specific guild which can log events.
- * @property $channels          List of channels which have special flags set, for example media channels.
+ * @property Discord $discord                   Set with the global discord instance from DiscordPHP.
+ * @property Bot $bot                           Easy reference to the bot this guild runs in
+ * @property array $guilds                      List of all active guilds using the bot.
+ * @property array $settings                    List of cached settings, so we do not need to read from the database each time.
+ * @property array $logSettings                 List of cached log settings, so we do not need to read from the database each time.
+ * @property array $lastMessages                Last message send by user in guild, used for the xp cooldown.
+ * @property array $inVoice                     List of people who are currently in voice in the guild, used to calculate xp.
+ * @property Logger$logger                      Logger instance for this specific guild which can log events.
+ * @property array $channels                    List of channels which have special flags set, for example media channels.
+ * @property GuildModel $model                  Eloquent model for the guild.
+ * @property MentionResponder $mentionResponder MentionResponder for this guild
  */
 class Guild
 {
+    protected Discord $discord;
+    protected Bot $bot;
     private array $settings = [];
     private array $logSettings = [];
     private array $lastMessages = [];
     private array $inVoice = [];
-    public GuildModel $model;
     private Logger $logger;
     private array $channels = [];
+    public GuildModel $model;
     public MentionResponder $mentionResponder;
-    public QuestionOfTheDayReminder $questionOfTheDayReminder;
 
     /**
      * @param GuildModel $guild
+     * @param Bot $bot
+     * @throws Exception
      */
-    public function __construct(GuildModel $guild)
+    public function __construct(GuildModel $guild, Bot $bot)
     {
         $this->model = $guild;
+        $this->discord = $bot->discord;
+        $this->bot = $bot;
 
         foreach ($this->model->settings as $setting) {
             $this->settings[$setting->key] = $setting->value;
@@ -61,12 +67,12 @@ class Guild
             $this->channels[$channel->channel_id] = $channel;
         }
 
-        $this->logger = new Logger($this->getSetting(SettingEnum::LOG_CHANNEL));
+        $this->logger = new Logger($this->getSetting(SettingEnum::LOG_CHANNEL), $this->discord);
         $this->registerReactions();
         $this->registerCommands();
 
-        $this->mentionResponder = new MentionResponder($this->model->guild_id);
-        $this->questionOfTheDayReminder = new QuestionOfTheDayReminder($this->model->guild_id);
+       $this->mentionResponder = new MentionResponder($this->model->guild_id, $this->bot);
+       new QuestionOfTheDayReminder($this->bot, $this->model->guild_id);
     }
 
     /**
@@ -74,7 +80,7 @@ class Guild
      */
     private function registerReactions(): void
     {
-        Bot::getDiscord()->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) {
+        $this->discord->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) {
             if ($message->author->bot || !$this->getSetting(\App\Discord\Core\Enums\Setting::ENABLE_REACTIONS)) {
                 return;
             }
@@ -100,7 +106,7 @@ class Guild
      */
     private function registerCommands(): void
     {
-        Bot::getDiscord()->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) {
+        $this->discord->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) {
             if ($message->author->bot || !$this->getSetting(\App\Discord\Core\Enums\Setting::ENABLE_COMMANDS)) {
                 return;
             }

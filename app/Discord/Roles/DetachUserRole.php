@@ -46,18 +46,18 @@ class DetachUserRole extends SlashCommand
 
     public function action(): MessageBuilder
     {
-        if (!Role::exists($this->guildId, $this->arguments[1])) {
-            return EmbedFactory::failedEmbed(__('bot.roles.not-exist', ['role' => $this->arguments[1]]));
+        if (!Role::exists($this->guildId, $this->getOption('role_name'))) {
+             return EmbedFactory::failedEmbed($this->discord, __('bot.roles.not-exist', ['role' => $this->getOption('role_name')]));
         }
 
-        if (strtolower($this->arguments[1]) === 'admin' && Guild::get($this->guildId)->owner->discord_id === $this->arguments[0]) {
-            return EmbedFactory::failedEmbed(__('bot.roles.admin-role-owner'));
+        if (strtolower($this->getOption('role_name')) === 'admin' && Guild::get($this->guildId)->owner->discord_id === $this->getOption('user_mention')) {
+             return EmbedFactory::failedEmbed($this->discord, __('bot.roles.admin-role-owner'));
         }
 
-        $role = Role::get($this->guildId, $this->arguments[1]);
-        $user = DiscordUser::get($this->arguments[0]);
+        $role = Role::get($this->guildId, $this->getOption('role_name'));
+        $user = DiscordUser::get($this->getOption('user_mention'));
         $user->roles()->detach($role);
 
-        return EmbedFactory::successEmbed(__('bot.roles.role-detached', ['role' => $role->name, 'user' => $user->tag()]));
+        return EmbedFactory::successEmbed($this->discord, __('bot.roles.role-detached', ['role' => $role->name, 'user' => $user->tag()]));
     }
 }

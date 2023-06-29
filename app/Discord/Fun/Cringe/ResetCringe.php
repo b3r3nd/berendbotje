@@ -39,15 +39,15 @@ class ResetCringe extends SlashCommand
 
     public function action(): MessageBuilder
     {
-        $user = DiscordUser::get($this->arguments[0]);
+        $user = DiscordUser::get($this->getOption('user_mention'));
         $guildModel = \App\Models\Guild::get($this->guildId);
         $cringeCounters = $user->cringeCounters()->where('guild_id', $guildModel->id)->get();
 
         if ($cringeCounters->isEmpty()) {
-            return EmbedFactory::failedEmbed(__('bot.cringe.not-cringe', ['name' => "<@{$this->arguments[0]}>"]));
+             return EmbedFactory::failedEmbed($this->discord, __('bot.cringe.not-cringe', ['name' => "<@{$this->getOption('user_mention')}>"]));
         }
 
         $cringeCounters->first()->delete();
-        return EmbedFactory::successEmbed(__('bot.cringe.reset', ['user' => $user->tag()]));
+        return EmbedFactory::successEmbed($this->discord, __('bot.cringe.reset', ['user' => $user->tag()]));
     }
 }

@@ -32,7 +32,7 @@ class ReactionIndex extends SlashIndexCommand
         $this->total = Reaction::byGuild($this->guildId)->count();
         $this->perPage = 20;
 
-        $embedBuilder = EmbedBuilder::create(Bot::getDiscord())
+        $embedBuilder = EmbedBuilder::create($this->discord)
             ->setTitle(__('bot.reactions.title'))
             ->setFooter(__('bot.reactions.footer'))
             ->setDescription(__('bot.reactions.description'));

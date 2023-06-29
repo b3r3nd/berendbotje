@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Discord\Core\DiscordEvents;
+namespace App\Discord\Events;
 
-use App\Discord\Core\Bot;
+use App\Discord\Core\DiscordEvent;
 use Discord\Discord;
 use Discord\Parts\WebSockets\VoiceStateUpdate as DVoiceStateUpdate;
 use Discord\WebSockets\Event;
@@ -12,11 +12,11 @@ use Discord\WebSockets\Event;
  * when you add "Intents::GUILD_VOICE_STATES" to the initial call, yet it does not. So this simple
  * piece of code checks who switched channel and updates the voice_states accordingly.
  */
-class VoiceStateUpdate
+class VoiceStateUpdate extends DiscordEvent
 {
-    public function __construct()
+    public function registerEvent(): void
     {
-        Bot::getDiscord()->on(Event::VOICE_STATE_UPDATE, function (DVoiceStateUpdate $state, Discord $discord, $oldstate) {
+        $this->discord->on(Event::VOICE_STATE_UPDATE, function (DVoiceStateUpdate $state, Discord $discord, $oldstate) {
             if ($state->channel) {
                 foreach ($state->channel->guild->voice_states as $voiceState) {
                     if ($voiceState->user_id === $state->user_id) {

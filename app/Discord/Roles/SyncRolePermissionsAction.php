@@ -7,26 +7,31 @@ use App\Discord\Core\Interfaces\Action;
 use App\Models\Permission;
 use App\Models\Role;
 use Discord\Builders\MessageBuilder;
+use Discord\Discord;
 use Discord\Http\Exceptions\NoPermissionsException;
 use Discord\Parts\Channel\Message;
+use Discord\Repository\Interaction\OptionRepository;
 use Illuminate\Support\Collection;
 
 class SyncRolePermissionsAction
 {
-    private array $arguments;
+    private Discord $discord;
+    private OptionRepository $options;
     private string $guildId;
     private bool $attach;
 
     /**
-     * @param array $arguments
+     * @param OptionRepository $options
+     * @param Discord $discord
      * @param string $guildId
      * @param bool $attach
      */
-    public function __construct(array $arguments, string $guildId, bool $attach = true)
+    public function __construct(OptionRepository $options, Discord $discord, string $guildId, bool $attach = true)
     {
-        $this->arguments = $arguments;
+        $this->options = $options;
         $this->guildId = $guildId;
         $this->attach = $attach;
+        $this->discord = $discord;
     }
 
     /**
@@ -34,26 +39,29 @@ class SyncRolePermissionsAction
      */
     public function execute(): MessageBuilder
     {
-        if (!Role::exists($this->guildId, $this->arguments[0])) {
-            return EmbedFactory::failedEmbed(__('bot.roles.not-exist', ['role' => $this->arguments[0]]));
+        $roleOption = $this->options->get('name', 'role_name')->value;
+        $permOption = $this->options->get('name', 'permissions')->value;
+
+        if (!Role::exists($this->guildId, $roleOption)) {
+             return EmbedFactory::failedEmbed($this->discord, __('bot.roles.not-exist', ['role' => $roleOption]));
         }
-        if (!$this->processPermissions($this->arguments[1])) {
-            return EmbedFactory::failedEmbed(__('bot.permissions.not-exist', ['perm' => $this->arguments[1]]));
+        if (!$this->processPermissions($permOption)) {
+             return EmbedFactory::failedEmbed($this->discord, __('bot.permissions.not-exist', ['perm' => $permOption]));
         }
-        if (strtolower($this->arguments[0]) === 'admin') {
-            return EmbedFactory::failedEmbed(__('bot.roles.admin-role-perms'));
+        if (strtolower($this->options[0]) === 'admin') {
+             return EmbedFactory::failedEmbed($this->discord, __('bot.roles.admin-role-perms'));
         }
 
-        $role = Role::get($this->guildId, $this->arguments[0]);
-        $permissions = $this->processPermissions($this->arguments[1]);
+        $role = Role::get($this->guildId, $roleOption);
+        $permissions = $this->processPermissions($permOption);
 
         if ($this->attach) {
             $role->permissions()->attach($permissions->pluck('id'));
-            return EmbedFactory::successEmbed(__('bot.roles.perm-attached', ['role' => $role->name, 'perm' => $this->arguments[1]]));
+            return EmbedFactory::successEmbed($this->discord, __('bot.roles.perm-attached', ['role' => $role->name, 'perm' => $permOption]));
         }
 
         $role->permissions()->detach($permissions->pluck('id'));
-        return EmbedFactory::successEmbed(__('bot.roles.perm-detached', ['role' => $role->name, 'perm' => $this->arguments[1]]));
+        return EmbedFactory::successEmbed($this->discord, __('bot.roles.perm-detached', ['role' => $role->name, 'perm' => $permOption]));
     }
 
     /**

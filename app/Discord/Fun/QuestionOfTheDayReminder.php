@@ -11,30 +11,23 @@ use Discord\WebSockets\Event;
 
 class QuestionOfTheDayReminder
 {
-    private string $guildId;
-    private int $guildModelId;
+    protected Bot $bot;
+    protected Discord $discord;
 
-    public function __construct(string $guildId)
+    public function __construct(Bot $bot, string $guildId)
     {
-        $this->guildId = $guildId;
-        $this->guildModelId = \App\Models\Guild::get($guildId)->id;
-        $this->register();
-    }
+        $this->bot = $bot;
+        $this->discord = $bot->discord;
 
-
-    public function register()
-    {
-        Bot::getDiscord()->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) {
-            if ($message->author->bot || !$message->guild_id || $message->guild_id !== $this->guildId ||
-                !Bot::get()->getGuild($this->guildId)?->getSetting(SettingEnum::ENABLE_QOTD_REMINDER)) {
+        $this->discord->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) use ($guildId) {
+            if ($message->author->bot || !$message->guild_id || $message->guild_id !== $guildId ||
+                $this->bot->getGuild($guildId)?->getSetting(SettingEnum::ENABLE_QOTD_REMINDER)) {
                 return;
             }
-
-            $guild = Bot::get()->getGuild($this->guildId);
+            $guild = $this->bot->getGuild($guildId);
             if ($message->channel_id == $guild->getSetting(SettingEnum::QOTD_CHANNEL)) {
                 $message->channel->sendMessage(MessageBuilder::new()->setContent("<@&{$guild->getSetting(SettingEnum::QOTD_ROLE)}>"));
             }
-
         });
     }
 }

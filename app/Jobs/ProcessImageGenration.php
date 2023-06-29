@@ -28,8 +28,8 @@ class ProcessImageGenration implements ShouldQueue
 
     public function handle(): void
     {
-        $response = \Http::withToken(env('OPENAI_API_KEY'))
-            ->post("https://api.openai.com/v1/images/generations",
+        $response = \Http::withToken(config('discord.open-ai-key'))
+            ->post(config('discord.open-ai-host'),
                 [
                     'prompt' => $this->prompt,
                     'n' => 1,

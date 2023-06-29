@@ -51,14 +51,17 @@ class UpdateSetting extends SlashCommand
 
     public function action(): MessageBuilder
     {
-        if (!Setting::hasSetting($this->arguments[0], $this->guildId)) {
-            return EmbedFactory::failedEmbed(__('bot.set.not-exist', ['key' => $this->arguments[0]]));
+        $key = $this->getOption('setting_key');
+        $value = $this->getOption('setting_value');
+
+        if (!Setting::hasSetting($key, $this->guildId)) {
+            return EmbedFactory::failedEmbed($this->discord, __('bot.set.not-exist', ['key' => $key]));
         }
-        if (!is_numeric($this->arguments[1])) {
-            return EmbedFactory::failedEmbed(__('bot.set.not-numeric', ['value' => $this->arguments[1]]));
+        if (!is_numeric($value)) {
+            return EmbedFactory::failedEmbed($this->discord, __('bot.set.not-numeric', ['value' => $value]));
         }
 
-        Bot::get()->getGuild($this->guildId)?->setSetting($this->arguments[0], $this->arguments[1]);
-        return EmbedFactory::successEmbed(__('bot.set.updated', ['key' => $this->arguments[0], 'value' => $this->arguments[1]]));
+        $this->bot->getGuild($this->guildId)?->setSetting($key, $value);
+        return EmbedFactory::successEmbed($this->discord, __('bot.set.updated', ['key' => $key, 'value' => $value]));
     }
 }

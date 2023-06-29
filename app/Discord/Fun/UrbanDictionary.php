@@ -41,18 +41,18 @@ class UrbanDictionary extends SlashCommand
     public function action(): MessageBuilder
     {
         $response = Http::withHeaders([
-            'X-RapidAPI-Key' => env('URB_TOKEN'),
-            'X-RapidAPI-Host' => env('URB_HOST'),
-        ])->get('https://mashape-community-urban-dictionary.p.rapidapi.com/define', ['term' => $this->arguments[0]]);
+            'X-RapidAPI-Key' => config('discord.urb-token'),
+            'X-RapidAPI-Host' => config('discord.urb-host'),
+        ])->get("https://". config('discord.urb-host') . "/define", ['term' => $this->getOption('search_term')]);
 
 
         if (empty($response->json()['list'])) {
-            return EmbedFactory::failedEmbed(__('bot.no-valid-term', ['term' => $this->arguments[0]]));
+             return EmbedFactory::failedEmbed($this->discord, __('bot.no-valid-term', ['term' => $this->getOption('search_term')]));
         }
 
-        return MessageBuilder::new()->addEmbed(EmbedBuilder::create(Bot::getDiscord())
+        return MessageBuilder::new()->addEmbed(EmbedBuilder::create($this->discord)
             ->setFooter($response->json()['list'][0]['permalink'])
-            ->setTitle($this->arguments[0])
+            ->setTitle($this->getOption('search_term'))
             ->setDescription($response->json()['list'][0]['definition'])->getEmbed());
     }
 }

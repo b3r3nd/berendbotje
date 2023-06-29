@@ -10,24 +10,37 @@ use Carbon\Carbon;
 use Discord\Discord;
 use Discord\Parts\Channel\Message;
 use Discord\WebSockets\Event;
+use Exception;
 
 /**
- * @property $roleReplies       List of mention replies for this guild which require a certain role.
- * @property $noRoleReplies     List of mention replies for this guild which require NOT to have a certain role.
- * @property $lastResponses     List of responses recently used (60 sec) so no duplicates are send.
+ * @property Bot $bot               Bot the event belongs to
+ * @property Discord $discord       Easy to access discord instance
+ * @property string $guildId        Discord ID for the guild this responder belongs to
+ * @property int $guildModelId      Model ID for the guild this responder belongs to
+ * @property array $roleReplies     List of mention replies for this guild which require a certain role
+ * @property array $noRoleReplies   List of mention replies for this guild which require NOT to have a certain role
+ * @property array $lastResponses   List of responses recently used (60 sec) so no duplicates are send
+ * @property array $userReplies     List of mention replies for this guild for specific users
+ * @property array $lastMessages    List of last replies for each user to determine cooldowns
  */
 class MentionResponder
 {
+    private Discord $discord;
+    private Bot $bot;
     private string $guildId;
     private int $guildModelId;
     private array $roleReplies = [];
     private array $noRoleReplies = [];
     private array $userReplies = [];
-    private array $lastResponses = [];
     private array $lastMessages = [];
 
-    public function __construct(string $guildId)
+    /**
+     * @throws Exception
+     */
+    public function __construct(string $guildId, Bot $bot)
     {
+        $this->discord = $bot->discord;
+        $this->bot = $bot;
         $this->guildId = $guildId;
         $this->guildModelId = \App\Models\Guild::get($guildId)->id;
         $this->loadReplies();
@@ -64,14 +77,14 @@ class MentionResponder
 
     /**
      * @return void
+     * @throws Exception
      */
-    private
-    function registerMentionResponder(): void
+    private function registerMentionResponder(): void
     {
-        Bot::getDiscord()->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) {
+        $this->discord->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) {
             if ($message->author->bot || !$message->guild_id || $message->guild_id !== $this->guildId ||
                 !str_contains($message->content, $discord->user->id) ||
-                !Bot::get()->getGuild($this->guildId)?->getSetting(SettingEnum::ENABLE_MENTION_RESPONDER)) {
+                !$this->bot->getGuild($this->guildId)?->getSetting(SettingEnum::ENABLE_MENTION_RESPONDER)) {
                 return;
             }
 
@@ -79,8 +92,6 @@ class MentionResponder
                 $message->reply('Thanks! 😎');
                 return;
             }
-
-            // $this->checkLastResponses();
 
             if (isset($this->lastMessages[$message->author->id])) {
                 $messages = $this->lastMessages[$message->author->id];
@@ -159,37 +170,13 @@ class MentionResponder
     }
 
     /**
-     * @return void
-     */
-    private
-    function checkLastResponses(): void
-    {
-        foreach ($this->lastResponses as $lastResponse => $date) {
-            $now = Carbon::now();
-            if ($now->diffInSeconds($date) > 60) {
-                unset($this->lastResponses[$lastResponse]);
-            }
-        }
-    }
-
-    /**
      * @param array $array
      * @return mixed
-     * @throws \Exception
+     * @throws Exception
      */
-    private
-    function getRandom(array $array): mixed
+    private function getRandom(array $array): mixed
     {
         return $array[random_int(0, (count($array) - 1))];
-//        while (isset($this->lastResponses[$response])) {
-//            $response = $array[random_int(0, (count($array) - 1))];
-//            if (count($this->lastResponses) === count($array)) {
-//                $this->lastResponses = [];
-//                break;
-//            }
-//        }
-//        $this->lastResponses[$response] = Carbon::now();
-//        return $response;
     }
 
 }

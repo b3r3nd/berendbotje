@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Discord\Fun\Emote;
+namespace App\Discord\Fun;
 
 use App\Discord\Core\Bot;
 use App\Discord\Core\Builders\EmbedBuilder;
@@ -37,7 +37,7 @@ class EmoteIndex extends SlashIndexCommand
             $description .= Helper::indexPrefix($index, $this->getOffset($this->getLastUser()));
             $description .= "**{$emote->emote}** • {$emote->count} \n";
         }
-        return EmbedBuilder::create(Bot::getDiscord())
+        return EmbedBuilder::create($this->discord)
             ->setTitle(__('bot.emotes.title'))
             ->setFooter(__('bot.emotes.footer'))
             ->setDescription(__('bot.emotes.description', ['emotes' => $description]))

@@ -38,18 +38,18 @@ class DeleteRole extends SlashCommand
 
     public function action(): MessageBuilder
     {
-        if (!Role::exists($this->guildId, $this->arguments[0])) {
-            return EmbedFactory::failedEmbed(__('bot.roles.not-exist', ['role' => $this->arguments[0]]));
+        if (!Role::exists($this->guildId, $this->getOption('role_name'))) {
+             return EmbedFactory::failedEmbed($this->discord, __('bot.roles.not-exist', ['role' => $this->getOption('role_name')]));
         }
-        if (!Role::get($this->guildId, $this->arguments[0])->users->isEmpty()) {
-            return EmbedFactory::failedEmbed(__('bot.roles.has-users'));
+        if (!Role::get($this->guildId, $this->getOption('role_name'))->users->isEmpty()) {
+             return EmbedFactory::failedEmbed($this->discord, __('bot.roles.has-users'));
         }
-        if (strtolower($this->arguments[0]) === 'admin') {
-            return EmbedFactory::failedEmbed(__('bot.roles.admin-role'));
+        if (strtolower($this->getOption('role_name')) === 'admin') {
+             return EmbedFactory::failedEmbed($this->discord, __('bot.roles.admin-role'));
         }
-        $role = Role::get($this->guildId, $this->arguments[0]);
+        $role = Role::get($this->guildId, $this->getOption('role_name'));
         $role->permissions()->detach();
         $role->delete();
-        return EmbedFactory::successEmbed(__('bot.roles.deleted', ['role' => $this->arguments[0]]));
+        return EmbedFactory::successEmbed($this->discord, __('bot.roles.deleted', ['role' => $this->getOption('role_name')]));
     }
 }

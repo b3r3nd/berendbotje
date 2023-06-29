@@ -1,29 +1,27 @@
 <?php
 
-namespace App\Discord\Logger\Events;
+namespace App\Discord\Events;
 
-use App\Discord\Core\Bot;
+use App\Discord\Core\DiscordEvent;
 use App\Discord\Core\Enums\LogSetting;
 use Carbon\Carbon;
 use Discord\Discord;
 use Discord\Parts\User\Member;
 use Discord\WebSockets\Event;
 
-class TimeoutLogger
+class TimeoutLogger extends DiscordEvent
 {
-    public function __construct()
+    public function registerEvent(): void
     {
-        Bot::getDiscord()->on(Event::GUILD_MEMBER_UPDATE, function (Member $member, Discord $discord) {
+        $this->discord->on(Event::GUILD_MEMBER_UPDATE, function (Member $member, Discord $discord) {
             if ($member->communication_disabled_until == NULL || $member->communication_disabled_until <= Carbon::now()) {
                 return;
             }
-            $localGuild = Bot::get()->getGuild($member->guild_id);
+            $localGuild = $this->bot->getGuild($member->guild_id);
             if ($localGuild->getLogSetting(LogSetting::TIMEOUT)) {
                 $localGuild->logWithMember($member, "<@{$member->id}> has received a timeout", 'fail');
             }
         });
 
     }
-
-
 }

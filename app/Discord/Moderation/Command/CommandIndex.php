@@ -33,7 +33,7 @@ class CommandIndex extends SlashIndexCommand
         foreach (\App\Models\Command::byGuild($this->guildId)->skip($this->getOffset($this->getLastUser()))->limit($this->perPage)->get() as $command) {
             $commands .= "** {$command->trigger} ** - {$command->response}\n";
         }
-        return EmbedBuilder::create(Bot::getDiscord())
+        return EmbedBuilder::create($this->discord)
             ->setTitle(__('bot.cmd.title'))
             ->setFooter(__('bot.cmd.footer'))
             ->setDescription(__('bot.cmd.description', ['cmds' => $commands]))

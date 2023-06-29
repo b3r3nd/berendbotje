@@ -39,7 +39,7 @@ class GenerateImage extends SlashCommand
 
     public function action(): MessageBuilder
     {
-        ProcessImageGenration::dispatch($this->interaction->channel_id, $this->arguments[0]);
-        return MessageBuilder::new()->setContent("Generating Image with prompt _{$this->arguments[0]}_");
+        ProcessImageGenration::dispatch($this->interaction->channel_id, $this->getOption('prompt'));
+        return MessageBuilder::new()->setContent("Generating Image with prompt _{$this->getOption('prompt')}_");
     }
 }

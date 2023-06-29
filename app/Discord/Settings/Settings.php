@@ -30,7 +30,7 @@ class Settings extends SlashCommand
 
     public function action(): MessageBuilder
     {
-        $embedBuilder = EmbedBuilder::create(Bot::getDiscord())
+        $embedBuilder = EmbedBuilder::create($this->discord)
             ->setTitle(__('bot.set.title'))
             ->setFooter(__('bot.set.footer'));
 

@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Discord\Moderation;
+namespace App\Discord\Events;
 
 use App\Discord\Core\Bot;
+use App\Discord\Core\DiscordEvent;
 use App\Models\BanCounter;
 use App\Models\DiscordUser;
 use App\Models\KickCounter;
@@ -20,11 +21,11 @@ use Discord\WebSockets\Event;
  * action_type 22 = ban
  * action_type 25 = leave -> we ignore this
  */
-class KickAndBanCounter
+class KickAndBanCounter extends DiscordEvent
 {
-    public function __construct()
+    public function registerEvent(): void
     {
-        Bot::getDiscord()->on(Event::GUILD_MEMBER_REMOVE, function (Member $member, Discord $discord) {
+        $this->discord->on(Event::GUILD_MEMBER_REMOVE, function (Member $member, Discord $discord) {
             $discord->guilds->fetch($member->guild_id)->done(function (Guild $guild) use ($member) {
                 $guild->getAuditLog(['limit' => 1])->done(function (AuditLog $auditLog) use ($member, $guild) {
                     foreach ($auditLog->audit_log_entries as $entry) {
