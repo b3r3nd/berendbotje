@@ -36,7 +36,7 @@ class Permissions extends SlashIndexCommand
             $description .= "`{$permission->name}` - {$label}\n";
         }
 
-        return EmbedBuilder::create(Bot::get()->discord())
+        return EmbedBuilder::create($this->bot->discord)
             ->setTitle(__('bot.permissions.title'))
             ->setFooter(__('bot.permissions.footer'))
             ->setDescription(__('bot.permissions.description', ['perms' => $description]))

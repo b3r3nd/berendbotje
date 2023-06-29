@@ -49,7 +49,7 @@ class DelMentionGroup extends SlashCommand
         $mentionGroup->replies()->delete();
         $mentionGroup->delete();
 
-        Bot::get()->getGuild($this->guildId)?->mentionResponder->loadReplies();
+        $this->bot->getGuild($this->guildId)?->mentionResponder->loadReplies();
 
         return EmbedFactory::successEmbed(__('bot.mentiongroup.deleted'));
     }

@@ -47,7 +47,7 @@ class Users extends SlashIndexCommand
             }
         }
 
-        return EmbedBuilder::create(Bot::get()->discord())
+        return EmbedBuilder::create($this->bot->discord)
             ->setTitle(__('bot.roles.title'))
             ->setFooter(__('bot.roles.footer'))
             ->setDescription(__('bot.roles.description', ['roles' => $description]))

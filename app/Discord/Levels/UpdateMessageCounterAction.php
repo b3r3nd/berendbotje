@@ -15,19 +15,22 @@ class UpdateMessageCounterAction implements Action
     private int $xpCount;
     private bool $removeXp;
     private string $guildId;
+    private Bot $bot;
 
     /**
      * @param string $guildId
      * @param $userId
      * @param $xpCount
      * @param bool $removeXp
+     * @param Bot $bot
      */
-    public function __construct(string $guildId, $userId, $xpCount, bool $removeXp = false)
+    public function __construct(string $guildId, $userId, $xpCount, Bot $bot, bool $removeXp = false)
     {
         $this->userId = $userId;
         $this->xpCount = $xpCount;
         $this->removeXp = $removeXp;
         $this->guildId = $guildId;
+        $this->bot = $bot;
     }
 
     /**
@@ -36,7 +39,7 @@ class UpdateMessageCounterAction implements Action
     public function execute(): void
     {
         $user = DiscordUser::get($this->userId);
-        $guild = Bot::get()->getGuild($this->guildId);
+        $guild = $this->bot->getGuild($this->guildId);
 
         $messageCounters = $user->messageCounters()->where('guild_id', $guild->model->id)->get();
         $messageCounter = new \App\Models\MessageCounter([

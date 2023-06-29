@@ -13,7 +13,7 @@ class Run extends Command
      *
      * @var string
      */
-    protected $signature = 'bb:run
+    protected $signature = 'bot:run
     {--delcmd : Deletes all slash commands}
     {--updatecmd : Also updates all slash commands}
     {--dev : Run only development comands}';

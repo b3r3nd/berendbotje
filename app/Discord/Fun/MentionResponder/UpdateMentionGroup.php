@@ -64,7 +64,7 @@ class UpdateMentionGroup extends SlashCommand
 
         (new UpdateMentionGroupAction($group, $this->arguments))->execute();
 
-        Bot::get()->getGuild($this->guildId)?->mentionResponder->loadReplies();
+        $this->bot->getGuild($this->guildId)?->mentionResponder->loadReplies();
         return EmbedFactory::successEmbed(__('bot.mentiongroup.updated', ['group' => $this->arguments[0]]));
     }
 }

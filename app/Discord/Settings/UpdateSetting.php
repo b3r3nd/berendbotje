@@ -58,7 +58,7 @@ class UpdateSetting extends SlashCommand
             return EmbedFactory::failedEmbed(__('bot.set.not-numeric', ['value' => $this->arguments[1]]));
         }
 
-        Bot::get()->getGuild($this->guildId)?->setSetting($this->arguments[0], $this->arguments[1]);
+        $this->bot->getGuild($this->guildId)?->setSetting($this->arguments[0], $this->arguments[1]);
         return EmbedFactory::successEmbed(__('bot.set.updated', ['key' => $this->arguments[0], 'value' => $this->arguments[1]]));
     }
 }

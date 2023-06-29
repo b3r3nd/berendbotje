@@ -12,9 +12,11 @@ class FlagChannelAction implements Action
     private array $arguments;
     private string $guildId;
     private bool $added;
+    private Bot $bot;
 
-    public function __construct(array $arguments, string $guildId, bool $added)
+    public function __construct(array $arguments, string $guildId, bool $added, Bot $bot)
     {
+        $this->bot = $bot;
         $this->guildId = $guildId;
         $this->arguments = $arguments;
         $this->added = $added;
@@ -27,6 +29,6 @@ class FlagChannelAction implements Action
             $channel = Channel::create(['channel_id' => $this->arguments[0], 'guild_id' => Guild::get($this->guildId)->id]);
         }
         $channel->update([$this->arguments[1] => $this->added]);
-        Bot::get()->getGuild($this->guildId)?->updateChannel($channel);
+        $this->bot->getGuild($this->guildId)?->updateChannel($channel);
     }
 }

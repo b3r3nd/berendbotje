@@ -14,15 +14,18 @@ Special thanks to:
 
 ## Installing
 1. Download this repo and install al its dependencies with `composer install`
-2. Create your env file `mv .env.example .env` and fill in database credentials and bot token
+2. Create your env file `mv .env.example .env` and fill in database credentials and bot/api tokens
 3. You can edit the `GuildSeeder` and `DiscordUsersSeeder` to add your server and admin users
 4. Run `php artisan migrate --seed` to setup your database.
 ## Running the bot
-1. I added an artisan command to run the bot `php artisan bot:run`.
-2. In order to make the bump reminder work you also need to run the queue `php artisan queue:work`
-3. Make sure both these run in the background while you exit your connection / terminal. Or keep two terminals running
-   if you want to test it locally.
-4. 
+You can use the following commands to run the bot:
+- `bot:run` - Run the bot normally - does not create, update or delete slash commands
+- `bot:run --updatecmd` - Creates/Updates all slash commands first
+- `bot:run --delcmd` - Deletes all slash commands first
+- `bot:run --dev` - Load only test commands but always update the slash command
+
+In order to make the image generation with open ai and reminders work you also need to run the queue `php artisan queue:work`
+
 # Functions
 I will try to update this readme with new functionality as I add it, however I cannot promise I keep it entirely up to date.
 The bot only uses slash commands, there used to be message commands, however I moved everything to slash only. I tried

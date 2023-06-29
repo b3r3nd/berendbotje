@@ -63,7 +63,7 @@ class UserRank extends SlashCommand
         }
 
         $messageCounter = $messageCounters->first();
-        $xpCount = Bot::get()->getGuild($this->guildId)?->getSetting(Setting::XP_COUNT);
+        $xpCount = $this->bot->getGuild($this->guildId)?->getSetting(Setting::XP_COUNT);
 
         $voice = $messageCounter->voice_seconds / 60;
         if ($voice >= 60) {
@@ -74,7 +74,7 @@ class UserRank extends SlashCommand
             $voice = "{$voice} minutes";
         }
 
-        return MessageBuilder::new()->addEmbed(EmbedBuilder::create(Bot::getDiscord())
+        return MessageBuilder::new()->addEmbed(EmbedBuilder::create($this->bot->discord)
             ->setDescription(__('bot.xp.description', ['user' => $user->tag(), 'messages' => $messageCounter->count, 'xp' => $messageCounter->xp, 'voice' => $voice, 'level' => $messageCounter->level]))
             ->setTitle(__('bot.xp.title', ['level' => $messageCounter->level, 'xp' => $messageCounter->xp]))
             ->setFooter(__('bot.xp.footer', ['xp' => $xpCount]))

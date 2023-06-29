@@ -46,7 +46,7 @@ class DelMentionReply extends SlashCommand
             return EmbedFactory::failedEmbed(__('bot.mention.no-reply'));
         }
         $mentionReply->delete();
-        Bot::get()->getGuild($this->guildId)?->mentionResponder->loadReplies();
+        $this->bot->getGuild($this->guildId)?->mentionResponder->loadReplies();
         return EmbedFactory::successEmbed(__('bot.mention.deleted'));
     }
 }

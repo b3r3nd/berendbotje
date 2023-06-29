@@ -51,7 +51,7 @@ class UserRoles extends SlashCommand
             $description .= "{$role->name}\n";
         }
 
-        return MessageBuilder::new()->addEmbed(EmbedBuilder::create(Bot::get()->discord())
+        return MessageBuilder::new()->addEmbed(EmbedBuilder::create($this->bot->discord)
             ->setTitle(__('bot.userroles.title'))
             ->setFooter(__('bot.userroles.footer'))
             ->setDescription(__('bot.userroles.description', ['roles' => $description, 'user' => $user->tag()]))

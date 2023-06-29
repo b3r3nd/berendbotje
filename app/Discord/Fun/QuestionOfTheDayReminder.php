@@ -21,7 +21,7 @@ class QuestionOfTheDayReminder
 
         $this->discord->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) use ($guildId) {
             if ($message->author->bot || !$message->guild_id || $message->guild_id !== $guildId ||
-                $this->bot->getGuild($$guildId)?->getSetting(SettingEnum::ENABLE_QOTD_REMINDER)) {
+                $this->bot->getGuild($guildId)?->getSetting(SettingEnum::ENABLE_QOTD_REMINDER)) {
                 return;
             }
             $guild = $this->bot->getGuild($guildId);

@@ -59,7 +59,7 @@ class AddMentionGroup extends SlashCommand
     {
         $group = MentionGroup::create(['name' => $this->arguments[0], 'guild_id' => Guild::get($this->guildId)->id]);
         (new UpdateMentionGroupAction($group, $this->arguments))->execute();
-        Bot::get()->getGuild($this->guildId)?->mentionResponder->loadReplies();
+        $this->bot->getGuild($this->guildId)?->mentionResponder->loadReplies();
         return EmbedFactory::successEmbed(__('bot.mentiongroup.added', ['group' => $this->arguments[0]]));
     }
 }

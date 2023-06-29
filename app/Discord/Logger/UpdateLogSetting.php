@@ -51,7 +51,7 @@ class UpdateLogSetting extends SlashCommand
 
     public function action(): MessageBuilder
     {
-        Bot::get()->getGuild($this->guildId)?->setLogSetting($this->arguments[0], $this->arguments[1]);
+        $this->bot->getGuild($this->guildId)?->setLogSetting($this->arguments[0], $this->arguments[1]);
         return EmbedFactory::successEmbed(__('bot.logset.updated', ['key' => $this->arguments[0], 'value' => $this->arguments[1]]));
     }
 }
