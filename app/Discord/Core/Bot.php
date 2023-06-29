@@ -258,7 +258,9 @@ class Bot
             $this->loadCommands($this->devCommands);
         } else {
             foreach ($this->commands as $category => $commands) {
-                $this->loadCommands($commands);
+                if (config("discord.modules.{$category}")) {
+                    $this->loadCommands($commands);
+                }
             }
         }
     }

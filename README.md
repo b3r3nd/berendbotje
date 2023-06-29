@@ -26,6 +26,30 @@ You can use the following commands to run the bot:
 
 In order to make the image generation with open ai and reminders work you also need to run the queue `php artisan queue:work`
 
+### Config
+Commands can be disabled for specific guilds by using its config. You can use the global .env config to disable parts
+of the bot entirely, the commands will not be loaded.
+
+```
+ENABLE_ROLES=true
+ENABLE_LEVELS=true
+ENABLE_MODS=true
+ENABLE_FUN=true
+ENABLE_MENTION=true
+ENABLE_OPEN_AI=true
+ENABLE_SETTINGS=true
+```
+
+Also make sure to fill in any tokens and hosts if you wish to use the corresponding commands:
+
+```
+BOT_TOKEN=
+URB_TOKEN=
+URB_HOST=
+OPENAI_API_KEY=
+OPEN_AI_HOST=
+```
+
 # Functions
 I will try to update this readme with new functionality as I add it, however I cannot promise I keep it entirely up to date.
 The bot only uses slash commands, there used to be message commands, however I moved everything to slash only. I tried

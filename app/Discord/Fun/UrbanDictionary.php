@@ -41,9 +41,9 @@ class UrbanDictionary extends SlashCommand
     public function action(): MessageBuilder
     {
         $response = Http::withHeaders([
-            'X-RapidAPI-Key' => env('URB_TOKEN'),
-            'X-RapidAPI-Host' => env('URB_HOST'),
-        ])->get('https://mashape-community-urban-dictionary.p.rapidapi.com/define', ['term' => $this->getOption('search_term')]);
+            'X-RapidAPI-Key' => config('discord.urb-token'),
+            'X-RapidAPI-Host' => config('discord.urb-host'),
+        ])->get("https://". config('discord.urb-host') . "/define", ['term' => $this->getOption('search_term')]);
 
 
         if (empty($response->json()['list'])) {
