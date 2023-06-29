@@ -15,20 +15,44 @@ Special thanks to:
 ## Installing
 1. Download this repo and install al its dependencies with `composer install`
 2. Create your env file `mv .env.example .env` and fill in database credentials and bot/api tokens
-3. You can edit the `GuildSeeder` and `DiscordUsersSeeder` to add your server and admin users
-4. Run `php artisan migrate --seed` to setup your database.
-## Running the bot
-You can use the following commands to run the bot:
-- `bot:run` - Run the bot normally - does not create, update or delete slash commands
-- `bot:run --updatecmd` - Creates/Updates all slash commands first
-- `bot:run --delcmd` - Deletes all slash commands first
-- `bot:run --dev` - Load only test commands but always update the slash command
+3. You can edit the `GuildSeeder` and `DiscordUsersSeeder` to add your discord account and server.
+```php
+ class DiscordUsersSeeder extends Seeder
+{
+    public function run()
+    {
+        $ids = [
+            '<discord_owner_id_here>', 
+        ];
+        foreach ($ids as $id) {
+            DiscordUser::factory()->create([
+                'discord_id' => $id,
+            ]);
+        }
+    }
+}
+```
 
-In order to make the image generation with open ai and reminders work you also need to run the queue `php artisan queue:work`
-
-### Config
-Commands can be disabled for specific guilds by using its config. You can use the global .env config to disable parts
-of the bot entirely, the commands will not be loaded.
+```php
+class GuildSeeder extends Seeder
+{
+    public function run()
+    {
+        $guilds = [
+            [
+                'name' => '<guild_name_here>',
+                'guild_id' => '<guild_id_here>', // Servers are guilds
+                'owner_id' => 1, // First user added in DiscordUsersSeeder
+            ],
+        ];
+        foreach ($guilds as $guild) {
+            Guild::factory()->create($guild);
+        }
+    }
+}
+```
+4. When that is done run `php artisan migrate --seed` to setup your database.
+5. Check the env file for any settings you want to change. Commands can be disabled for specific guilds by using its config in discord. However, you can disable parts of the bot entirely here, the commands will not be loaded.
 
 ```
 ENABLE_ROLES=true
@@ -39,9 +63,7 @@ ENABLE_MENTION=true
 ENABLE_OPEN_AI=true
 ENABLE_SETTINGS=true
 ```
-
-Also make sure to fill in any tokens and hosts if you wish to use the corresponding commands:
-
+6. Also make sure to fill in any tokens and hosts if you wish to use the corresponding commands:
 ```
 BOT_TOKEN=
 URB_TOKEN=
@@ -49,6 +71,12 @@ URB_HOST=
 OPENAI_API_KEY=
 OPEN_AI_HOST=
 ```
+7. You can use the following commands to run the bot:
+- `bot:run` - Run the bot normally - does not create, update or delete slash commands
+- `bot:run --updatecmd` - Creates/Updates all slash commands first
+- `bot:run --delcmd` - Deletes all slash commands first
+- `bot:run --dev` - Load only test commands but always update the slash command
+8. In order to make the image generation with open ai and reminders work you also need to run the queue `php artisan queue:work` and install redis!
 
 # Functions
 I will try to update this readme with new functionality as I add it, however I cannot promise I keep it entirely up to date.
