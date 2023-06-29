@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\Guild;
-use App\Models\LogSetting;
+use App\Discord\Core\Models\Guild;
+use App\Discord\Logger\Models\LogSetting;
 use Illuminate\Database\Seeder;
 
 class LogSettingsSeeder extends Seeder

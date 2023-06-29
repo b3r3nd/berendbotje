@@ -3,13 +3,12 @@
 namespace App\Discord\Core;
 
 use App\Discord\Core\Builders\EmbedFactory;
-use App\Discord\Core\Enums\Permission;
-use App\Models\DiscordUser;
+use App\Discord\Core\Models\DiscordUser;
+use App\Discord\CustomCommands\Models\Command;
+use App\Discord\Roles\Enums\Permission;
 use Discord\Builders\MessageBuilder;
 use Discord\Discord;
 use Discord\Parts\Interactions\Interaction;
-use Discord\Repository\Interaction\OptionRepository;
-use PhpOption\Option;
 
 /**
  * Extendable class to easily create new Slash ONLY commands. For better understanding:

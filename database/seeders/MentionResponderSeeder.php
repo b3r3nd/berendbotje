@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\MentionGroup;
-use App\Models\MentionReply;
+use App\Discord\MentionResponder\Models\MentionGroup;
+use App\Discord\MentionResponder\Models\MentionReply;
 use Illuminate\Database\Seeder;
 
 class MentionResponderSeeder extends Seeder
@@ -321,7 +321,7 @@ class MentionResponderSeeder extends Seeder
                 "Being king of the nerds is a perfectly valid way of life, don't let anyone tell you otherwise.",
                 "Some people call you nolife. Me? I call you king of the nerds.",
             ],
-            // Bumper elite
+            // Bump elite
             '995771835767607366' => [
                 "Psst! Hey. I know who you are. Hail the bumper elite!",
                 "I've been wanting to say thanks for bumping. Here. It's not much, but at least you get the bumper elite role.",

@@ -112,9 +112,9 @@ return [
         'has-flag' => 'Channel :channel is already marked with that flag',
         'no-flag' => 'Channel :channel is not marked with that flag',
         'no-channel' => 'Please provide a valid channel.',
-        'title' => 'Channels',
+        'title' => 'ChannelFlags',
         'footer' => 'Usage: markchannel, unmarkchannel, channels',
-        'description' => "Channels with their flags, see `/help` for more information about what each flag means.\n\n:channels"
+        'description' => "ChannelFlags with their flags, see `/help` for more information about what each flag means.\n\n:channels"
     ],
 
     'logset' => [
@@ -261,7 +261,7 @@ return [
     'bump' => [
         'inc' => ":name has bumped this discord :count times!",
         'footer' => 'Use /bump in #bump',
-        'title' => 'Bumper Elites',
+        'title' => 'Bump Elites',
         'description' => "Bump counters of all time!\n\n:bumpers",
         'description-month' => "Bump counters of this month!\n\n:bumpers",
     ],

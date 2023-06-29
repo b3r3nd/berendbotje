@@ -37,7 +37,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Log Channels
+    | Log ChannelFlags
     |--------------------------------------------------------------------------
     |
     | Here you may configure the log channels for your application. Out of

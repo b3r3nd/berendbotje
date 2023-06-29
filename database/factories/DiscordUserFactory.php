@@ -5,7 +5,7 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\DiscordUser>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Discord\Core\Models\DiscordUser>
  */
 class DiscordUserFactory extends Factory
 {

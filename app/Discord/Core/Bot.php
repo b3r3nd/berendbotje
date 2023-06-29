@@ -2,73 +2,73 @@
 
 namespace App\Discord\Core;
 
-use App\Discord\Events\BumpCounter;
-use App\Discord\Events\DetectTimeouts;
-use App\Discord\Events\EmoteCounter;
-use App\Discord\Events\GuildMemberLogger;
-use App\Discord\Events\InviteLogger;
-use App\Discord\Events\KickAndBanCounter;
-use App\Discord\Events\MediaFilter;
-use App\Discord\Events\MessageLogger;
-use App\Discord\Events\MessageXpCounter;
-use App\Discord\Events\StickerFilter;
-use App\Discord\Events\TimeoutLogger;
-use App\Discord\Events\VoiceStateLogger;
-use App\Discord\Events\VoiceStateUpdate;
-use App\Discord\Events\VoiceXpCounter;
-use App\Discord\Fun\Ask;
-use App\Discord\Fun\BumpStatistics;
-use App\Discord\Fun\Cringe\CringeIndex;
-use App\Discord\Fun\Cringe\DecreaseCringe;
-use App\Discord\Fun\Cringe\IncreaseCringe;
-use App\Discord\Fun\Cringe\ResetCringe;
-use App\Discord\Fun\EightBall;
-use App\Discord\Fun\EmoteIndex;
-use App\Discord\Fun\MentionResponder\AddMentionGroup;
-use App\Discord\Fun\MentionResponder\AddMentionReply;
-use App\Discord\Fun\MentionResponder\DelMentionGroup;
-use App\Discord\Fun\MentionResponder\DelMentionReply;
-use App\Discord\Fun\MentionResponder\MentionGroupIndex;
-use App\Discord\Fun\MentionResponder\MentionIndex;
-use App\Discord\Fun\MentionResponder\UpdateMentionGroup;
-use App\Discord\Fun\Reaction\CreateReaction;
-use App\Discord\Fun\Reaction\DeleteReaction;
-use App\Discord\Fun\Reaction\ReactionIndex;
-use App\Discord\Fun\UrbanDictionary;
-use App\Discord\Help;
-use App\Discord\Test;
-use App\Discord\Levels\CreateRoleReward;
-use App\Discord\Levels\DeleteRoleReward;
-use App\Discord\Levels\GiveXp;
-use App\Discord\Levels\Leaderboard;
-use App\Discord\Levels\RemoveXp;
-use App\Discord\Levels\ResetXp;
-use App\Discord\Levels\RoleRewards;
-use App\Discord\Levels\UserRank;
-use App\Discord\Logger\LogSettings;
-use App\Discord\Logger\UpdateLogSetting;
-use App\Discord\Moderation\Channels\ChannelIndex;
-use App\Discord\Moderation\Channels\MarkChannel;
-use App\Discord\Moderation\Channels\UnmarkChannel;
-use App\Discord\Moderation\Command\CommandIndex;
-use App\Discord\Moderation\Command\CreateCommand;
-use App\Discord\Moderation\Command\DeleteCommand;
-use App\Discord\Moderation\ModeratorStatistics;
-use App\Discord\Moderation\Timeout\Timeouts;
-use App\Discord\OpenAi\GenerateImage;
-use App\Discord\Roles\AttachRolePermission;
-use App\Discord\Roles\AttachUserRole;
-use App\Discord\Roles\CreateRole;
-use App\Discord\Roles\DeleteRole;
-use App\Discord\Roles\DetachRolePermission;
-use App\Discord\Roles\DetachUserRole;
-use App\Discord\Roles\Permissions;
-use App\Discord\Roles\Roles;
-use App\Discord\Roles\UserRoles;
-use App\Discord\Roles\Users;
-use App\Discord\Settings\Settings;
-use App\Discord\Settings\UpdateSetting;
-use App\Models\Guild;
+use App\Discord\Bump\Actions\BumpCounter;
+use App\Discord\Bump\Commands\BumpStatistics;
+use App\Discord\ChannelFlags\Commands\ChannelIndex;
+use App\Discord\ChannelFlags\Commands\MarkChannel;
+use App\Discord\ChannelFlags\Commands\UnmarkChannel;
+use App\Discord\ChannelFlags\Events\MediaFilter;
+use App\Discord\ChannelFlags\Events\StickerFilter;
+use App\Discord\Core\Models\Guild;
+use App\Discord\Cringe\Commands\CringeIndex;
+use App\Discord\Cringe\Commands\DecreaseCringe;
+use App\Discord\Cringe\Commands\IncreaseCringe;
+use App\Discord\Cringe\Commands\ResetCringe;
+use App\Discord\CustomCommands\Commands\CommandIndex;
+use App\Discord\CustomCommands\Commands\CreateCommand;
+use App\Discord\CustomCommands\Commands\DeleteCommand;
+use App\Discord\Fun\Commands\Ask;
+use App\Discord\Fun\Commands\EightBall;
+use App\Discord\Fun\Commands\EmoteIndex;
+use App\Discord\Fun\Commands\ModeratorStatistics;
+use App\Discord\Fun\Commands\UrbanDictionary;
+use App\Discord\Fun\Events\EmoteCounter;
+use App\Discord\Fun\Events\KickAndBanCounter;
+use App\Discord\Help\Commands\Help;
+use App\Discord\Levels\Commands\CreateRoleReward;
+use App\Discord\Levels\Commands\DeleteRoleReward;
+use App\Discord\Levels\Commands\GiveXp;
+use App\Discord\Levels\Commands\Leaderboard;
+use App\Discord\Levels\Commands\RemoveXp;
+use App\Discord\Levels\Commands\ResetXp;
+use App\Discord\Levels\Commands\RoleRewards;
+use App\Discord\Levels\Commands\UserRank;
+use App\Discord\Levels\Events\MessageXpCounter;
+use App\Discord\Levels\Events\VoiceStateUpdate;
+use App\Discord\Levels\Events\VoiceXpCounter;
+use App\Discord\Logger\Commands\LogSettings;
+use App\Discord\Logger\Commands\UpdateLogSetting;
+use App\Discord\Logger\Events\GuildMemberLogger;
+use App\Discord\Logger\Events\InviteLogger;
+use App\Discord\Logger\Events\MessageLogger;
+use App\Discord\Logger\Events\TimeoutLogger;
+use App\Discord\Logger\Events\VoiceStateLogger;
+use App\Discord\MentionResponder\Commands\AddMentionGroup;
+use App\Discord\MentionResponder\Commands\AddMentionReply;
+use App\Discord\MentionResponder\Commands\DelMentionGroup;
+use App\Discord\MentionResponder\Commands\DelMentionReply;
+use App\Discord\MentionResponder\Commands\MentionGroupIndex;
+use App\Discord\MentionResponder\Commands\MentionIndex;
+use App\Discord\MentionResponder\Commands\UpdateMentionGroup;
+use App\Discord\OpenAi\Commands\GenerateImage;
+use App\Discord\Reaction\Commands\CreateReaction;
+use App\Discord\Reaction\Commands\DeleteReaction;
+use App\Discord\Reaction\Commands\ReactionIndex;
+use App\Discord\Roles\Commands\AttachRolePermission;
+use App\Discord\Roles\Commands\AttachUserRole;
+use App\Discord\Roles\Commands\CreateRole;
+use App\Discord\Roles\Commands\DeleteRole;
+use App\Discord\Roles\Commands\DetachRolePermission;
+use App\Discord\Roles\Commands\DetachUserRole;
+use App\Discord\Roles\Commands\Permissions;
+use App\Discord\Roles\Commands\Roles;
+use App\Discord\Roles\Commands\UserRoles;
+use App\Discord\Roles\Commands\Users;
+use App\Discord\Settings\Commands\Settings;
+use App\Discord\Settings\Commands\UpdateSetting;
+use App\Discord\Test\Commands\Test;
+use App\Discord\Timeouts\Commands\Timeouts;
+use App\Discord\Timeouts\Events\DetectTimeouts;
 use Discord\Discord;
 use Discord\Exceptions\IntentException;
 use Discord\WebSockets\Intents;
@@ -134,11 +134,8 @@ class Bot
         'settings' => [
             Settings::class,
             UpdateSetting::class,
-            LogSettings::class,
-            UpdateLogSetting::class,
-            Help::class,
         ],
-        'xp' => [
+        'levels' => [
             Leaderboard::class,
             RoleRewards::class,
             CreateRoleReward::class,
@@ -148,29 +145,13 @@ class Bot
             RemoveXp::class,
             ResetXp::class,
         ],
-        'mods' => [
-            ChannelIndex::class,
-            MarkChannel::class,
-            UnmarkChannel::class,
+        'timeout' => [
             Timeouts::class,
-            ModeratorStatistics::class,
         ],
-        'fun' => [
-            CringeIndex::class,
-            IncreaseCringe::class,
-            DecreaseCringe::class,
-            ResetCringe::class,
-            BumpStatistics::class,
-            EmoteIndex::class,
-            CommandIndex::class,
-            CreateCommand::class,
-            DeleteCommand::class,
+        'reactions' => [
             ReactionIndex::class,
             CreateReaction::class,
             DeleteReaction::class,
-            EightBall::class,
-            Ask::class,
-            UrbanDictionary::class,
         ],
         'mention' => [
             MentionIndex::class,
@@ -180,6 +161,39 @@ class Bot
             AddMentionGroup::class,
             DelMentionGroup::class,
             UpdateMentionGroup::class,
+        ],
+        'bump' => [
+            BumpStatistics::class,
+        ],
+        'channel-flags' => [
+            ChannelIndex::class,
+            MarkChannel::class,
+            UnmarkChannel::class,
+        ],
+        'cringe' => [
+            CringeIndex::class,
+            IncreaseCringe::class,
+            DecreaseCringe::class,
+            ResetCringe::class,
+        ],
+        'custom-commands' => [
+            CommandIndex::class,
+            CreateCommand::class,
+            DeleteCommand::class,
+        ],
+        'fun' => [
+            EmoteIndex::class,
+            EightBall::class,
+            Ask::class,
+            UrbanDictionary::class,
+            ModeratorStatistics::class,
+        ],
+        'help' => [
+            Help::class,
+        ],
+        'logger' => [
+            LogSettings::class,
+            UpdateLogSetting::class,
         ],
     ];
 

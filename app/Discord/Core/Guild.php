@@ -2,12 +2,14 @@
 
 namespace App\Discord\Core;
 
-use App\Discord\Core\Enums\Setting as SettingEnum;
-use App\Discord\Fun\QuestionOfTheDayReminder;
-use App\Models\Channel;
-use App\Models\Guild as GuildModel;
-use App\Models\LogSetting;
-use App\Models\Setting;
+use App\Discord\ChannelFlags\Models\Channel;
+use App\Discord\Core\Models\Guild as GuildModel;
+use App\Discord\Fun\Events\QuestionOfTheDayReminder;
+use App\Discord\Logger\Logger;
+use App\Discord\Logger\Models\LogSetting;
+use App\Discord\MentionResponder\MentionResponder;
+use App\Discord\Settings\Enums\Setting as SettingEnum;
+use App\Discord\Settings\Models\Setting;
 use Carbon\Carbon;
 use Discord\Discord;
 use Discord\Parts\Channel\Message;
@@ -81,7 +83,7 @@ class Guild
     private function registerReactions(): void
     {
         $this->discord->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) {
-            if ($message->author->bot || !$this->getSetting(\App\Discord\Core\Enums\Setting::ENABLE_REACTIONS)) {
+            if ($message->author->bot || !$this->getSetting(\App\Discord\Settings\Enums\Setting::ENABLE_REACTIONS)) {
                 return;
             }
             $this->model->refresh();
@@ -107,7 +109,7 @@ class Guild
     private function registerCommands(): void
     {
         $this->discord->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) {
-            if ($message->author->bot || !$this->getSetting(\App\Discord\Core\Enums\Setting::ENABLE_COMMANDS)) {
+            if ($message->author->bot || !$this->getSetting(\App\Discord\Settings\Enums\Setting::ENABLE_COMMANDS)) {
                 return;
             }
             $this->model->refresh();
@@ -245,10 +247,10 @@ class Guild
     }
 
     /**
-     * @param Enums\LogSetting $setting
+     * @param \App\Discord\Logger\Enums\LogSetting $setting
      * @return false|mixed
      */
-    public function getLogSetting(\App\Discord\Core\Enums\LogSetting $setting): mixed
+    public function getLogSetting(\App\Discord\Logger\Enums\LogSetting $setting): mixed
     {
         return $this->logSettings[$setting->value] ?? false;
     }
