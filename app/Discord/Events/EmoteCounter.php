@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Discord\Fun\Emote;
+namespace App\Discord\Events;
 
 use App\Discord\Core\Bot;
+use App\Discord\Core\DiscordEvent;
 use App\Discord\Core\Enums\Setting;
 use App\Models\Emote;
 use Discord\Discord;
@@ -13,18 +14,32 @@ use function Emoji\detect_emoji;
 /**
  * It will only count emoji ONCE per message, te prevent people just spamming emotes 10x in a single message.
  */
-class EmoteCounter
+class EmoteCounter extends DiscordEvent
 {
-    public function __construct()
+    /**
+     * @param Emote $emote
+     * @return void
+     */
+    private function processEmote(Emote $emote): void
     {
-        Bot::getDiscord()->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) {
+        if (isset($emote->count)) {
+            ++$emote->count;
+        } else {
+            $emote->count = 1;
+        }
+        $emote->save();
+    }
+
+    public function registerEvent()
+    {
+        $this->discord->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) {
             if ($message->author->bot) {
                 return;
             }
             if(!$message->guild_id) {
                 return;
             }
-            if (!Bot::get()->getGuild($message->guild_id)?->getSetting(Setting::ENABLE_EMOTE)) {
+            if (!$this->bot->getGuild($message->guild_id)?->getSetting(Setting::ENABLE_EMOTE)) {
                 return;
             }
 
@@ -49,19 +64,5 @@ class EmoteCounter
                 }
             }
         });
-    }
-
-    /**
-     * @param Emote $emote
-     * @return void
-     */
-    private function processEmote(Emote $emote): void
-    {
-        if (isset($emote->count)) {
-            ++$emote->count;
-        } else {
-            $emote->count = 1;
-        }
-        $emote->save();
     }
 }

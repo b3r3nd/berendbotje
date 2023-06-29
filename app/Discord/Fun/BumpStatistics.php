@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Discord\Fun\Bump;
+namespace App\Discord\Fun;
 
 use App\Discord\Core\Bot;
 use App\Discord\Core\Builders\EmbedBuilder;
@@ -8,7 +8,6 @@ use App\Discord\Core\Enums\Permission;
 use App\Discord\Core\SlashIndexCommand;
 use App\Discord\Helper;
 use App\Models\Bumper;
-use Carbon\Carbon;
 use Discord\Parts\Embed\Embed;
 use Discord\Parts\Interactions\Command\Option;
 
@@ -50,7 +49,7 @@ class BumpStatistics extends SlashIndexCommand
         $description = "";
         $this->total = Bumper::byGuild($this->guildId)->count();
 
-        $builder = EmbedBuilder::create(Bot::get()->discord())
+        $builder = EmbedBuilder::create($this->discord)
             ->setTitle(__('bot.bump.title'))
             ->setFooter(__('bot.bump.footer'));
 

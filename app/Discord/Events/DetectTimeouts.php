@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Discord\Moderation\Timeout;
+namespace App\Discord\Events;
 
-use App\Discord\Core\Bot;
+use App\Discord\Core\DiscordEvent;
 use App\Models\DiscordUser;
 use App\Models\Timeout;
 use Carbon\Carbon;
@@ -18,15 +18,15 @@ use Discord\WebSockets\Event;
  * given a timeout before. We still need to manually read the audit log to figure out the reason for the timeout and who
  * gave the timeout.
  */
-class DetectTimeouts
+class DetectTimeouts extends DiscordEvent
 {
-    public function __construct()
+
+    public function registerEvent(): void
     {
-        Bot::getDiscord()->on(Event::GUILD_MEMBER_UPDATE, function (Member $member, Discord $discord) {
+        $this->discord->on(Event::GUILD_MEMBER_UPDATE, function (Member $member, Discord $discord) {
             if ($member->communication_disabled_until == NULL || $member->communication_disabled_until <= Carbon::now()) {
                 return;
             }
-
             $discord->guilds->fetch($member->guild_id)->done(function (Guild $guild) use ($member) {
                 $guild->getAuditLog(['limit' => 1])->done(function (AuditLog $auditLog) use ($member, $guild) {
                     foreach ($auditLog->audit_log_entries as $entry) {

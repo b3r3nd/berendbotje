@@ -40,18 +40,23 @@ class Run extends Command
         $this->info("Delete slash commands: {$this->option('delcmd')}");
         $this->info("========================");
 
-        if(!$this->option('dev') && !$this->confirm('Running bot in production mode, this means loading/updating ALL commands, are you sure?')) {
-            $this->info("try adding the --dev flag");
+        if ($this->option('delcmd') && !$this->confirm('Are you sure you want do DELETE ALL slash commands?')) {
+            $this->info("Quitting..");
             exit;
         }
+
+        if ($this->option('updatecmd') && !$this->confirm('Are you sure you want do UPDATE ALL slash commands?')) {
+            $this->info("Quitting..");
+            exit;
+        }
+
         $bot = new Bot(
             $this->option('dev'),
             $this->option('updatecmd'),
             $this->option('delcmd')
         );
 
-        $discord = ($bot->discord());
-        $discord->run();
+        $bot->connect();
 
         return Command::SUCCESS;
     }

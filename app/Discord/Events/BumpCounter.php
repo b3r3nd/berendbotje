@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Discord\Fun\Bump;
+namespace App\Discord\Events;
 
-use App\Discord\Core\Bot;
+use App\Discord\Core\DiscordEvent;
 use App\Discord\Core\Enums\Setting;
 use App\Jobs\ProcessBumpReminder;
 use App\Models\Bumper;
@@ -13,14 +13,14 @@ use Discord\Parts\Channel\Message;
 use Discord\WebSockets\Event;
 
 
-class BumpCounter
+class BumpCounter extends DiscordEvent
 {
-    public function __construct()
+    public function registerEvent(): void
     {
-        Bot::getDiscord()->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) {
+        $this->discord->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) {
             if ($message->type === 20 && $message->interaction->name === 'bump') {
 
-                if (!Bot::get()->getGuild($message->guild_id)?->getSetting(Setting::ENABLE_BUMP)) {
+                if (!$this->bot->getGuild($message->guild_id)?->getSetting(Setting::ENABLE_BUMP)) {
                     return;
                 }
                 $guild = Guild::get($message->guild_id);
@@ -34,7 +34,7 @@ class BumpCounter
                 $count = $user->bumpCounters()->where('guild_id', $guild->id)->sum('count');
                 $message->channel->sendMessage(__('bot.bump.inc', ['name' => $message->interaction->user->username, 'count' => $count ?? 0]));
 
-                if (Bot::get()->getGuild($message->guild_id)?->getSetting(Setting::ENABLE_BUMP_REMINDER)) {
+                if ($this->bot->getGuild($message->guild_id)?->getSetting(Setting::ENABLE_BUMP_REMINDER)) {
                     ProcessBumpReminder::dispatch($message->guild_id)->delay(now()->addHours(2));
                 }
             }

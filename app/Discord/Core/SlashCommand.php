@@ -27,7 +27,7 @@ abstract class SlashCommand extends Command
     abstract public function action(): MessageBuilder;
 
     /** @noinspection NotOptimalIfConditionsInspection */
-    public function registerSlashCommand(Discord $discord): void
+    public function registerSlashCommand(): void
     {
         $optionsArray = [
             'name' => $this->trigger,
@@ -36,8 +36,8 @@ abstract class SlashCommand extends Command
         if (isset($this->slashCommandOptions)) {
             $optionsArray['options'] = $this->slashCommandOptions;
         }
-        $command = new \Discord\Parts\Interactions\Command\Command($discord, $optionsArray);
-        $discord->listenCommand($this->trigger, function (Interaction $interaction) {
+        $command = new \Discord\Parts\Interactions\Command\Command($this->discord, $optionsArray);
+        $this->discord->listenCommand($this->trigger, function (Interaction $interaction) {
             $this->arguments = [];
 
             if ($interaction->guild_id === null) {
@@ -61,7 +61,7 @@ abstract class SlashCommand extends Command
             return $interaction->respondWithMessage($this->action());
         });
 
-        $discord->application->commands->save($command);
+        $this->discord->application->commands->save($command);
     }
 
 }

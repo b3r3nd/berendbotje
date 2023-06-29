@@ -1,19 +1,20 @@
 <?php
 
-namespace App\Discord\Logger\Events;
+namespace App\Discord\Events;
 
 use App\Discord\Core\Bot;
+use App\Discord\Core\DiscordEvent;
 use App\Discord\Core\Enums\LogSetting;
 use Discord\Discord;
 use Discord\Parts\WebSockets\VoiceStateUpdate as DVoiceStateUpdate;
 use Discord\WebSockets\Event;
 
-class VoiceStateLogger
+class VoiceStateLogger extends DiscordEvent
 {
-    public function __construct()
+    public function registerEvent(): void
     {
-        Bot::getDiscord()->on(Event::VOICE_STATE_UPDATE, function (DVoiceStateUpdate $state, Discord $discord, $oldstate) {
-            $guild = Bot::get()->getGuild($state->guild_id ?? $oldstate->guild_id);
+        $this->discord->on(Event::VOICE_STATE_UPDATE, function (DVoiceStateUpdate $state, Discord $discord, $oldstate) {
+            $guild = $this->bot->getGuild($state->guild_id ?? $oldstate->guild_id);
 
             if ($state->channel) {
                 if (!isset($oldstate)) {
@@ -52,6 +53,4 @@ class VoiceStateLogger
             }
         });
     }
-
-
 }

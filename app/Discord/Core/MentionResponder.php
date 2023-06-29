@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Discord\Discord;
 use Discord\Parts\Channel\Message;
 use Discord\WebSockets\Event;
+use Exception;
 
 /**
  * @property $roleReplies       List of mention replies for this guild which require a certain role.
@@ -18,6 +19,8 @@ use Discord\WebSockets\Event;
  */
 class MentionResponder
 {
+    private Discord $discord;
+    private Bot $bot;
     private string $guildId;
     private int $guildModelId;
     private array $roleReplies = [];
@@ -26,8 +29,13 @@ class MentionResponder
     private array $lastResponses = [];
     private array $lastMessages = [];
 
-    public function __construct(string $guildId)
+    /**
+     * @throws Exception
+     */
+    public function __construct(string $guildId, Bot $bot)
     {
+        $this->discord = $bot->discord;
+        $this->bot = $bot;
         $this->guildId = $guildId;
         $this->guildModelId = \App\Models\Guild::get($guildId)->id;
         $this->loadReplies();
@@ -64,14 +72,14 @@ class MentionResponder
 
     /**
      * @return void
+     * @throws Exception
      */
-    private
-    function registerMentionResponder(): void
+    private function registerMentionResponder(): void
     {
-        Bot::getDiscord()->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) {
+        $this->discord->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) {
             if ($message->author->bot || !$message->guild_id || $message->guild_id !== $this->guildId ||
                 !str_contains($message->content, $discord->user->id) ||
-                !Bot::get()->getGuild($this->guildId)?->getSetting(SettingEnum::ENABLE_MENTION_RESPONDER)) {
+                !$this->bot->getGuild($this->guildId)?->getSetting(SettingEnum::ENABLE_MENTION_RESPONDER)) {
                 return;
             }
 
@@ -161,8 +169,7 @@ class MentionResponder
     /**
      * @return void
      */
-    private
-    function checkLastResponses(): void
+    private function checkLastResponses(): void
     {
         foreach ($this->lastResponses as $lastResponse => $date) {
             $now = Carbon::now();
@@ -175,10 +182,9 @@ class MentionResponder
     /**
      * @param array $array
      * @return mixed
-     * @throws \Exception
+     * @throws Exception
      */
-    private
-    function getRandom(array $array): mixed
+    private function getRandom(array $array): mixed
     {
         return $array[random_int(0, (count($array) - 1))];
 //        while (isset($this->lastResponses[$response])) {

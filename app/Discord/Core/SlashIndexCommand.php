@@ -85,7 +85,7 @@ abstract class SlashIndexCommand extends SlashCommand implements PaginationIndex
                 $interaction->message->edit(MessageBuilder::new()->addEmbed($this->getEmbed())->addComponent($actionRow));
 
 
-            }, Bot::getDiscord());
+            }, $this->bot->discord);
     }
 
     /**
@@ -113,7 +113,7 @@ abstract class SlashIndexCommand extends SlashCommand implements PaginationIndex
                 $this->setLastUser($interaction->member->id);
                 $interaction->message->edit(MessageBuilder::new()->addEmbed($this->getEmbed())->addComponent($actionRow));
 
-            }, Bot::getDiscord());
+            }, $this->bot->discord);
     }
 
     /**

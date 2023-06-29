@@ -3,6 +3,7 @@
 namespace App\Discord\Core;
 
 use App\Discord\Core\Enums\Permission;
+use Discord\Discord;
 
 /**
  * Abstract class for all properties and methods shared across all commands, regardless whether it's a slash or message
@@ -16,6 +17,8 @@ use App\Discord\Core\Enums\Permission;
  */
 abstract class Command
 {
+    protected Bot $bot;
+    protected Discord $discord;
     protected Permission $permission;
     protected string $trigger;
     protected array $arguments = [];
@@ -30,6 +33,16 @@ abstract class Command
     {
         $this->permission = $this->permission();
         $this->trigger = $this->trigger();
+    }
+
+    /**
+     * @param Bot $bot
+     * @return void
+     */
+    public function setBot(Bot $bot): void
+    {
+        $this->bot = $bot;
+        $this->discord = $bot->discord;
     }
 
     /**

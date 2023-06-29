@@ -2,18 +2,28 @@
 
 namespace App\Discord\Core;
 
-use App\Discord\Administration\Servers;
-use App\Discord\Core\DiscordEvents\VoiceStateUpdate;
+use App\Discord\Events\BumpCounter;
+use App\Discord\Events\DetectTimeouts;
+use App\Discord\Events\EmoteCounter;
+use App\Discord\Events\GuildMemberLogger;
+use App\Discord\Events\InviteLogger;
+use App\Discord\Events\KickAndBanCounter;
+use App\Discord\Events\MediaFilter;
+use App\Discord\Events\MessageLogger;
+use App\Discord\Events\MessageXpCounter;
+use App\Discord\Events\StickerFilter;
+use App\Discord\Events\TimeoutLogger;
+use App\Discord\Events\VoiceStateLogger;
+use App\Discord\Events\VoiceStateUpdate;
+use App\Discord\Events\VoiceXpCounter;
 use App\Discord\Fun\Ask;
-use App\Discord\Fun\Bump\BumpCounter;
-use App\Discord\Fun\Bump\BumpStatistics;
+use App\Discord\Fun\BumpStatistics;
 use App\Discord\Fun\Cringe\CringeIndex;
 use App\Discord\Fun\Cringe\DecreaseCringe;
 use App\Discord\Fun\Cringe\IncreaseCringe;
 use App\Discord\Fun\Cringe\ResetCringe;
 use App\Discord\Fun\EightBall;
-use App\Discord\Fun\Emote\EmoteCounter;
-use App\Discord\Fun\Emote\EmoteIndex;
+use App\Discord\Fun\EmoteIndex;
 use App\Discord\Fun\MentionResponder\AddMentionGroup;
 use App\Discord\Fun\MentionResponder\AddMentionReply;
 use App\Discord\Fun\MentionResponder\DelMentionGroup;
@@ -31,30 +41,19 @@ use App\Discord\Levels\CreateRoleReward;
 use App\Discord\Levels\DeleteRoleReward;
 use App\Discord\Levels\GiveXp;
 use App\Discord\Levels\Leaderboard;
-use App\Discord\Levels\MessageXpCounter;
 use App\Discord\Levels\RemoveXp;
 use App\Discord\Levels\ResetXp;
 use App\Discord\Levels\RoleRewards;
 use App\Discord\Levels\UserRank;
-use App\Discord\Levels\VoiceXpCounter;
-use App\Discord\Logger\Events\GuildMemberLogger;
-use App\Discord\Logger\Events\InviteLogger;
-use App\Discord\Logger\Events\MessageLogger;
-use App\Discord\Logger\Events\TimeoutLogger;
-use App\Discord\Logger\Events\VoiceStateLogger;
 use App\Discord\Logger\LogSettings;
 use App\Discord\Logger\UpdateLogSetting;
 use App\Discord\Moderation\Channels\ChannelIndex;
 use App\Discord\Moderation\Channels\MarkChannel;
-use App\Discord\Moderation\Channels\MediaFilter;
-use App\Discord\Moderation\Channels\StickerFilter;
 use App\Discord\Moderation\Channels\UnmarkChannel;
 use App\Discord\Moderation\Command\CommandIndex;
 use App\Discord\Moderation\Command\CreateCommand;
 use App\Discord\Moderation\Command\DeleteCommand;
-use App\Discord\Moderation\KickAndBanCounter;
 use App\Discord\Moderation\ModeratorStatistics;
-use App\Discord\Moderation\Timeout\DetectTimeouts;
 use App\Discord\Moderation\Timeout\Timeouts;
 use App\Discord\OpenAi\GenerateImage;
 use App\Discord\Roles\AttachRolePermission;
@@ -76,28 +75,21 @@ use Discord\WebSockets\Intents;
 use Exception;
 
 /**
- * We only ever have one instance of this class, you could call it a singleton however it isn't really. This class
- * will always be instantiated when the bot boots. We do not need to check whether that is the case
- * on static function calls. If the instance is not there, everything is broken already.
- *
- * I could pass this as an argument to literally every class constructor (which I did at first) but it became
- * cumbersome rather quick, hence this implementation.
+ * Main bot class, theoretically you could create more instances from this class to have multiple bots running.
  *
  * @property $discord           Set with the global discord instance from DiscordPHP.
  * @property $guilds            List of all active guilds using the bot.
  *
- * @property $instance          Static instance of self (singleton) accessible through static call get().
  * @property $devMode           If the bot runs in dev mode.
- * @property $events            Event listeners
+ * @property $events            DiscordEvent listeners
  * @property $commands          Commands by category
  * @property $devCommands       Commands only in dev mode
  *
  */
 class Bot
 {
-    private Discord $discord;
+    public Discord $discord;
     private array $guilds;
-    private static self $instance;
     private bool $devMode, $updateCommands, $deleteCommands;
 
     private array $events = [
@@ -189,25 +181,23 @@ class Bot
     ];
 
 
-
     /**
-     * @throws IntentException
+     * @param bool $devMode
+     * @param bool $updateCommands
+     * @param $deleteCommands
      */
     public function __construct(bool $devMode = false, bool $updateCommands = false, $deleteCommands = false)
     {
         $this->devMode = $devMode;
         $this->updateCommands = $updateCommands;
         $this->deleteCommands = $deleteCommands;
-
-        $this->connect();
-        self::$instance = $this;
     }
 
     /**
      * @return void
      * @throws IntentException
      */
-    private function connect(): void
+    public function connect(): void
     {
         $this->discord = new Discord([
                 'token' => config('discord.token'),
@@ -229,34 +219,7 @@ class Bot
             }
         });
 
-    }
-
-
-    /**
-     * @return void
-     */
-    public function loadGuilds(): void
-    {
-        foreach (Guild::all() as $guild) {
-            $this->guilds[$guild->guild_id] = new \App\Discord\Core\Guild($guild);
-        }
-    }
-
-    /**
-     * @param string $id
-     * @return mixed|null
-     */
-    public function getGuild(string $id): mixed
-    {
-        return $this->guilds[$id] ?? null;
-    }
-
-    /**
-     * @return array
-     */
-    public function getGuilds(): array
-    {
-        return $this->guilds;
+        $this->discord->run();
     }
 
     /**
@@ -265,10 +228,10 @@ class Bot
     private function loadEvents(): void
     {
         foreach ($this->events as $class) {
-            new $class();
+            $instance = new $class($this);
+            $instance->registerEvent();
         }
     }
-
 
     /**
      * @param array $commands
@@ -278,7 +241,8 @@ class Bot
     {
         foreach ($commands as $class) {
             $instance = new $class();
-            $instance->registerSlashCommand($this->discord);
+            $instance->setBot($this);
+            $instance->registerSlashCommand($this);
         }
     }
 
@@ -310,27 +274,31 @@ class Bot
     }
 
     /**
-     * @return Bot|static
+     * @return void
+     * @throws Exception
      */
-    public static function get(): Bot|static
+    public function loadGuilds(): void
     {
-        return self::$instance;
+        foreach (Guild::all() as $guild) {
+            $this->guilds[$guild->guild_id] = new \App\Discord\Core\Guild($guild, $this);
+        }
     }
 
     /**
-     * @return Discord
+     * @param string $id
+     * @return mixed|null
      */
-    public static function getDiscord(): Discord
+    public function getGuild(string $id): mixed
     {
-        return self::$instance->discord;
+        return $this->guilds[$id] ?? null;
     }
 
     /**
-     * @return Discord
+     * @return array
      */
-    public function discord(): Discord
+    public function getGuilds(): array
     {
-        return $this->discord;
+        return $this->guilds;
     }
 
 }

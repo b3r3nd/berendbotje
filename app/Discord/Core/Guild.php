@@ -5,12 +5,9 @@ namespace App\Discord\Core;
 use App\Discord\Core\Enums\Setting as SettingEnum;
 use App\Discord\Fun\QuestionOfTheDayReminder;
 use App\Models\Channel;
-use App\Models\DiscordUser;
 use App\Models\Guild as GuildModel;
 use App\Models\LogSetting;
-use App\Models\MentionGroup;
 use App\Models\Setting;
-use App\Models\Timeout;
 use Carbon\Carbon;
 use Discord\Discord;
 use Discord\Parts\Channel\Message;
@@ -32,6 +29,9 @@ use Exception;
  */
 class Guild
 {
+    protected Discord $discord;
+    protected Bot $bot;
+
     private array $settings = [];
     private array $logSettings = [];
     private array $lastMessages = [];
@@ -44,10 +44,14 @@ class Guild
 
     /**
      * @param GuildModel $guild
+     * @param Bot $bot
+     * @throws Exception
      */
-    public function __construct(GuildModel $guild)
+    public function __construct(GuildModel $guild, Bot $bot)
     {
         $this->model = $guild;
+        $this->discord = $bot->discord;
+        $this->bot = $bot;
 
         foreach ($this->model->settings as $setting) {
             $this->settings[$setting->key] = $setting->value;
@@ -61,12 +65,12 @@ class Guild
             $this->channels[$channel->channel_id] = $channel;
         }
 
-        $this->logger = new Logger($this->getSetting(SettingEnum::LOG_CHANNEL));
+        $this->logger = new Logger($this->getSetting(SettingEnum::LOG_CHANNEL), $this->discord);
         $this->registerReactions();
         $this->registerCommands();
 
-        $this->mentionResponder = new MentionResponder($this->model->guild_id);
-        $this->questionOfTheDayReminder = new QuestionOfTheDayReminder($this->model->guild_id);
+        $this->mentionResponder = new MentionResponder($this->model->guild_id, $this->bot);
+        $this->questionOfTheDayReminder = new QuestionOfTheDayReminder($this->bot, $this->model->guild_id);
     }
 
     /**
@@ -74,7 +78,7 @@ class Guild
      */
     private function registerReactions(): void
     {
-        Bot::getDiscord()->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) {
+        $this->discord->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) {
             if ($message->author->bot || !$this->getSetting(\App\Discord\Core\Enums\Setting::ENABLE_REACTIONS)) {
                 return;
             }
@@ -100,7 +104,7 @@ class Guild
      */
     private function registerCommands(): void
     {
-        Bot::getDiscord()->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) {
+        $this->discord->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) {
             if ($message->author->bot || !$this->getSetting(\App\Discord\Core\Enums\Setting::ENABLE_COMMANDS)) {
                 return;
             }
