@@ -2,8 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Guild;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Discord\Core\Models\Guild;
 use Illuminate\Database\Seeder;
 
 class GuildSeeder extends Seeder

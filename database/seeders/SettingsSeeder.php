@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\Guild;
-use App\Models\Setting;
+use App\Discord\Core\Models\Guild;
+use App\Discord\Settings\Models\Setting;
 use Illuminate\Database\Seeder;
 
 class SettingsSeeder extends Seeder

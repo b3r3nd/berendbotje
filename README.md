@@ -55,13 +55,20 @@ class GuildSeeder extends Seeder
 5. Check the env file for any settings you want to change. Commands can be disabled for specific guilds by using its config in discord. However, you can disable parts of the bot entirely here, the commands will not be loaded.
 
 ```
-ENABLE_ROLES=true
-ENABLE_LEVELS=true
-ENABLE_MODS=true
-ENABLE_FUN=true
-ENABLE_MENTION=true
-ENABLE_OPEN_AI=true
-ENABLE_SETTINGS=true
+ENABLE_BUMP=TRUE
+ENABLE_CHANNEL_FLAGS=TRUE
+ENABLE_CRINGE=TRUE
+ENABLE_CUSTOM_COMMANDS=TRUE
+ENABLE_FUN=TRUE
+ENABLE_HELP=TRUE
+ENABLE_LEVELS=TRUE
+ENABLE_LOGGER=TRUE
+ENABLE_MENTION_RESPONDER=TRUE
+ENABLE_OPENAI=TRUE
+ENABLE_REACTIONS=TRUE
+ENABLE_ROLES=TRUE
+ENABLE_SETTINGS=TRUE
+ENABLE_TIMEOUT=TRUE
 ```
 6. Also make sure to fill in any tokens and hosts if you wish to use the corresponding commands:
 ```
