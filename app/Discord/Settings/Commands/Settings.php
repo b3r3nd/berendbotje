@@ -38,10 +38,10 @@ class Settings extends SlashCommand
             if ($setting->key === \App\Discord\Settings\Enums\Setting::LOG_CHANNEL->value) {
                 $description .= "**{$setting->key}** = <#{$setting->value}>\n";
             } elseif ($setting->key === \App\Discord\Settings\Enums\Setting::BUMP_CHANNEL->value
-                || $setting->key === \App\Discord\Settings\Enums\Setting::QOTD_CHANNEL->value) {
+                || $setting->key === \App\Discord\Settings\Enums\Setting::REMINDER_CHANNEL->value) {
                 $description .= "**{$setting->key}** = <#{$setting->value}>\n";
             } elseif ($setting->key === \App\Discord\Settings\Enums\Setting::BUMP_REMINDER_ROLE->value
-                || $setting->key === \App\Discord\Settings\Enums\Setting::QOTD_ROLE->value) {
+                || $setting->key === \App\Discord\Settings\Enums\Setting::REMINDER_ROLE->value) {
                 $description .= "**{$setting->key}** = <@&{$setting->value}>\n";
 
             } else {

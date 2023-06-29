@@ -4,7 +4,7 @@ namespace App\Discord\Core;
 
 use App\Discord\ChannelFlags\Models\Channel;
 use App\Discord\Core\Models\Guild as GuildModel;
-use App\Discord\Fun\Events\QuestionOfTheDayReminder;
+use App\Discord\Fun\Events\Reminder;
 use App\Discord\Logger\Logger;
 use App\Discord\Logger\Models\LogSetting;
 use App\Discord\MentionResponder\MentionResponder;
@@ -28,7 +28,7 @@ use Exception;
  * @property array $logSettings                 List of cached log settings, so we do not need to read from the database each time.
  * @property array $lastMessages                Last message send by user in guild, used for the xp cooldown.
  * @property array $inVoice                     List of people who are currently in voice in the guild, used to calculate xp.
- * @property Logger$logger                      Logger instance for this specific guild which can log events.
+ * @property Logger $logger                      Logger instance for this specific guild which can log events.
  * @property array $channels                    List of channels which have special flags set, for example media channels.
  * @property GuildModel $model                  Eloquent model for the guild.
  * @property MentionResponder $mentionResponder MentionResponder for this guild
@@ -70,55 +70,7 @@ class Guild
         }
 
         $this->logger = new Logger($this->getSetting(SettingEnum::LOG_CHANNEL), $this->discord);
-        $this->registerReactions();
-        $this->registerCommands();
-
-       $this->mentionResponder = new MentionResponder($this->model->guild_id, $this->bot);
-       new QuestionOfTheDayReminder($this->bot, $this->model->guild_id);
-    }
-
-    /**
-     * @return void
-     */
-    private function registerReactions(): void
-    {
-        $this->discord->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) {
-            if ($message->author->bot || !$this->getSetting(\App\Discord\Settings\Enums\Setting::ENABLE_REACTIONS)) {
-                return;
-            }
-            $this->model->refresh();
-            $msg = strtolower($message->content);
-
-            foreach ($this->model->reactions as $reaction) {
-                preg_match("/\b{$reaction->trigger}\b|^{$reaction->trigger}\b|\b{$reaction->trigger}$/", $msg, $result);
-
-                if (!empty($result)) {
-                    if (str_contains($reaction->reaction, "<")) {
-                        $message->react(str_replace(["<", ">"], "", $reaction->reaction));
-                    } else {
-                        $message->react($reaction->reaction);
-                    }
-                }
-            }
-        });
-    }
-
-    /**
-     * @return void
-     */
-    private function registerCommands(): void
-    {
-        $this->discord->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) {
-            if ($message->author->bot || !$this->getSetting(\App\Discord\Settings\Enums\Setting::ENABLE_COMMANDS)) {
-                return;
-            }
-            $this->model->refresh();
-            foreach ($this->model->commands as $command) {
-                if (strtolower($message->content) === strtolower($command->trigger)) {
-                    $message->channel->sendMessage($command->response);
-                }
-            }
-        });
+        $this->mentionResponder = new MentionResponder($this->model->guild_id, $this->bot);
     }
 
     /**
@@ -218,10 +170,7 @@ class Guild
      */
     public function getLastMessage(string $userId): Carbon
     {
-        if (isset($this->lastMessages[$userId])) {
-            return $this->lastMessages[$userId];
-        }
-        return Carbon::now()->subMinutes(100);
+        return $this->lastMessages[$userId] ?? Carbon::now()->subMinutes(100);
     }
 
     /**

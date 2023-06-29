@@ -12,26 +12,17 @@ use Discord\Parts\Interactions\Interaction;
  * Extendable class to easily create new index commands for both message and slash commands. Read the property
  * description, so you know what you are doing.
  *
- * @property $offset        Automatically increased by te perPage amount when clicking to next page.
- * @property $perPage       Can be overwritten in child to set the items shown per page.
- * @property $total         MUST BE SET in child in order to disable buttons when you are on the last page.
+ * @property array $offset      We keep track of the page offset per user.
+ * @property int $perPage       Can be overwritten in child to set the items shown per page.
+ * @property int $total         MUST BE SET in child in order to disable buttons when you are on the last page.
+ * @property int $lastUser      User who last clicked a button or used a command (to get the correct data in getEmbed)
  */
 abstract class SlashIndexCommand extends SlashCommand implements PaginationIndex
 {
-    /**
-     * @var array
-     *
-     * We keep track of the page offset per user because people can press buttons and retrieve pages at the same time.
-     */
+
     public array $offset = [];
     public int $perPage = 15;
     public int $total = 0;
-
-    /**
-     * @var int
-     *
-     * The user who last clicked a button.
-     */
     public int $lastUser = 0;
 
     /**
@@ -44,11 +35,9 @@ abstract class SlashIndexCommand extends SlashCommand implements PaginationIndex
         $embed = $this->getEmbed();
         $next = $this->nextButton();
         $previous = $this->previousButton()->setDisabled(true);
-
         if ($this->perPage >= $this->total) {
             $next->setDisabled(true);
         }
-
         $actionRow = ActionRow::new()->addComponent($previous)->addComponent($next);
         return MessageBuilder::new()->addEmbed($embed)->addComponent($actionRow);
     }
@@ -65,7 +54,6 @@ abstract class SlashIndexCommand extends SlashCommand implements PaginationIndex
                 if($interaction->member->id !== $interaction->message->interaction->user->id) {
                     return;
                 }
-
                 $this->incOffset($interaction->member->id, $this->perPage);
                 $next = $this->nextButton();
                 $previous = $this->previousButton();
@@ -78,8 +66,6 @@ abstract class SlashIndexCommand extends SlashCommand implements PaginationIndex
                 $actionRow = ActionRow::new()->addComponent($previous)->addComponent($next);
                 $this->setLastUser($interaction->member->id);
                 $interaction->message->edit(MessageBuilder::new()->addEmbed($this->getEmbed())->addComponent($actionRow));
-
-
             }, $this->bot->discord);
     }
 
@@ -95,9 +81,7 @@ abstract class SlashIndexCommand extends SlashCommand implements PaginationIndex
                 if($interaction->member->id !== $interaction->message->interaction->user->id) {
                     return;
                 }
-
                 $this->decOffset($interaction->member->id, $this->perPage);
-
                 $next = $this->nextButton();
                 $previous = $this->previousButton();
                 if ($this->getOffset($interaction->member->id) === 0) {
@@ -107,7 +91,6 @@ abstract class SlashIndexCommand extends SlashCommand implements PaginationIndex
                 $actionRow = ActionRow::new()->addComponent($previous)->addComponent($next);
                 $this->setLastUser($interaction->member->id);
                 $interaction->message->edit(MessageBuilder::new()->addEmbed($this->getEmbed())->addComponent($actionRow));
-
             }, $this->bot->discord);
     }
 
@@ -127,7 +110,6 @@ abstract class SlashIndexCommand extends SlashCommand implements PaginationIndex
     {
         return $this->lastUser;
     }
-
 
     /**
      * @param int $memberId

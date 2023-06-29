@@ -17,6 +17,7 @@ use App\Discord\Cringe\Commands\ResetCringe;
 use App\Discord\CustomCommands\Commands\CommandIndex;
 use App\Discord\CustomCommands\Commands\CreateCommand;
 use App\Discord\CustomCommands\Commands\DeleteCommand;
+use App\Discord\CustomCommands\Events\CommandResponse;
 use App\Discord\Fun\Commands\Ask;
 use App\Discord\Fun\Commands\EightBall;
 use App\Discord\Fun\Commands\EmoteIndex;
@@ -24,6 +25,7 @@ use App\Discord\Fun\Commands\ModeratorStatistics;
 use App\Discord\Fun\Commands\UrbanDictionary;
 use App\Discord\Fun\Events\EmoteCounter;
 use App\Discord\Fun\Events\KickAndBanCounter;
+use App\Discord\Fun\Events\Reminder;
 use App\Discord\Help\Commands\Help;
 use App\Discord\Levels\Commands\CreateRoleReward;
 use App\Discord\Levels\Commands\DeleteRoleReward;
@@ -54,6 +56,7 @@ use App\Discord\OpenAi\Commands\GenerateImage;
 use App\Discord\Reaction\Commands\CreateReaction;
 use App\Discord\Reaction\Commands\DeleteReaction;
 use App\Discord\Reaction\Commands\ReactionIndex;
+use App\Discord\Reaction\Events\React;
 use App\Discord\Roles\Commands\AttachRolePermission;
 use App\Discord\Roles\Commands\AttachUserRole;
 use App\Discord\Roles\Commands\CreateRole;
@@ -95,20 +98,39 @@ class Bot
     private bool $devMode, $updateCommands, $deleteCommands;
 
     private array $events = [
-        VoiceStateUpdate::class,
-        DetectTimeouts::class,
-        MediaFilter::class,
-        StickerFilter::class,
-        KickAndBanCounter::class,
-        BumpCounter::class,
-        EmoteCounter::class,
-        MessageXpCounter::class,
-        VoiceXpCounter::class,
-        VoiceStateLogger::class,
-        GuildMemberLogger::class,
-        MessageLogger::class,
-        TimeoutLogger::class,
-        InviteLogger::class,
+        'levels' => [
+            VoiceStateUpdate::class,
+            MessageXpCounter::class,
+            VoiceXpCounter::class,
+        ],
+        'timeout' => [
+            DetectTimeouts::class,
+        ],
+        'bump' => [
+            BumpCounter::class,
+        ],
+        'channel-flags' => [
+            MediaFilter::class,
+            StickerFilter::class,
+        ],
+        'fun' => [
+            KickAndBanCounter::class,
+            EmoteCounter::class,
+            Reminder::class,
+        ],
+        'logger' => [
+            VoiceStateLogger::class,
+            GuildMemberLogger::class,
+            MessageLogger::class,
+            TimeoutLogger::class,
+            InviteLogger::class,
+        ],
+        'reactions' => [
+            React::class,
+        ],
+        'custom-commands' => [
+            CommandResponse::class,
+        ]
     ];
 
     private array $devCommands = [
@@ -244,9 +266,13 @@ class Bot
      */
     private function loadEvents(): void
     {
-        foreach ($this->events as $class) {
-            $instance = new $class($this);
-            $instance->registerEvent();
+        foreach ($this->events as $category => $events) {
+            if (config("discord.modules.{$category}")) {
+                foreach ($events as $class) {
+                    $instance = new $class($this);
+                    $instance->registerEvent();
+                }
+            }
         }
     }
 
