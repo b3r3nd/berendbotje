@@ -21,8 +21,7 @@ abstract class SlashIndexCommand extends SlashCommand implements PaginationIndex
     /**
      * @var array
      *
-     * We keep track of the page offset per user because multiple people can press buttons and in the meantime other users
-     * can also retrieve pages and press buttons.
+     * We keep track of the page offset per user because people can press buttons and retrieve pages at the same time.
      */
     public array $offset = [];
     public int $perPage = 15;
@@ -31,11 +30,7 @@ abstract class SlashIndexCommand extends SlashCommand implements PaginationIndex
     /**
      * @var int
      *
-     * The user of the command is usually already available. However, when using interaction commands with buttons, I
-     * need to make sure to set the user to whoever last CLICKED a button, in order to show the right data. Not the
-     * last person which used the command (which is $this->getCommandUser()). This data is available in the button
-     * listener, but I cannot pass it directly through the getEmbed() function (which retrieves the actual data)
-     * since its rules are defined in the interface.
+     * The user who last clicked a button.
      */
     public int $lastUser = 0;
 
