@@ -3,6 +3,7 @@
 namespace App\Discord\Fun\Events;
 
 use App\Discord\Core\DiscordEvent;
+use App\Discord\Fun\Models\Abuser;
 use App\Discord\Settings\Models\Setting;
 use Discord\Builders\MessageBuilder;
 use Discord\Discord;
@@ -37,11 +38,18 @@ class Count extends DiscordEvent
                 $newCount = $count + 1;
 
 
-                if ($this->lastCount === $message->author->id) {
+                if(!(Abuser::where('discord_id', $message->author->id)->get())->isEmpty()) {
+                    $message->delete();
+                    return;
+                }
+
+                if ($this->lastCount === $message->author->id ) {
                     $message->react("❌");
                     return;
                 }
-                if ($number === 42) {
+
+                // 42 is always the right answer...
+                if ($number === 42 && $newCount !== 42) {
                     $message->react("🧠");
                     return;
                 }
@@ -50,6 +58,7 @@ class Count extends DiscordEvent
                     $count = 0;
                     $guild->setSetting(SettingEnum::CURRENT_COUNT->value, $count);
                     $message->react("❌");
+                    Abuser::create(['discord_id' => $message->author->id]);
                     $message->channel->sendMessage(MessageBuilder::new()->setContent("Wrong number.. reset to {$count}"));
                     return;
                 }
