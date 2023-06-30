@@ -50,7 +50,7 @@ return [
     ],
 
     'slash' => [
-        'abusers' => 'Show the user blacklist',
+        'blacklist' => 'Show the user blacklist',
         'block' => 'Add user to the blacklist',
         'unblock' => 'Remove user from the blacklist',
         'roles' => 'Show all roles in the server',

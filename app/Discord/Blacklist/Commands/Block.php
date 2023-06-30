@@ -14,7 +14,7 @@ class Block extends SlashCommand
 
     public function permission(): Permission
     {
-        return Permission::ABUSERS;
+        return Permission::BLACKLIST;
     }
 
     public function trigger(): string

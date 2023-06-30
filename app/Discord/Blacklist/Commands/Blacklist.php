@@ -9,12 +9,12 @@ use App\Discord\Roles\Enums\Permission;
 use Discord\Parts\Embed\Embed;
 use Discord\Parts\Interactions\Command\Option;
 
-class Abusers extends SlashIndexCommand
+class Blacklist extends SlashIndexCommand
 {
 
     public function permission(): Permission
     {
-        return Permission::ABUSERS;
+        return Permission::BLACKLIST;
     }
 
     public function trigger(): string
@@ -24,7 +24,7 @@ class Abusers extends SlashIndexCommand
 
     public function __construct()
     {
-        $this->description = __('bot.slash.abusers');
+        $this->description = __('bot.slash.blacklist');
         parent::__construct();
     }
 

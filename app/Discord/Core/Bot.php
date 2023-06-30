@@ -2,7 +2,7 @@
 
 namespace App\Discord\Core;
 
-use App\Discord\Blacklist\Commands\Abusers;
+use App\Discord\Blacklist\Commands\Blacklist;
 use App\Discord\Blacklist\Commands\Block;
 use App\Discord\Blacklist\Commands\Unblock;
 use App\Discord\Bump\Actions\BumpCounter;
@@ -147,7 +147,7 @@ class Bot
 
     private array $commands = [
         'blacklist' => [
-            Abusers::class,
+            Blacklist::class,
             Unblock::class,
             Block::class,
         ],
