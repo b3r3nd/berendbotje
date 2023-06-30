@@ -9,6 +9,7 @@ use App\Discord\Levels\Helpers\Helper;
 use App\Discord\Roles\Enums\Permission;
 use Discord\Parts\Embed\Embed;
 use Discord\Parts\Interactions\Command\Option;
+use Exception;
 
 class BumpStatistics extends SlashIndexCommand
 {
@@ -43,14 +44,16 @@ class BumpStatistics extends SlashIndexCommand
     }
 
 
+    /**
+     * @return Embed
+     * @throws Exception
+     */
     public function getEmbed(): Embed
     {
         $description = "";
         $this->total = Bump::byGuild($this->guildId)->count();
 
-        $builder = EmbedBuilder::create($this)
-            ->setTitle(__('bot.bump.title'))
-            ->setFooter(__('bot.bump.footer'));
+        $builder = EmbedBuilder::create($this, __('bot.bump.title'));
 
         if (strtolower($this->getOption('date-range')) === 'all-time') {
             foreach (Bump::byGuild($this->guildId)->groupBy('user_id')->orderBy('total', 'desc')->skip($this->getOffset($this->getLastUser()))->limit($this->perPage)->selectRaw('*, sum(count) as total')->get() as $index => $bumper) {

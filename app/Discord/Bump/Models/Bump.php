@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Bump extends Model
 {
-    protected $table = ['bumpers'];
+    protected $table = 'bumpers';
     protected $fillable = ['count', 'guild_id'];
 
 

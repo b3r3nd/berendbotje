@@ -3,6 +3,7 @@
 namespace App\Discord\Core\Builders;
 
 use App\Discord\Core\SlashCommand;
+use Discord\Discord;
 use Discord\Parts\Embed\Embed;
 use Exception;
 
@@ -27,6 +28,20 @@ class EmbedBuilder
     }
 
     /**
+     * @param Discord $discord
+     * @return Embed
+     * @throws Exception
+     */
+    public static function createForLog(Discord $discord): Embed
+    {
+        $embed = new Embed($discord);
+        $embed->setType('rich');
+        $embed->setColor(2303786);
+        $embed->setTimestamp();
+        return $embed;
+    }
+
+    /**
      * @param SlashCommand $command
      * @param string $title
      * @param string $description
@@ -36,7 +51,7 @@ class EmbedBuilder
     {
         $this->embed = new Embed($command->discord);
         $this->embed->setType('rich');
-        $this->embed->setColor(2067276);
+        $this->embed->setColor(2303786);
         $this->embed->setDescription($description);
         $this->embed->setTitle($title);
         $this->embed->setTimestamp();

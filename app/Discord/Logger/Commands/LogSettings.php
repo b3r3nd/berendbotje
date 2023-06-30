@@ -34,10 +34,7 @@ class LogSettings extends SlashCommand
      */
     public function action(): MessageBuilder
     {
-        $embedBuilder = EmbedBuilder::create($this)
-            ->setTitle(__('bot.logset.title'))
-            ->setFooter(__('bot.logset.footer'));
-
+        $embedBuilder = EmbedBuilder::create($this, __('bot.logset.title'));
         $description = "";
         foreach (LogSetting::byDiscordGuildId($this->guildId)->get() as $setting) {
             $value = $setting->value ? "On" : "Off";

@@ -50,12 +50,15 @@ class Help extends SlashCommand
             $option = $options->first();
             $roleCommands = [];
 
+            $embedBuilder = EmbedBuilder::create($this, $option->getLabel());
+            $embedBuilder->getEmbed()->setColor(2303786);
+
             if ($option->getLabel() === "Home") {
                 $embedBuilder = $this->getGeneralPage();
             }
 
             if ($option->getLabel() === "Roles") {
-                $embedBuilder = EmbedBuilder::create($this, $option->getLabel(), "The main Admin role cannot be deleted, permissions cannot be removed from the admin role and the role cannot be removed from the owner of the guild.");
+                $embedBuilder->setDescription("The main Admin role cannot be deleted, permissions cannot be removed from the admin role and the role cannot be removed from the owner of the guild.");
                 $roleCommands = [
                     ['cmd' => 'roles', 'usage' => '', 'desc' => 'Overview of all roles and their permissions'],
                     ['cmd' => 'permissions', 'usage' => '', 'desc' => 'Overview of all permissions'],
@@ -69,7 +72,7 @@ class Help extends SlashCommand
                 ];
             }
             if ($option->getLabel() === "Moderation") {
-                $embedBuilder = EmbedBuilder::create($this, $option->getLabel(), "Timeouts are automatically detected and saved, bans and kicks are only counted.");
+                $embedBuilder->setDescription("Timeouts are automatically detected and saved, bans and kicks are only counted.");
                 $roleCommands = [
                     ['cmd' => 'timeouts', 'usage' => '`<user_mention>`', 'desc' => 'Show given timeout history or from a specific user'],
                     ['cmd' => 'modstats', 'usage' => '', 'desc' => 'Show moderator statistics'],
@@ -88,12 +91,12 @@ class Help extends SlashCommand
             }
 
             if ($option->getLabel() === "Levels") {
-                $embedBuilder = EmbedBuilder::create($this, $option->getLabel(), "The bot counts messages send by users and gives xp for each message, it also detects users in voice who are not muted and gives XP for time spend in voice. The amount of XP gained by each message, time spend in voice and the cooldown between messages can be changed with the `config` command see `help settings` for more info.\n Role rewards for users are synced whenever they send a message to the server. When removing or adding XP from users their roles will persist until they send a message.");
+                $embedBuilder->setDescription("The bot counts messages send by users and gives xp for each message, it also detects users in voice who are not muted and gives XP for time spend in voice. The amount of XP gained by each message, time spend in voice and the cooldown between messages can be changed with the `config` command see `help settings` for more info.\n Role rewards for users are synced whenever they send a message to the server. When removing or adding XP from users their roles will persist until they send a message.");
                 $roleCommands = [
                     ['cmd' => 'leaderboard', 'usage' => '', 'desc' => 'Show the leaderboard'],
                     ['cmd' => 'rank', 'usage' => '`<user_mention>`', 'desc' => 'Show level, xp and messages for you or another user'],
                     ['cmd' => 'givexp', 'usage' => '`<user_mention>` `<xp_amount>`', 'desc' => 'Give user xp'],
-                    ['cmd' => 'removexp', 'usage' => '`<user_mention> `<xp_amount>`', 'desc' => 'Remove user xp'],
+                    ['cmd' => 'removexp', 'usage' => '`<user_mention>` `<xp_amount>`', 'desc' => 'Remove user xp'],
                     ['cmd' => 'resetxp', 'usage' => '`<user_mention>`', 'desc' => 'Reset XP for user'],
                     ['cmd' => 'rewards', 'usage' => '', 'desc' => 'Show the role rewards for different levels'],
                     ['cmd' => 'addreward', 'usage' => '`<level>` `<role_id>`', 'desc' => 'Add a role reward to a level'],
@@ -102,7 +105,7 @@ class Help extends SlashCommand
             }
 
             if ($option->getLabel() === "Fun") {
-                $embedBuilder = EmbedBuilder::create($this, $option->getLabel(), "Some fun commands");
+                $embedBuilder->setDescription("Some fun commands");
                 $roleCommands = [
                     ['cmd' => 'cringecounter', 'usage' => '', 'desc' => 'Show who is most cringe..'],
                     ['cmd' => 'addcringe', 'usage' => '`<user_mention>`', 'desc' => 'Increase cringe counter'],
@@ -123,7 +126,7 @@ class Help extends SlashCommand
             }
 
             if ($option->getLabel() === "Settings") {
-                $embedBuilder = EmbedBuilder::create($this, $option->getLabel(), "All setting values are numeric, for booleans 0 = false, 1 = true. (`duration_in_voice` / `xp_voice_cooldown`) * `xp_voice_count` = Amount of XP gained, calculated on voice disconnect.");
+                $embedBuilder->setDescription("All setting values are numeric, for booleans 0 = false, 1 = true. (`duration_in_voice` / `xp_voice_cooldown`) * `xp_voice_count` = Amount of XP gained, calculated on voice disconnect.");
                 $roleCommands = [
                     ['cmd' => 'config', 'usage' => '', 'desc' => 'Show all config settings'],
                     ['cmd' => 'set', 'usage' => '`<setting_key>` `<setting_value>`', 'desc' => 'Update a setting'],
@@ -175,7 +178,7 @@ class Help extends SlashCommand
                 Enabled his webcam in voice
                 Disabled his webcam in voice";
 
-                $embedBuilder = EmbedBuilder::create($this, $option->getLabel(), $desc);
+                $embedBuilder->setDescription($desc);
                 $roleCommands = [
                     ['cmd' => 'logconfig', 'usage' => '', 'desc' => 'See the log config'],
                     ['cmd' => 'logset', 'usage' => '`<key>` `<value>`', 'desc' => 'Update a value in the log config'],
@@ -183,7 +186,7 @@ class Help extends SlashCommand
             }
 
             if ($option->getLabel() === "MentionResponder") {
-                $embedBuilder = EmbedBuilder::create($this, $option->getLabel(), "Small funny feature, when you tag the bot you will get a random reply from a list of mention replies. There are default replies, but you can also add your own replies based on certain roles in the server.");
+                $embedBuilder->setDescription("Small funny feature, when you tag the bot you will get a random reply from a list of mention replies. There are default replies, but you can also add your own replies based on certain roles in the server.");
                 $roleCommands = [
                     ['cmd' => 'replies', 'usage' => '`<group_id>`', 'desc' => 'Show all replies or filter by group'],
                     ['cmd' => 'groups', 'usage' => '', 'desc' => 'Show all groups'],
@@ -215,7 +218,7 @@ class Help extends SlashCommand
     public function getGeneralPage(): EmbedBuilder
     {
         $embedBuilder = EmbedBuilder::create($this, __('bot.help.title'), "Bot uses **only** slash commands. For more information see https://github.com/b3r3nd/berendbotje.");
-
+        $embedBuilder->getEmbed()->setColor(2303786);
         $embedBuilder->getEmbed()->addField(
             ['name' => 'Roles', 'value' => 'Managing roles and permissions'],
             ['name' => 'Settings', 'value' => 'Explains all the settings and values'],

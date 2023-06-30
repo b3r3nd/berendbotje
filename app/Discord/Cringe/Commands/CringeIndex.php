@@ -43,7 +43,6 @@ class CringeIndex extends SlashIndexCommand
         }
         return EmbedBuilder::create($this)
             ->setTitle(__('bot.cringe.title'))
-            ->setFooter(__('bot.cringe.footer'))
             ->setDescription(__('bot.cringe.description', ['users' => $description]))
             ->getEmbed();
     }

@@ -29,6 +29,7 @@ class Users extends SlashIndexCommand
     }
 
 
+
     /**
      * @throws Exception
      */
