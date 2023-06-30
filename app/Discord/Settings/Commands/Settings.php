@@ -7,6 +7,7 @@ use App\Discord\Core\SlashCommand;
 use App\Discord\Roles\Enums\Permission;
 use App\Discord\Settings\Models\Setting;
 use Discord\Builders\MessageBuilder;
+use App\Discord\Settings\Enums\Setting as SettingEnum;
 use Exception;
 
 class Settings extends SlashCommand
@@ -36,17 +37,25 @@ class Settings extends SlashCommand
     {
         $embedBuilder = EmbedBuilder::create($this, __('bot.set.title'));
 
+        $channels = [
+            SettingEnum::LOG_CHANNEL->value,
+            SettingEnum::BUMP_CHANNEL->value,
+            SettingEnum::REMINDER_CHANNEL->value,
+            SettingEnum::COUNT_CHANNEL->value,
+        ];
+
+        $roles = [
+            SettingEnum::BUMP_REMINDER_ROLE->value,
+            SettingEnum::REMINDER_ROLE->value,
+        ];
+
+
         $description = "";
         foreach (Setting::byDiscordGuildId($this->guildId)->get() as $setting) {
-            if ($setting->key === \App\Discord\Settings\Enums\Setting::LOG_CHANNEL->value) {
+            if (in_array($setting->key, $channels, true)) {
                 $description .= "**{$setting->key}** = <#{$setting->value}>\n";
-            } elseif ($setting->key === \App\Discord\Settings\Enums\Setting::BUMP_CHANNEL->value
-                || $setting->key === \App\Discord\Settings\Enums\Setting::REMINDER_CHANNEL->value) {
-                $description .= "**{$setting->key}** = <#{$setting->value}>\n";
-            } elseif ($setting->key === \App\Discord\Settings\Enums\Setting::BUMP_REMINDER_ROLE->value
-                || $setting->key === \App\Discord\Settings\Enums\Setting::REMINDER_ROLE->value) {
+            } elseif (in_array($setting->key, $roles, true)) {
                 $description .= "**{$setting->key}** = <@&{$setting->value}>\n";
-
             } else {
                 $description .= "**{$setting->key}** = {$setting->value}\n";
             }
