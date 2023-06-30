@@ -27,14 +27,14 @@ use Discord\Parts\Interactions\Interaction;
  */
 abstract class SlashCommand
 {
-    protected Bot $bot;
-    protected Discord $discord;
+    public Bot $bot;
+    public Discord $discord;
     protected Permission $permission;
     protected string $trigger;
     protected string $guildId = '';
     protected string $description;
     protected array $slashCommandOptions;
-    protected Interaction $interaction;
+    public Interaction $interaction;
 
     abstract public function permission(): Permission;
 
@@ -61,10 +61,10 @@ abstract class SlashCommand
         $command = new \Discord\Parts\Interactions\Command\Command($this->discord, $optionsArray);
         $this->discord->listenCommand($this->trigger, function (Interaction $interaction) {
             if ($interaction->guild_id === null) {
-                return $interaction->respondWithMessage(EmbedFactory::failedEmbed($this->discord,'Slash commands dont work in DM'));
+                return $interaction->respondWithMessage(EmbedFactory::failedEmbed($this,'Slash commands dont work in DM'));
             }
             if (!DiscordUser::hasPermission($interaction->member->id, $interaction->guild_id, $this->permission->value) && $this->permission->value !== Permission::NONE->value) {
-                return $interaction->respondWithMessage(EmbedFactory::lackAccessEmbed($this->discord, __("bot.lack-access")));
+                return $interaction->respondWithMessage(EmbedFactory::lackAccessEmbed($this, __("bot.lack-access")));
             }
             // Set some data so it is more easily accessible
             $this->guildId = $interaction->guild_id;

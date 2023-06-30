@@ -10,6 +10,7 @@ use App\Discord\Roles\Enums\Permission;
 use Discord\Builders\MessageBuilder;
 use Discord\Http\Exceptions\NoPermissionsException;
 use Discord\Parts\Interactions\Command\Option;
+use Exception;
 
 class IncreaseCringe extends SlashCommand
 {
@@ -39,7 +40,8 @@ class IncreaseCringe extends SlashCommand
     }
 
     /**
-     * @throws NoPermissionsException
+     * @return MessageBuilder
+     * @throws Exception
      */
     public function action(): MessageBuilder
     {
@@ -49,7 +51,7 @@ class IncreaseCringe extends SlashCommand
 
 
         if (in_array($user->discord_id, ['259461260645629953', '651378995245613056', '1034642309289091207'], true)) {
-            $user = DiscordUser::get($this->commandUser);
+            $user = DiscordUser::get($this->interaction->member->id);
             $fail = true;
         }
 
@@ -64,8 +66,8 @@ class IncreaseCringe extends SlashCommand
 
         $cringeCounter->refresh();
         if ($fail) {
-            return EmbedFactory::successEmbed($this->discord, __('bot.cringe.fail', ['name' => $user->tag(), 'count' => $cringeCounter->count]));
+            return EmbedFactory::successEmbed($this, __('bot.cringe.fail', ['name' => $user->tag(), 'count' => $cringeCounter->count]));
         }
-        return EmbedFactory::successEmbed($this->discord, __('bot.cringe.change', ['name' => $user->tag(), 'count' => $cringeCounter->count]));
+        return EmbedFactory::successEmbed($this, __('bot.cringe.change', ['name' => $user->tag(), 'count' => $cringeCounter->count]));
     }
 }

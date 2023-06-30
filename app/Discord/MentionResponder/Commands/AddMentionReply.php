@@ -9,6 +9,7 @@ use App\Discord\MentionResponder\Models\MentionReply;
 use App\Discord\Roles\Enums\Permission;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Command\Option;
+use Exception;
 
 class AddMentionReply extends SlashCommand
 {
@@ -22,6 +23,7 @@ class AddMentionReply extends SlashCommand
     {
         return 'addreply';
     }
+
     public function __construct()
     {
         $this->description = __('bot.slash.addreply');
@@ -43,17 +45,20 @@ class AddMentionReply extends SlashCommand
         parent::__construct();
     }
 
-
+    /**
+     * @return MessageBuilder
+     * @throws Exception
+     */
     public function action(): MessageBuilder
     {
         $guildModel = \App\Discord\Core\Models\Guild::get($this->guildId);
         $mentionGroup = MentionGroup::find($this->getOption('group_id'));
         if (!$mentionGroup) {
-             return EmbedFactory::failedEmbed($this->discord, __('bot.mention.no-group'));
+            return EmbedFactory::failedEmbed($this, __('bot.mention.no-group'));
         }
         $mentionGroup->replies()->save(new MentionReply(['reply' => $this->getOption('reply'), 'guild_id' => $guildModel->id]));
         $this->bot->getGuild($this->guildId)?->mentionResponder->loadReplies();
-        return EmbedFactory::successEmbed($this->discord, __('bot.mention.added', ['group' => $mentionGroup->name, 'reply' => $this->getOption('reply')]));
+        return EmbedFactory::successEmbed($this, __('bot.mention.added', ['group' => $mentionGroup->name, 'reply' => $this->getOption('reply')]));
 
     }
 }

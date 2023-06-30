@@ -53,7 +53,7 @@ class Help extends SlashCommand
             }
 
             if ($option->getLabel() === "Roles") {
-                $embedBuilder = EmbedBuilder::create($this->discord)
+                $embedBuilder = EmbedBuilder::create($this)
                     ->setTitle($option->getLabel())
                     ->setDescription("The main Admin role cannot be deleted, permissions cannot be removed from the admin role and the role cannot be removed from the owner of the guild.");
                 $embedBuilder->getEmbed()->addField(
@@ -69,7 +69,7 @@ class Help extends SlashCommand
                 );
             }
             if ($option->getLabel() === "Moderation") {
-                $embedBuilder = EmbedBuilder::create($this->discord)
+                $embedBuilder = EmbedBuilder::create($this)
                     ->setTitle($option->getLabel())
                     ->setDescription("Timeouts are automatically detected and saved, bans and kicks are only counted.");
                 $embedBuilder->getEmbed()->addField(
@@ -88,7 +88,7 @@ class Help extends SlashCommand
             }
 
             if ($option->getLabel() === "Levels") {
-                $embedBuilder = EmbedBuilder::create($this->discord)
+                $embedBuilder = EmbedBuilder::create($this)
                     ->setTitle($option->getLabel())
                     ->setDescription("The bot counts messages send by users and gives xp for each message, it also detects users in voice who are not muted and gives XP for time spend in voice. The amount of XP gained by each message, time spend in voice and the cooldown between messages can be changed with the `config` command see `help settings` for more info.\n Role rewards for users are synced whenever they send a message to the server. When removing or adding XP from users their roles will persist until they send a message.");
                 $embedBuilder->getEmbed()->addField(
@@ -105,7 +105,7 @@ class Help extends SlashCommand
             }
 
             if ($option->getLabel() === "Fun") {
-                $embedBuilder = EmbedBuilder::create($this->discord)
+                $embedBuilder = EmbedBuilder::create($this)
                     ->setTitle($option->getLabel())
                     ->setDescription("Some fun commands");
                 $embedBuilder->getEmbed()->addField(
@@ -129,7 +129,7 @@ class Help extends SlashCommand
             }
 
             if ($option->getLabel() === "Settings") {
-                $embedBuilder = EmbedBuilder::create($this->discord)
+                $embedBuilder = EmbedBuilder::create($this)
                     ->setTitle($option->getLabel())
                     ->setDescription("All setting values are numeric, for booleans 0 = false, 1 = true. (`duration_in_voice` / `xp_voice_cooldown`) * `xp_voice_count` = Amount of XP gained, calculated on voice disconnect.");
                 $embedBuilder->getEmbed()->addField(
@@ -181,7 +181,7 @@ class Help extends SlashCommand
                 Enabled his webcam in voice
                 Disabled his webcam in voice";
 
-                $embedBuilder = EmbedBuilder::create($this->discord)
+                $embedBuilder = EmbedBuilder::create($this)
                     ->setTitle($option->getLabel())
                     ->setDescription($desc);
                 $embedBuilder->getEmbed()->addField(
@@ -191,7 +191,7 @@ class Help extends SlashCommand
             }
 
             if ($option->getLabel() === "MentionResponder") {
-                $embedBuilder = EmbedBuilder::create($this->discord)
+                $embedBuilder = EmbedBuilder::create($this)
                     ->setTitle($option->getLabel())
                     ->setDescription("Small funny feature, when you tag the bot you will get a random reply from a list of mention replies. There are default replies, but you can also add your own replies based on certain roles in the server.");
                 $embedBuilder->getEmbed()->addField(
@@ -218,7 +218,7 @@ class Help extends SlashCommand
 
     public function getGeneralPage(): EmbedBuilder
     {
-        $embedBuilder = EmbedBuilder::create($this->discord)
+        $embedBuilder = EmbedBuilder::create($this)
             ->setTitle(__('bot.help.title'))
             ->setFooter(__('bot.help.footer'))
             ->setDescription("Bot uses **only** slash commands. For more information see https://github.com/b3r3nd/berendbotje.");

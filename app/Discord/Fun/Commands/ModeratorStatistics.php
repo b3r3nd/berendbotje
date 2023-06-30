@@ -8,6 +8,7 @@ use App\Discord\Core\Models\Guild;
 use App\Discord\Core\SlashCommand;
 use App\Discord\Roles\Enums\Permission;
 use Discord\Builders\MessageBuilder;
+use Exception;
 use Illuminate\Database\Eloquent\Builder;
 
 class ModeratorStatistics extends SlashCommand
@@ -36,11 +37,13 @@ class ModeratorStatistics extends SlashCommand
         })->get();
     }
 
+    /**
+     * @return MessageBuilder
+     * @throws Exception
+     */
     public function action(): MessageBuilder
     {
-        $embedBuilder = EmbedBuilder::create($this->discord)
-            ->setTitle(__('bot.adminstats.title'))
-            ->setFooter(__('bot.adminstats.footer'));
+        $embedBuilder = EmbedBuilder::create($this, __('bot.adminstats.title'));
         $description = __('bot.adminstats.description');
 
         $guild = Guild::get($this->guildId);

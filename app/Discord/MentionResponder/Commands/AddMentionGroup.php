@@ -10,6 +10,7 @@ use App\Discord\MentionResponder\Models\MentionGroup;
 use App\Discord\Roles\Enums\Permission;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Command\Option;
+use Exception;
 
 class AddMentionGroup extends SlashCommand
 {
@@ -55,11 +56,15 @@ class AddMentionGroup extends SlashCommand
         parent::__construct();
     }
 
+    /**
+     * @return MessageBuilder
+     * @throws Exception
+     */
     public function action(): MessageBuilder
     {
         $group = MentionGroup::create(['name' => $this->getOption('id'), 'guild_id' => Guild::get($this->guildId)->id]);
         (new UpdateMentionGroupAction($group, $this->interaction->data->options))->execute();
         $this->bot->getGuild($this->guildId)?->mentionResponder->loadReplies();
-        return EmbedFactory::successEmbed($this->discord, __('bot.mentiongroup.added', ['group' => $this->getOption('id')]));
+        return EmbedFactory::successEmbed($this, __('bot.mentiongroup.added', ['group' => $this->getOption('id')]));
     }
 }

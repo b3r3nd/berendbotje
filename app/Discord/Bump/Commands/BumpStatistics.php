@@ -48,7 +48,7 @@ class BumpStatistics extends SlashIndexCommand
         $description = "";
         $this->total = Bump::byGuild($this->guildId)->count();
 
-        $builder = EmbedBuilder::create($this->discord)
+        $builder = EmbedBuilder::create($this)
             ->setTitle(__('bot.bump.title'))
             ->setFooter(__('bot.bump.footer'));
 

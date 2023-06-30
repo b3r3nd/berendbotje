@@ -8,6 +8,7 @@ use App\Discord\Fun\Models\Emote;
 use App\Discord\Levels\Helpers\Helper;
 use App\Discord\Roles\Enums\Permission;
 use Discord\Parts\Embed\Embed;
+use Exception;
 
 class EmoteIndex extends SlashIndexCommand
 {
@@ -28,6 +29,10 @@ class EmoteIndex extends SlashIndexCommand
         parent::__construct();
     }
 
+    /**
+     * @return Embed
+     * @throws Exception
+     */
     public function getEmbed(): Embed
     {
         $this->total = Emote::byGuild($this->guildId)->count();
@@ -36,11 +41,7 @@ class EmoteIndex extends SlashIndexCommand
             $description .= Helper::indexPrefix($index, $this->getOffset($this->getLastUser()));
             $description .= "**{$emote->emote}** • {$emote->count} \n";
         }
-        return EmbedBuilder::create($this->discord)
-            ->setTitle(__('bot.emotes.title'))
-            ->setFooter(__('bot.emotes.footer'))
-            ->setDescription(__('bot.emotes.description', ['emotes' => $description]))
-            ->getEmbed();
+        return EmbedBuilder::create($this, __('bot.emotes.title'), __('bot.emotes.description', ['emotes' => $description]))->getEmbed();
     }
 
 }

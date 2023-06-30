@@ -10,6 +10,7 @@ use App\Discord\MentionResponder\Models\MentionReply;
 use App\Discord\Roles\Enums\Permission;
 use Discord\Parts\Embed\Embed;
 use Discord\Parts\Interactions\Command\Option;
+use Exception;
 
 class MentionIndex extends SlashIndexCommand
 {
@@ -40,6 +41,10 @@ class MentionIndex extends SlashIndexCommand
         parent::__construct();
     }
 
+    /**
+     * @return Embed
+     * @throws Exception
+     */
     public function getEmbed(): Embed
     {
         $this->perPage = 20;
@@ -55,10 +60,6 @@ class MentionIndex extends SlashIndexCommand
             $description .= "** {$mentionReply->id} ** - {$mentionReply->reply} \n";
         }
 
-        return EmbedBuilder::create($this->discord)
-            ->setTitle(__('bot.mention.title'))
-            ->setFooter(__('bot.mention.footer'))
-            ->setDescription(__('bot.mention.description', ['data' => $description]))
-            ->getEmbed();
+        return EmbedBuilder::create($this, __('bot.mention.title'), __('bot.mention.description', ['data' => $description]))->getEmbed();
     }
 }

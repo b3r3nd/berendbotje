@@ -9,6 +9,7 @@ use App\Discord\Reaction\Models\Reaction;
 use App\Discord\Roles\Enums\Permission;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Command\Option;
+use Exception;
 
 class DeleteReaction extends SlashCommand
 {
@@ -39,10 +40,11 @@ class DeleteReaction extends SlashCommand
 
     /**
      * @return MessageBuilder
+     * @throws Exception
      */
     public function action(): MessageBuilder
     {
         Reaction::where(['trigger' => $this->getOption('trigger'), 'guild_id' => Guild::get($this->guildId)->id])->delete();
-        return EmbedFactory::successEmbed($this->discord, __('bot.reactions.deleted', ['name' => $this->getOption('trigger')]));
+        return EmbedFactory::successEmbed($this, __('bot.reactions.deleted', ['name' => $this->getOption('trigger')]));
     }
 }

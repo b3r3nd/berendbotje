@@ -2,8 +2,9 @@
 
 namespace App\Discord\Core\Builders;
 
-use Discord\Discord;
+use App\Discord\Core\SlashCommand;
 use Discord\Parts\Embed\Embed;
+use Exception;
 
 /**
  * Embeds are used in almost every response, the builder helps is abstract some code :)
@@ -12,32 +13,34 @@ class EmbedBuilder
 {
     private Embed $embed;
 
+
     /**
-     * @param Discord $discord
+     * @param SlashCommand $command
      * @param string $title
-     * @param string $footer
      * @param string $description
      * @return EmbedBuilder
+     * @throws Exception
      */
-    public static function create(Discord $discord, string $title = '', string $footer = '', string $description = ''): EmbedBuilder
+    public static function create(SlashCommand $command, string $title = "", string $description = ""): EmbedBuilder
     {
-        return (new self($discord, $title, $footer, $description));
+        return (new self($command, $title, $description));
     }
 
     /**
-     * @param Discord $discord
+     * @param SlashCommand $command
      * @param string $title
-     * @param string $footer
      * @param string $description
+     * @throws Exception
      */
-    public function __construct(Discord $discord, string $title = '', string $footer = '', string $description = '')
+    public function __construct(SlashCommand $command, string $title = '', string $description = '')
     {
-        $this->embed = new Embed($discord);
+        $this->embed = new Embed($command->discord);
         $this->embed->setType('rich');
         $this->embed->setColor(2067276);
         $this->embed->setDescription($description);
         $this->embed->setTitle($title);
-        $this->embed->setFooter($footer);
+        $this->embed->setTimestamp();
+        $this->embed->setFooter($command->interaction->member->username, $command->interaction->member->user->avatar);
     }
 
     /**

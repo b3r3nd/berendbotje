@@ -8,6 +8,7 @@ use App\Discord\Levels\Helpers\Helper;
 use App\Discord\MentionResponder\Models\MentionGroup;
 use App\Discord\Roles\Enums\Permission;
 use Discord\Parts\Embed\Embed;
+use Exception;
 
 
 class MentionGroupIndex extends SlashIndexCommand
@@ -31,6 +32,7 @@ class MentionGroupIndex extends SlashIndexCommand
 
     /**
      * @return Embed
+     * @throws Exception
      */
     public function getEmbed(): Embed
     {
@@ -40,10 +42,6 @@ class MentionGroupIndex extends SlashIndexCommand
             $description .= Helper::getGroupName($mentionGroup);
         }
 
-        return EmbedBuilder::create($this->discord)
-            ->setTitle(__('bot.mentiongroup.title'))
-            ->setFooter(__('bot.mentiongroup.footer'))
-            ->setDescription(__('bot.mentiongroup.description', ['data' => $description]))
-            ->getEmbed();
+        return EmbedBuilder::create($this, __('bot.mentiongroup.title'), __('bot.mentiongroup.description', ['data' => $description]))->getEmbed();
     }
 }

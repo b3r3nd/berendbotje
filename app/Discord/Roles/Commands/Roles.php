@@ -7,6 +7,7 @@ use App\Discord\Core\SlashIndexCommand;
 use App\Discord\Roles\Enums\Permission;
 use App\Discord\Roles\Models\Role;
 use Discord\Parts\Embed\Embed;
+use Exception;
 
 class Roles extends SlashIndexCommand
 {
@@ -26,6 +27,9 @@ class Roles extends SlashIndexCommand
         parent::__construct();
     }
 
+    /**
+     * @throws Exception
+     */
     public function getEmbed(): Embed
     {
         $this->total = Role::byDiscordGuildId($this->guildId)->count();
@@ -37,10 +41,6 @@ class Roles extends SlashIndexCommand
             }
             $description .= "** {$role->name} **\n $perms\n\n";
         }
-        return EmbedBuilder::create($this->bot->discord)
-            ->setTitle(__('bot.roles.title'))
-            ->setFooter(__('bot.roles.footer'))
-            ->setDescription(__('bot.roles.description', ['roles' => $description]))
-            ->getEmbed();
+        return EmbedBuilder::create($this, __('bot.roles.title'), $description)->getEmbed();
     }
 }

@@ -50,6 +50,6 @@ class AttachRolePermission extends SlashCommand
 
     public function action(): MessageBuilder
     {
-        return (new SyncRolePermissionsAction($this->interaction->data->options, $this->discord, $this->guildId))->execute();
+        return (new SyncRolePermissionsAction($this, $this->interaction->data->options, $this->guildId))->execute();
     }
 }

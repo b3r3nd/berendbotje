@@ -8,6 +8,7 @@ use App\Discord\Roles\Enums\Permission;
 use App\Discord\Roles\Models\Role;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Command\Option;
+use Exception;
 
 class DeleteRole extends SlashCommand
 {
@@ -36,20 +37,24 @@ class DeleteRole extends SlashCommand
         parent::__construct();
     }
 
+    /**
+     * @return MessageBuilder
+     * @throws Exception
+     */
     public function action(): MessageBuilder
     {
         if (!Role::exists($this->guildId, $this->getOption('role_name'))) {
-             return EmbedFactory::failedEmbed($this->discord, __('bot.roles.not-exist', ['role' => $this->getOption('role_name')]));
+             return EmbedFactory::failedEmbed($this, __('bot.roles.not-exist', ['role' => $this->getOption('role_name')]));
         }
         if (!Role::get($this->guildId, $this->getOption('role_name'))->users->isEmpty()) {
-             return EmbedFactory::failedEmbed($this->discord, __('bot.roles.has-users'));
+             return EmbedFactory::failedEmbed($this, __('bot.roles.has-users'));
         }
         if (strtolower($this->getOption('role_name')) === 'admin') {
-             return EmbedFactory::failedEmbed($this->discord, __('bot.roles.admin-role'));
+             return EmbedFactory::failedEmbed($this, __('bot.roles.admin-role'));
         }
         $role = Role::get($this->guildId, $this->getOption('role_name'));
         $role->permissions()->detach();
         $role->delete();
-        return EmbedFactory::successEmbed($this->discord, __('bot.roles.deleted', ['role' => $this->getOption('role_name')]));
+        return EmbedFactory::successEmbed($this, __('bot.roles.deleted', ['role' => $this->getOption('role_name')]));
     }
 }

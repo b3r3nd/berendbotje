@@ -12,6 +12,7 @@ use App\Discord\Settings\Enums\Setting;
 use Discord\Builders\MessageBuilder;
 use Discord\Http\Exceptions\NoPermissionsException;
 use Discord\Parts\Interactions\Command\Option;
+use Exception;
 
 class UserRank extends SlashCommand
 {
@@ -42,28 +43,24 @@ class UserRank extends SlashCommand
     }
 
     /**
-     * @throws NoPermissionsException
+     * @return MessageBuilder
+     * @throws Exception
      */
     public function action(): MessageBuilder
     {
-
         if ($this->getOption('user_mention')) {
             $user = DiscordUser::get($this->getOption('user_mention'));
         } else {
-            $user = DiscordUser::get($this->commandUser);
+            $user = DiscordUser::get($this->interaction->member->id);
         }
 
         $guild = Guild::get($this->guildId);
-
         $messageCounters = $user->messageCounters()->where('guild_id', $guild->id)->get();
-
         if ($messageCounters->isEmpty()) {
-            return EmbedFactory::failedEmbed($this->discord, __('bot.xp.not-found', ['user' => $user->tag()]));
+            return EmbedFactory::failedEmbed($this, __('bot.xp.not-found', ['user' => $user->tag()]));
         }
 
         $messageCounter = $messageCounters->first();
-        $xpCount = $this->bot->getGuild($this->guildId)?->getSetting(Setting::XP_COUNT);
-
         $voice = $messageCounter->voice_seconds / 60;
         if ($voice >= 60) {
             $voice = round($voice / 60);
@@ -73,10 +70,9 @@ class UserRank extends SlashCommand
             $voice = "{$voice} minutes";
         }
 
-        return MessageBuilder::new()->addEmbed(EmbedBuilder::create($this->bot->discord)
+        return MessageBuilder::new()->addEmbed(EmbedBuilder::create($this)
             ->setDescription(__('bot.xp.description', ['user' => $user->tag(), 'messages' => $messageCounter->count, 'xp' => $messageCounter->xp, 'voice' => $voice, 'level' => $messageCounter->level]))
             ->setTitle(__('bot.xp.title', ['level' => $messageCounter->level, 'xp' => $messageCounter->xp]))
-            ->setFooter(__('bot.xp.footer', ['xp' => $xpCount]))
             ->getEmbed());
     }
 }

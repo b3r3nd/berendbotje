@@ -7,6 +7,7 @@ use App\Discord\Core\SlashIndexCommand;
 use App\Discord\Reaction\Models\Reaction;
 use App\Discord\Roles\Enums\Permission;
 use Discord\Parts\Embed\Embed;
+use Exception;
 
 class ReactionIndex extends SlashIndexCommand
 {
@@ -26,15 +27,15 @@ class ReactionIndex extends SlashIndexCommand
         parent::__construct();
     }
 
+    /**
+     * @return Embed
+     * @throws Exception
+     */
     public function getEmbed(): Embed
     {
         $this->total = Reaction::byGuild($this->guildId)->count();
         $this->perPage = 20;
-
-        $embedBuilder = EmbedBuilder::create($this->discord)
-            ->setTitle(__('bot.reactions.title'))
-            ->setFooter(__('bot.reactions.footer'))
-            ->setDescription(__('bot.reactions.description'));
+        $embedBuilder = EmbedBuilder::create($this, __('bot.reactions.title'), __('bot.reactions.description'));
         foreach (Reaction::byGuild($this->guildId)->skip($this->getOffset($this->getLastUser()))->limit($this->perPage)->get() as $reaction) {
             $embedBuilder->getEmbed()->addField(['name' => $reaction->trigger, 'value' => $reaction->reaction, 'inline' => true]);
         }

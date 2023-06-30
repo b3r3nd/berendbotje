@@ -7,6 +7,7 @@ use App\Discord\Core\Builders\EmbedBuilder;
 use App\Discord\Core\SlashIndexCommand;
 use App\Discord\Roles\Enums\Permission;
 use Discord\Parts\Embed\Embed;
+use Exception;
 
 class ChannelIndex extends SlashIndexCommand
 {
@@ -27,6 +28,10 @@ class ChannelIndex extends SlashIndexCommand
         parent::__construct();
     }
 
+    /**
+     * @return Embed
+     * @throws Exception
+     */
     public function getEmbed(): Embed
     {
         $this->total = Channel::byGuild($this->guildId)->count();
@@ -43,10 +48,6 @@ class ChannelIndex extends SlashIndexCommand
              **No Logging**: {$noLog}
             \n";
         }
-        return EmbedBuilder::create($this->discord)
-            ->setTitle(__('bot.channels.title'))
-            ->setFooter(__('bot.channels.footer'))
-            ->setDescription(__('bot.channels.description', ['channels' => $channels]))
-            ->getEmbed();
+        return EmbedBuilder::create($this, __('bot.channels.title'), __('bot.channels.description', ['channels' => $channels]))->getEmbed();
     }
 }

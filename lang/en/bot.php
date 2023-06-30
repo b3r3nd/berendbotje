@@ -131,6 +131,10 @@ return [
         'none' => ':user has no roles in this server',
     ],
 
+    'users' => [
+        'title' => 'Users for this server',
+    ],
+
     'roles' => [
         'title' => 'Roles for this server',
         'footer' => 'see help for more info',
