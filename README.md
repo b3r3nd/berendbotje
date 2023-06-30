@@ -198,19 +198,22 @@ Right now we have the following settings:
 * `enable_xp`  - enable the message xp system
 * `enable_voice_xp` - enable the voice xp system
 * `enable_emote_counter` - enable emote counters
-* `enable_role_rewards`  - enable role rewards for
+* `enable_role_rewards`  - enable role rewards for gaining levels
 * `enable_bump_counter` - enable bump counter
 * `enable_reactions` - enable custom reactions
 * `enable_commands` - enable custom commands
 * `enable_logging` - enable general logging
 * `log_channel_id` - set the channel ID where the log sends messages
-* `enable_bump_reminder` - enable 2 hour tag for people who want to bump the discord
+* `enable_bump_reminder` - enable reminder tag
 * `bump_reminder_role` - Role to be tagged for bump reminders
 * `bump_channel` - Channel where the bump reminders are tagged
 * `enable_mention_responder` - Enable the responses when you mention the bot
 * `enable_qotd_reminder` - Enable the role mention in set question of the day channel
 * `qotd_channel` - Channel to tag qotd role
-* `qotd_role` - Role to tag in qotd channel
+* `qotd_role` - Role to tag in qotd channel   
+* `current_count` - Current counter for counting channel
+* `enable_count` - Enable the counting channel
+* `count_channel` - Counting channel ID
 
 ## Logging
 

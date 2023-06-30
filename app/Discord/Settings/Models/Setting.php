@@ -3,6 +3,7 @@
 namespace App\Discord\Settings\Models;
 
 use App\Discord\Core\Models\Guild;
+use Database\Factories\SettingFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -11,6 +12,15 @@ class Setting extends Model
     use HasFactory;
 
     protected $fillable = ['key', 'value', 'guild_id'];
+
+
+    /**
+     * @return SettingFactory
+     */
+    protected static function newFactory(): SettingFactory
+    {
+        return SettingFactory::new();
+    }
 
     /**
      * @param string $key

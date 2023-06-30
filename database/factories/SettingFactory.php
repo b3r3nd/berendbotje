@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Discord\Settings\Models\Setting;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -9,6 +10,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class SettingFactory extends Factory
 {
+    protected $model = Setting::class;
     /**
      * Define the model's default state.
      *

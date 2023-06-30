@@ -77,6 +77,7 @@ class Guild
      * @param string $message
      * @param string $type
      * @return void
+     * @throws Exception
      */
     public function log(string $message, string $type = 'log'): void
     {

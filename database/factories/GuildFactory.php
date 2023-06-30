@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Discord\Core\Models\Guild;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -9,6 +10,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class GuildFactory extends Factory
 {
+    protected $model = Guild::class;
     /**
      * Define the model's default state.
      *

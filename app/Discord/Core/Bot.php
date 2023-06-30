@@ -23,6 +23,7 @@ use App\Discord\Fun\Commands\EightBall;
 use App\Discord\Fun\Commands\EmoteIndex;
 use App\Discord\Fun\Commands\ModeratorStatistics;
 use App\Discord\Fun\Commands\UrbanDictionary;
+use App\Discord\Fun\Events\Count;
 use App\Discord\Fun\Events\EmoteCounter;
 use App\Discord\Fun\Events\KickAndBanCounter;
 use App\Discord\Fun\Events\Reminder;
@@ -117,6 +118,7 @@ class Bot
             KickAndBanCounter::class,
             EmoteCounter::class,
             Reminder::class,
+            Count::class,
         ],
         'logger' => [
             VoiceStateLogger::class,
@@ -135,16 +137,9 @@ class Bot
 
     private array $devCommands = [
         Test::class,
-        Roles::class,
-        Permissions::class,
-        Users::class,
-        UserRoles::class,
-        AttachRolePermission::class,
-        DetachRolePermission::class,
-        CreateRole::class,
-        DeleteRole::class,
-        DetachUserRole::class,
-        AttachUserRole::class,
+        Help::class,
+        Settings::class,
+        UpdateSetting::class,
     ];
 
     private array $commands = [

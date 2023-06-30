@@ -24,4 +24,7 @@ enum Setting: string
     case ENABLE_REMINDER = 'enable_qotd_reminder';
     case REMINDER_CHANNEL = 'qotd_channel';
     case REMINDER_ROLE = 'qotd_role';
+    case COUNT_CHANNEL = 'count_channel';
+    case CURRENT_COUNT = 'current_count';
+    case ENABLE_COUNT = 'enable_count';
 }

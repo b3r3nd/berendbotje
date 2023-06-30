@@ -9,6 +9,8 @@ use App\Discord\Reaction\Models\Reaction;
 use App\Discord\Roles\Models\Role;
 use App\Discord\Settings\Models\Setting;
 use App\Models\MediaChannel;
+use Database\Factories\DiscordUserFactory;
+use Database\Factories\GuildFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -19,6 +21,15 @@ class Guild extends Model
     use HasFactory;
 
     protected $fillable = ['name', 'guild_id', 'owner_id'];
+
+
+    /**
+     * @return GuildFactory
+     */
+    protected static function newFactory(): GuildFactory
+    {
+        return GuildFactory::new();
+    }
 
     /**
      * @param string $guildId

@@ -11,6 +11,8 @@ use App\Discord\Levels\Models\UserXP;
 use App\Discord\Roles\Models\Role;
 use App\Discord\Roles\Scopes\PermissionScope;
 use App\Discord\Timeouts\Models\Timeout;
+use Carbon\Factory;
+use Database\Factories\DiscordUserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -22,6 +24,15 @@ class DiscordUser extends Model
 
     protected $table = 'discord_users';
     protected $fillable = ['discord_id'];
+
+
+    /**
+     * @return DiscordUserFactory
+     */
+    protected static function newFactory(): DiscordUserFactory
+    {
+        return DiscordUserFactory::new();
+    }
 
     /**
      * @param string $userId

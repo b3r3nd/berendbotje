@@ -36,6 +36,9 @@ class SettingsSeeder extends Seeder
             'enable_qotd_reminder' => true,
             'qotd_channel' => "",
             'qotd_role' => "",
+            'count_channel' => "",
+            'current_count' => 0,
+            'enable_count' => true,
         ];
 
         foreach (Guild::all() as $guild) {

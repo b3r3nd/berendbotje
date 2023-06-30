@@ -4,6 +4,8 @@ namespace App\Discord\Roles\Models;
 
 use App\Discord\Core\Models\DiscordUser;
 use App\Discord\Core\Models\Guild;
+use Database\Factories\GuildFactory;
+use Database\Factories\RoleFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -14,6 +16,15 @@ class Role extends Model
     use HasFactory;
 
     protected $fillable = ['name', 'guild_id', 'is_admin'];
+
+
+    /**
+     * @return RoleFactory
+     */
+    protected static function newFactory(): RoleFactory
+    {
+        return RoleFactory::new();
+    }
 
     /**
      * @param string $guildId
