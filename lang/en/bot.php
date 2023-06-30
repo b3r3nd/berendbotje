@@ -50,6 +50,9 @@ return [
     ],
 
     'slash' => [
+        'abusers' => 'Show the user blacklist',
+        'block' => 'Add user to the blacklist',
+        'unblock' => 'Remove user from the blacklist',
         'roles' => 'Show all roles in the server',
         'users' => 'Show all users with their roles',
         'permissions' => 'Show all available permissions',
@@ -104,6 +107,14 @@ return [
         'delreply' => 'Delete a new reply from a mention group',
         'searchreply ' => 'Search for a reply',
         'mentiongroups' => 'Mention responder group',
+    ],
+
+    'blacklist' => [
+        'title' => 'User Blacklist',
+        'block' => ":user added to blacklist.",
+        'unblock' => ":user had been deleted from the blacklist",
+        'blocked' => ':user is already on the blacklist',
+        'unblocked' => ':user is not on the blacklist'
     ],
 
     'channels' => [

@@ -2,14 +2,13 @@
 
 namespace App\Discord\Fun\Events;
 
+use App\Discord\Blacklist\Models\Abuser;
 use App\Discord\Core\DiscordEvent;
-use App\Discord\Fun\Models\Abuser;
-use App\Discord\Settings\Models\Setting;
+use App\Discord\Settings\Enums\Setting as SettingEnum;
 use Discord\Builders\MessageBuilder;
 use Discord\Discord;
 use Discord\Parts\Channel\Message;
 use Discord\WebSockets\Event;
-use App\Discord\Settings\Enums\Setting as SettingEnum;
 
 class Count extends DiscordEvent
 {
@@ -56,9 +55,10 @@ class Count extends DiscordEvent
 
                 if ($number !== $newCount) {
                     $count = 0;
+                    $this->lastCount = "";
                     $guild->setSetting(SettingEnum::CURRENT_COUNT->value, $count);
                     $message->react("❌");
-                    Abuser::create(['discord_id' => $message->author->id]);
+                    Abuser::create(['discord_id' => $message->author->id, 'guild_id' => $message->guild_id, 'reason' => "Can't count :)"]);
                     $message->channel->sendMessage(MessageBuilder::new()->setContent("Wrong number.. reset to {$count}"));
                     return;
                 }

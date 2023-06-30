@@ -2,6 +2,9 @@
 
 namespace App\Discord\Core;
 
+use App\Discord\Blacklist\Commands\Abusers;
+use App\Discord\Blacklist\Commands\Block;
+use App\Discord\Blacklist\Commands\Unblock;
 use App\Discord\Bump\Actions\BumpCounter;
 use App\Discord\Bump\Commands\BumpStatistics;
 use App\Discord\ChannelFlags\Commands\ChannelIndex;
@@ -140,6 +143,9 @@ class Bot
         Help::class,
         Settings::class,
         UpdateSetting::class,
+        Abusers::class,
+        Unblock::class,
+        Block::class,
     ];
 
     private array $commands = [
