@@ -9,6 +9,7 @@ use App\Discord\Core\SlashCommand;
 use App\Discord\Roles\Enums\Permission;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Command\Option;
+use Exception;
 
 class ResetXp extends SlashCommand
 {
@@ -37,6 +38,10 @@ class ResetXp extends SlashCommand
         parent::__construct();
     }
 
+    /**
+     * @return MessageBuilder
+     * @throws Exception
+     */
     public function action(): MessageBuilder
     {
         $user = DiscordUser::get($this->getOption('user_mention'));
@@ -44,10 +49,10 @@ class ResetXp extends SlashCommand
         $messageCounters = $user->messageCounters()->where('guild_id', $guild->id)->get();
 
         if ($messageCounters->isEmpty()) {
-             return EmbedFactory::failedEmbed($this->discord, __('bot.xp.not-exist', ['user' => $this->getOption('user_mention')]));
+             return EmbedFactory::failedEmbed($this, __('bot.xp.not-exist', ['user' => $this->getOption('user_mention')]));
         }
 
         $messageCounters->first()->delete();
-        return EmbedFactory::successEmbed($this->discord, __('bot.xp.reset', ['user' => $this->getOption('user_mention')]));
+        return EmbedFactory::successEmbed($this, __('bot.xp.reset', ['user' => $this->getOption('user_mention')]));
     }
 }

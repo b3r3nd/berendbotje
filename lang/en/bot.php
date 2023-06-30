@@ -17,7 +17,7 @@ return [
     'provide-mention' => 'This command requires a user to be mentioned',
     'lack-access' => 'You do not have permission to run this command. Use `/role` to check your roles in this server.',
     'error' => 'Error',
-    'done' => 'Done!',
+    'done' => 'Success',
     'media-deleted' => 'Your message in :channel has been deleted. Only media and URLs are allowed.',
     'no-term' => 'Enter a search term',
     'no-valid-term' => 'Search term :term cannot be found',
@@ -129,6 +129,10 @@ return [
         'footer' => 'See help for more info',
         'description' => "Roles for :user \n\n :roles",
         'none' => ':user has no roles in this server',
+    ],
+
+    'users' => [
+        'title' => 'Users for this server',
     ],
 
     'roles' => [

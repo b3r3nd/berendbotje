@@ -5,6 +5,7 @@ namespace App\Discord\Logger;
 use App\Discord\Core\Builders\EmbedBuilder;
 use Carbon\Carbon;
 use Discord\Discord;
+use Discord\Parts\Embed\Embed;
 use Discord\Parts\User\Member;
 use Discord\Parts\User\User;
 use Exception;
@@ -25,24 +26,23 @@ class Logger
     }
 
     /**
-     * @param $embedBuilder
+     * @param Embed $embed
      * @param $type
      * @return void
      */
-    private function sendEmbed($embedBuilder, $type): void
+    private function sendEmbed(Embed $embed, $type): void
     {
         if ($type === 'fail') {
-            $embedBuilder->setFailed();
+            $embed->setColor(15548997);
         } elseif ($type === 'success') {
-            $embedBuilder->setSuccess();
+            $embed->setColor(2067276);
         } elseif ($type === 'warning') {
-            $embedBuilder->setWarning();
+            $embed->setColor(15105570);
         } else {
-            $embedBuilder->setLog();
+            $embed->setColor(3447003);
         }
-
         $channel = $this->discord->getChannel($this->logChannelId);
-        $channel?->sendEmbed($embedBuilder->getEmbed());
+        $channel?->sendEmbed($embed);
     }
 
     /**
@@ -54,37 +54,27 @@ class Logger
      */
     public function logWithMember(Member|User $member, string $description, string $type): void
     {
-        $embedBuilder = EmbedBuilder::create($this->discord);
-
+        $embed = EmbedBuilder::createForLog($this->discord);
         if ($member instanceof Member) {
-            $embedBuilder->getEmbed()
-                ->setThumbnail($member->user->avatar)
-                ->setAuthor($member->user->displayname, $member->user->avatar);
+            $embed->setThumbnail($member->user->avatar)->setAuthor($member->user->displayname, $member->user->avatar);
         } else {
-            $embedBuilder->getEmbed()
-                ->setThumbnail($member->avatar)
-                ->setAuthor($member->displayname, $member->avatar);
+            $embed->setThumbnail($member->avatar)->setAuthor($member->displayname, $member->avatar);
         }
-
-        $embedBuilder->getEmbed()
-            ->setDescription($description)
-            ->setTimestamp();
-
-        $this->sendEmbed($embedBuilder, $type);
+        $embed->setDescription($description)->setTimestamp();
+        $this->sendEmbed($embed, $type);
     }
 
     /**
      * @param string $message
      * @param string $type
      * @return void
+     * @throws Exception
      */
     public function log(string $message, string $type): void
     {
-        $embedBuilder = EmbedBuilder::create($this->discord)
-            ->setDescription($message)
-            ->setFooter(Carbon::now()->toTimeString());
+        $embed = EmbedBuilder::createForLog($this->discord)->setDescription($message);
 
-        $this->sendEmbed($embedBuilder, $type);
+        $this->sendEmbed($embed, $type);
     }
 
     /**

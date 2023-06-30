@@ -8,6 +8,7 @@ use App\Discord\Core\SlashCommand;
 use App\Discord\Roles\Enums\Permission;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Command\Option;
+use Exception;
 use Illuminate\Support\Facades\Http;
 
 class UrbanDictionary extends SlashCommand
@@ -37,6 +38,10 @@ class UrbanDictionary extends SlashCommand
         parent::__construct();
     }
 
+    /**
+     * @return MessageBuilder
+     * @throws Exception
+     */
     public function action(): MessageBuilder
     {
         $response = Http::withHeaders([
@@ -46,10 +51,10 @@ class UrbanDictionary extends SlashCommand
 
 
         if (empty($response->json()['list'])) {
-             return EmbedFactory::failedEmbed($this->discord, __('bot.no-valid-term', ['term' => $this->getOption('search_term')]));
+             return EmbedFactory::failedEmbed($this, __('bot.no-valid-term', ['term' => $this->getOption('search_term')]));
         }
 
-        return MessageBuilder::new()->addEmbed(EmbedBuilder::create($this->discord)
+        return MessageBuilder::new()->addEmbed(EmbedBuilder::create($this)
             ->setFooter($response->json()['list'][0]['permalink'])
             ->setTitle($this->getOption('search_term'))
             ->setDescription($response->json()['list'][0]['definition'])->getEmbed());

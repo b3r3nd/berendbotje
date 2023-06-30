@@ -6,6 +6,7 @@ use App\Discord\Core\Builders\EmbedBuilder;
 use App\Discord\Core\SlashIndexCommand;
 use App\Discord\Roles\Enums\Permission;
 use Discord\Parts\Embed\Embed;
+use Exception;
 
 class CommandIndex extends SlashIndexCommand
 {
@@ -25,6 +26,10 @@ class CommandIndex extends SlashIndexCommand
         parent::__construct();
     }
 
+    /**
+     * @return Embed
+     * @throws Exception
+     */
     public function getEmbed(): Embed
     {
         $this->total = \App\Discord\CustomCommands\Models\Command::byGuild($this->guildId)->count();
@@ -32,10 +37,6 @@ class CommandIndex extends SlashIndexCommand
         foreach (\App\Discord\CustomCommands\Models\Command::byGuild($this->guildId)->skip($this->getOffset($this->getLastUser()))->limit($this->perPage)->get() as $command) {
             $commands .= "** {$command->trigger} ** - {$command->response}\n";
         }
-        return EmbedBuilder::create($this->discord)
-            ->setTitle(__('bot.cmd.title'))
-            ->setFooter(__('bot.cmd.footer'))
-            ->setDescription(__('bot.cmd.description', ['cmds' => $commands]))
-            ->getEmbed();
+        return EmbedBuilder::create($this, __('bot.cmd.title'), __('bot.cmd.description', ['cmds' => $commands]))->getEmbed();
     }
 }

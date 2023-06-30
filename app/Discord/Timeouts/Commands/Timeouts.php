@@ -9,6 +9,7 @@ use App\Discord\Timeouts\Helpers\TimeoutHelper;
 use App\Discord\Timeouts\Models\Timeout;
 use Discord\Parts\Embed\Embed;
 use Discord\Parts\Interactions\Command\Option;
+use Exception;
 
 class Timeouts extends SlashIndexCommand
 {
@@ -36,10 +37,14 @@ class Timeouts extends SlashIndexCommand
         parent::__construct();
     }
 
+    /**
+     * @return Embed
+     * @throws Exception
+     */
     public function getEmbed(): Embed
     {
         $this->perPage = 5;
-        if($this->getOption('user_mention')) {
+        if ($this->getOption('user_mention')) {
             $timeouts = Timeout::byGuild($this->guildId)->where(['discord_id' => $this->getOption('user_mention')])->skip($this->getOffset($this->getLastUser()))->limit($this->perPage)->orderBy('created_at', 'desc')->get();
             $this->total = Timeout::byGuild($this->guildId)->where(['discord_id' => $this->getOption('user_mention')])->count();
         } else {
@@ -47,9 +52,7 @@ class Timeouts extends SlashIndexCommand
             $this->total = Timeout::byGuild($this->guildId)->count();
         }
 
-        $embedBuilder = EmbedBuilder::create($this->discord)
-            ->setTitle(__('bot.timeout.title'))
-            ->setFooter(__('bot.timeout.footer'));
+        $embedBuilder = EmbedBuilder::create($this, __('bot.timeout.title'));
 
         $embed = $embedBuilder->getEmbed();
         $description = __('bot.timeout.count', ['count' => $this->total]) . "\n\n";

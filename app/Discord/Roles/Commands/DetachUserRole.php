@@ -10,6 +10,7 @@ use App\Discord\Roles\Enums\Permission;
 use App\Discord\Roles\Models\Role;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Command\Option;
+use Exception;
 
 class DetachUserRole extends SlashCommand
 {
@@ -44,20 +45,24 @@ class DetachUserRole extends SlashCommand
         parent::__construct();
     }
 
+    /**
+     * @return MessageBuilder
+     * @throws Exception
+     */
     public function action(): MessageBuilder
     {
         if (!Role::exists($this->guildId, $this->getOption('role_name'))) {
-             return EmbedFactory::failedEmbed($this->discord, __('bot.roles.not-exist', ['role' => $this->getOption('role_name')]));
+            return EmbedFactory::failedEmbed($this, __('bot.roles.not-exist', ['role' => $this->getOption('role_name')]));
         }
 
         if (strtolower($this->getOption('role_name')) === 'admin' && Guild::get($this->guildId)->owner->discord_id === $this->getOption('user_mention')) {
-             return EmbedFactory::failedEmbed($this->discord, __('bot.roles.admin-role-owner'));
+            return EmbedFactory::failedEmbed($this, __('bot.roles.admin-role-owner'));
         }
 
         $role = Role::get($this->guildId, $this->getOption('role_name'));
         $user = DiscordUser::get($this->getOption('user_mention'));
         $user->roles()->detach($role);
 
-        return EmbedFactory::successEmbed($this->discord, __('bot.roles.role-detached', ['role' => $role->name, 'user' => $user->tag()]));
+        return EmbedFactory::successEmbed($this, __('bot.roles.role-detached', ['role' => $role->name, 'user' => $user->tag()]));
     }
 }

@@ -8,6 +8,7 @@ use App\Discord\MentionResponder\Models\MentionGroup;
 use App\Discord\Roles\Enums\Permission;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Command\Option;
+use Exception;
 
 class DelMentionGroup extends SlashCommand
 {
@@ -37,12 +38,16 @@ class DelMentionGroup extends SlashCommand
         parent::__construct();
     }
 
+    /**
+     * @return MessageBuilder
+     * @throws Exception
+     */
     public function action(): MessageBuilder
     {
-        $mentionGroup = MentionGroup::find($this->arguments[0]);
+        $mentionGroup = MentionGroup::find($this->getOption('group_id'));
 
         if (!$mentionGroup) {
-             return EmbedFactory::failedEmbed($this->discord, __('bot.mentiongroup.not-found', ['id' => $this->getOption('group_id')]));
+            return EmbedFactory::failedEmbed($this, __('bot.mentiongroup.not-found', ['id' => $this->getOption('group_id')]));
         }
 
         $mentionGroup->replies()->delete();
@@ -50,6 +55,6 @@ class DelMentionGroup extends SlashCommand
 
         $this->bot->getGuild($this->guildId)?->mentionResponder->loadReplies();
 
-        return EmbedFactory::successEmbed($this->discord, __('bot.mentiongroup.deleted'));
+        return EmbedFactory::successEmbed($this, __('bot.mentiongroup.deleted'));
     }
 }

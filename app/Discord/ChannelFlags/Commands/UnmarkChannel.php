@@ -8,6 +8,7 @@ use App\Discord\Core\SlashCommand;
 use App\Discord\Roles\Enums\Permission;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Command\Option;
+use Exception;
 
 class UnmarkChannel extends SlashCommand
 {
@@ -48,9 +49,13 @@ class UnmarkChannel extends SlashCommand
         parent::__construct();
     }
 
+    /**
+     * @return MessageBuilder
+     * @throws Exception
+     */
     public function action(): MessageBuilder
     {
         (new FlagChannelAction($this->interaction->data->options, $this->guildId, false, $this->bot))->execute();
-        return EmbedFactory::successEmbed($this->discord, __('bot.channels.deleted', ['channel' => $this->getOption('channel'), 'flag' => $this->getOption('flag')]));
+        return EmbedFactory::successEmbed($this, __('bot.channels.deleted', ['channel' => $this->getOption('channel'), 'flag' => $this->getOption('flag')]));
     }
 }

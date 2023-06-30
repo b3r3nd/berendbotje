@@ -8,6 +8,7 @@ use App\Discord\Levels\Helpers\Helper;
 use App\Discord\Roles\Enums\Permission;
 use App\Discord\Settings\Enums\Setting;
 use Discord\Parts\Embed\Embed;
+use Exception;
 
 class Leaderboard extends SlashIndexCommand
 {
@@ -28,6 +29,10 @@ class Leaderboard extends SlashIndexCommand
         parent::__construct();
     }
 
+    /**
+     * @return Embed
+     * @throws Exception
+     */
     public function getEmbed(): Embed
     {
         $this->total = \App\Discord\Levels\Models\UserXP::byGuild($this->guildId)->count();
@@ -36,10 +41,6 @@ class Leaderboard extends SlashIndexCommand
             $description .= Helper::indexPrefix($index, $this->getOffset($this->getLastUser()));
             $description .= "Level **{$messageCounter->level}** • {$messageCounter->user->tag()} • {$messageCounter->xp} xp \n";
         }
-        return EmbedBuilder::create($this->bot->discord)
-            ->setTitle(__('bot.messages.title'))
-            ->setFooter(__('bot.messages.footer', ['xp' => $this->bot->getGuild($this->guildId)?->getSetting(Setting::XP_COUNT)]))
-            ->setDescription(__('bot.messages.description', ['users' => $description]))
-            ->getEmbed();
+        return EmbedBuilder::create($this, __('bot.messages.title'), __('bot.messages.description', ['users' => $description]))->getEmbed();
     }
 }

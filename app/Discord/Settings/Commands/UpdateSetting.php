@@ -8,6 +8,7 @@ use App\Discord\Roles\Enums\Permission;
 use App\Discord\Settings\Models\Setting;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Command\Option;
+use Exception;
 
 class UpdateSetting extends SlashCommand
 {
@@ -47,19 +48,23 @@ class UpdateSetting extends SlashCommand
         parent::__construct();
     }
 
+    /**
+     * @return MessageBuilder
+     * @throws Exception
+     */
     public function action(): MessageBuilder
     {
         $key = $this->getOption('setting_key');
         $value = $this->getOption('setting_value');
 
         if (!Setting::hasSetting($key, $this->guildId)) {
-            return EmbedFactory::failedEmbed($this->discord, __('bot.set.not-exist', ['key' => $key]));
+            return EmbedFactory::failedEmbed($this, __('bot.set.not-exist', ['key' => $key]));
         }
         if (!is_numeric($value)) {
-            return EmbedFactory::failedEmbed($this->discord, __('bot.set.not-numeric', ['value' => $value]));
+            return EmbedFactory::failedEmbed($this, __('bot.set.not-numeric', ['value' => $value]));
         }
 
         $this->bot->getGuild($this->guildId)?->setSetting($key, $value);
-        return EmbedFactory::successEmbed($this->discord, __('bot.set.updated', ['key' => $key, 'value' => $value]));
+        return EmbedFactory::successEmbed($this, __('bot.set.updated', ['key' => $key, 'value' => $value]));
     }
 }

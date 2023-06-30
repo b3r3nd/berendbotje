@@ -15,9 +15,11 @@ class React extends DiscordEvent
     public function registerEvent(): void
     {
         $this->discord->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) {
+            if (!$message->guild_id || $message->author->bot) {
+                return;
+            }
             $guild = $this->bot->getGuild($message->guild_id);
-
-            if ($message->author->bot || !$guild->getSetting(\App\Discord\Settings\Enums\Setting::ENABLE_REACTIONS)) {
+            if (!$guild->getSetting(\App\Discord\Settings\Enums\Setting::ENABLE_REACTIONS)) {
                 return;
             }
             $guild->model->refresh();

@@ -9,6 +9,7 @@ use App\Discord\Roles\Enums\Permission;
 use Discord\Builders\MessageBuilder;
 use Discord\Http\Exceptions\NoPermissionsException;
 use Discord\Parts\Interactions\Command\Option;
+use Exception;
 
 class DecreaseCringe extends SlashCommand
 {
@@ -38,7 +39,8 @@ class DecreaseCringe extends SlashCommand
     }
 
     /**
-     * @throws NoPermissionsException
+     * @return MessageBuilder
+     * @throws Exception
      */
     public function action(): MessageBuilder
     {
@@ -47,7 +49,7 @@ class DecreaseCringe extends SlashCommand
         $cringeCounters = $user->cringeCounters()->where('guild_id', $guildModel->id)->get();
 
         if ($cringeCounters->isEmpty()) {
-             return EmbedFactory::failedEmbed($this->discord, __('bot.cringe.not-cringe', ['name' => "<@{$this->getOption('user_mention')}>"]));
+             return EmbedFactory::failedEmbed($this, __('bot.cringe.not-cringe', ['name' => "<@{$this->getOption('user_mention')}>"]));
         }
 
         $cringeCounter = $cringeCounters->first();
@@ -59,6 +61,6 @@ class DecreaseCringe extends SlashCommand
             $cringeCounter->save();
         }
 
-        return EmbedFactory::successEmbed($this->discord, __('bot.cringe.change', ['name' => $user->tag(), 'count' => $count]));
+        return EmbedFactory::successEmbed($this, __('bot.cringe.change', ['name' => $user->tag(), 'count' => $count]));
     }
 }

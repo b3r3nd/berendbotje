@@ -8,6 +8,7 @@ use App\Discord\MentionResponder\Models\MentionReply;
 use App\Discord\Roles\Enums\Permission;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Command\Option;
+use Exception;
 
 class DelMentionReply extends SlashCommand
 {
@@ -37,14 +38,18 @@ class DelMentionReply extends SlashCommand
         parent::__construct();
     }
 
+    /**
+     * @return MessageBuilder
+     * @throws Exception
+     */
     public function action(): MessageBuilder
     {
         $mentionReply = MentionReply::find($this->getOption('reply'));
         if (!$mentionReply) {
-             return EmbedFactory::failedEmbed($this->discord, __('bot.mention.no-reply'));
+             return EmbedFactory::failedEmbed($this, __('bot.mention.no-reply'));
         }
         $mentionReply->delete();
         $this->bot->getGuild($this->guildId)?->mentionResponder->loadReplies();
-        return EmbedFactory::successEmbed($this->discord, __('bot.mention.deleted'));
+        return EmbedFactory::successEmbed($this, __('bot.mention.deleted'));
     }
 }

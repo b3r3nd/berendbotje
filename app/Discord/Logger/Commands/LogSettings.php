@@ -7,6 +7,7 @@ use App\Discord\Core\SlashCommand;
 use App\Discord\Logger\Models\LogSetting;
 use App\Discord\Roles\Enums\Permission;
 use Discord\Builders\MessageBuilder;
+use Exception;
 
 class LogSettings extends SlashCommand
 {
@@ -27,12 +28,13 @@ class LogSettings extends SlashCommand
         parent::__construct();
     }
 
+    /***
+     * @return MessageBuilder
+     * @throws Exception
+     */
     public function action(): MessageBuilder
     {
-        $embedBuilder = EmbedBuilder::create($this->discord)
-            ->setTitle(__('bot.logset.title'))
-            ->setFooter(__('bot.logset.footer'));
-
+        $embedBuilder = EmbedBuilder::create($this, __('bot.logset.title'));
         $description = "";
         foreach (LogSetting::byDiscordGuildId($this->guildId)->get() as $setting) {
             $value = $setting->value ? "On" : "Off";

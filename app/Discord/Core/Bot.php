@@ -135,6 +135,16 @@ class Bot
 
     private array $devCommands = [
         Test::class,
+        Roles::class,
+        Permissions::class,
+        Users::class,
+        UserRoles::class,
+        AttachRolePermission::class,
+        DetachRolePermission::class,
+        CreateRole::class,
+        DeleteRole::class,
+        DetachUserRole::class,
+        AttachUserRole::class,
     ];
 
     private array $commands = [

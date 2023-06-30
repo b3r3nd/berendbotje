@@ -6,6 +6,7 @@ use App\Discord\Core\Builders\EmbedBuilder;
 use App\Discord\Core\SlashIndexCommand;
 use App\Discord\Roles\Models\Permission;
 use Discord\Parts\Embed\Embed;
+use Exception;
 
 class Permissions extends SlashIndexCommand
 {
@@ -25,6 +26,10 @@ class Permissions extends SlashIndexCommand
         parent::__construct();
     }
 
+    /**
+     * @return Embed
+     * @throws Exception
+     */
     public function getEmbed(): Embed
     {
         $this->perPage = 30;
@@ -35,10 +40,6 @@ class Permissions extends SlashIndexCommand
             $description .= "`{$permission->name}` - {$label}\n";
         }
 
-        return EmbedBuilder::create($this->bot->discord)
-            ->setTitle(__('bot.permissions.title'))
-            ->setFooter(__('bot.permissions.footer'))
-            ->setDescription(__('bot.permissions.description', ['perms' => $description]))
-            ->getEmbed();
+        return EmbedBuilder::create($this, __('bot.permissions.title'), __('bot.permissions.description', ['perms' => $description]))->getEmbed();
     }
 }

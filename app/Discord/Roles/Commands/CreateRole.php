@@ -9,6 +9,7 @@ use App\Discord\Roles\Enums\Permission;
 use App\Discord\Roles\Models\Role;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Command\Option;
+use Exception;
 
 class CreateRole extends SlashCommand
 {
@@ -37,10 +38,14 @@ class CreateRole extends SlashCommand
         parent::__construct();
     }
 
+    /**
+     * @return MessageBuilder
+     * @throws Exception
+     */
     public function action(): MessageBuilder
     {
         if (Role::exists($this->guildId, $this->getOption('role_name'))) {
-             return EmbedFactory::failedEmbed($this->discord, __('bot.roles.exist'));
+            return EmbedFactory::failedEmbed($this, __('bot.roles.exist'));
         }
 
         $role = Role::create([
@@ -48,6 +53,6 @@ class CreateRole extends SlashCommand
             'guild_id' => Guild::get($this->guildId)->id,
         ]);
 
-        return EmbedFactory::successEmbed($this->discord, __('bot.roles.created', ['role' => $role->name]));
+        return EmbedFactory::successEmbed($this, __('bot.roles.created', ['role' => $role->name]));
     }
 }

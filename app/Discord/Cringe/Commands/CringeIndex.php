@@ -8,6 +8,7 @@ use App\Discord\Cringe\Models\CringeCounter;
 use App\Discord\Levels\Helpers\Helper;
 use App\Discord\Roles\Enums\Permission;
 use Discord\Parts\Embed\Embed;
+use Exception;
 
 class CringeIndex extends SlashIndexCommand
 {
@@ -27,6 +28,10 @@ class CringeIndex extends SlashIndexCommand
         parent::__construct();
     }
 
+    /**
+     * @return Embed
+     * @throws Exception
+     */
     public function getEmbed(): Embed
     {
         $this->total = CringeCounter::byGuild($this->guildId)->count();
@@ -36,9 +41,8 @@ class CringeIndex extends SlashIndexCommand
             $description .= Helper::indexPrefix($index, $this->getOffset($this->getLastUser()));
             $description .= "**{$cringeCounter->user->tag()}** • {$cringeCounter->count} \n";
         }
-        return EmbedBuilder::create($this->discord)
+        return EmbedBuilder::create($this)
             ->setTitle(__('bot.cringe.title'))
-            ->setFooter(__('bot.cringe.footer'))
             ->setDescription(__('bot.cringe.description', ['users' => $description]))
             ->getEmbed();
     }

@@ -7,6 +7,7 @@ use App\Discord\Core\SlashCommand;
 use App\Discord\Roles\Enums\Permission;
 use App\Discord\Settings\Models\Setting;
 use Discord\Builders\MessageBuilder;
+use Exception;
 
 class Settings extends SlashCommand
 {
@@ -27,11 +28,13 @@ class Settings extends SlashCommand
         parent::__construct();
     }
 
+    /**
+     * @return MessageBuilder
+     * @throws Exception
+     */
     public function action(): MessageBuilder
     {
-        $embedBuilder = EmbedBuilder::create($this->discord)
-            ->setTitle(__('bot.set.title'))
-            ->setFooter(__('bot.set.footer'));
+        $embedBuilder = EmbedBuilder::create($this, __('bot.set.title'));
 
         $description = "";
         foreach (Setting::byDiscordGuildId($this->guildId)->get() as $setting) {

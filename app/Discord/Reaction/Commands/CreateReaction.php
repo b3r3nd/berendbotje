@@ -8,6 +8,7 @@ use App\Discord\Reaction\Models\Reaction;
 use App\Discord\Roles\Enums\Permission;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Command\Option;
+use Exception;
 
 class CreateReaction extends SlashCommand
 {
@@ -44,11 +45,12 @@ class CreateReaction extends SlashCommand
 
     /**
      * @return MessageBuilder
+     * @throws Exception
      */
     public function action(): MessageBuilder
     {
         $reaction = Reaction::create(['trigger' => $this->getOption('trigger'), 'reaction' => $this->getOption('reaction'), 'guild_id' => \App\Discord\Core\Models\Guild::get($this->guildId)->id]);
         $reaction->save();
-        return EmbedFactory::successEmbed($this->discord, __('bot.reactions.saved', ['name' => $this->getOption('trigger'), 'reaction' => $this->getOption('reaction')]));
+        return EmbedFactory::successEmbed($this, __('bot.reactions.saved', ['name' => $this->getOption('trigger'), 'reaction' => $this->getOption('reaction')]));
     }
 }

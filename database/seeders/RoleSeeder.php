@@ -4,9 +4,9 @@ namespace Database\Seeders;
 
 use App\Discord\Core\Models\DiscordUser;
 use App\Discord\Core\Models\Guild;
-use App\Discord\Core\Scopes\PermissionScope;
 use App\Discord\Roles\Models\Permission;
 use App\Discord\Roles\Models\Role;
+use App\Discord\Roles\Scopes\PermissionScope;
 use Illuminate\Database\Seeder;
 
 class RoleSeeder extends Seeder

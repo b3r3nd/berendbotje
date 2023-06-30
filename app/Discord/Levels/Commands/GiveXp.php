@@ -8,6 +8,7 @@ use App\Discord\Levels\Actions\UpdateMessageCounterAction;
 use App\Discord\Roles\Enums\Permission;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Command\Option;
+use Exception;
 
 class GiveXp extends SlashCommand
 {
@@ -42,9 +43,13 @@ class GiveXp extends SlashCommand
         parent::__construct();
     }
 
+    /**
+     * @return MessageBuilder
+     * @throws Exception
+     */
     public function action(): MessageBuilder
     {
         (new UpdateMessageCounterAction($this->guildId, $this->getOption('user_mention'), $this->getOption('user_xp'), $this->bot))->execute();
-        return EmbedFactory::successEmbed($this->discord, __('bot.xp.given', ['user' => $this->getOption('user_mention'), 'xp' => $this->getOption('user_xp')]));
+        return EmbedFactory::successEmbed($this, __('bot.xp.given', ['user' => $this->getOption('user_mention'), 'xp' => $this->getOption('user_xp')]));
     }
 }
