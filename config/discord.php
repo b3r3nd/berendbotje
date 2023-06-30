@@ -22,5 +22,6 @@ return [
         'roles' => env('ENABLE_ROLES', true),
         'settings' => env('ENABLE_SETTINGS', true),
         'timeout' => env('ENABLE_TIMEOUT', true),
+        'blacklist' => env('ENABLE_BLACKLIST=TRUE', true)
     ],
 ];

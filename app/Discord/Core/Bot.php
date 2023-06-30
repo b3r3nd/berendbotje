@@ -143,12 +143,14 @@ class Bot
         Help::class,
         Settings::class,
         UpdateSetting::class,
-        Abusers::class,
-        Unblock::class,
-        Block::class,
     ];
 
     private array $commands = [
+        'blacklist' => [
+            Abusers::class,
+            Unblock::class,
+            Block::class,
+        ],
         'openai' => [
             GenerateImage::class,
         ],

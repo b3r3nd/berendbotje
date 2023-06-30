@@ -295,12 +295,6 @@ Commands to manage simple commands are:
 * **addcmd** `<command>` `<response>`
 * **delcmd** `<command>`
 
-## Emote Counter
-
-The bot counts both custom and default emotes! These can be retrieved by using:
-
-* **emotes**
-
 ## Timeout detection
 
 We are not satisfied with the audit log and how timeouts are displayed and
@@ -312,6 +306,14 @@ of timeouts + filter timeouts only for specific users.
 Commands to show timeouts are:
 
 * **timeouts** `<user_mention>` - All timeouts or those from a specific user
+
+## Blacklist
+Users can be put on a blacklist manually or automatically (more later).
+
+Commands:
+* **blacklist** - Show everyone on the blacklist
+* **block** `<user_mention` `<reason>` - Add someone to the blacklist
+* **unblock** `<user_mention>`  - Remove someone from the blacklist
 
 ## Moderator statistics
 
@@ -349,6 +351,12 @@ commands to use cringe is:
 * **addcringe** `<user>`
 * **delcringe** `<user>`
 * **cringecounter**
+
+## Emote Counter
+
+The bot counts both custom and default emotes! These can be retrieved by using:
+
+* **emotes**
 
 ## Mention Responder
 Small funny feature, when you tag the bot you will get a random reply from a list of mention replies. There are default
