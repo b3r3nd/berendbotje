@@ -10,6 +10,7 @@ use Discord\Builders\Components\SelectMenu;
 use Discord\Builders\MessageBuilder;
 use Discord\Helpers\Collection;
 use Discord\Parts\Interactions\Interaction;
+use Exception;
 
 class Help extends SlashCommand
 {
@@ -31,7 +32,7 @@ class Help extends SlashCommand
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function action(): MessageBuilder
     {
@@ -47,94 +48,87 @@ class Help extends SlashCommand
 
         $select->setListener(function (Interaction $interaction, Collection $options) {
             $option = $options->first();
+            $roleCommands = [];
 
             if ($option->getLabel() === "Home") {
                 $embedBuilder = $this->getGeneralPage();
             }
 
             if ($option->getLabel() === "Roles") {
-                $embedBuilder = EmbedBuilder::create($this)
-                    ->setTitle($option->getLabel())
-                    ->setDescription("The main Admin role cannot be deleted, permissions cannot be removed from the admin role and the role cannot be removed from the owner of the guild.");
-                $embedBuilder->getEmbed()->addField(
-                    ['name' => 'roles', 'value' => 'Overview of all roles and their permissions'],
-                    ['name' => 'permissions', 'value' => 'Overview of all permissions'],
-                    ['name' => 'role  `<user_mention>`', 'value' => 'See your roles or from another user'],
-                    ['name' => 'addrole `<role_name>`', 'value' => 'Add a new role'],
-                    ['name' => 'delrole `<role_name>`', 'value' => 'Delete a rol'],
-                    ['name' => 'addperm `<role_name>` `<perm_name>`', 'value' => 'Add permission(s) to a role'],
-                    ['name' => 'delperm `<role_name>` `<perm_name>`', 'value' => 'Remove permission(s) from a role'],
-                    ['name' => 'adduser `<user_mention>` `<role_name>`', 'value' => 'Add user to the given role'],
-                    ['name' => 'deluser `<user_mention>` `<role_name>`', 'value' => ' Remove user from given role'],
-                );
+                $embedBuilder = EmbedBuilder::create($this, $option->getLabel(), "The main Admin role cannot be deleted, permissions cannot be removed from the admin role and the role cannot be removed from the owner of the guild.");
+                $roleCommands = [
+                    ['cmd' => 'roles', 'usage' => '', 'desc' => 'Overview of all roles and their permissions'],
+                    ['cmd' => 'permissions', 'usage' => '', 'desc' => 'Overview of all permissions'],
+                    ['cmd' => 'role', 'usage' => '`<user_mention>`', 'desc' => 'See your roles or from another user'],
+                    ['cmd' => 'addrole', 'usage' => '`<role_name>`', 'desc' => 'Add a new role'],
+                    ['cmd' => 'delrole', 'usage' => '`<role_name>`', 'desc' => 'Delete a rol'],
+                    ['cmd' => 'addperm', 'usage' => '`<role_name>` `<perm_name>`', 'desc' => 'Add permission(s) to a role'],
+                    ['cmd' => 'delperm', 'usage' => '`<role_name>` `<perm_name>`', 'desc' => 'Remove permission(s) from a role'],
+                    ['cmd' => 'adduser', 'usage' => '`<user_mention>` `<role_name>`', 'desc' => 'Add user to the given role'],
+                    ['cmd' => 'deluser', 'usage' => '`<user_mention>` `<role_name>`', 'desc' => ' Remove user from given role'],
+                ];
             }
             if ($option->getLabel() === "Moderation") {
-                $embedBuilder = EmbedBuilder::create($this)
-                    ->setTitle($option->getLabel())
-                    ->setDescription("Timeouts are automatically detected and saved, bans and kicks are only counted.");
+                $embedBuilder = EmbedBuilder::create($this, $option->getLabel(), "Timeouts are automatically detected and saved, bans and kicks are only counted.");
+                $roleCommands = [
+                    ['cmd' => 'timeouts', 'usage' => '`<user_mention>`', 'desc' => 'Show given timeout history or from a specific user'],
+                    ['cmd' => 'modstats', 'usage' => '', 'desc' => 'Show moderator statistics'],
+                    ['cmd' => 'config', 'usage' => '', 'desc' => 'See server configuration'],
+                    ['cmd' => 'set', 'usage' => '`<setting_key>` `<new_value>`', 'desc' => 'Update server setting'],
+                    ['cmd' => 'channels', 'usage' => '', 'desc' => 'Shows a list of channels with their configured flags'],
+                    ['cmd' => 'markchannel', 'usage' => '`<channel>` `<flag>`', 'desc' => 'Mark a channel with one of the available flags'],
+                    ['cmd' => 'unmarkchannel', 'usage' => '`<channel>` `<flag>`', 'desc' => 'Unmark a channel with one of the available flags'],
+                    ['cmd' => 'commands', 'usage' => '', 'desc' => 'Show list of custom commands'],
+                    ['cmd' => 'addcmd', 'usage' => '`<command>` `<response>`', 'desc' => 'Remove a custom command'],
+                    ['cmd' => 'delcmd', 'usage' => '`<command>`', 'desc' => ''],
+                ];
                 $embedBuilder->getEmbed()->addField(
-                    ['name' => 'timeouts `<user_mention>`', 'value' => 'Show given timeout history or from a specific user'],
-                    ['name' => 'modstats', 'value' => 'Show moderator statistics'],
-                    ['name' => 'config', 'value' => 'See server configuration'],
-                    ['name' => 'set `<setting_key>` `<new_value>`', 'value' => ' Update server setting'],
-                    ['name' => 'channels', 'value' => 'Shows a list of channels with their configured flags'],
-                    ['name' => 'markchannel `<channel>` `<flag>`', 'value' => 'Mark a channel with one of the available flags'],
-                    ['name' => 'unmarkchannel `<channel>` `<flag>`', 'value' => ' Unmark a channel with one of the available flags'],
-                    ['name' => 'commands', 'value' => ' Show list of custom commands'],
-                    ['name' => 'addcmd  `<command>` `<response>`', 'value' => 'Add a custom command'],
-                    ['name' => 'delcmd  `<command>`', 'value' => 'Remove a custom command'],
                     ['name' => 'Channel flags', 'value' => "`no_xp` Users gain no XP in this channel \n `media_only` Channel allows only media and URLS. \n `no_stickers` Stickers will be removed from the chat \n `no_log` Message logging is disabled for this channel"],
                 );
             }
 
             if ($option->getLabel() === "Levels") {
-                $embedBuilder = EmbedBuilder::create($this)
-                    ->setTitle($option->getLabel())
-                    ->setDescription("The bot counts messages send by users and gives xp for each message, it also detects users in voice who are not muted and gives XP for time spend in voice. The amount of XP gained by each message, time spend in voice and the cooldown between messages can be changed with the `config` command see `help settings` for more info.\n Role rewards for users are synced whenever they send a message to the server. When removing or adding XP from users their roles will persist until they send a message.");
-                $embedBuilder->getEmbed()->addField(
-                    ['name' => 'leaderboard', 'value' => 'Show the leaderboard with highest ranking members at the top'],
-                    ['name' => 'rank', 'value' => 'Show your own level, xp, messages and time in voice'],
-                    ['name' => 'rank `<user_mention>`', 'value' => 'Show level, xp, messages and time in voice for another user'],
-                    ['name' => 'givexp `<user_mention>` `<xp_amount>`', 'value' => 'Give user xp'],
-                    ['name' => 'removexp `<user_mention> `<xp_amount>`', 'value' => 'Remove user xp'],
-                    ['name' => 'resetxp `<user_mention>`', 'value' => 'Reset XP for user'],
-                    ['name' => 'rewards', 'value' => 'Show the role rewards for different levels'],
-                    ['name' => 'addreward `<level>` `<role_id>`', 'value' => 'Add a role reward to a level'],
-                    ['name' => 'delreward `<level>`', 'value' => 'Delete role rewards from this level'],
-                );
+                $embedBuilder = EmbedBuilder::create($this, $option->getLabel(), "The bot counts messages send by users and gives xp for each message, it also detects users in voice who are not muted and gives XP for time spend in voice. The amount of XP gained by each message, time spend in voice and the cooldown between messages can be changed with the `config` command see `help settings` for more info.\n Role rewards for users are synced whenever they send a message to the server. When removing or adding XP from users their roles will persist until they send a message.");
+                $roleCommands = [
+                    ['cmd' => 'leaderboard', 'usage' => '', 'desc' => 'Show the leaderboard'],
+                    ['cmd' => 'rank', 'usage' => '`<user_mention>`', 'desc' => 'Show level, xp and messages for you or another user'],
+                    ['cmd' => 'givexp', 'usage' => '`<user_mention>` `<xp_amount>`', 'desc' => 'Give user xp'],
+                    ['cmd' => 'removexp', 'usage' => '`<user_mention> `<xp_amount>`', 'desc' => 'Remove user xp'],
+                    ['cmd' => 'resetxp', 'usage' => '`<user_mention>`', 'desc' => 'Reset XP for user'],
+                    ['cmd' => 'rewards', 'usage' => '', 'desc' => 'Show the role rewards for different levels'],
+                    ['cmd' => 'addreward', 'usage' => '`<level>` `<role_id>`', 'desc' => 'Add a role reward to a level'],
+                    ['cmd' => 'delreward', 'usage' => '`<level>`', 'desc' => 'Delete role rewards from this level'],
+                ];
             }
 
             if ($option->getLabel() === "Fun") {
-                $embedBuilder = EmbedBuilder::create($this)
-                    ->setTitle($option->getLabel())
-                    ->setDescription("Some fun commands");
-                $embedBuilder->getEmbed()->addField(
-                    ['name' => 'cringecounter', 'value' => 'Show who is most cringe..'],
-                    ['name' => 'addcringe `<user_mention>`', 'value' => 'Increase cringe counter'],
-                    ['name' => 'delcringe `<user_mention>`', 'value' => 'Decrease cringe counter'],
-                    ['name' => 'resetcringe `<user_mention>`', 'value' => 'Reset cringe counter'],
-                    ['name' => 'reactions', 'value' => ' Show list custom reactions'],
-                    ['name' => 'addreaction `<trigger>` `<emoji>`', 'value' => 'Add new reactions'],
-                    ['name' => 'delreaction `<trigger>`', 'value' => 'Delete a reaction'],
-                    ['name' => 'bumpstats `<date_range>`', 'value' => 'Show bumper elites leaderboard'],
-                    ['name' => 'emotes', 'value' => 'Shows scoreboard of most used emotes'],
-                    ['name' => 'leaderboard', 'value' => ' Shows leaderboard based on messages and xp gained'],
-                    ['name' => 'rank', 'value' => ' Shows your current rank, message counter and XP'],
-                    ['name' => 'urb `<search_term>` ', 'value' => ' Search something on urban dictionary'],
-                    ['name' => '8ball `<question>`', 'value' => 'Ask the magic 8ball'],
-                    ['name' => 'ask `<question>`', 'value' => 'Yes? No? Hmm..?'],
-                    ['name' => 'image `<term>`', 'value' => 'Generate an Image using OpenAI'],
-                );
-
+                $embedBuilder = EmbedBuilder::create($this, $option->getLabel(), "Some fun commands");
+                $roleCommands = [
+                    ['cmd' => 'cringecounter', 'usage' => '', 'desc' => 'Show who is most cringe..'],
+                    ['cmd' => 'addcringe', 'usage' => '`<user_mention>`', 'desc' => 'Increase cringe counter'],
+                    ['cmd' => 'delcringe', 'usage' => '`<user_mention>`', 'desc' => 'Decrease cringe counter'],
+                    ['cmd' => 'resetcringe', 'usage' => '`<user_mention>`', 'desc' => 'Reset cringe counter'],
+                    ['cmd' => 'reactions', 'usage' => '', 'desc' => 'Show list custom reactions'],
+                    ['cmd' => 'addreaction', 'usage' => '`<trigger>` `<emoji>`', 'desc' => 'Add new reactions'],
+                    ['cmd' => 'delreaction', 'usage' => '`<trigger>`', 'desc' => 'Delete a reaction'],
+                    ['cmd' => 'bumpstats', 'usage' => '`<date_range>`', 'desc' => 'Show bumper elites leaderboard'],
+                    ['cmd' => 'emotes', 'usage' => '', 'desc' => 'Shows scoreboard of most used emotes'],
+                    ['cmd' => 'leaderboard', 'usage' => '', 'desc' => 'Shows leaderboard based on messages and xp gained'],
+                    ['cmd' => 'rank', 'usage' => '', 'desc' => 'Shows your current rank, message counter and XP'],
+                    ['cmd' => 'urb', 'usage' => '`<search_term>`', 'desc' => 'Search something on urban dictionary'],
+                    ['cmd' => '8ball', 'usage' => '`<question>`', 'desc' => 'Ask the magic 8ball'],
+                    ['cmd' => 'ask', 'usage' => '`<question>`', 'desc' => 'Yes? No? Hmm..?'],
+                    ['cmd' => 'image', 'usage' => '`<term>`', 'desc' => 'Generate an Image using OpenAI'],
+                ];
             }
 
             if ($option->getLabel() === "Settings") {
-                $embedBuilder = EmbedBuilder::create($this)
-                    ->setTitle($option->getLabel())
-                    ->setDescription("All setting values are numeric, for booleans 0 = false, 1 = true. (`duration_in_voice` / `xp_voice_cooldown`) * `xp_voice_count` = Amount of XP gained, calculated on voice disconnect.");
+                $embedBuilder = EmbedBuilder::create($this, $option->getLabel(), "All setting values are numeric, for booleans 0 = false, 1 = true. (`duration_in_voice` / `xp_voice_cooldown`) * `xp_voice_count` = Amount of XP gained, calculated on voice disconnect.");
+                $roleCommands = [
+                    ['cmd' => 'config', 'usage' => '', 'desc' => 'Show all config settings'],
+                    ['cmd' => 'set', 'usage' => '`<setting_key>` `<setting_value>`', 'desc' => 'Update a setting'],
+                ];
                 $embedBuilder->getEmbed()->addField(
-                    ['name' => 'config', 'value' => 'Show all config settings'],
-                    ['name' => 'set `<setting_key>` `<setting_value>`', 'value' => 'Update a setting'],
                     ['name' => 'xp_count', 'value' => ' Amount of xp you gain per message'],
                     ['name' => 'xp_cooldown', 'value' => 'Cooldown between messages before gain `xp_count` again.'],
                     ['name' => 'xp__voice_count', 'value' => ' Amount of xp you gain in voice'],
@@ -181,47 +175,46 @@ class Help extends SlashCommand
                 Enabled his webcam in voice
                 Disabled his webcam in voice";
 
-                $embedBuilder = EmbedBuilder::create($this)
-                    ->setTitle($option->getLabel())
-                    ->setDescription($desc);
-                $embedBuilder->getEmbed()->addField(
-                    ['name' => 'logconfig', 'value' => 'See the log config'],
-                    ['name' => 'logset `<key>` `<value>`', 'value' => 'Update a value in the log config'],
-                );
+                $embedBuilder = EmbedBuilder::create($this, $option->getLabel(), $desc);
+                $roleCommands = [
+                    ['cmd' => 'logconfig', 'usage' => '', 'desc' => 'See the log config'],
+                    ['cmd' => 'logset', 'usage' => '`<key>` `<value>`', 'desc' => 'Update a value in the log config'],
+                ];
             }
 
             if ($option->getLabel() === "MentionResponder") {
-                $embedBuilder = EmbedBuilder::create($this)
-                    ->setTitle($option->getLabel())
-                    ->setDescription("Small funny feature, when you tag the bot you will get a random reply from a list of mention replies. There are default replies, but you can also add your own replies based on certain roles in the server.");
-                $embedBuilder->getEmbed()->addField(
-                    ['name' => 'replies', 'value' => 'Show all replies grouped by available categories'],
-                    ['name' => 'replies `<group_id>`', 'value' => 'Show all replies for a single group'],
-                    ['name' => 'groups', 'value' => 'Show all groups'],
-                    ['name' => 'addgroup `<discord_role>` `<user/role>` `<multiplier>`', 'value' => 'Add a group'],
-                    ['name' => 'updategroup `<id>` `<user/role>` `<multiplier>`', 'value' => 'Update a group'],
-                    ['name' => 'delgroup `<group_id>`', 'value' => 'Delete a group and its replies (!!!)'],
-                    ['name' => 'addreply `<group_id>` `<reply_line>`', 'value' => 'Add a reply to a group'],
-                    ['name' => 'delreply `<reply_id>`', 'value' => 'Delete a reply'],
-                );
+                $embedBuilder = EmbedBuilder::create($this, $option->getLabel(), "Small funny feature, when you tag the bot you will get a random reply from a list of mention replies. There are default replies, but you can also add your own replies based on certain roles in the server.");
+                $roleCommands = [
+                    ['cmd' => 'replies', 'usage' => '`<group_id>`', 'desc' => 'Show all replies or filter by group'],
+                    ['cmd' => 'groups', 'usage' => '', 'desc' => 'Show all groups'],
+                    ['cmd' => 'addgroup', 'usage' => '`<discord_role>` `<user/role>` `<multiplier>`', 'desc' => 'Add a group'],
+                    ['cmd' => 'updategroup', 'usage' => '`<id>` `<user/role>` `<multiplier>`', 'desc' => 'Update a group'],
+                    ['cmd' => 'delgroup', 'usage' => '`<group_id>`', 'desc' => 'Delete a group'],
+                    ['cmd' => 'addreply', 'usage' => '`<group_id>` `<reply_line>`', 'desc' => 'Add a reply to a group'],
+                    ['cmd' => 'delreply', 'usage' => '`<reply_id>`', 'desc' => 'Remove a reply'],
+                ];
             }
 
+            foreach ($roleCommands as $commandData) {
+                $cmd = $commandData['cmd'];
+                $command = $this->discord->application->commands->get('name', $cmd);
+                $commandName = $command ? "</{$cmd}:{$command->id}>" : "/{$cmd}";
+                $embedBuilder->getEmbed()->addField(['name' => $commandName . ' ' . $commandData['usage'], 'value' => $commandData['desc']]);
+            }
             $interaction->message->edit(MessageBuilder::new()->addEmbed($embedBuilder->getEmbed()));
-
         }, $this->discord);
 
-
         $embedBuilder = $this->getGeneralPage();
-
         return MessageBuilder::new()->addComponent($select)->addEmbed($embedBuilder->getEmbed());
     }
 
+    /**
+     * @return EmbedBuilder
+     * @throws Exception
+     */
     public function getGeneralPage(): EmbedBuilder
     {
-        $embedBuilder = EmbedBuilder::create($this)
-            ->setTitle(__('bot.help.title'))
-            ->setFooter(__('bot.help.footer'))
-            ->setDescription("Bot uses **only** slash commands. For more information see https://github.com/b3r3nd/berendbotje.");
+        $embedBuilder = EmbedBuilder::create($this, __('bot.help.title'), "Bot uses **only** slash commands. For more information see https://github.com/b3r3nd/berendbotje.");
 
         $embedBuilder->getEmbed()->addField(
             ['name' => 'Roles', 'value' => 'Managing roles and permissions'],
