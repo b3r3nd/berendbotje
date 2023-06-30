@@ -39,7 +39,7 @@ class MessageLogger extends DiscordEvent
             }
 
             if (isset($oldMessage) && $guild->getLogSetting(LogSetting::MESSAGE_UPDATED) && count($oldMessage->embeds) === count($message->embeds)) {
-                $desc = "Updated message in <#{$message->channel_id}>
+                $desc = "<@{$message->member->id}> updated message in <#{$message->channel_id}>
 
             **Old Message**
             {$oldMessage->content}
@@ -66,7 +66,7 @@ class MessageLogger extends DiscordEvent
                     return;
                 }
                 if ($guild->getLogSetting(LogSetting::MESSAGE_DELETED)) {
-                    $desc = "Message deleted in <#{$message->channel_id}>
+                    $desc = "<@{$message->member->id}> deleted message in <#{$message->channel_id}>
 
                 **Message**
                 {$message->content}";

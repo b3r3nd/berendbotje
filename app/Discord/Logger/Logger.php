@@ -56,9 +56,9 @@ class Logger
     {
         $embed = EmbedBuilder::createForLog($this->discord);
         if ($member instanceof Member) {
-            $embed->setThumbnail($member->user->avatar)->setAuthor($member->user->displayname, $member->user->avatar);
+            $embed->setThumbnail($member->user->avatar)->setAuthor($member->user->username, $member->user->avatar);
         } else {
-            $embed->setThumbnail($member->avatar)->setAuthor($member->displayname, $member->avatar);
+            $embed->setThumbnail($member->avatar)->setAuthor($member->username, $member->avatar);
         }
         $embed->setDescription($description)->setTimestamp();
         $this->sendEmbed($embed, $type);

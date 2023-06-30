@@ -15,10 +15,14 @@ class CommandResponse extends DiscordEvent
     public function registerEvent(): void
     {
         $this->discord->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) {
-            $guild = $this->bot->getGuild($message->guild_id);
-            if ($message->author->bot || !$guild->getSetting(\App\Discord\Settings\Enums\Setting::ENABLE_COMMANDS)) {
+            if ($message->author->bot || !$message->guild_id) {
                 return;
             }
+            $guild = $this->bot->getGuild($message->guild_id);
+            if (!$guild->getSetting(\App\Discord\Settings\Enums\Setting::ENABLE_COMMANDS)) {
+                return;
+            }
+
             $guild->model->refresh();
             foreach ($guild->model->commands as $command) {
                 if (strtolower($message->content) === strtolower($command->trigger)) {
