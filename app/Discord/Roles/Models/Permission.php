@@ -2,7 +2,7 @@
 
 namespace App\Discord\Roles\Models;
 
-use App\Discord\Core\Scopes\PermissionScope;
+use App\Discord\Roles\Scopes\PermissionScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 

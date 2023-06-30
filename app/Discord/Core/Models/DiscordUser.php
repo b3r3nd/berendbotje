@@ -4,12 +4,12 @@ namespace App\Discord\Core\Models;
 
 
 use App\Discord\Bump\Models\Bump;
-use App\Discord\Core\Scopes\PermissionScope;
 use App\Discord\Cringe\Models\CringeCounter;
 use App\Discord\Fun\Models\BanCounter;
 use App\Discord\Fun\Models\KickCounter;
 use App\Discord\Levels\Models\UserXP;
 use App\Discord\Roles\Models\Role;
+use App\Discord\Roles\Scopes\PermissionScope;
 use App\Discord\Timeouts\Models\Timeout;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
