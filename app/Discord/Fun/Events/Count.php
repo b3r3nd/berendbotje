@@ -59,9 +59,9 @@ class Count extends DiscordEvent
                 $guild->setSetting(SettingEnum::CURRENT_COUNT->value, $count);
 
                 $message->react("✅");
-            } //else {
-               // $message->delete();
-            //}
+            } else {
+                $message->delete();
+            }
         });
     }
 }
