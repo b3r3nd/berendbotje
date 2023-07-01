@@ -35,19 +35,18 @@ class ChannelIndex extends SlashIndexCommand
     public function getEmbed(): Embed
     {
         $this->total = Channel::byGuild($this->guildId)->count();
-        $channels = "";
+        $embedBuilder = EmbedBuilder::create($this, __('bot.channels.title'));
+
         foreach (Channel::byGuild($this->guildId)->skip($this->getOffset($this->getLastUser()))->limit($this->perPage)->get() as $channel) {
             $media = $channel->media_only ? 'On' : 'Off';
             $xp = $channel->no_xp ? 'On' : 'Off';
             $stickers = $channel->no_stickers ? 'On' : 'Off';
             $noLog = $channel->no_log ? 'On' : 'Off';
-            $channels .= "** <#{$channel->channel_id}> **
-            **Media only**: {$media}
-            **No XP**: {$xp}
-            **No Stickers**: {$stickers}
-             **No Logging**: {$noLog}
-            \n";
+            $description = "<#{$channel->channel_id}> \n **Media only**: {$media} \n **No XP**: {$xp} \n **No Stickers**: {$stickers} \n **No Logging**: {$noLog}";
+            $embedBuilder->getEmbed()->addField(
+                ['name' => "", 'value' => $description, 'inline' => true],
+            );
         }
-        return EmbedBuilder::create($this, __('bot.channels.title'), __('bot.channels.description', ['channels' => $channels]))->getEmbed();
+        return $embedBuilder->getEmbed();
     }
 }

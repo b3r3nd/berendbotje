@@ -93,12 +93,4 @@ class Guild extends Model
     {
         return $this->hasMany(LogSetting::class);
     }
-
-    /**
-     * @return HasMany
-     */
-    public function mediaChannels(): HasMany
-    {
-        return $this->hasMany(MediaChannel::class);
-    }
 }
