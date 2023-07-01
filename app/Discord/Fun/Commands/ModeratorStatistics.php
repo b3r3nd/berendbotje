@@ -57,9 +57,6 @@ class ModeratorStatistics extends SlashCommand
             $kicks = $moderator->kickCounters->where('guild_id', $guild->id)->first()->count ?? 0;
             $description = "{$moderator->tag()} \n **Kicks**: {$kicks} \n **Bans**: {$bans} \n **Timeouts**: {$moderator->givenTimeouts->count()}";
 
-
-
-
             $embedBuilder->getEmbed()->addField(
                 ['name' => "", 'value' => $description, 'inline' => true],
             );
