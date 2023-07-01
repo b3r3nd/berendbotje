@@ -61,14 +61,19 @@ abstract class SlashCommand
         $command = new \Discord\Parts\Interactions\Command\Command($this->discord, $optionsArray);
         $this->discord->listenCommand($this->trigger, function (Interaction $interaction) {
             $this->interaction = $interaction;
+
             if ($interaction->guild_id === null) {
-                return $interaction->respondWithMessage(EmbedFactory::failedEmbed($this,'Slash commands dont work in DM'));
+                return $interaction->respondWithMessage(EmbedFactory::failedEmbed($this, 'Slash commands dont work in DM'));
             }
+            $this->guildId = $interaction->guild_id;
+            $guild = $this->bot->getGuild($interaction->guild_id);
+
             if (!DiscordUser::hasPermission($interaction->member->id, $interaction->guild_id, $this->permission->value) && $this->permission->value !== Permission::NONE->value) {
+                $guild->logWithMember($interaction->member, "Failed to use {$this->trigger}, lacks permission.", 'fail');
                 return $interaction->respondWithMessage(EmbedFactory::lackAccessEmbed($this, __("bot.lack-access")));
             }
-            // Set some data so it is more easily accessible
-            $this->guildId = $interaction->guild_id;
+
+            $guild->logWithMember($interaction->member, "Used {$this->trigger}", 'success');
             return $interaction->respondWithMessage($this->action());
         });
         $this->discord->application->commands->save($command);
