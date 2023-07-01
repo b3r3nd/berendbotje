@@ -7,6 +7,7 @@ use App\Discord\Core\SlashIndexCommand;
 use App\Discord\Moderation\Models\Abuser;
 use App\Discord\Roles\Enums\Permission;
 use Discord\Parts\Embed\Embed;
+use Exception;
 
 class Blacklist extends SlashIndexCommand
 {
@@ -28,6 +29,10 @@ class Blacklist extends SlashIndexCommand
     }
 
 
+    /**
+     * @return Embed
+     * @throws Exception
+     */
     public function getEmbed(): Embed
     {
         $this->total = Abuser::byDiscordGuildId($this->guildId)->count();

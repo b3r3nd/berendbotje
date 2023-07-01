@@ -55,7 +55,7 @@ class EmbedBuilder
         $this->embed->setDescription($description);
         $this->embed->setTitle($title);
         $this->embed->setTimestamp();
-        $this->embed->setFooter($command->interaction->member->username, $command->interaction->member->user->avatar);
+        $this->embed->setFooter($command->interaction?->member->username, $command->interaction?->member->user->avatar);
     }
 
     /**
