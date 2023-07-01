@@ -3,9 +3,9 @@
 namespace App\Discord\Levels\Events;
 
 use App\Discord\Core\DiscordEvent;
+use App\Discord\Core\Enums\Setting;
 use App\Discord\Levels\Actions\SyncRoleRewardsAction;
 use App\Discord\Levels\Actions\UpdateMessageCounterAction;
-use App\Discord\Settings\Enums\Setting;
 use Carbon\Carbon;
 use Discord\Discord;
 use Discord\Parts\Channel\Message;

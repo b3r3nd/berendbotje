@@ -4,15 +4,15 @@ is now able to run on multiple servers. This project is still a work in progress
 completely user-friendly. Even though it is a general purpose discord bot, I try to add on top what discord already
 offers instead of replacing functionality entirely.
 
-If you have questions DM me directly by my discord tag: `drerrievandebuurt`.
+Check the `/help` command in discord or if you have questions DM me directly by my discord tag: `drerrievandebuurt`.
 
 Special thanks to:
 - Angel for writing most of the Skyrim lines used in the MentionResponder.
 - Richard for bug testing.
 - Ricardo for working out ideas to implement.
-- Justin & Stefan for mental support.
+- Justin & Stefan for ideas mental support.
 
-## Installing
+# Installing
 1. Download this repo and install al its dependencies with `composer install`
 2. Create your env file `mv .env.example .env` and fill in database credentials and bot/api tokens
 3. You can edit the `GuildSeeder` and `DiscordUsersSeeder` to add your discord account and server.
@@ -55,20 +55,14 @@ class GuildSeeder extends Seeder
 5. Check the env file for any settings you want to change. Commands can be disabled for specific guilds by using its config in discord. However, you can disable parts of the bot entirely here, the commands will not be loaded.
 
 ```
-ENABLE_BUMP=TRUE
-ENABLE_CHANNEL_FLAGS=TRUE
-ENABLE_CRINGE=TRUE
-ENABLE_CUSTOM_COMMANDS=TRUE
 ENABLE_FUN=TRUE
-ENABLE_HELP=TRUE
 ENABLE_LEVELS=TRUE
 ENABLE_LOGGER=TRUE
 ENABLE_MENTION_RESPONDER=TRUE
-ENABLE_OPENAI=TRUE
-ENABLE_REACTIONS=TRUE
 ENABLE_ROLES=TRUE
 ENABLE_SETTINGS=TRUE
-ENABLE_TIMEOUT=TRUE
+ENABLE_MOD=TRUE
+ENABLE_HELP=TRUE
 ```
 6. Also make sure to fill in any tokens and hosts if you wish to use the corresponding commands:
 ```
@@ -128,16 +122,12 @@ roles.
 * `del_mention`
 * `manage_mention_group`
 * `openai`
+* `abusers`
 
 ### Default Roles
 
 * **Admin**
-    * All permissions
 * **Moderator**
-    * `timeouts`
-    * `channels`
-    * `commands`
-    * `reactions`
 
 ### Commands
 
@@ -198,19 +188,22 @@ Right now we have the following settings:
 * `enable_xp`  - enable the message xp system
 * `enable_voice_xp` - enable the voice xp system
 * `enable_emote_counter` - enable emote counters
-* `enable_role_rewards`  - enable role rewards for
+* `enable_role_rewards`  - enable role rewards for gaining levels
 * `enable_bump_counter` - enable bump counter
 * `enable_reactions` - enable custom reactions
 * `enable_commands` - enable custom commands
 * `enable_logging` - enable general logging
 * `log_channel_id` - set the channel ID where the log sends messages
-* `enable_bump_reminder` - enable 2 hour tag for people who want to bump the discord
+* `enable_bump_reminder` - enable reminder tag
 * `bump_reminder_role` - Role to be tagged for bump reminders
 * `bump_channel` - Channel where the bump reminders are tagged
 * `enable_mention_responder` - Enable the responses when you mention the bot
 * `enable_qotd_reminder` - Enable the role mention in set question of the day channel
 * `qotd_channel` - Channel to tag qotd role
-* `qotd_role` - Role to tag in qotd channel
+* `qotd_role` - Role to tag in qotd channel   
+* `current_count` - Current counter for counting channel
+* `enable_count` - Enable the counting channel
+* `count_channel` - Counting channel ID
 
 ## Logging
 
@@ -251,7 +244,10 @@ You can enable/disable each event in the log config:
 * **logconfig** - Look at the log config
 * **logset** `key` `value` - Enable or disable one of the events
 
-## Channels
+## Moderation
+We have some commands which can help moderate the server, or improve other things!
+
+### Channels
 
 You can set flags for channels, the no_xp flag can also be used for voice channels! For now there are four flags you can use:
 
@@ -260,101 +256,29 @@ You can set flags for channels, the no_xp flag can also be used for voice channe
 * `no_stickers` - Stickers will be removed from the chat
 * `no_log` - Message logging is disabled for this channel
 
-### Commands
-
 * **channels**
 * **markchannel** `channel` `flag`
 * **unmarkchannel** `channel` `flag`
 
-## Reactions
-
-Certain strings can be added to the bot and when those strings are detected
-in a message the bot will add a reaction to the message with a set emote. These
-reactions can be added, removed and viewed with commands so nothing needs to be
-done in code.
-
-Commands to manage reactions are:
-
-* **reactions**
-* **addreaction** `<word_trigger` `<reaction_emote>`
-* **delreaction** `<word_trigger`
-
-## Simple commands
-
-Simple commands such as $ping -> response pong can be added in discord as well.
-Same as with the reactions you can add and remove and view as many as you like
-without the necessity to enter any code. By default, these command triggers do not include the bot
-prefix, so if you want to trigger on prefix you need to include the bot prefix in the command.
-
-Commands to manage simple commands are:
-
-* **commands**
-* **addcmd** `<command>` `<response>`
-* **delcmd** `<command>`
-
-## Emote Counter
-
-The bot counts both custom and default emotes! These can be retrieved by using:
-
-* **emotes**
-
-## Timeout detection
-
+### Timeout detection
 We are not satisfied with the audit log and how timeouts are displayed and
 filtered. It is not easy to quickly look up how often somebody has been timed
 out, for what reason and how long. Every timeout is automatically saved
 in the database including the reason and duration. We can easily see a history
 of timeouts + filter timeouts only for specific users.
 
-Commands to show timeouts are:
-
 * **timeouts** `<user_mention>` - All timeouts or those from a specific user
 
-## Moderator statistics
+### Blacklist
+People can be put on a blacklist manually or automatically.
 
-The bot counts timeouts bans and kicks for moderators with more than 500 access to the bot! More will be added
-in the future.
-
-* **modstats**
-
-## Bump Counter & Reminder
-
-We use a bot to add our discord server to an external website, once every
-2 hours you can use this bot to get back on the front page. Its fun to keep track of who does
-this the most!
-
-Command to view the bump statistics is
-
-* **bumpcounter** `time-range` • You can see bumps of all time, or only for this month. Monthly bumps are the statistics for who gets the bumper elite role!
-
-In order to make the bump reminder work, you need to set the following 3 settings:
-* `enable_bump_reminder` - Enable 2 hour tag for people who want to bump the discord
-* `bump_reminder_role` - Role to be tagged for bump reminders
-* `bump_channel` - Channel where the bump reminders are tagged
-
-Use the `set` command for it, setting names will be preloaded for you to pick from using the slash commands.
-
-## Cringe Counter
-
-Sometimes people on discord can be quite cringe, some more than others.
-We can add cringe counters to member to see who makes the most cringe
-comments. Just a funny little feature! You can only add and delete a single cringe
-at the time. No deleting everything at once!
-
-commands to use cringe is:
-
-* **addcringe** `<user>`
-* **delcringe** `<user>`
-* **cringecounter**
+* **blacklist** - Show everyone on the blacklist
+* **block** `<user_mention` `<reason>` - Add someone to the blacklist
+* **unblock** `<user_mention>`  - Remove someone from the blacklist
 
 ## Mention Responder
 Small funny feature, when you tag the bot you will get a random reply from a list of mention replies. There are default
-replies, but you can also add your own replies based on certain roles in the server, for example (our server):
-- Weeb role
-- NSFW role
-- Moderator role
-- Admin role
-- Strijder Role
+replies, but you can also add your own replies based on certain roles in the server.
 
 The bot comes with some default groups and replies:
 - If you have a high rank in the server (according to the xp system)
@@ -375,33 +299,74 @@ You can manage all groups and their replies by using these commands:
 
 
 ## Fun commands
+A few fun commands you can use!
 
-A few fun commands you can use
+Use the `set` command for it, setting names will be preloaded for you to pick from using the slash commands.
 
 * **urb** `search_term` - Searches on urban dictionary
 * **8ball** `question` - Ask a question to the 8ball
 * **ask** `question` - Ask a question and get a gif response
 * **say** `something` - say something
+* **modstats** - Who got the power?
+* **image** - Generate an image using openai
+* **emotes** - List of most used emotes in the guild
+* **bumpcounter** `time-range` • Check the monthly or all time bump leaderboard
+* **addcringe** `<user>` - Increase someone's cringe counter
+* **delcringe** `<user>` - Decrease someone's cringe counter
+* **cringecounter** - Reset someone's cringe counter
 
+### Bump Reminder
+In order to make the bump reminder work, you need to set the following 3 settings:
+* `enable_bump_reminder` - Enable 2 hour tag for people who want to bump the discord
+* `bump_reminder_role` - Role to be tagged for bump reminders
+* `bump_channel` - Channel where the bump reminders are tagged
 
-## Question of the day
+### Reactions
+
+Certain strings can be added to the bot and when those strings are detected
+in a message the bot will add a reaction to the message with a set emote. These
+reactions can be added, removed and viewed with commands so nothing needs to be
+done in code.
+
+* **reactions**
+* **addreaction** `<word_trigger` `<reaction_emote>`
+* **delreaction** `<word_trigger`
+
+### Simple commands
+
+Simple commands such as $ping -> response pong can be added in discord as well.
+Same as with the reactions you can add and remove and view as many as you like
+without the necessity to enter any code. By default, these command triggers do not include the bot
+prefix, so if you want to trigger on prefix you need to include the bot prefix in the command.
+
+* **commands**
+* **addcmd** `<command>` `<response>`
+* **delcmd** `<command>`
+
+### Counting channel
+People requested a channel where they can count. You can't count twice in a row and when you make a mistake the
+counter is reset to 0, and you are excluding from counting by being put on the blacklist. The bot deletes
+any non-numeric messages from the counting channel. When you are blocked the bot will delete and ignore everything
+you type. :)
+
+To make it work you need to set the following settings:
+* `enable_count` - Enables the counting channel
+* `count_channel` - Counting channel
+
+It saves the current count in `current_count`, which you could also change manually.
+
+### Question of the day
 In our server some people post questions every day, when they do the bot tags people who want to be reminded
-that a new question is posted. This way I do not have to give mention permissions which can be abuses easily.
+that a new question is posted. This way I do not have to give mention permissions which can be abused easily.
 
 Check these settings:
 * `qotd_channel`
 * `qotd_role`
 * `enable_qotd_reminder`
 
-## Open AI
-So far I implemented only a single openAI command quickly to test, to generate images. I added a new
-permission `open_ai` for it because each call costs me money. You can generate images using the `image` command. 
-More to be added soon!
 
-
-## Help command
-
-You can write `/help` on discord to get information on most commands in the bot and explanation how they work. There are
-different categories which are preloaded for you to pick from.
+# Help command
+You can write `/help` on discord to get information on most commands in the bot and explanation how they work. 
+You can pick your section from the list and get more info.
 
 That's it for now! Enjoy! :)

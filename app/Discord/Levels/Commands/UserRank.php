@@ -8,9 +8,7 @@ use App\Discord\Core\Models\DiscordUser;
 use App\Discord\Core\Models\Guild;
 use App\Discord\Core\SlashCommand;
 use App\Discord\Roles\Enums\Permission;
-use App\Discord\Settings\Enums\Setting;
 use Discord\Builders\MessageBuilder;
-use Discord\Http\Exceptions\NoPermissionsException;
 use Discord\Parts\Interactions\Command\Option;
 use Exception;
 

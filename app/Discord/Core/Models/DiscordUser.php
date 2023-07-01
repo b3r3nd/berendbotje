@@ -3,14 +3,15 @@
 namespace App\Discord\Core\Models;
 
 
-use App\Discord\Bump\Models\Bump;
-use App\Discord\Cringe\Models\CringeCounter;
 use App\Discord\Fun\Models\BanCounter;
+use App\Discord\Fun\Models\Bump;
+use App\Discord\Fun\Models\CringeCounter;
 use App\Discord\Fun\Models\KickCounter;
 use App\Discord\Levels\Models\UserXP;
+use App\Discord\Moderation\Models\Timeout;
 use App\Discord\Roles\Models\Role;
 use App\Discord\Roles\Scopes\PermissionScope;
-use App\Discord\Timeouts\Models\Timeout;
+use Database\Factories\DiscordUserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -22,6 +23,15 @@ class DiscordUser extends Model
 
     protected $table = 'discord_users';
     protected $fillable = ['discord_id'];
+
+
+    /**
+     * @return DiscordUserFactory
+     */
+    protected static function newFactory(): DiscordUserFactory
+    {
+        return DiscordUserFactory::new();
+    }
 
     /**
      * @param string $userId

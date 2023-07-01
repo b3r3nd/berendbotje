@@ -2,20 +2,17 @@
 
 namespace App\Discord\Core;
 
-use App\Discord\ChannelFlags\Models\Channel;
+use App\Discord\Core\Enums\Setting as SettingEnum;
 use App\Discord\Core\Models\Guild as GuildModel;
-use App\Discord\Fun\Events\Reminder;
+use App\Discord\Core\Models\Setting;
 use App\Discord\Logger\Logger;
 use App\Discord\Logger\Models\LogSetting;
 use App\Discord\MentionResponder\MentionResponder;
-use App\Discord\Settings\Enums\Setting as SettingEnum;
-use App\Discord\Settings\Models\Setting;
+use App\Discord\Moderation\Models\Channel;
 use Carbon\Carbon;
 use Discord\Discord;
-use Discord\Parts\Channel\Message;
 use Discord\Parts\User\Member;
 use Discord\Parts\User\User;
-use Discord\WebSockets\Event;
 use Exception;
 
 /**
@@ -77,6 +74,7 @@ class Guild
      * @param string $message
      * @param string $type
      * @return void
+     * @throws Exception
      */
     public function log(string $message, string $type = 'log'): void
     {

@@ -3,8 +3,8 @@
 namespace App\Discord\Fun\Events;
 
 use App\Discord\Core\DiscordEvent;
+use App\Discord\Core\Enums\Setting;
 use App\Discord\Fun\Models\Emote;
-use App\Discord\Settings\Enums\Setting;
 use Discord\Discord;
 use Discord\Parts\Channel\Message;
 use Discord\WebSockets\Event;

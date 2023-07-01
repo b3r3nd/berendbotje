@@ -3,10 +3,10 @@
 namespace App\Discord\MentionResponder;
 
 use App\Discord\Core\Bot;
+use App\Discord\Core\Enums\Setting as SettingEnum;
 use App\Discord\Core\Models\DiscordUser;
 use App\Discord\MentionResponder\Models\MentionGroup;
-use App\Discord\Settings\Enums\Setting as SettingEnum;
-use App\Discord\Timeouts\Models\Timeout;
+use App\Discord\Moderation\Models\Timeout;
 use Carbon\Carbon;
 use Discord\Discord;
 use Discord\Parts\Channel\Message;

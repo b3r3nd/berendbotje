@@ -3,6 +3,8 @@
 namespace App\Discord\Roles\Models;
 
 use App\Discord\Roles\Scopes\PermissionScope;
+use Database\Factories\PermissionFactory;
+use Database\Factories\RoleFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -11,6 +13,15 @@ class Permission extends Model
     use HasFactory;
 
     protected $fillable = ['name', 'is_admin'];
+
+
+    /**
+     * @return PermissionFactory
+     */
+    protected static function newFactory(): PermissionFactory
+    {
+        return PermissionFactory::new();
+    }
 
     /**
      * @return void

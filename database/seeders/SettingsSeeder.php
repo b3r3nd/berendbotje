@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use App\Discord\Core\Models\Guild;
-use App\Discord\Settings\Models\Setting;
+use App\Discord\Core\Models\Setting;
 use Illuminate\Database\Seeder;
 
 class SettingsSeeder extends Seeder
@@ -36,6 +36,9 @@ class SettingsSeeder extends Seeder
             'enable_qotd_reminder' => true,
             'qotd_channel' => "",
             'qotd_role' => "",
+            'count_channel' => "",
+            'current_count' => 0,
+            'enable_count' => true,
         ];
 
         foreach (Guild::all() as $guild) {

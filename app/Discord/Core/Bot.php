@@ -2,31 +2,34 @@
 
 namespace App\Discord\Core;
 
-use App\Discord\Bump\Actions\BumpCounter;
-use App\Discord\Bump\Commands\BumpStatistics;
-use App\Discord\ChannelFlags\Commands\ChannelIndex;
-use App\Discord\ChannelFlags\Commands\MarkChannel;
-use App\Discord\ChannelFlags\Commands\UnmarkChannel;
-use App\Discord\ChannelFlags\Events\MediaFilter;
-use App\Discord\ChannelFlags\Events\StickerFilter;
+use App\Discord\Core\Commands\Settings;
+use App\Discord\Core\Commands\UpdateSetting;
 use App\Discord\Core\Models\Guild;
-use App\Discord\Cringe\Commands\CringeIndex;
-use App\Discord\Cringe\Commands\DecreaseCringe;
-use App\Discord\Cringe\Commands\IncreaseCringe;
-use App\Discord\Cringe\Commands\ResetCringe;
-use App\Discord\CustomCommands\Commands\CommandIndex;
-use App\Discord\CustomCommands\Commands\CreateCommand;
-use App\Discord\CustomCommands\Commands\DeleteCommand;
-use App\Discord\CustomCommands\Events\CommandResponse;
+use App\Discord\Fun\Actions\BumpCounter;
 use App\Discord\Fun\Commands\Ask;
+use App\Discord\Fun\Commands\BumpStatistics;
+use App\Discord\Fun\Commands\CommandIndex;
+use App\Discord\Fun\Commands\CreateCommand;
+use App\Discord\Fun\Commands\CreateReaction;
+use App\Discord\Fun\Commands\CringeIndex;
+use App\Discord\Fun\Commands\DecreaseCringe;
+use App\Discord\Fun\Commands\DeleteCommand;
+use App\Discord\Fun\Commands\DeleteReaction;
 use App\Discord\Fun\Commands\EightBall;
 use App\Discord\Fun\Commands\EmoteIndex;
+use App\Discord\Fun\Commands\GenerateImage;
+use App\Discord\Fun\Commands\IncreaseCringe;
 use App\Discord\Fun\Commands\ModeratorStatistics;
+use App\Discord\Fun\Commands\ReactionIndex;
+use App\Discord\Fun\Commands\ResetCringe;
 use App\Discord\Fun\Commands\UrbanDictionary;
+use App\Discord\Fun\Events\CommandResponse;
+use App\Discord\Fun\Events\Count;
 use App\Discord\Fun\Events\EmoteCounter;
 use App\Discord\Fun\Events\KickAndBanCounter;
+use App\Discord\Fun\Events\React;
 use App\Discord\Fun\Events\Reminder;
-use App\Discord\Help\Commands\Help;
+use App\Discord\Help;
 use App\Discord\Levels\Commands\CreateRoleReward;
 use App\Discord\Levels\Commands\DeleteRoleReward;
 use App\Discord\Levels\Commands\GiveXp;
@@ -52,11 +55,16 @@ use App\Discord\MentionResponder\Commands\DelMentionReply;
 use App\Discord\MentionResponder\Commands\MentionGroupIndex;
 use App\Discord\MentionResponder\Commands\MentionIndex;
 use App\Discord\MentionResponder\Commands\UpdateMentionGroup;
-use App\Discord\OpenAi\Commands\GenerateImage;
-use App\Discord\Reaction\Commands\CreateReaction;
-use App\Discord\Reaction\Commands\DeleteReaction;
-use App\Discord\Reaction\Commands\ReactionIndex;
-use App\Discord\Reaction\Events\React;
+use App\Discord\Moderation\Commands\Blacklist;
+use App\Discord\Moderation\Commands\Block;
+use App\Discord\Moderation\Commands\ChannelIndex;
+use App\Discord\Moderation\Commands\MarkChannel;
+use App\Discord\Moderation\Commands\Timeouts;
+use App\Discord\Moderation\Commands\Unblock;
+use App\Discord\Moderation\Commands\UnmarkChannel;
+use App\Discord\Moderation\Events\DetectTimeouts;
+use App\Discord\Moderation\Events\MediaFilter;
+use App\Discord\Moderation\Events\StickerFilter;
 use App\Discord\Roles\Commands\AttachRolePermission;
 use App\Discord\Roles\Commands\AttachUserRole;
 use App\Discord\Roles\Commands\CreateRole;
@@ -67,11 +75,7 @@ use App\Discord\Roles\Commands\Permissions;
 use App\Discord\Roles\Commands\Roles;
 use App\Discord\Roles\Commands\UserRoles;
 use App\Discord\Roles\Commands\Users;
-use App\Discord\Settings\Commands\Settings;
-use App\Discord\Settings\Commands\UpdateSetting;
 use App\Discord\Test\Commands\Test;
-use App\Discord\Timeouts\Commands\Timeouts;
-use App\Discord\Timeouts\Events\DetectTimeouts;
 use Discord\Discord;
 use Discord\Exceptions\IntentException;
 use Discord\WebSockets\Intents;
@@ -103,20 +107,19 @@ class Bot
             MessageXpCounter::class,
             VoiceXpCounter::class,
         ],
-        'timeout' => [
+        'moderation' => [
             DetectTimeouts::class,
-        ],
-        'bump' => [
-            BumpCounter::class,
-        ],
-        'channel-flags' => [
             MediaFilter::class,
             StickerFilter::class,
         ],
         'fun' => [
+            BumpCounter::class,
             KickAndBanCounter::class,
             EmoteCounter::class,
             Reminder::class,
+            Count::class,
+            React::class,
+            CommandResponse::class,
         ],
         'logger' => [
             VoiceStateLogger::class,
@@ -125,32 +128,16 @@ class Bot
             TimeoutLogger::class,
             InviteLogger::class,
         ],
-        'reactions' => [
-            React::class,
-        ],
-        'custom-commands' => [
-            CommandResponse::class,
-        ]
     ];
 
     private array $devCommands = [
         Test::class,
-        Roles::class,
-        Permissions::class,
-        Users::class,
-        UserRoles::class,
-        AttachRolePermission::class,
-        DetachRolePermission::class,
-        CreateRole::class,
-        DeleteRole::class,
-        DetachUserRole::class,
-        AttachUserRole::class,
+        Help::class,
+        Settings::class,
+        UpdateSetting::class,
     ];
 
     private array $commands = [
-        'openai' => [
-            GenerateImage::class,
-        ],
         'roles' => [
             Roles::class,
             Permissions::class,
@@ -177,13 +164,14 @@ class Bot
             RemoveXp::class,
             ResetXp::class,
         ],
-        'timeout' => [
+        'moderation' => [
             Timeouts::class,
-        ],
-        'reactions' => [
-            ReactionIndex::class,
-            CreateReaction::class,
-            DeleteReaction::class,
+            ChannelIndex::class,
+            MarkChannel::class,
+            UnmarkChannel::class,
+            Blacklist::class,
+            Unblock::class,
+            Block::class,
         ],
         'mention' => [
             MentionIndex::class,
@@ -194,31 +182,24 @@ class Bot
             DelMentionGroup::class,
             UpdateMentionGroup::class,
         ],
-        'bump' => [
-            BumpStatistics::class,
-        ],
-        'channel-flags' => [
-            ChannelIndex::class,
-            MarkChannel::class,
-            UnmarkChannel::class,
-        ],
-        'cringe' => [
-            CringeIndex::class,
-            IncreaseCringe::class,
-            DecreaseCringe::class,
-            ResetCringe::class,
-        ],
-        'custom-commands' => [
-            CommandIndex::class,
-            CreateCommand::class,
-            DeleteCommand::class,
-        ],
         'fun' => [
+            GenerateImage::class,
+            BumpStatistics::class,
             EmoteIndex::class,
             EightBall::class,
             Ask::class,
             UrbanDictionary::class,
             ModeratorStatistics::class,
+            ReactionIndex::class,
+            CreateReaction::class,
+            DeleteReaction::class,
+            CommandIndex::class,
+            CreateCommand::class,
+            DeleteCommand::class,
+            CringeIndex::class,
+            IncreaseCringe::class,
+            DecreaseCringe::class,
+            ResetCringe::class,
         ],
         'help' => [
             Help::class,
