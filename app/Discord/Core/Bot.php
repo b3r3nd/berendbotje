@@ -135,6 +135,7 @@ class Bot
         Help::class,
         Settings::class,
         UpdateSetting::class,
+        ModeratorStatistics::class,
     ];
 
     private array $commands = [

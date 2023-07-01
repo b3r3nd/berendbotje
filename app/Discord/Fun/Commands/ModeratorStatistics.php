@@ -8,6 +8,7 @@ use App\Discord\Core\Models\Guild;
 use App\Discord\Core\SlashCommand;
 use App\Discord\Roles\Enums\Permission;
 use Discord\Builders\MessageBuilder;
+use Discord\Parts\User\User;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -44,7 +45,7 @@ class ModeratorStatistics extends SlashCommand
     public function action(): MessageBuilder
     {
         $embedBuilder = EmbedBuilder::create($this, __('bot.adminstats.title'));
-        $description = __('bot.adminstats.description');
+        $embedBuilder->setDescription(__('bot.adminstats.description'));
 
         $guild = Guild::get($this->guildId);
         $kicks = $this->getCounter('kickCounters', $guild);
@@ -54,13 +55,16 @@ class ModeratorStatistics extends SlashCommand
         foreach ($kicks->merge($bans)->merge($timeouts) as $moderator) {
             $bans = $moderator->banCounters->where('guild_id', $guild->id)->first()->count ?? 0;
             $kicks = $moderator->kickCounters->where('guild_id', $guild->id)->first()->count ?? 0;
-            $description .= "**Moderator**: {$moderator->tag()}
-            **Kicks**: {$kicks}
-            **Bans**: {$bans}
-            **Timeouts**: {$moderator->givenTimeouts->count()}\n\n";
+            $description = "{$moderator->tag()} \n **Kicks**: {$kicks} \n **Bans**: {$bans} \n **Timeouts**: {$moderator->givenTimeouts->count()}";
+
+
+
+
+            $embedBuilder->getEmbed()->addField(
+                ['name' => "", 'value' => $description, 'inline' => true],
+            );
         }
 
-        $embedBuilder->setDescription($description);
         return MessageBuilder::new()->addEmbed($embedBuilder->getEmbed());
     }
 }
