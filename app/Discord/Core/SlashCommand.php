@@ -60,6 +60,7 @@ abstract class SlashCommand
         }
         $command = new \Discord\Parts\Interactions\Command\Command($this->discord, $optionsArray);
         $this->discord->listenCommand($this->trigger, function (Interaction $interaction) {
+            $this->interaction = $interaction;
             if ($interaction->guild_id === null) {
                 return $interaction->respondWithMessage(EmbedFactory::failedEmbed($this,'Slash commands dont work in DM'));
             }
@@ -68,7 +69,6 @@ abstract class SlashCommand
             }
             // Set some data so it is more easily accessible
             $this->guildId = $interaction->guild_id;
-            $this->interaction = $interaction;
             return $interaction->respondWithMessage($this->action());
         });
         $this->discord->application->commands->save($command);
