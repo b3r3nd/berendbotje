@@ -135,9 +135,6 @@ class Bot
         Help::class,
         Settings::class,
         UpdateSetting::class,
-        Blacklist::class,
-        Block::class,
-        Unblock::class,
     ];
 
     private array $commands = [
