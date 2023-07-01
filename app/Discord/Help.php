@@ -86,12 +86,22 @@ class Help extends SlashCommand
                     ['cmd' => 'delcmd', 'usage' => '`<command>`', 'desc' => ''],
                 ];
                 $embedBuilder->getEmbed()->addField(
-                    ['name' => 'Channel flags', 'value' => "`no_xp` Users gain no XP in this channel \n `media_only` Channel allows only media and URLS. \n `no_stickers` Stickers will be removed from the chat \n `no_log` Message logging is disabled for this channel"],
+                    ['name' => 'Channel flags', 'value' => "`no_xp` Users gain no XP in this channel \n `media_only`
+                    Channel allows only media and URLS. \n `no_stickers` Stickers will be removed from the chat \n `no_log`
+                    Message logging is disabled for this channel"],
                 );
             }
 
             if ($option->getLabel() === "Levels") {
-                $embedBuilder->setDescription("The bot counts messages send by users and gives xp for each message, it also detects users in voice who are not muted and gives XP for time spend in voice. The amount of XP gained by each message, time spend in voice and the cooldown between messages can be changed with the `config` command see `help settings` for more info.\n Role rewards for users are synced whenever they send a message to the server. When removing or adding XP from users their roles will persist until they send a message.");
+
+                $configCmd = $this->discord->application->commands->get('name', 'config') ? $this->discord->application->commands->get('name', 'config')->id : "/config";
+                $helpCmd = $this->discord->application->commands->get('name', 'help') ? $this->discord->application->commands->get('name', 'help')->id : "/help";
+
+                $embedBuilder->setDescription("The bot counts messages send by users and gives xp for each message,
+                it also detects users in voice who are not muted and gives XP for time spend in voice. The amount of XP gained by each message,
+                time spend in voice and the cooldown between messages can be changed with the {$configCmd} command see {$helpCmd}
+                for more info.\n Role rewards for users are synced whenever they send a message to the server.
+                When removing or adding XP from users their roles will persist until they send a message.");
                 $roleCommands = [
                     ['cmd' => 'leaderboard', 'usage' => '', 'desc' => 'Show the leaderboard'],
                     ['cmd' => 'rank', 'usage' => '`<user_mention>`', 'desc' => 'Show level, xp and messages for you or another user'],

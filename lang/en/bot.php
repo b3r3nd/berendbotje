@@ -46,7 +46,8 @@ return [
         'delete-mention' => 'Remove mention replies',
         'manage-mention-groups' => 'Manage mention reply groups',
         'media-filter' => 'Media filter',
-        'openai' => 'Use OpenAi Commands'
+        'openai' => 'Use OpenAi Commands',
+        'abusers' => 'Manage the blacklist',
     ],
 
     'slash' => [
