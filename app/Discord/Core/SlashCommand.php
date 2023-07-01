@@ -4,7 +4,7 @@ namespace App\Discord\Core;
 
 use App\Discord\Core\Builders\EmbedFactory;
 use App\Discord\Core\Models\DiscordUser;
-use App\Discord\CustomCommands\Models\Command;
+use App\Discord\Fun\Models\Command;
 use App\Discord\Roles\Enums\Permission;
 use Discord\Builders\MessageBuilder;
 use Discord\Discord;

@@ -2,11 +2,11 @@
 
 namespace Database\Factories;
 
-use App\Discord\Settings\Models\Setting;
+use App\Discord\Core\Models\Setting;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Discord\Settings\Models\Setting>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Discord\Core\Models\Setting>
  */
 class SettingFactory extends Factory
 {

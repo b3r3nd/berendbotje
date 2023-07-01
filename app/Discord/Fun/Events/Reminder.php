@@ -2,9 +2,8 @@
 
 namespace App\Discord\Fun\Events;
 
-use App\Discord\Core\Bot;
 use App\Discord\Core\DiscordEvent;
-use App\Discord\Settings\Enums\Setting as SettingEnum;
+use App\Discord\Core\Enums\Setting as SettingEnum;
 use Discord\Builders\MessageBuilder;
 use Discord\Discord;
 use Discord\Parts\Channel\Message;

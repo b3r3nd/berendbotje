@@ -3,9 +3,9 @@
 namespace App\Discord\Levels\Events;
 
 use App\Discord\Core\DiscordEvent;
+use App\Discord\Core\Enums\Setting;
 use App\Discord\Core\Models\DiscordUser;
 use App\Discord\Levels\Helpers\Helper;
-use App\Discord\Settings\Enums\Setting;
 use Discord\Discord;
 use Discord\Parts\WebSockets\VoiceStateUpdate as DVoiceStateUpdate;
 use Discord\WebSockets\Event;

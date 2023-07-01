@@ -2,9 +2,9 @@
 
 namespace App\Discord\Fun\Events;
 
-use App\Discord\Blacklist\Models\Abuser;
 use App\Discord\Core\DiscordEvent;
-use App\Discord\Settings\Enums\Setting as SettingEnum;
+use App\Discord\Core\Enums\Setting as SettingEnum;
+use App\Discord\Moderation\Models\Abuser;
 use Discord\Builders\MessageBuilder;
 use Discord\Discord;
 use Discord\Parts\Channel\Message;

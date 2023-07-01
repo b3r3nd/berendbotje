@@ -2,14 +2,12 @@
 
 namespace App\Discord\Core\Models;
 
-use App\Discord\ChannelFlags\Models\Channel;
-use App\Discord\CustomCommands\Models\Command;
+use App\Discord\Fun\Models\Command;
+use App\Discord\Fun\Models\Reaction;
 use App\Discord\Logger\Models\LogSetting;
-use App\Discord\Reaction\Models\Reaction;
+use App\Discord\Moderation\Models\Channel;
 use App\Discord\Roles\Models\Role;
-use App\Discord\Settings\Models\Setting;
 use App\Models\MediaChannel;
-use Database\Factories\DiscordUserFactory;
 use Database\Factories\GuildFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

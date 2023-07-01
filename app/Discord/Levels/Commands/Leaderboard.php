@@ -6,7 +6,6 @@ use App\Discord\Core\Builders\EmbedBuilder;
 use App\Discord\Core\SlashIndexCommand;
 use App\Discord\Levels\Helpers\Helper;
 use App\Discord\Roles\Enums\Permission;
-use App\Discord\Settings\Enums\Setting;
 use Discord\Parts\Embed\Embed;
 use Exception;
 
