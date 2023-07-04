@@ -18,7 +18,7 @@ class Reminder extends DiscordEvent
     {
         $this->discord->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) {
             if ($message->author->bot || !$message->guild_id ||
-                $this->bot->getGuild($message->guild_id)?->getSetting(SettingEnum::ENABLE_REMINDER)) {
+                !$this->bot->getGuild($message->guild_id)?->getSetting(SettingEnum::ENABLE_REMINDER)) {
                 return;
             }
             $guild = $this->bot->getGuild($message->guild_id);
