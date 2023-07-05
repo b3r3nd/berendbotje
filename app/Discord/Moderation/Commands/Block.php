@@ -36,7 +36,7 @@ class Block extends SlashCommand
                 'name' => 'reason',
                 'description' => 'Reason',
                 'type' => Option::STRING,
-                'required' => false,
+                'required' => true,
             ],
         ];
 
