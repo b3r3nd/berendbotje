@@ -49,6 +49,17 @@ class DiscordUser extends Model
     }
 
     /**
+     * @param string $settingKey
+     * @param string $guildId
+     * @return bool
+     */
+    public function enabledSetting(string $settingKey, string $guildId): bool
+    {
+        $setting = $this->settings()->where(['key' => $settingKey], ['guild_id' => $guildId])->first();
+        return $setting && $setting->value === "1";
+    }
+
+    /**
      * @param $discordId
      * @return mixed
      */
