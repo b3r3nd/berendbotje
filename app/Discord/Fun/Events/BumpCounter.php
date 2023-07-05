@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Discord\Fun\Actions;
+namespace App\Discord\Fun\Events;
 
 use App\Discord\Core\DiscordEvent;
 use App\Discord\Core\Enums\Setting;

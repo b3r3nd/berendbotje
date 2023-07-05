@@ -51,6 +51,8 @@ return [
     ],
 
     'slash' => [
+        'userset' => 'Update user specific settings for this guild',
+        'userconfig' => 'User specific settings for this guild',
         'blacklist' => 'Show the user blacklist',
         'block' => 'Add user to the blacklist',
         'unblock' => 'Remove user from the blacklist',
@@ -108,6 +110,11 @@ return [
         'delreply' => 'Delete a new reply from a mention group',
         'searchreply ' => 'Search for a reply',
         'mentiongroups' => 'Mention responder group',
+    ],
+
+    'userconfig' => [
+        'title' => 'User settings',
+        'not-found' => 'No user settings found, see help -> user settings for more info.',
     ],
 
     'blacklist' => [

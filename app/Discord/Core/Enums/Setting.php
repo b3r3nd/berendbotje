@@ -27,4 +27,6 @@ enum Setting: string
     case COUNT_CHANNEL = 'count_channel';
     case CURRENT_COUNT = 'current_count';
     case ENABLE_COUNT = 'enable_count';
+    case LEVEL_UP_CHAN = 'level_up_channel';
+    case ENABLE_LVL_MSG = 'enable_lvl_msg';
 }

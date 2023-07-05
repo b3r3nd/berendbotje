@@ -154,6 +154,8 @@ class Bot
         'settings' => [
             Settings::class,
             UpdateSetting::class,
+            UserSettings::class,
+            UpdateUserSetting::class,
         ],
         'levels' => [
             Leaderboard::class,
