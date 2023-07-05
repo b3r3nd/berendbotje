@@ -30,7 +30,7 @@ class DelMentionReply extends SlashCommand
         $this->slashCommandOptions = [
             [
                 'name' => 'reply',
-                'description' => 'Reply ID',
+                'description' => __('bot.reply-id'),
                 'type' => Option::INTEGER,
                 'required' => true,
             ],
@@ -46,7 +46,7 @@ class DelMentionReply extends SlashCommand
     {
         $mentionReply = MentionReply::find($this->getOption('reply'));
         if (!$mentionReply) {
-             return EmbedFactory::failedEmbed($this, __('bot.mention.no-reply'));
+            return EmbedFactory::failedEmbed($this, __('bot.mention.no-reply'));
         }
         $mentionReply->delete();
         $this->bot->getGuild($this->guildId)?->mentionResponder->loadReplies();

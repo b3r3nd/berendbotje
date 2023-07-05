@@ -31,13 +31,13 @@ class DetachUserRole extends SlashCommand
         $this->slashCommandOptions = [
             [
                 'name' => 'user_mention',
-                'description' => 'Mention',
+                'description' => __('bot.user-mention'),
                 'type' => Option::USER,
                 'required' => true,
             ],
             [
                 'name' => 'role_name',
-                'description' => 'Role',
+                'description' => __('bot.role'),
                 'type' => Option::STRING,
                 'required' => true,
             ],

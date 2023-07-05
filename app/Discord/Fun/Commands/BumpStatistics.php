@@ -30,12 +30,12 @@ class BumpStatistics extends SlashIndexCommand
         $this->slashCommandOptions = [
             [
                 'name' => 'date-range',
-                'description' => 'Date range',
+                'description' => __('bot.date-range'),
                 'type' => Option::STRING,
                 'required' => true,
                 'choices' => [
-                    ['name' => 'Monthly', 'value' => 'monthly'],
-                    ['name' => 'All Time', 'value' => 'all-time'],
+                    ['name' => __('bot.monthly'), 'value' => 'monthly'],
+                    ['name' => __('bot.all-time'), 'value' => 'all-time'],
                 ]
             ],
         ];
@@ -52,7 +52,6 @@ class BumpStatistics extends SlashIndexCommand
     {
         $description = "";
         $this->total = Bump::byGuild($this->guildId)->count();
-
         $builder = EmbedBuilder::create($this, __('bot.bump.title'));
 
         if (strtolower($this->getOption('date-range')) === 'all-time') {
@@ -61,7 +60,6 @@ class BumpStatistics extends SlashIndexCommand
                 $description .= "**{$bumper->user->tag()}** •  {$bumper->total}\n";
             }
             $builder->setDescription(__('bot.bump.description', ['bumpers' => $description]));
-
         } else {
             foreach (Bump::byGuild($this->guildId)
                          ->whereMonth('created_at', date('m'))
@@ -79,6 +77,5 @@ class BumpStatistics extends SlashIndexCommand
         }
 
         return $builder->getEmbed();
-
     }
 }

@@ -29,7 +29,7 @@ class Timeouts extends SlashIndexCommand
         $this->slashCommandOptions = [
             [
                 'name' => 'user_mention',
-                'description' => 'Mention',
+                'description' => __('bot.user-mention'),
                 'type' => Option::USER,
                 'required' => false,
             ],

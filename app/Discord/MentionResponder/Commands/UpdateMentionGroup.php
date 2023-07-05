@@ -31,13 +31,13 @@ class UpdateMentionGroup extends SlashCommand
         $this->slashCommandOptions = [
             [
                 'name' => 'id',
-                'description' => 'Group ID',
+                'description' => __('bot.role-or-user-id'),
                 'type' => Option::INTEGER,
                 'required' => true,
             ],
             [
                 'name' => 'group_type',
-                'description' => 'User Or Group',
+                'description' => __('bot.role-or-user'),
                 'type' => Option::STRING,
                 'required' => true,
                 'choices' => [
@@ -47,7 +47,7 @@ class UpdateMentionGroup extends SlashCommand
             ],
             [
                 'name' => 'multiplier',
-                'description' => 'Usage Mutliplier',
+                'description' => __('bot.multiplier'),
                 'type' => Option::INTEGER,
                 'required' => false,
             ],

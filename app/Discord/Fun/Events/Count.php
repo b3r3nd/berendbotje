@@ -37,12 +37,12 @@ class Count extends DiscordEvent
                 $newCount = $count + 1;
 
 
-                if(!(Abuser::where('discord_id', $message->author->id)->get())->isEmpty()) {
+                if (!(Abuser::where('discord_id', $message->author->id)->get())->isEmpty()) {
                     $message->delete();
                     return;
                 }
 
-                if ($this->lastCount === $message->author->id ) {
+                if ($this->lastCount === $message->author->id) {
                     $message->react("❌");
                     return;
                 }
@@ -58,8 +58,8 @@ class Count extends DiscordEvent
                     $this->lastCount = "";
                     $guild->setSetting(SettingEnum::CURRENT_COUNT->value, $count);
                     $message->react("❌");
-                    Abuser::create(['discord_id' => $message->author->id, 'guild_id' => $message->guild_id, 'reason' => "Can't count :)"]);
-                    $message->channel->sendMessage(MessageBuilder::new()->setContent("Wrong number.. reset to {$count}"));
+                    Abuser::create(['discord_id' => $message->author->id, 'guild_id' => $message->guild_id, 'reason' => __('bot.cannot-count')]);
+                    $message->channel->sendMessage(MessageBuilder::new()->setContent(__('bot.wrong-number', ['count' => $count])));
                     return;
                 }
 

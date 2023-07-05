@@ -28,7 +28,7 @@ class DecreaseCringe extends SlashCommand
         $this->slashCommandOptions = [
             [
                 'name' => 'user_mention',
-                'description' => 'Mention',
+                'description' => __('bot.user-mention'),
                 'type' => Option::USER,
                 'required' => true,
             ],
@@ -48,7 +48,7 @@ class DecreaseCringe extends SlashCommand
         $cringeCounters = $user->cringeCounters()->where('guild_id', $guildModel->id)->get();
 
         if ($cringeCounters->isEmpty()) {
-             return EmbedFactory::failedEmbed($this, __('bot.cringe.not-cringe', ['name' => "<@{$this->getOption('user_mention')}>"]));
+            return EmbedFactory::failedEmbed($this, __('bot.cringe.not-cringe', ['name' => "<@{$this->getOption('user_mention')}>"]));
         }
 
         $cringeCounter = $cringeCounters->first();

@@ -30,13 +30,13 @@ class AttachUserRole extends SlashCommand
         $this->slashCommandOptions = [
             [
                 'name' => 'user_mention',
-                'description' => 'Mention',
+                'description' => __('bot.user-mention'),
                 'type' => Option::USER,
                 'required' => true,
             ],
             [
                 'name' => 'role_name',
-                'description' => 'Role',
+                'description' => __('bot.role'),
                 'type' => Option::STRING,
                 'required' => true,
             ],
@@ -51,7 +51,7 @@ class AttachUserRole extends SlashCommand
     public function action(): MessageBuilder
     {
         if (!Role::exists($this->guildId, $this->getOption('role_name'))) {
-             return EmbedFactory::failedEmbed($this, __('bot.roles.not-exist', ['role' => $this->getOption('role_name')]));
+            return EmbedFactory::failedEmbed($this, __('bot.roles.not-exist', ['role' => $this->getOption('role_name')]));
         }
         $role = Role::get($this->guildId, $this->getOption('role_name'));
 

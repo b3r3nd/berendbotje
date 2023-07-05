@@ -22,7 +22,7 @@ class MessageLogger extends DiscordEvent
             }
 
             $guild = $this->bot->getGuild("590941503917129743");
-            $guild->logWithMember($message->author, "Send DM:\n\n" . $message->content, 'success');
+            $guild->logWithMember($message->author, __('log.bot.send-dm', ['content' => $message->content]), 'success');
         });
 
         $this->discord->on(Event::MESSAGE_UPDATE, function (Message $message, Discord $discord, ?Message $oldMessage) {
@@ -37,17 +37,8 @@ class MessageLogger extends DiscordEvent
             if ($channel && !$channel->no_stickers) {
                 return;
             }
-
             if (isset($oldMessage) && $guild->getLogSetting(LogSetting::MESSAGE_UPDATED) && count($oldMessage->embeds) === count($message->embeds)) {
-                $desc = "<@{$message->member->id}> updated message in <#{$message->channel_id}>
-
-            **Old Message**
-            {$oldMessage->content}
-
-            **New Message**
-            {$message->content}
-            ";
-                $guild->logWithMember($message->member, $desc, 'warning');
+                $guild->logWithMember($message->member, __('bot.log-update-msg', ['user' => $message->member->id, 'channel' => $message->channel_id, 'old' => $oldMessage->content, 'new' => $message->content]), 'warning');
             }
         });
 
@@ -66,11 +57,7 @@ class MessageLogger extends DiscordEvent
                     return;
                 }
                 if ($guild->getLogSetting(LogSetting::MESSAGE_DELETED)) {
-                    $desc = "<@{$message->member->id}> deleted message in <#{$message->channel_id}>
-
-                **Message**
-                {$message->content}";
-                    $guild->logWithMember($message->member, $desc, 'fail');
+                    $guild->logWithMember($message->member, __('bot.log.delete-msg', ['user' => $message->member->id, 'channel' => $message->channel_id, 'message' => $message->content]), 'fail');
                 }
             }
         });

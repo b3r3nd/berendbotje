@@ -30,7 +30,7 @@ class DeleteRoleReward extends SlashCommand
         $this->slashCommandOptions = [
             [
                 'name' => 'level',
-                'description' => 'Level',
+                'description' => __('bot.level'),
                 'type' => Option::INTEGER,
                 'required' => true,
             ],

@@ -29,13 +29,13 @@ class MarkChannel extends SlashCommand
         $this->slashCommandOptions = [
             [
                 'name' => 'channel',
-                'description' => 'Channel',
+                'description' => __('bot.channel'),
                 'type' => Option::CHANNEL,
                 'required' => true,
             ],
             [
                 'name' => 'flag',
-                'description' => 'flags',
+                'description' => __('bot.flags'),
                 'type' => Option::STRING,
                 'required' => true,
                 'choices' => [

@@ -28,18 +28,17 @@ class CreateCommand extends SlashCommand
         $this->slashCommandOptions = [
             [
                 'name' => 'command',
-                'description' => 'Command',
+                'description' => __('bot.command'),
                 'type' => Option::STRING,
                 'required' => true,
             ],
             [
                 'name' => 'response',
-                'description' => 'Response',
+                'description' => __('bot.response'),
                 'type' => Option::STRING,
                 'required' => true,
             ]
         ];
-
         parent::__construct();
     }
 

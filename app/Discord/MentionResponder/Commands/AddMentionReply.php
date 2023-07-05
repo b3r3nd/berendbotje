@@ -31,13 +31,13 @@ class AddMentionReply extends SlashCommand
         $this->slashCommandOptions = [
             [
                 'name' => 'group_id',
-                'description' => 'Group ID',
+                'description' => __('bot.group-id'),
                 'type' => Option::INTEGER,
                 'required' => true,
             ],
             [
                 'name' => 'reply',
-                'description' => 'Reply',
+                'description' => __('bot.reply'),
                 'type' => Option::STRING,
                 'required' => true,
             ],

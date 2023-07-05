@@ -26,7 +26,7 @@ class EightBall extends SlashCommand
         $this->slashCommandOptions = [
             [
                 'name' => 'question',
-                'description' => 'Question',
+                'description' => __('bot.question'),
                 'type' => Option::STRING,
                 'required' => true,
             ],

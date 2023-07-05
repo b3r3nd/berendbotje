@@ -28,13 +28,13 @@ class Block extends SlashCommand
         $this->slashCommandOptions = [
             [
                 'name' => 'user_mention',
-                'description' => 'Mention',
+                'description' => __('bot.user-mention'),
                 'type' => Option::USER,
                 'required' => true,
             ],
             [
                 'name' => 'reason',
-                'description' => 'Reason',
+                'description' => __('bot.reason'),
                 'type' => Option::STRING,
                 'required' => true,
             ],

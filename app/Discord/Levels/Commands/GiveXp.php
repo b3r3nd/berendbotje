@@ -29,13 +29,13 @@ class GiveXp extends SlashCommand
         $this->slashCommandOptions = [
             [
                 'name' => 'user_mention',
-                'description' => 'Mention',
+                'description' => __('bot.user-mention'),
                 'type' => Option::USER,
                 'required' => true,
             ],
             [
                 'name' => 'user_xp',
-                'description' => 'xp',
+                'description' => 'XP',
                 'type' => Option::INTEGER,
                 'required' => true,
             ],

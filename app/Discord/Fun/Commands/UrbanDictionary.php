@@ -30,7 +30,7 @@ class UrbanDictionary extends SlashCommand
         $this->slashCommandOptions = [
             [
                 'name' => 'search_term',
-                'description' => 'Search term',
+                'description' => __('bot.search-term'),
                 'type' => Option::STRING,
                 'required' => true,
             ],
@@ -47,11 +47,11 @@ class UrbanDictionary extends SlashCommand
         $response = Http::withHeaders([
             'X-RapidAPI-Key' => config('discord.urb-token'),
             'X-RapidAPI-Host' => config('discord.urb-host'),
-        ])->get("https://". config('discord.urb-host') . "/define", ['term' => $this->getOption('search_term')]);
+        ])->get("https://" . config('discord.urb-host') . "/define", ['term' => $this->getOption('search_term')]);
 
 
         if (empty($response->json()['list'])) {
-             return EmbedFactory::failedEmbed($this, __('bot.no-valid-term', ['term' => $this->getOption('search_term')]));
+            return EmbedFactory::failedEmbed($this, __('bot.no-valid-term', ['term' => $this->getOption('search_term')]));
         }
 
         return MessageBuilder::new()->addEmbed(EmbedBuilder::create($this)

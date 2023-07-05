@@ -19,9 +19,8 @@ class TimeoutLogger extends DiscordEvent
             }
             $localGuild = $this->bot->getGuild($member->guild_id);
             if ($localGuild->getLogSetting(LogSetting::TIMEOUT)) {
-                $localGuild->logWithMember($member, "<@{$member->id}> has received a timeout", 'fail');
+                $localGuild->logWithMember($member, __('log.timeout', ['user' => $member->id]), 'fail');
             }
         });
-
     }
 }
