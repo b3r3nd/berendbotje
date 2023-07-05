@@ -11,6 +11,7 @@ use Discord\Builders\Components\Option;
 use Discord\Builders\Components\SelectMenu;
 use Discord\Builders\MessageBuilder;
 use Discord\Helpers\Collection;
+use Discord\Parts\Embed\Embed;
 use Discord\Parts\Interactions\Interaction;
 use Exception;
 use http\Message;
@@ -48,6 +49,7 @@ class Help extends SlashCommand
             ->addOption(Option::new("Fun"))
             ->addOption(Option::new("MentionResponder"))
             ->addOption(Option::new("Settings"))
+            ->addOption(Option::new("User Settings"))
             ->addOption(Option::new("Logs"));
 
         $select->setListener(function (Interaction $interaction, Collection $options) use ($select) {
@@ -76,6 +78,9 @@ class Help extends SlashCommand
             }
             if ($option->getLabel() === "Settings") {
                 $embedBuilder = $this->settingsPage($embedBuilder);
+            }
+            if ($option->getLabel() === 'User Settings') {
+                $embedBuilder = $this->userSettingsPage($embedBuilder);
             }
             if ($option->getLabel() === "Logs") {
                 $embedBuilder = $this->logsPage($embedBuilder);
@@ -118,6 +123,7 @@ class Help extends SlashCommand
         $embedBuilder->getEmbed()->addField(
             ['name' => 'Roles', 'value' => 'Managing roles and permissions'],
             ['name' => 'Settings', 'value' => 'Explains all the settings and values'],
+            ['name' => 'User Settings', 'value' => 'All user settings'],
             ['name' => 'Moderation', 'value' => 'Moderator actions'],
             ['name' => 'Levels', 'value' => 'Levels and XP'],
             ['name' => 'Logs', 'value' => 'Which events are logged'],
@@ -164,6 +170,20 @@ class Help extends SlashCommand
         }, $this->discord);
 
         return $subSelect;
+    }
+
+    /**
+     * @param EmbedBuilder $embedBuilder
+     * @return EmbedBuilder
+     */
+    public function userSettingsPage(EmbedBuilder $embedBuilder): EmbedBuilder
+    {
+        $embedBuilder->setDescription("You can change settings on a guild basis. For now there is only a single setting: \n\n **no_role_rewards** - Disable gaining role rewards based on levels");
+        $this->addCommands([
+            ['cmd' => 'userconfig', 'usage' => '', 'desc' => 'Shows your custom user settings'],
+            ['cmd' => 'userset', 'usage' => '`<setting_key>` `<new_value>`', 'desc' => 'Change custom user settings'],
+        ], $embedBuilder);
+        return $embedBuilder;
     }
 
 
