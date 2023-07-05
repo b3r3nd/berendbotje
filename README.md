@@ -205,6 +205,15 @@ Right now we have the following settings:
 * `enable_count` - Enable the counting channel
 * `count_channel` - Counting channel ID
 
+## User config
+Users have their own settings per guild. For now, I only use a single setting but more to come soon.
+
+- `no_role_rewards` - Disables gaining role rewards based on levels (if the guild has it enabled)
+
+You can use the following commands to view/change your own settings:
+- **userconfig** - Show your config
+- **userset** `<setting_key>` `<setting_value>` - Update a value in your user config
+
 ## Logging
 
 The bot is able to log some events to a specific log channel, you have to set the following two settings properly
