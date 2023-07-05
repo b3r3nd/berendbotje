@@ -146,4 +146,13 @@ class DiscordUser extends Model
     {
         return $this->hasMany(KickCounter::class, 'user_id', 'id');
     }
+
+
+    /**
+     * @return HasMany
+     */
+    public function settings(): HasMany
+    {
+        return $this->hasMany(UserSetting::class, 'user_id', 'id');
+    }
 }
