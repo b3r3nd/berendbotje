@@ -29,7 +29,7 @@ class DeleteRole extends SlashCommand
         $this->slashCommandOptions = [
             [
                 'name' => 'role_name',
-                'description' => 'Role',
+                'description' => __('bot.role'),
                 'type' => Option::STRING,
                 'required' => true,
             ],

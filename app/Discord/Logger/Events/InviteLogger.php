@@ -15,7 +15,7 @@ class InviteLogger extends DiscordEvent
         $this->discord->on(Event::INVITE_CREATE, function (Invite $invite, Discord $discord) {
             $guild = $this->bot->getGuild($invite->guild_id);
             if ($guild->getLogSetting(LogSetting::INVITE_CREATED)) {
-                $guild->logWithMember($invite->inviter, "<@{$invite->inviter->id}> created a new invite link", 'success');
+                $guild->logWithMember($invite->inviter, __('bot.log.create-invite', ['inviter' => $invite->inviter->id]), 'success');
             }
         });
 
@@ -23,7 +23,7 @@ class InviteLogger extends DiscordEvent
             if ($invite instanceof Invite) {
                 $guild = $this->bot->getGuild($invite->guild_id);
                 if ($guild->getLogSetting(LogSetting::INVITE_REMOVED)) {
-                    $guild->logWithMember($invite->inviter, "Invite link by <@{$invite->inviter->id}> removed", 'fail');
+                    $guild->logWithMember($invite->inviter, __('bot.log.remove-invite', ['inviter' => $invite->inviter->id]), 'fail');
                 }
             }
         });

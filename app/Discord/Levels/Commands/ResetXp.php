@@ -30,7 +30,7 @@ class ResetXp extends SlashCommand
         $this->slashCommandOptions = [
             [
                 'name' => 'user_mention',
-                'description' => 'Mention',
+                'description' => __('bot.user-mention'),
                 'type' => Option::USER,
                 'required' => true,
             ],
@@ -49,7 +49,7 @@ class ResetXp extends SlashCommand
         $messageCounters = $user->messageCounters()->where('guild_id', $guild->id)->get();
 
         if ($messageCounters->isEmpty()) {
-             return EmbedFactory::failedEmbed($this, __('bot.xp.not-exist', ['user' => $this->getOption('user_mention')]));
+            return EmbedFactory::failedEmbed($this, __('bot.xp.not-exist', ['user' => $this->getOption('user_mention')]));
         }
 
         $messageCounters->first()->delete();

@@ -31,7 +31,7 @@ class MentionIndex extends SlashIndexCommand
         $this->slashCommandOptions = [
             [
                 'name' => 'group_id',
-                'description' => 'Group',
+                'description' => __('bot.group'),
                 'type' => Option::INTEGER,
                 'required' => true,
             ],

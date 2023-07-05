@@ -30,7 +30,7 @@ class DelMentionGroup extends SlashCommand
         $this->slashCommandOptions = [
             [
                 'name' => 'group_id',
-                'description' => 'Group ID',
+                'description' => __('bot.group-id'),
                 'type' => Option::INTEGER,
                 'required' => true,
             ],

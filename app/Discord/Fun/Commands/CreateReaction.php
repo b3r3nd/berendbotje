@@ -28,13 +28,13 @@ class CreateReaction extends SlashCommand
         $this->slashCommandOptions = [
             [
                 'name' => 'trigger',
-                'description' => 'Trigger',
+                'description' => __('bot.trigger'),
                 'type' => Option::STRING,
                 'required' => true,
             ],
             [
                 'name' => 'reaction',
-                'description' => 'Reaction',
+                'description' => __('bot.reaction'),
                 'type' => Option::STRING,
                 'required' => true,
             ]

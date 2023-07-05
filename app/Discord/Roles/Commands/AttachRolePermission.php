@@ -32,13 +32,13 @@ class AttachRolePermission extends SlashCommand
         $this->slashCommandOptions = [
             [
                 'name' => 'role_name',
-                'description' => 'Role',
+                'description' => __('bot.role'),
                 'type' => Option::STRING,
                 'required' => true,
             ],
             [
                 'name' => 'permissions',
-                'description' => 'Permissions',
+                'description' => __('bot.permission'),
                 'type' => Option::STRING,
                 'required' => true,
                 'choices' => $choices,

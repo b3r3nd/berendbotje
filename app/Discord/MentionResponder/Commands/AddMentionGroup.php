@@ -32,23 +32,23 @@ class AddMentionGroup extends SlashCommand
         $this->slashCommandOptions = [
             [
                 'name' => 'id',
-                'description' => 'Group or User ID',
+                'description' => __('bot.role-or-user-id'),
                 'type' => Option::STRING,
                 'required' => true,
             ],
             [
                 'name' => 'group_type',
-                'description' => 'User Or Group',
+                'description' => __('bot.role-or-user'),
                 'type' => Option::STRING,
                 'required' => true,
                 'choices' => [
-                    ['name' => "Role", 'value' => 'has_role'],
-                    ['name' => "User", 'value' => 'has_user']
+                    ['name' => __('bot.role'), 'value' => 'has_role'],
+                    ['name' => __('bot.user'), 'value' => 'has_user']
                 ],
             ],
             [
                 'name' => 'multiplier',
-                'description' => 'Usage Mutliplier',
+                'description' => __('bot.multiplier'),
                 'type' => Option::INTEGER,
                 'required' => true,
             ],

@@ -65,7 +65,7 @@ class UpdateMessageCounterAction implements Action
                 $newLevel = Helper::calcLevel($messageCounter->xp);
 
                 if ($newLevel > $oldLevel && $guild->getSetting(Setting::ENABLE_LVL_MSG)) {
-                    $this->bot->discord->getChannel($guild->getSetting(Setting::LEVEL_UP_CHAN))?->sendMessage("Hey strijder <@{$messageCounter->user->discord_id}>, je bent nu level {$newLevel}, gefeliciteerd! Berend zal je nu op een drankje trakteren!");
+                    $this->bot->discord->getChannel($guild->getSetting(Setting::LEVEL_UP_CHAN))?->sendMessage(__('bot.level-up-msg', ['user' => $messageCounter->user->discord_id, 'level' => $newLevel]));
                 }
             }
         }

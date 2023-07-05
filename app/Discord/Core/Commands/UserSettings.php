@@ -41,7 +41,7 @@ class UserSettings extends SlashCommand
         $user = DiscordUser::get($this->interaction->member->id);
 
         if ($user->settings->isEmpty()) {
-            $embedBuilder->setDescription("No settings found");
+            $embedBuilder->setDescription(__('bot.userconfig.not-found'));
         } else {
             $description = "";
             foreach ($user->settings as $setting) {

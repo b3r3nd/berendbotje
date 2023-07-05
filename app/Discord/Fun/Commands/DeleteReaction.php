@@ -29,7 +29,7 @@ class DeleteReaction extends SlashCommand
         $this->slashCommandOptions = [
             [
                 'name' => 'trigger',
-                'description' => 'Trigger',
+                'description' => __('bot.trigger'),
                 'type' => Option::STRING,
                 'required' => true,
             ]

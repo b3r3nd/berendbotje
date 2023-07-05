@@ -28,7 +28,7 @@ class DeleteCommand extends SlashCommand
         $this->slashCommandOptions = [
             [
                 'name' => 'command',
-                'description' => 'Command',
+                'description' => __('bot.command'),
                 'type' => Option::STRING,
                 'required' => true,
             ]

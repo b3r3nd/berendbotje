@@ -29,13 +29,13 @@ class CreateRoleReward extends SlashCommand
         $this->slashCommandOptions = [
             [
                 'name' => 'level',
-                'description' => 'Level',
+                'description' => __('bot.level'),
                 'type' => Option::INTEGER,
                 'required' => true,
             ],
             [
                 'name' => 'role',
-                'description' => 'Role',
+                'description' => __('bot.role'),
                 'type' => Option::ROLE,
                 'required' => true,
             ],

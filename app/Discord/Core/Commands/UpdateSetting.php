@@ -33,14 +33,14 @@ class UpdateSetting extends SlashCommand
         $this->slashCommandOptions = [
             [
                 'name' => 'setting_key',
-                'description' => 'Key',
+                'description' => __('bot.key'),
                 'type' => Option::STRING,
                 'required' => true,
                 'choices' => $choices,
             ],
             [
                 'name' => 'setting_value',
-                'description' => 'Value',
+                'description' => __('bot.value'),
                 'type' => Option::STRING,
                 'required' => true,
             ],
