@@ -21,8 +21,9 @@ class Reminder extends DiscordEvent
                 !$this->bot->getGuild($message->guild_id)?->getSetting(SettingEnum::ENABLE_REMINDER)) {
                 return;
             }
+
             $guild = $this->bot->getGuild($message->guild_id);
-            if ($message->channel_id === $guild->getSetting(SettingEnum::REMINDER_CHANNEL)) {
+            if ($message->channel_id == $guild->getSetting(SettingEnum::REMINDER_CHANNEL)) {
                 $message->channel->sendMessage(MessageBuilder::new()->setContent("<@&{$guild->getSetting(SettingEnum::REMINDER_ROLE)}>"));
             }
         });
