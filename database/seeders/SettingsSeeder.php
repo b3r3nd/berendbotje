@@ -39,6 +39,8 @@ class SettingsSeeder extends Seeder
             'count_channel' => "",
             'current_count' => 0,
             'enable_count' => true,
+            'level_up_channel' => 0,
+            'enable_lvl_msg' => 0,
         ];
 
         foreach (Guild::all() as $guild) {

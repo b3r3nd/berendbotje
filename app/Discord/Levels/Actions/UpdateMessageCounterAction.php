@@ -3,9 +3,13 @@
 namespace App\Discord\Levels\Actions;
 
 use App\Discord\Core\Bot;
+use App\Discord\Core\Enums\Setting;
 use App\Discord\Core\Interfaces\Action;
 use App\Discord\Core\Models\DiscordUser;
 use App\Discord\Levels\Helpers\Helper;
+use Discord\Http\Exceptions\NoPermissionsException;
+use Discord\Parts\User\Member;
+use Discord\Parts\User\User;
 
 
 class UpdateMessageCounterAction implements Action
@@ -34,6 +38,7 @@ class UpdateMessageCounterAction implements Action
 
     /**
      * @return void
+     * @throws NoPermissionsException
      */
     public function execute(): void
     {
@@ -46,7 +51,6 @@ class UpdateMessageCounterAction implements Action
             'guild_id' => $guild->model->id,
             'xp' => $this->xpCount,
         ]);
-
         if ($messageCounters->isEmpty()) {
             $user->messageCounters()->save($messageCounter);
         } else {
@@ -56,9 +60,18 @@ class UpdateMessageCounterAction implements Action
             if ($this->removeXp) {
                 $messageCounter->update(['xp' => $messageCounter->xp - $this->xpCount]);
             } else {
+                $oldLevel = Helper::calcLevel($messageCounter->xp);
                 $messageCounter->update(['xp' => $messageCounter->xp + $this->xpCount]);
+                $newLevel = Helper::calcLevel($messageCounter->xp);
+
+                if ($newLevel > $oldLevel && $guild->getSetting(Setting::ENABLE_LVL_MSG)) {
+                    $member = $this->bot->discord->guilds->get('id', $this->guildId)->members->get('id', $messageCounter->user->discord_id);
+                    $this->bot->discord->getChannel($guild->getSetting(Setting::LEVEL_UP_CHAN))?->sendMessage("Congrats {$member?->username} for reaching level {$newLevel}");
+                }
             }
         }
+
         $messageCounter->update(['level' => Helper::calcLevel($messageCounter->xp)]);
+
     }
 }

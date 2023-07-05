@@ -42,6 +42,7 @@ class Settings extends SlashCommand
             SettingEnum::BUMP_CHANNEL->value,
             SettingEnum::REMINDER_CHANNEL->value,
             SettingEnum::COUNT_CHANNEL->value,
+            SettingEnum::LEVEL_UP_CHAN->value,
         ];
 
         $roles = [
