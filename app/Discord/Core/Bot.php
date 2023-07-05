@@ -4,8 +4,9 @@ namespace App\Discord\Core;
 
 use App\Discord\Core\Commands\Settings;
 use App\Discord\Core\Commands\UpdateSetting;
+use App\Discord\Core\Commands\UpdateUserSetting;
+use App\Discord\Core\Commands\UserSettings;
 use App\Discord\Core\Models\Guild;
-use App\Discord\Fun\Actions\BumpCounter;
 use App\Discord\Fun\Commands\Ask;
 use App\Discord\Fun\Commands\BumpStatistics;
 use App\Discord\Fun\Commands\CommandIndex;
@@ -23,6 +24,7 @@ use App\Discord\Fun\Commands\ModeratorStatistics;
 use App\Discord\Fun\Commands\ReactionIndex;
 use App\Discord\Fun\Commands\ResetCringe;
 use App\Discord\Fun\Commands\UrbanDictionary;
+use App\Discord\Fun\Events\BumpCounter;
 use App\Discord\Fun\Events\CommandResponse;
 use App\Discord\Fun\Events\Count;
 use App\Discord\Fun\Events\EmoteCounter;
@@ -84,7 +86,7 @@ use Exception;
 /**
  * Main bot class, theoretically you could create more instances from this class to have multiple bots running.
  *
- * @property Discord $discord           Set with the global discord instance from DiscordPHP.
+ * @property Discord $discord         Set with the global discord instance from DiscordPHP.
  * @property array $guilds            List of all active guilds using the bot.
  *
  * @property bool $devMode           If the bot runs in dev mode.
