@@ -57,7 +57,7 @@ class GuildMemberLogger extends DiscordEvent
             $guild = $this->bot->getGuild($member->guild_id);
             if ($guild?->getLogSetting(LogSetting::UPDATED_USERNAME)) {
                 if ($member->displayname !== $oldMember->displayname) {
-                    $guild->logWithMember($member, __('log.username-change', ['from' => $oldMember->displayname, 'to' => $member->displayname]));
+                    $guild->logWithMember($member, __('bot.log.username-change', ['from' => $oldMember->displayname, 'to' => $member->displayname]));
                 }
             }
         });
