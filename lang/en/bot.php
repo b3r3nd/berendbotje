@@ -46,6 +46,7 @@ return [
     'flags' => 'Flags',
     'permission' => 'Permission',
     'date-range' => 'Date Range',
+    'counting-since' => 'Counting emotes since :date',
 
     'permissions-enum' => [
         'roles' => 'Roles',
@@ -280,7 +281,7 @@ return [
 
     'emotes' => [
         'title' => 'Emote Counter',
-        'description' => "List of most used emotes.\n\n:emotes",
+        'description' => "\n\n:emotes",
     ],
 
     'help' => [
