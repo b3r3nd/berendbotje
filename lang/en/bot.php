@@ -15,9 +15,9 @@ return [
     'error' => 'Error',
     'done' => 'Success',
     'media-deleted' => 'Your message in :channel has been deleted. Only media and URLs are allowed.',
-    'no-valid-term' => 'Search term :term cannot be found',
+    'no-valid-term' => 'Search term :term cannot be found.',
     'bump-reminder' => 'BUMP TIME :role',
-    'monthly' => 'Montly',
+    'monthly' => 'Monthly',
     'all-time' => 'All time',
     'command' => 'Command',
     'response' => 'Response',
@@ -27,7 +27,7 @@ return [
     'question' => 'Question',
     'search-term' => 'Search Term',
     'cannot-count' => "Can't count :)",
-    'wrong-number' => 'Wrong numer, reset to :count',
+    'wrong-number' => 'Wrong number, reset to :count.',
     'level-up-msg' => 'Hey strijder <@:user>, je bent nu level :level, gefeliciteerd! Berend zal je nu op een drankje trakteren!',
     'level' => 'Level',
     'role' => 'Role',
@@ -143,23 +143,23 @@ return [
     'blacklist' => [
         'title' => 'User Blacklist',
         'block' => ":user added to blacklist.",
-        'unblock' => ":user had been deleted from the blacklist",
-        'blocked' => ':user is already on the blacklist',
-        'unblocked' => ':user is not on the blacklist'
+        'unblock' => ":user had been deleted from the blacklist.",
+        'blocked' => ':user is already on the blacklist.',
+        'unblocked' => ':user is not on the blacklist.'
     ],
 
     'channels' => [
-        'added' => 'Channel flag :flag added to channel <#:channel>',
-        'deleted' => 'Channel flag :flag removed from channel <#:channel>',
-        'has-flag' => 'Channel :channel is already marked with that flag',
-        'no-flag' => 'Channel :channel is not marked with that flag',
+        'added' => 'Channel flag :flag added to channel <#:channel>.',
+        'deleted' => 'Channel flag :flag removed from channel <#:channel>.',
+        'has-flag' => 'Channel :channel is already marked with that flag.',
+        'no-flag' => 'Channel :channel is not marked with that flag.',
         'no-channel' => 'Please provide a valid channel.',
-        'title' => 'ChannelFlags',
+        'title' => 'Channel Flags',
         'description' => "ChannelFlags with their flags, see `/help` for more information about what each flag means.\n\n:channels"
     ],
 
     'logset' => [
-        'updated' => 'Log setting :key updated',
+        'updated' => 'Log setting :key updated.',
         'title' => 'Log Settings',
     ],
 
@@ -167,7 +167,7 @@ return [
     'userroles' => [
         'title' => 'Roles in this server',
         'description' => "Roles for :user \n\n :roles",
-        'none' => ':user has no roles in this server',
+        'none' => ':user has no roles in this server.',
     ],
 
     'users' => [
@@ -177,24 +177,24 @@ return [
     'roles' => [
         'title' => 'Roles for this server',
         'description' => ':roles',
-        'exist' => 'Role already exists',
-        'created' => 'Role :role created',
-        'not-exist' => 'Role :role does not exist',
-        'deleted' => 'Role :role deleted',
-        'perm-attached' => 'Permission :perm given to role :role',
-        'role-attached' => 'Role :role given to user :user',
-        'perm-detached' => 'Permission :perm removed from role :role',
-        'role-detached' => 'Role :role removed from user :user',
+        'exist' => 'Role already exists.',
+        'created' => 'Role :role created.',
+        'not-exist' => 'Role :role does not exist.',
+        'deleted' => 'Role :role deleted.',
+        'perm-attached' => 'Permission :perm given to role :role.',
+        'role-attached' => 'Role :role given to user :user.',
+        'perm-detached' => 'Permission :perm removed from role :role.',
+        'role-detached' => 'Role :role removed from user :user.',
         'has-users' => 'You cannot delete roles in use by users, remove users first.',
-        'admin-role' => 'Cannot delete administrator role',
-        'admin-role-perms' => 'You cannot remove permissions from the main administrator role',
-        'admin-role-owner' => 'You cannot remove the owner from the list of admins',
+        'admin-role' => 'Cannot delete administrator role.',
+        'admin-role-perms' => 'You cannot remove permissions from the main administrator role.',
+        'admin-role-owner' => 'You cannot remove the owner from the list of admins.',
     ],
 
     'permissions' => [
         'title' => 'Global permissions',
         'description' => ':perms',
-        'not-exist' => 'Permission :perm does not exist',
+        'not-exist' => 'Permission :perm does not exist.',
     ],
 
     '8ball' => [
@@ -202,35 +202,34 @@ return [
     ],
 
     'rewards' => [
-        'title' => 'Role rewards',
+        'title' => 'Role Rewards',
         'description' => "Level • Role Reward\n\n:rewards",
-        'added' => 'Role reward :role added for level :level',
-        'deleted' => 'All role rewards for :level deleted',
+        'added' => 'Role reward :role added for level :level.',
+        'deleted' => 'All role rewards for :level deleted.',
         'number' => 'Both level and role ID need to be numeric.'
     ],
 
     'xp' => [
-        'not-found' => ':user does not have any messages',
-        'count' => 'You have :messages',
+        'not-found' => ':user does not have any messages.',
+        'count' => 'You have :messages.',
         'title' => 'Level :level',
         'description' => "User: :user\nLevel: :level \nXP: :xp\nMessages: :messages \nVoice: :voice",
-        'given' => ':xp xp given to <@:user>',
-        'removed' => ':xp xp removed from <@:user>',
-        'reset' => 'xp for <@:user> is reset',
-        'not-exist' => 'User <@:user> has no messages or experience in this server'
+        'given' => ':xp xp given to <@:user>.',
+        'removed' => ':xp xp removed from <@:user>.',
+        'reset' => 'xp for <@:user> is reset.',
+        'not-exist' => 'User <@:user> has no messages or experience in this server.'
     ],
 
     'set' => [
         'title' => 'General bot settings',
-        'usage-set' => 'Usage: set `setting_key` `setting_value`',
-        'not-exist' => 'Setting :key does not exist',
-        'updated' => 'Setting :key is updated to value :value',
-        'not-numeric' => 'Setting values must be numeric, :value is not a numeric value',
+        'not-exist' => 'Setting :key does not exist.',
+        'updated' => 'Setting :key is updated to value :value.',
+        'not-numeric' => 'Setting values must be numeric, :value is not a numeric value.',
     ],
 
     'messages' => [
-        'title' => 'xp and level statistics',
-        'description' => "List of messages and xp for users\n\n:users",
+        'title' => 'XP Leaderboard',
+        'description' => "List of messages and xp for users.\n\n:users",
     ],
 
     'buttons' => [
@@ -253,64 +252,62 @@ return [
     'cringe' => [
         'title' => 'Cringe Counter',
         'description' => "List of the most cringe people in our discord! \n\n:users",
-        'count' => "Cringe counter for :name is :count",
-        'change' => "Cringe counter for :name is now :count",
-        'not-cringe' => ":name is not cringe",
-        'reset' => "Cringe for :user is reset to 0",
-        'fail' => "Nice try noob, I increased your cringe counter instead. Count is now :count"
+        'count' => "Cringe counter for :name is :count.",
+        'change' => "Cringe counter for :name is now :count.",
+        'not-cringe' => ":name is not cringe.",
+        'reset' => "Cringe for :user is reset to 0.",
+        'fail' => "Nice try noob, I increased your cringe counter instead. Count is now :count."
     ],
 
     'cmd' => [
-        'saved' => 'Command :trigger saved with response :response',
-        'deleted' => 'Command :trigger deleted',
+        'saved' => 'Command :trigger saved with response :response.',
+        'deleted' => 'Command :trigger deleted.',
         'title' => 'Commands',
         'description' => "Basic text commands. \n\n :cmds",
     ],
 
     'reactions' => [
-        'saved' => 'Reaction :reaction on :name saved',
-        'deleted' => 'Reaction for :name deleted',
-        'footer' => 'usage: addreaction, delreaction, reactions',
+        'saved' => 'Reaction :reaction on :name saved.',
+        'deleted' => 'Reaction for :name deleted.',
         'title' => 'Reactions',
         'description' => "Basic reactions.",
     ],
 
     'timeout' => [
         'title' => 'Timeouts',
-        'count' => "Total timeouts: :count",
+        'count' => "Total timeouts: :count.",
     ],
 
     'emotes' => [
         'title' => 'Emote Counter',
-        'description' => "List of most used emotes\n\n:emotes",
+        'description' => "List of most used emotes.\n\n:emotes",
     ],
 
     'help' => [
         'title' => 'Help',
-        'footer' => 'Switch between sections below',
+        'footer' => 'Switch between sections below.',
     ],
 
     'mention' => [
         'title' => 'Mention Responses',
         'description' => ':data',
         'added' => "**Reply:** \n :reply \n\n **Group:** :group",
-        'deleted' => 'Reply has been deleted',
-        'no-group' => 'Group not found, use the group ID',
-        'no-reply' => 'Reply not found, use the reply ID',
+        'deleted' => 'Reply has been deleted.',
+        'no-group' => 'Group not found, use the group ID.',
+        'no-reply' => 'Reply not found, use the reply ID.',
     ],
     'mentiongroup' => [
         'title' => 'Mention Groups',
-        'footer' => 'List of mention groups',
         'description' => ':data',
-        'added' => 'Mention group :group added',
-        'deleted' => 'Mention group and all of its replies deleted',
-        'not-found' => 'Group with id :ID not found',
-        'integer' => 'A group must be the ID of a server role! (for now)',
-        'notexist' => 'No mention group found for id :group',
-        'updated' => 'Mention group updated',
+        'added' => 'Mention group :group added.',
+        'deleted' => 'Mention group and all of its replies deleted.',
+        'not-found' => 'Group with id :ID not found.',
+        'integer' => 'A group must be the ID of a server role! (for now).',
+        'notexist' => 'No mention group found for id :group.',
+        'updated' => 'Mention group updated.',
     ],
     'log' => [
-        'no-dm' => 'Slash commands dont work in DM',
+        'no-dm' => 'Slash commands dont work in DM.',
         'failed' => 'Failed to use :trigger, lacks permission.',
         'success' => 'Used :trigger.',
         'joined' => '<@:user> joined the server',
