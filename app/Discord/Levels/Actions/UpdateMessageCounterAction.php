@@ -11,7 +11,13 @@ use Discord\Http\Exceptions\NoPermissionsException;
 use Discord\Parts\User\Member;
 use Discord\Parts\User\User;
 
-
+/**
+ * @property string $userId     Discord user id of the user whose XP is being modified.
+ * @property int $xpCount       Amount of XP to change.
+ * @property bool $removeXp     If the XP should be removed instead of added to the user.
+ * @property string $guildId    Discord guild id it belongs to.
+ * @property Bot $bot           Main bot instance
+ */
 class UpdateMessageCounterAction implements Action
 {
     private string $userId;

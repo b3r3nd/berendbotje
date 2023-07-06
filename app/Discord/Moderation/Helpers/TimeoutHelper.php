@@ -7,6 +7,11 @@ namespace App\Discord\Moderation\Helpers;
  */
 class TimeoutHelper
 {
+    /**
+     * Yeah.. well.. I got nothing to say. <_<
+     * @param $timeout
+     * @return string
+     */
     public static function timeoutLength($timeout)
     {
         $length = $timeout->length;

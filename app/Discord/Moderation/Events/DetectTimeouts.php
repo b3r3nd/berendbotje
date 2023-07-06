@@ -17,10 +17,14 @@ use Discord\WebSockets\Event;
  * in the future. if it is not set, the user never had a timeout before. If it is set to a past date the user has been
  * given a timeout before. We still need to manually read the audit log to figure out the reason for the timeout and who
  * gave the timeout.
+ *
+ * What a mess.
  */
 class DetectTimeouts extends DiscordEvent
 {
-
+    /**
+     * @return void
+     */
     public function registerEvent(): void
     {
         $this->discord->on(Event::GUILD_MEMBER_UPDATE, function (Member $member, Discord $discord) {

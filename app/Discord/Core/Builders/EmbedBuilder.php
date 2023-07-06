@@ -9,12 +9,12 @@ use Exception;
 
 /**
  * Embeds are used in almost every response, the builder helps is abstract some code :)
+ *
+ * @property Embed $embed the actual discord embed we modify.
  */
 class EmbedBuilder
 {
     private Embed $embed;
-
-
     /**
      * @param SlashCommand $command
      * @param string $title

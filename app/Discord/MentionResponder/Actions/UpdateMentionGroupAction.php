@@ -6,12 +6,19 @@ use App\Discord\Core\Interfaces\Action;
 use App\Discord\MentionResponder\Models\MentionGroup;
 use Discord\Repository\Interaction\OptionRepository;
 
+/**
+ * @property OptionRepository $options  List of options retrieved from the slash command which triggered this action
+ * @property MentionGroup $mentionGroup Mention group to update
+ */
 class UpdateMentionGroupAction implements Action
 {
     private OptionRepository $options;
     private MentionGroup $mentionGroup;
 
-
+    /**
+     * @param MentionGroup $mentionGroup
+     * @param OptionRepository $options
+     */
     public function __construct(MentionGroup $mentionGroup, OptionRepository $options)
     {
         $this->options = $options;
@@ -19,6 +26,9 @@ class UpdateMentionGroupAction implements Action
 
     }
 
+    /**
+     * @return void
+     */
     public function execute(): void
     {
         if ($this->options->get('name', 'has_role')) {

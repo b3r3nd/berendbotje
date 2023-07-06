@@ -15,6 +15,9 @@ use Discord\WebSockets\Event;
 
 class MessageXpCounter extends DiscordEvent
 {
+    /**
+     * @return void
+     */
     public function registerEvent(): void
     {
         $this->discord->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) {

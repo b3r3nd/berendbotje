@@ -8,6 +8,10 @@ use App\Discord\Core\Models\Guild;
 use App\Discord\Levels\Models\RoleReward;
 use Discord\Parts\Channel\Message;
 
+/**
+ * @property Message $message   Message instance which triggered this event.
+ * @property string $userId     Discord User id of the user sending the message.
+ */
 class SyncRoleRewardsAction implements Action
 {
     private Message $message;

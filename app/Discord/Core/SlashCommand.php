@@ -9,14 +9,13 @@ use App\Discord\Roles\Enums\Permission;
 use Discord\Builders\MessageBuilder;
 use Discord\Discord;
 use Discord\Parts\Interactions\Interaction;
+use Exception;
 
 /**
- * Extendable class to easily create new Slash ONLY commands. For better understanding:
- * @see Command
- * @see SlashCommandTrait
+ * Extendable class to easily create new Slash commands.
  *
- * @property Bot $bot                       Easy reference to the bot this guild runs in
- * @property Discord $discord               Easy reference to the discord instance
+ * @property Bot $bot                       Easy reference to the bot this guild runs in.
+ * @property Discord $discord               Easy reference to the discord instance.
  * @property string $permission             Required permission level for this command.
  * @property string $trigger                Trigger for the command, both slash and text.
  * @property string $guildId                String of the Discord Guild ID
@@ -48,7 +47,10 @@ abstract class SlashCommand
         $this->trigger = $this->trigger();
     }
 
-    /** @noinspection NotOptimalIfConditionsInspection */
+    /**
+     * @return void
+     * @throws Exception
+     */
     public function registerSlashCommand(): void
     {
         $optionsArray = [
@@ -61,19 +63,16 @@ abstract class SlashCommand
         $command = new \Discord\Parts\Interactions\Command\Command($this->discord, $optionsArray);
         $this->discord->listenCommand($this->trigger, function (Interaction $interaction) {
             $this->interaction = $interaction;
-
             if ($interaction->guild_id === null) {
                 return $interaction->respondWithMessage(EmbedFactory::failedEmbed($this, __('bot.log.no-dm')));
             }
             $this->guildId = $interaction->guild_id;
             $guild = $this->bot->getGuild($interaction->guild_id);
-
-            if (!DiscordUser::hasPermission($interaction->member->id, $interaction->guild_id, $this->permission->value) && $this->permission->value !== Permission::NONE->value) {
+            if ($this->permission->value !== Permission::NONE->value && !DiscordUser::hasPermission($interaction->member->id, $interaction->guild_id, $this->permission->value)) {
                 $guild->logWithMember($interaction->member, __('bot.log.failed', ['trigger' => $this->trigger]), 'fail');
                 return $interaction->respondWithMessage(EmbedFactory::lackAccessEmbed($this, __("bot.lack-access")));
             }
-
-            $guild->logWithMember($interaction->member, __('bot.log.sucess', ['trigger' => $this->trigger]), 'success');
+            $guild->logWithMember($interaction->member, __('bot.log.success', ['trigger' => $this->trigger]), 'success');
             return $interaction->respondWithMessage($this->action());
         });
         $this->discord->application->commands->save($command);

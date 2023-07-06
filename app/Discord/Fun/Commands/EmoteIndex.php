@@ -36,7 +36,9 @@ class EmoteIndex extends SlashIndexCommand
     public function getEmbed(): Embed
     {
         $this->total = Emote::byGuild($this->guildId)->count();
-        $description = "";
+
+        $date = Emote::byGuild($this->guildId)->get()->last()->created_at->format('Y-m-d');
+        $description = __('bot.counting-since', ['date' => $date]) . "\n\n";
         foreach (Emote::byGuild($this->guildId)->orderBy('count', 'desc')->skip($this->getOffset($this->getLastUser()))->limit($this->perPage)->get() as $index => $emote) {
             $description .= Helper::indexPrefix($index, $this->getOffset($this->getLastUser()));
             $description .= "**{$emote->emote}** • {$emote->count} \n";
