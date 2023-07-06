@@ -3,6 +3,7 @@
 namespace App\Discord\Core\Commands;
 
 use App\Discord\Core\Builders\EmbedFactory;
+use App\Discord\Core\Models\Guild;
 use App\Discord\Core\Models\Setting;
 use App\Discord\Core\SlashCommand;
 use App\Discord\Roles\Enums\Permission;
@@ -25,7 +26,7 @@ class UpdateSetting extends SlashCommand
     public function __construct()
     {
         $choices = [];
-        foreach (Setting::where('guild_id', 2)->get() as $setting) {
+        foreach (Setting::where('guild_id', Guild::all()->first()->id)->get() as $setting) {
             $choices[] = ['name' => $setting->key, 'value' => $setting->key];
         }
 
