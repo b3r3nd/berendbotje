@@ -3,7 +3,7 @@
 namespace App\Discord\Fun\Commands;
 
 use App\Discord\Core\SlashCommand;
-use App\Discord\Fun\Jobs\ProcessImageGenration;
+use App\Discord\Fun\Jobs\ProcessImageGeneration;
 use App\Discord\Roles\Enums\Permission;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Command\Option;
@@ -39,7 +39,7 @@ class GenerateImage extends SlashCommand
 
     public function action(): MessageBuilder
     {
-        ProcessImageGenration::dispatch($this->interaction->channel_id, $this->getOption('prompt'));
+        ProcessImageGeneration::dispatch($this->interaction->channel_id, $this->getOption('prompt'));
         return MessageBuilder::new()->setContent("Generating Image with prompt _{$this->getOption('prompt')}_");
     }
 }

@@ -10,6 +10,12 @@ use Discord\Parts\User\Member;
 use Discord\Parts\User\User;
 use Exception;
 
+/**
+ * Logger class attached to guild instances to enable logging.
+ *
+ * @property string $logChannelId   id of the channel where logs should be posted.
+ * @property Discord $discord       Main discord instance
+ */
 class Logger
 {
     private string $logChannelId;

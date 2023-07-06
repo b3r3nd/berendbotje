@@ -4,6 +4,7 @@ namespace App\Discord\Levels\Events;
 
 use App\Discord\Core\DiscordEvent;
 use App\Discord\Core\Enums\Setting;
+use App\Discord\Core\Guild;
 use App\Discord\Core\Models\DiscordUser;
 use App\Discord\Levels\Helpers\Helper;
 use Discord\Discord;
@@ -13,12 +14,12 @@ use Discord\WebSockets\Event;
 class VoiceXpCounter extends DiscordEvent
 {
     /**
-     * @param $guild
-     * @param $user
-     * @param $oldstate
+     * @param Guild $guild
+     * @param DiscordUser $user
+     * @param DVoiceStateUpdate $oldstate
      * @return void
      */
-    private function leaveVoice($guild, $user, $oldstate): void
+    private function leaveVoice(Guild $guild, DiscordUser $user, DVoiceStateUpdate $oldstate): void
     {
         if ($guild->getSetting(Setting::ENABLE_VOICE_XP)) {
             $duration = $guild->leftVoice($oldstate->user_id);
@@ -47,6 +48,9 @@ class VoiceXpCounter extends DiscordEvent
         }
     }
 
+    /**
+     * @return void
+     */
     public function registerEvent(): void
     {
         $this->discord->on(Event::VOICE_STATE_UPDATE, function (DVoiceStateUpdate $state, Discord $discord, $oldstate) {
@@ -55,7 +59,7 @@ class VoiceXpCounter extends DiscordEvent
 
             if ($state->channel) {
                 if (!isset($oldstate)) {
-                    if (!$guild->getChannel($state->channel_id) && !$state->self_mute && !$state->self_deaf) {
+                    if (!$state->self_mute && !$state->self_deaf && !$guild->getChannel($state->channel_id)) {
                         $guild->joinedVoice($state->user_id);
                     }
                 } elseif ($guild->getChannel($state->channel_id) && $guild->getChannel($state->channel_id)->no_xp) {

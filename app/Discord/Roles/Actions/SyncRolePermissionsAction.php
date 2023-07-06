@@ -12,6 +12,12 @@ use Discord\Repository\Interaction\OptionRepository;
 use Exception;
 use Illuminate\Support\Collection;
 
+/**
+ * @property OptionRepository $options  List of options retrieved from the slash command using this action.
+ * @property string $guildId            Discord guild id.
+ * @property bool $attach               Attaching or detaching roles.
+ * @property SlashCommand $command      Actual slash command this action was triggered in.
+ */
 class SyncRolePermissionsAction
 {
     private OptionRepository $options;

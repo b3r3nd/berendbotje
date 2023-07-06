@@ -11,7 +11,6 @@ use Exception;
  */
 class EmbedFactory
 {
-
     /**
      * When a user lacks access to a certain command we use the EPHEMERAL flag to hide the response from other users.
      *

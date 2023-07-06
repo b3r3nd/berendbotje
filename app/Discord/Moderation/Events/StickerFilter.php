@@ -9,6 +9,9 @@ use Discord\WebSockets\Event;
 
 class StickerFilter extends DiscordEvent
 {
+    /**
+     * @return void
+     */
     public function registerEvent(): void
     {
         $this->discord->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) {
@@ -18,7 +21,7 @@ class StickerFilter extends DiscordEvent
             if (!$message->guild_id) {
                 return;
             }
-            $guild = $this->bot->getGuild($message->guild_id ?? "");
+            $guild = $this->bot->getGuild($message->guild_id);
             if ($guild) {
                 $channel = $guild->getChannel($message->channel_id);
                 if (!$channel) {
@@ -28,7 +31,6 @@ class StickerFilter extends DiscordEvent
                     return;
                 }
             }
-
             // If message contains stickers we delete the message
             if ($message->sticker_items) {
                 $message->delete();

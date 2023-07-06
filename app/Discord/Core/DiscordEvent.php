@@ -5,8 +5,8 @@ namespace App\Discord\Core;
 use Discord\Discord;
 
 /**
- * @property Bot $bot           - Bot the event belongs to
- * @property Discord $discord   - Easy to access discord instance
+ * @property Bot $bot            Bot the event belongs to.
+ * @property Discord $discord    Easy to access discord instance.
  */
 abstract class DiscordEvent
 {

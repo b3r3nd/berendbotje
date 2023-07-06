@@ -20,7 +20,7 @@ class MessageLogger extends DiscordEvent
             if ($message->guild_id) {
                 return;
             }
-
+            // Hardcoded main guild I use to test the bot
             $guild = $this->bot->getGuild("590941503917129743");
             $guild->logWithMember($message->author, __('log.bot.send-dm', ['content' => $message->content]), 'success');
         });

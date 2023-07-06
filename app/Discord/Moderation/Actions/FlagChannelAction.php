@@ -8,6 +8,12 @@ use App\Discord\Core\Models\Guild;
 use App\Discord\Moderation\Models\Channel;
 use Discord\Repository\Interaction\OptionRepository;
 
+/**
+ * @property OptionRepository $options  List of options from the slash command using this action.
+ * @property string $guildId            Discord id of the guild.
+ * @property bool $added                If the channel flag is being added or removed.
+ * @property Bot $bot                   Main bot instance.
+ */
 class FlagChannelAction implements Action
 {
     private OptionRepository $options;
@@ -15,6 +21,12 @@ class FlagChannelAction implements Action
     private bool $added;
     private Bot $bot;
 
+    /**
+     * @param OptionRepository $options
+     * @param string $guildId
+     * @param bool $added
+     * @param Bot $bot
+     */
     public function __construct(OptionRepository $options, string $guildId, bool $added, Bot $bot)
     {
         $this->bot = $bot;
@@ -23,6 +35,9 @@ class FlagChannelAction implements Action
         $this->added = $added;
     }
 
+    /**
+     * @return void
+     */
     public function execute(): void
     {
         $channel = Channel::get($this->options->get('name', 'channel')->value, $this->guildId);

@@ -29,7 +29,7 @@ class Helper
         } else {
             $index += $offset;
         }
-        $index = $index + 1;
+        ++$index;
         return "**{$index}. ** ";
     }
 
@@ -47,7 +47,7 @@ class Helper
     {
         $totalRequiredXp = 0;
         for ($level = 0; $level < 100; $level++) {
-            $xpRequired = 5 * pow($level, 2) + (50 * $level) + 100;
+            $xpRequired = 5 * ($level ** 2) + (50 * $level) + 100;
             $totalRequiredXp += $xpRequired;
             if ($totalRequiredXp >= $xp) {
                 return $level;
