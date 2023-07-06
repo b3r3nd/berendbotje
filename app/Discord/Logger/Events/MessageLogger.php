@@ -22,7 +22,7 @@ class MessageLogger extends DiscordEvent
             }
             // Hardcoded main guild I use to test the bot
             $guild = $this->bot->getGuild("590941503917129743");
-            $guild->logWithMember($message->author, __('log.bot.send-dm', ['content' => $message->content]), 'success');
+            $guild->logWithMember($message->author, __('bot.log.send-dm', ['content' => $message->content]), 'success');
         });
 
         $this->discord->on(Event::MESSAGE_UPDATE, function (Message $message, Discord $discord, ?Message $oldMessage) {
@@ -38,7 +38,7 @@ class MessageLogger extends DiscordEvent
                 return;
             }
             if (isset($oldMessage) && $guild->getLogSetting(LogSetting::MESSAGE_UPDATED) && count($oldMessage->embeds) === count($message->embeds)) {
-                $guild->logWithMember($message->member, __('bot.log-update-msg', ['user' => $message->member->id, 'channel' => $message->channel_id, 'old' => $oldMessage->content, 'new' => $message->content]), 'warning');
+                $guild->logWithMember($message->member, __('bot.log.update-msg', ['user' => $message->member->id, 'channel' => $message->channel_id, 'old' => $oldMessage->content, 'new' => $message->content]), 'warning');
             }
         });
 
