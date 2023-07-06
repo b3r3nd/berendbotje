@@ -21,7 +21,6 @@ class GuildMemberLogger extends DiscordEvent
                 $guild->logWithMember($member, __('bot.log.joined', ['user' => $member->id]), 'success');
             }
         });
-
         $this->discord->on(Event::GUILD_MEMBER_REMOVE, function (Member $member, Discord $discord) {
             $localGuild = $this->bot->getGuild($member->guild_id);
             $discord->guilds->fetch($member->guild_id)->done(function (Guild $guild) use ($member, $localGuild) {
@@ -42,14 +41,12 @@ class GuildMemberLogger extends DiscordEvent
                 });
             });
         });
-
         $this->discord->on(Event::GUILD_BAN_REMOVE, function (Ban $ban, Discord $discord) {
             $guild = $this->bot->getGuild($ban->guild_id);
             if ($guild->getLogSetting(LogSetting::UNBANNED_SERVER)) {
                 $guild->logWithMember($ban->user, __('bot.log.joined', ['user' => $ban->user_id]), 'success');
             }
         });
-
         $this->discord->on(Event::GUILD_MEMBER_UPDATE, function (Member $member, Discord $discord, ?Member $oldMember) {
             if (!$oldMember) {
                 return;
@@ -57,7 +54,7 @@ class GuildMemberLogger extends DiscordEvent
             $guild = $this->bot->getGuild($member->guild_id);
             if ($guild?->getLogSetting(LogSetting::UPDATED_USERNAME)) {
                 if ($member->displayname !== $oldMember->displayname) {
-                    $guild->logWithMember($member, __('log.username-change', ['from' => $oldMember->displayname, 'to' => $member->displayname]));
+                    $guild->logWithMember($member, __('bot.log.username-change', ['from' => $oldMember->displayname, 'to' => $member->displayname]));
                 }
             }
         });
