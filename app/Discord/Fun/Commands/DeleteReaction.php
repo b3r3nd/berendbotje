@@ -5,6 +5,7 @@ namespace App\Discord\Fun\Commands;
 use App\Discord\Core\Builders\EmbedFactory;
 use App\Discord\Core\Models\Guild;
 use App\Discord\Core\SlashCommand;
+use App\Discord\Fun\Models\Command;
 use App\Discord\Fun\Models\Reaction;
 use App\Discord\Roles\Enums\Permission;
 use Discord\Builders\MessageBuilder;
@@ -33,6 +34,7 @@ class DeleteReaction extends SlashCommand
                 'description' => __('bot.trigger'),
                 'type' => Option::STRING,
                 'required' => true,
+                'autocomplete' => true,
             ]
         ];
         parent::__construct();
@@ -53,8 +55,12 @@ class DeleteReaction extends SlashCommand
      * @param Interaction $interaction
      * @return array
      */
+    /**
+     * @param Interaction $interaction
+     * @return array
+     */
     public function autoComplete(Interaction $interaction): array
     {
-        return [];
+        return $this->getAutoComplete(Reaction::class, $interaction->guild_id, 'trigger', $this->getOption('trigger'));
     }
 }

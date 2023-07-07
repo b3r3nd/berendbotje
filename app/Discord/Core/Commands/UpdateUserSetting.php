@@ -13,6 +13,9 @@ use Discord\Parts\Interactions\Command\Option;
 use Discord\Parts\Interactions\Interaction;
 use Exception;
 
+/**
+ * For now, I kinda hardcoded a single setting, will do proper setup once I add more in the future.
+ */
 class UpdateUserSetting extends SlashCommand
 {
     public function permission(): Permission
@@ -89,6 +92,6 @@ class UpdateUserSetting extends SlashCommand
      */
     public function autoComplete(Interaction $interaction): array
     {
-        return [];
+        return ['no_role_rewards'];
     }
 }

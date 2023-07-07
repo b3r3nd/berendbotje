@@ -26,6 +26,18 @@ class Role extends Model
         return RoleFactory::new();
     }
 
+
+
+    /**
+     * @param $guildId
+     * @return mixed
+     */
+    public static function byGuild($guildId): mixed
+    {
+        return self::where(['guild_id' => Guild::get($guildId)->id]);
+    }
+
+
     /**
      * @param string $guildId
      * @param string $roleName
