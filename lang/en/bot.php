@@ -77,6 +77,7 @@ return [
     ],
 
     'slash' => [
+        'remove-timeout' => 'Remove a timeout from the LOG only!',
         'edit-timeout' => 'Update the reason for a given timeout',
         'userset' => 'Update user specific settings for this guild',
         'userconfig' => 'User specific settings for this guild',
@@ -282,6 +283,7 @@ return [
         'count' => "Total timeouts: :count.",
         'not-found' => 'Timeout with id :id not found, check the index.',
         'updated' => 'Reason for timeout with id :id updated to :reason',
+        'deleted' => 'Timeout with id :id deleted',
     ],
 
     'emotes' => [

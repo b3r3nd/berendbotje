@@ -8,9 +8,8 @@ use App\Discord\Moderation\Models\Timeout;
 use App\Discord\Roles\Enums\Permission;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Command\Option;
-use Exception;
 
-class UpdateTimeoutReason extends SlashCommand
+class RemoveTimeout extends SlashCommand
 {
 
     public function permission(): Permission
@@ -20,12 +19,12 @@ class UpdateTimeoutReason extends SlashCommand
 
     public function trigger(): string
     {
-        return "edittimeout";
+        return 'removetimeout';
     }
 
     public function __construct()
     {
-        $this->description = __('bot.slash.edit-timeout');
+        $this->description = __('bot.slash.remove-timeout');
         parent::__construct();
 
         $this->slashCommandOptions = [
@@ -35,30 +34,20 @@ class UpdateTimeoutReason extends SlashCommand
                 'type' => Option::INTEGER,
                 'required' => true,
             ],
-            [
-                'name' => 'reason',
-                'description' => __('bot.timeout-reason'),
-                'type' => Option::STRING,
-                'required' => true,
-            ],
         ];
+
     }
 
-    /**
-     * @return MessageBuilder
-     * @throws Exception
-     */
     public function action(): MessageBuilder
     {
         $timeoutId = $this->getOption('timeout_id');
-        $timeoutReason = $this->getOption('reason');
         $timeout = Timeout::find($timeoutId);
 
         if (!$timeout) {
             return EmbedFactory::failedEmbed($this, __('bot.timeout.not-found', ['id' => $timeoutId]));
         }
 
-        $timeout->update(['reason' => $this->getOption('reason')]);
-        return EmbedFactory::successEmbed($this, __('bot.timeout.updated', ['id' => $timeoutId, 'reason' => $timeoutReason]));
+        $timeout->delete();
+        return EmbedFactory::successEmbed($this, __('bot.timeout.deleted', ['id' => $timeoutId]));
     }
 }

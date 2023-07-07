@@ -14,19 +14,17 @@ class TimeoutHelper
      */
     public static function timeoutLength($timeout)
     {
-        $length = $timeout->length;
+        $length = (int) $timeout->length;
         $units = 'seconds';
 
-        if ($length >= 60) {
+        if ($length >= 59) {
             $length = round($length / 60);
             $units = 'minute(s)';
         }
-
         if ($length >= 60) {
             $length = round($length / 60);
             $units = 'hour(s)';
         }
-
         if ($length >= 24) {
             $length = round($length / 24);
             $units = 'day(s)';

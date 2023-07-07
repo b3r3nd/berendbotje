@@ -60,6 +60,7 @@ use App\Discord\MentionResponder\Commands\UpdateMentionGroup;
 use App\Discord\Moderation\Commands\Blacklist;
 use App\Discord\Moderation\Commands\Block;
 use App\Discord\Moderation\Commands\ChannelIndex;
+use App\Discord\Moderation\Commands\RemoveTimeout;
 use App\Discord\Moderation\Commands\UpdateTimeoutReason;
 use App\Discord\Moderation\Commands\MarkChannel;
 use App\Discord\Moderation\Commands\Timeouts;
@@ -179,6 +180,7 @@ class Bot
             Unblock::class,
             Block::class,
             UpdateTimeoutReason::class,
+            RemoveTimeout::class,
         ],
         'mention' => [
             MentionIndex::class,
