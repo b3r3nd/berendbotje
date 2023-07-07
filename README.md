@@ -6,11 +6,36 @@ offers instead of replacing functionality entirely.
 
 Check the `/help` command in discord or if you have questions DM me directly by my discord tag: `drerrievandebuurt`.
 
-Special thanks to:
+## Functionality
+Short list of what this bot can do:
+- Everything is based on guild, can run on multiple servers with its own data
+- Role and permissions system with complete control to assign permissions as you see fit
+- Leveling by sending messages and hanging out in voice + commands to manage xp
+- Role Rewards based on levels
+- Extensive bot config where almost all settings can be changed
+- User config where user can set specific settings for that guild
+- Extensive logging with ability to enable/disable each event individually
+- Adding flags to channels to for example not gain xp there, or not allow stickers, or only allow media
+- Automatic timeout detection to get a better overview of who has been timed out, why and how often
+- User blacklist where users can be added and prevented from using certain functions of the bot
+- Assign roles to users when they join the server
+- Add replies based on roles in the server when you mention the bot
+- Reminders - send a reminder every xx time in a certain channel
+- Add emotes as custom reactions to strings, when those strings are detected the bot will react with set emote
+- Add custom message commands with simple responses
+- Counting channel
+- Question of the day reminder tag
+- Count all emotes send in the server
+- Cringe counter where you can increase and decrease as people behave in a cringe way (:D)
+- Bump statistics, keeps track of how often people bump the server just for fun
+- A bunch of other small fun commands like retrieving info from urban dictionary, generate images with AI and more
+- Moderator statistics to see how productive moderators are
+
+## Thanks <3
+- Justin & Stefan for ideas and mental support.
 - Angel for writing most of the Skyrim lines used in the MentionResponder.
-- Richard for bug testing.
+- Richard for bug testing and working out ideas.
 - Ricardo for working out ideas to implement.
-- Justin & Stefan for ideas mental support.
 
 # Installing
 1. Download this repo and install al its dependencies with `composer install`
