@@ -22,6 +22,15 @@ class Setting extends Model
     }
 
     /**
+     * @param $guildId
+     * @return mixed
+     */
+    public static function byGuild($guildId): mixed
+    {
+        return self::where(['guild_id' => Guild::get($guildId)->id]);
+    }
+
+    /**
      * @param string $key
      * @param string $guildId
      * @return mixed
