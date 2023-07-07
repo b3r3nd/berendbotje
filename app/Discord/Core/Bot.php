@@ -67,6 +67,7 @@ use App\Discord\Moderation\Commands\Timeouts;
 use App\Discord\Moderation\Commands\Unblock;
 use App\Discord\Moderation\Commands\UnmarkChannel;
 use App\Discord\Moderation\Events\DetectTimeouts;
+use App\Discord\Moderation\Events\GiveJoinRole;
 use App\Discord\Moderation\Events\MediaFilter;
 use App\Discord\Moderation\Events\StickerFilter;
 use App\Discord\Roles\Commands\AttachRolePermission;
