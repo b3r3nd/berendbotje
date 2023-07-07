@@ -47,6 +47,8 @@ return [
     'permission' => 'Permission',
     'date-range' => 'Date Range',
     'counting-since' => 'Counting emotes since :date',
+    'timeout-id' => 'Timeout ID',
+    'timeout-reason' => 'Timeout Reason',
 
     'permissions-enum' => [
         'roles' => 'Roles',
@@ -75,6 +77,8 @@ return [
     ],
 
     'slash' => [
+        'remove-timeout' => 'Remove a timeout from the LOG only!',
+        'edit-timeout' => 'Update the reason for a given timeout',
         'userset' => 'Update user specific settings for this guild',
         'userconfig' => 'User specific settings for this guild',
         'blacklist' => 'Show the user blacklist',
@@ -277,6 +281,9 @@ return [
     'timeout' => [
         'title' => 'Timeouts',
         'count' => "Total timeouts: :count.",
+        'not-found' => 'Timeout with id :id not found, check the index.',
+        'updated' => 'Reason for timeout with id :id updated to :reason',
+        'deleted' => 'Timeout with id :id deleted',
     ],
 
     'emotes' => [
