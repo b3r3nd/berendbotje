@@ -32,7 +32,7 @@ class TimeoutHelper
             $units = 'day(s)';
         }
 
-        return "**User**: <@{$timeout->discord_id}>\n**Date**: {$timeout->created_at}\n**Length**: {$length} {$units}\n**By**: {$timeout->giver->tag()}\n**Reason**:\n{$timeout->reason}\n\n";
+        return "**ID** {$timeout->id}\n**User**: <@{$timeout->discord_id}>\n**Date**: {$timeout->created_at}\n**Length**: {$length} {$units}\n**By**: {$timeout->giver->tag()}\n**Reason**:\n{$timeout->reason}\n\n";
     }
 
 }
