@@ -9,6 +9,7 @@ use App\Discord\Core\SlashCommand;
 use App\Discord\Roles\Enums\Permission;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Command\Option;
+use Discord\Parts\Interactions\Interaction;
 use Exception;
 
 class UserRoles extends SlashCommand
@@ -56,5 +57,14 @@ class UserRoles extends SlashCommand
         }
 
         return MessageBuilder::new()->addEmbed(EmbedBuilder::create($this, __('bot.userroles.title'), __('bot.userroles.description', ['roles' => $description, 'user' => $user->tag()]))->getEmbed());
+    }
+
+    /**
+     * @param Interaction $interaction
+     * @return array
+     */
+    public function autoComplete(Interaction $interaction): array
+    {
+        return [];
     }
 }

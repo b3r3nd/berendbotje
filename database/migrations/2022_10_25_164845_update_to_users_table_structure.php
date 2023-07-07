@@ -21,12 +21,6 @@ return new class extends Migration {
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('discord_users');
         });
-
-        Schema::table('discord_admins', function (Blueprint $table) {
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('discord_users');
-        });
-
     }
 
     /**

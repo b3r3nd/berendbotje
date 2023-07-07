@@ -8,6 +8,7 @@ use App\Discord\Moderation\Actions\FlagChannelAction;
 use App\Discord\Roles\Enums\Permission;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Command\Option;
+use Discord\Parts\Interactions\Interaction;
 use Exception;
 
 class UnmarkChannel extends SlashCommand
@@ -57,5 +58,14 @@ class UnmarkChannel extends SlashCommand
     {
         (new FlagChannelAction($this->interaction->data->options, $this->guildId, false, $this->bot))->execute();
         return EmbedFactory::successEmbed($this, __('bot.channels.deleted', ['channel' => $this->getOption('channel'), 'flag' => $this->getOption('flag')]));
+    }
+
+    /**
+     * @param Interaction $interaction
+     * @return array
+     */
+    public function autoComplete(Interaction $interaction): array
+    {
+        return [];
     }
 }

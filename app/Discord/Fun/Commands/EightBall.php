@@ -6,6 +6,7 @@ use App\Discord\Core\SlashCommand;
 use App\Discord\Roles\Enums\Permission;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Command\Option;
+use Discord\Parts\Interactions\Interaction;
 
 class EightBall extends SlashCommand
 {
@@ -68,5 +69,14 @@ class EightBall extends SlashCommand
 
 
         return MessageBuilder::new()->setContent("**{$this->getOption('question')}**\n\n{$options[$random]}");
+    }
+
+    /**
+     * @param Interaction $interaction
+     * @return array
+     */
+    public function autoComplete(Interaction $interaction): array
+    {
+        return [];
     }
 }

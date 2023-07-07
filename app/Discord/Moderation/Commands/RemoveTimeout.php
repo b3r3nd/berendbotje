@@ -8,6 +8,7 @@ use App\Discord\Moderation\Models\Timeout;
 use App\Discord\Roles\Enums\Permission;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Command\Option;
+use Discord\Parts\Interactions\Interaction;
 
 class RemoveTimeout extends SlashCommand
 {
@@ -49,5 +50,14 @@ class RemoveTimeout extends SlashCommand
 
         $timeout->delete();
         return EmbedFactory::successEmbed($this, __('bot.timeout.deleted', ['id' => $timeoutId]));
+    }
+
+    /**
+     * @param Interaction $interaction
+     * @return array
+     */
+    public function autoComplete(Interaction $interaction): array
+    {
+        return [];
     }
 }

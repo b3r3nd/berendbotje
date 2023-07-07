@@ -8,6 +8,7 @@ use App\Discord\Moderation\Models\Abuser;
 use App\Discord\Roles\Enums\Permission;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Command\Option;
+use Discord\Parts\Interactions\Interaction;
 
 class Block extends SlashCommand
 {
@@ -47,11 +48,20 @@ class Block extends SlashCommand
     {
         $userId = $this->getOption('user_mention');
 
-        if(!Abuser::where('discord_id', $userId)->get()->isEmpty()) {
-            return EmbedFactory::failedEmbed($this, __('bot.blacklist.blocked',['user' => "<@{$userId}>"]));
+        if (!Abuser::where('discord_id', $userId)->get()->isEmpty()) {
+            return EmbedFactory::failedEmbed($this, __('bot.blacklist.blocked', ['user' => "<@{$userId}>"]));
         }
 
         $abuser = Abuser::create(['discord_id' => $userId, 'guild_id' => $this->guildId, 'reason' => $this->getOption('reason')]);
-        return EmbedFactory::successEmbed($this, __('bot.blacklist.block',['user' => "<@{$userId}>"]));
+        return EmbedFactory::successEmbed($this, __('bot.blacklist.block', ['user' => "<@{$userId}>"]));
+    }
+
+    /**
+     * @param Interaction $interaction
+     * @return array
+     */
+    public function autoComplete(Interaction $interaction): array
+    {
+        return [];
     }
 }

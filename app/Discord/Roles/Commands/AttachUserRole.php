@@ -9,6 +9,7 @@ use App\Discord\Roles\Enums\Permission;
 use App\Discord\Roles\Models\Role;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Command\Option;
+use Discord\Parts\Interactions\Interaction;
 use Exception;
 
 class AttachUserRole extends SlashCommand
@@ -59,5 +60,14 @@ class AttachUserRole extends SlashCommand
         $user->roles()->attach($role);
 
         return EmbedFactory::successEmbed($this, __('bot.roles.role-attached', ['role' => $role->name, 'user' => $user->tag()]));
+    }
+
+    /**
+     * @param Interaction $interaction
+     * @return array
+     */
+    public function autoComplete(Interaction $interaction): array
+    {
+        return [];
     }
 }

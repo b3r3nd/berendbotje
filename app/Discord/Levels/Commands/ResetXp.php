@@ -9,6 +9,7 @@ use App\Discord\Core\SlashCommand;
 use App\Discord\Roles\Enums\Permission;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Command\Option;
+use Discord\Parts\Interactions\Interaction;
 use Exception;
 
 class ResetXp extends SlashCommand
@@ -54,5 +55,14 @@ class ResetXp extends SlashCommand
 
         $messageCounters->first()->delete();
         return EmbedFactory::successEmbed($this, __('bot.xp.reset', ['user' => $this->getOption('user_mention')]));
+    }
+
+    /**
+     * @param Interaction $interaction
+     * @return array
+     */
+    public function autoComplete(Interaction $interaction): array
+    {
+        return [];
     }
 }

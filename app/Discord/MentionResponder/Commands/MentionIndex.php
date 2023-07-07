@@ -10,6 +10,7 @@ use App\Discord\MentionResponder\Models\MentionReply;
 use App\Discord\Roles\Enums\Permission;
 use Discord\Parts\Embed\Embed;
 use Discord\Parts\Interactions\Command\Option;
+use Discord\Parts\Interactions\Interaction;
 use Exception;
 
 class MentionIndex extends SlashIndexCommand
@@ -61,5 +62,14 @@ class MentionIndex extends SlashIndexCommand
         }
 
         return EmbedBuilder::create($this, __('bot.mention.title'), __('bot.mention.description', ['data' => $description]))->getEmbed();
+    }
+
+    /**
+     * @param Interaction $interaction
+     * @return array
+     */
+    public function autoComplete(Interaction $interaction): array
+    {
+        return [];
     }
 }

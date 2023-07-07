@@ -3,8 +3,8 @@
 namespace App\Discord\Core;
 
 use App\Discord\Core\Builders\EmbedFactory;
+use App\Discord\Core\Enums\Setting;
 use App\Discord\Core\Models\DiscordUser;
-use App\Discord\Fun\Models\Command;
 use App\Discord\Roles\Enums\Permission;
 use Discord\Builders\MessageBuilder;
 use Discord\Discord;
@@ -35,11 +35,37 @@ abstract class SlashCommand
     protected array $slashCommandOptions;
     public Interaction $interaction;
 
+    /**
+     * Permissions required for using this command, you are required to use the Setting Enum
+     *
+     * @see Setting
+     *
+     * @return Permission
+     */
     abstract public function permission(): Permission;
 
+    /**
+     * The actual name/trigger of the command used by users
+     *
+     * @return string
+     */
     abstract public function trigger(): string;
 
+    /**
+     * Execute the command and return a proper MessageBuilder to send back to discord
+     *
+     * @return MessageBuilder
+     */
     abstract public function action(): MessageBuilder;
+
+    /**
+     * If you are using slash command options, this function will receive when the user is typing,
+     * so you can find options matching what the user is searching for and display them!
+     *
+     * @param Interaction $interaction
+     * @return array
+     */
+    abstract public function autoComplete(Interaction $interaction): array;
 
     public function __construct()
     {
@@ -74,6 +100,8 @@ abstract class SlashCommand
             }
             $guild->logWithMember($interaction->member, __('bot.log.success', ['trigger' => $this->trigger]), 'success');
             return $interaction->respondWithMessage($this->action());
+        }, function (Interaction $interaction) {
+            return $this->autoComplete($interaction);
         });
         $this->discord->application->commands->save($command);
     }

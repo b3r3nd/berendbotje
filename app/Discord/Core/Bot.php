@@ -115,6 +115,7 @@ class Bot
             DetectTimeouts::class,
             MediaFilter::class,
             StickerFilter::class,
+            GiveJoinRole::class,
         ],
         'fun' => [
             BumpCounter::class,

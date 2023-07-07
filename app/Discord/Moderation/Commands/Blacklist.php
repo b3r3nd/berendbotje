@@ -7,6 +7,7 @@ use App\Discord\Core\SlashIndexCommand;
 use App\Discord\Moderation\Models\Abuser;
 use App\Discord\Roles\Enums\Permission;
 use Discord\Parts\Embed\Embed;
+use Discord\Parts\Interactions\Interaction;
 use Exception;
 
 class Blacklist extends SlashIndexCommand
@@ -41,5 +42,14 @@ class Blacklist extends SlashIndexCommand
             $description .= "{$abuser->created_at} - <@{$abuser->discord_id}> - {$abuser->reason}\n";
         }
         return EmbedBuilder::create($this, __('bot.blacklist.title'), $description)->getEmbed();
+    }
+
+    /**
+     * @param Interaction $interaction
+     * @return array
+     */
+    public function autoComplete(Interaction $interaction): array
+    {
+        return [];
     }
 }

@@ -8,6 +8,7 @@ use App\Discord\Moderation\Models\Timeout;
 use App\Discord\Roles\Enums\Permission;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Command\Option;
+use Discord\Parts\Interactions\Interaction;
 use Exception;
 
 class UpdateTimeoutReason extends SlashCommand
@@ -60,5 +61,14 @@ class UpdateTimeoutReason extends SlashCommand
 
         $timeout->update(['reason' => $this->getOption('reason')]);
         return EmbedFactory::successEmbed($this, __('bot.timeout.updated', ['id' => $timeoutId, 'reason' => $timeoutReason]));
+    }
+
+    /**
+     * @param Interaction $interaction
+     * @return array
+     */
+    public function autoComplete(Interaction $interaction): array
+    {
+        return [];
     }
 }

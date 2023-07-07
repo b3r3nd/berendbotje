@@ -8,6 +8,7 @@ use App\Discord\Fun\Models\CringeCounter;
 use App\Discord\Levels\Helpers\Helper;
 use App\Discord\Roles\Enums\Permission;
 use Discord\Parts\Embed\Embed;
+use Discord\Parts\Interactions\Interaction;
 use Exception;
 
 class CringeIndex extends SlashIndexCommand
@@ -45,5 +46,14 @@ class CringeIndex extends SlashIndexCommand
             ->setTitle(__('bot.cringe.title'))
             ->setDescription(__('bot.cringe.description', ['users' => $description]))
             ->getEmbed();
+    }
+
+    /**
+     * @param Interaction $interaction
+     * @return array
+     */
+    public function autoComplete(Interaction $interaction): array
+    {
+        return [];
     }
 }

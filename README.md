@@ -204,6 +204,8 @@ Right now we have the following settings:
 * `current_count` - Current counter for counting channel
 * `enable_count` - Enable the counting channel
 * `count_channel` - Counting channel ID
+* `enable_join_role` - Enables giving users a role when they join the server
+* `join_role` - Actual role to give when a user joins the server
 
 ## User config
 Users have their own settings per guild. For now, I only use a single setting but more to come soon.
@@ -286,6 +288,13 @@ People can be put on a blacklist manually or automatically.
 * **blacklist** - Show everyone on the blacklist
 * **block** `<user_mention` `<reason>` - Add someone to the blacklist
 * **unblock** `<user_mention>`  - Remove someone from the blacklist
+
+## Join role
+You can make sure the bot gives users a role when they join the server. In order to make it work
+you have to set the following settings:
+
+* `enable_join_role` - Enable or disable giving the role
+* `join_role` - ID of the actual role to give
 
 ## Mention Responder
 Small funny feature, when you tag the bot you will get a random reply from a list of mention replies. There are default

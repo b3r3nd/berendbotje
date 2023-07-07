@@ -9,6 +9,7 @@ use App\Discord\Moderation\Models\Timeout;
 use App\Discord\Roles\Enums\Permission;
 use Discord\Parts\Embed\Embed;
 use Discord\Parts\Interactions\Command\Option;
+use Discord\Parts\Interactions\Interaction;
 use Exception;
 
 class Timeouts extends SlashIndexCommand
@@ -62,5 +63,14 @@ class Timeouts extends SlashIndexCommand
         $embed->setDescription($description);
 
         return $embed;
+    }
+
+    /**
+     * @param Interaction $interaction
+     * @return array
+     */
+    public function autoComplete(Interaction $interaction): array
+    {
+        return [];
     }
 }

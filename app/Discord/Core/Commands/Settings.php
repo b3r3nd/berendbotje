@@ -8,6 +8,7 @@ use App\Discord\Core\Models\Setting;
 use App\Discord\Core\SlashCommand;
 use App\Discord\Roles\Enums\Permission;
 use Discord\Builders\MessageBuilder;
+use Discord\Parts\Interactions\Interaction;
 use Exception;
 
 class Settings extends SlashCommand
@@ -48,6 +49,7 @@ class Settings extends SlashCommand
         $roles = [
             SettingEnum::BUMP_REMINDER_ROLE->value,
             SettingEnum::REMINDER_ROLE->value,
+            SettingEnum::JOIN_ROLE->value,
         ];
 
         $description = "";
@@ -63,5 +65,10 @@ class Settings extends SlashCommand
         $embedBuilder->setDescription($description);
 
         return MessageBuilder::new()->addEmbed($embedBuilder->getEmbed());
+    }
+
+    public function autoComplete(Interaction $interaction): array
+    {
+        return [];
     }
 }

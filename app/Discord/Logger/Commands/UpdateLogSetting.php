@@ -8,6 +8,7 @@ use App\Discord\Logger\Models\LogSetting;
 use App\Discord\Roles\Enums\Permission;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Command\Option;
+use Discord\Parts\Interactions\Interaction;
 use Exception;
 
 class UpdateLogSetting extends SlashCommand
@@ -57,5 +58,14 @@ class UpdateLogSetting extends SlashCommand
     {
         $this->bot->getGuild($this->guildId)?->setLogSetting($this->getOption('setting_key'), $this->getOption('setting_value'));
         return EmbedFactory::successEmbed($this, __('bot.logset.updated', ['key' => $this->getOption('setting_key'), 'value' => $this->getOption('setting_value')]));
+    }
+
+    /**
+     * @param Interaction $interaction
+     * @return array
+     */
+    public function autoComplete(Interaction $interaction): array
+    {
+        return [];
     }
 }

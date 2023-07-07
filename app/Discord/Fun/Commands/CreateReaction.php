@@ -8,6 +8,7 @@ use App\Discord\Fun\Models\Reaction;
 use App\Discord\Roles\Enums\Permission;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Command\Option;
+use Discord\Parts\Interactions\Interaction;
 use Exception;
 
 class CreateReaction extends SlashCommand
@@ -52,5 +53,14 @@ class CreateReaction extends SlashCommand
         $reaction = Reaction::create(['trigger' => $this->getOption('trigger'), 'reaction' => $this->getOption('reaction'), 'guild_id' => \App\Discord\Core\Models\Guild::get($this->guildId)->id]);
         $reaction->save();
         return EmbedFactory::successEmbed($this, __('bot.reactions.saved', ['name' => $this->getOption('trigger'), 'reaction' => $this->getOption('reaction')]));
+    }
+
+    /**
+     * @param Interaction $interaction
+     * @return array
+     */
+    public function autoComplete(Interaction $interaction): array
+    {
+        return [];
     }
 }

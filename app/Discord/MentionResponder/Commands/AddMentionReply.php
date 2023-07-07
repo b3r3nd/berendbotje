@@ -9,6 +9,7 @@ use App\Discord\MentionResponder\Models\MentionReply;
 use App\Discord\Roles\Enums\Permission;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Command\Option;
+use Discord\Parts\Interactions\Interaction;
 use Exception;
 
 class AddMentionReply extends SlashCommand
@@ -60,5 +61,14 @@ class AddMentionReply extends SlashCommand
         $this->bot->getGuild($this->guildId)?->mentionResponder->loadReplies();
         return EmbedFactory::successEmbed($this, __('bot.mention.added', ['group' => $mentionGroup->name, 'reply' => $this->getOption('reply')]));
 
+    }
+
+    /**
+     * @param Interaction $interaction
+     * @return array
+     */
+    public function autoComplete(Interaction $interaction): array
+    {
+        return [];
     }
 }
