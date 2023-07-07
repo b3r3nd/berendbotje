@@ -265,9 +265,9 @@ You can set flags for channels, the no_xp flag can also be used for voice channe
 * `no_stickers` - Stickers will be removed from the chat
 * `no_log` - Message logging is disabled for this channel
 
-* **channels**
-* **markchannel** `channel` `flag`
-* **unmarkchannel** `channel` `flag`
+* **channels** - List of channels with flags set
+* **markchannel** `channel` `flag` - add flag to a channel
+* **unmarkchannel** `channel` `flag` - remove flag from a channel
 
 ### Timeout detection
 We are not satisfied with the audit log and how timeouts are displayed and
@@ -277,6 +277,8 @@ in the database including the reason and duration. We can easily see a history
 of timeouts + filter timeouts only for specific users.
 
 * **timeouts** `<user_mention>` - All timeouts or those from a specific user
+* **edittimeout** `<timeout_id>` `<new_reason>`- Update the reason for a timeout
+* **removetimeout** `<timeout_id>` - Remove a timeout from the log only
 
 ### Blacklist
 People can be put on a blacklist manually or automatically.
@@ -309,8 +311,6 @@ You can manage all groups and their replies by using these commands:
 
 ## Fun commands
 A few fun commands you can use!
-
-Use the `set` command for it, setting names will be preloaded for you to pick from using the slash commands.
 
 * **urb** `search_term` - Searches on urban dictionary
 * **8ball** `question` - Ask a question to the 8ball
