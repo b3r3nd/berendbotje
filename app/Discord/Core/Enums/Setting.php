@@ -29,4 +29,6 @@ enum Setting: string
     case ENABLE_COUNT = 'enable_count';
     case LEVEL_UP_CHAN = 'level_up_channel';
     case ENABLE_LVL_MSG = 'enable_lvl_msg';
+    case ENABLE_JOIN_ROLE = 'enable_join_role';
+    case JOIN_ROLE = 'join_role';
 }

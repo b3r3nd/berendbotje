@@ -8,6 +8,7 @@ use App\Discord\Levels\Helpers\Helper;
 use App\Discord\MentionResponder\Models\MentionGroup;
 use App\Discord\Roles\Enums\Permission;
 use Discord\Parts\Embed\Embed;
+use Discord\Parts\Interactions\Interaction;
 use Exception;
 
 
@@ -43,5 +44,14 @@ class MentionGroupIndex extends SlashIndexCommand
         }
 
         return EmbedBuilder::create($this, __('bot.mentiongroup.title'), __('bot.mentiongroup.description', ['data' => $description]))->getEmbed();
+    }
+
+    /**
+     * @param Interaction $interaction
+     * @return array
+     */
+    public function autoComplete(Interaction $interaction): array
+    {
+        return [];
     }
 }

@@ -8,6 +8,7 @@ use App\Discord\MentionResponder\Models\MentionGroup;
 use App\Discord\Roles\Enums\Permission;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Command\Option;
+use Discord\Parts\Interactions\Interaction;
 use Exception;
 
 class DelMentionGroup extends SlashCommand
@@ -56,5 +57,14 @@ class DelMentionGroup extends SlashCommand
         $this->bot->getGuild($this->guildId)?->mentionResponder->loadReplies();
 
         return EmbedFactory::successEmbed($this, __('bot.mentiongroup.deleted'));
+    }
+
+    /**
+     * @param Interaction $interaction
+     * @return array
+     */
+    public function autoComplete(Interaction $interaction): array
+    {
+        return [];
     }
 }

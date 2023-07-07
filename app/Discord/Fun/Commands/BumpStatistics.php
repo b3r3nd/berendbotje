@@ -9,6 +9,7 @@ use App\Discord\Levels\Helpers\Helper;
 use App\Discord\Roles\Enums\Permission;
 use Discord\Parts\Embed\Embed;
 use Discord\Parts\Interactions\Command\Option;
+use Discord\Parts\Interactions\Interaction;
 use Exception;
 
 class BumpStatistics extends SlashIndexCommand
@@ -77,5 +78,14 @@ class BumpStatistics extends SlashIndexCommand
         }
 
         return $builder->getEmbed();
+    }
+
+    /**
+     * @param Interaction $interaction
+     * @return array
+     */
+    public function autoComplete(Interaction $interaction): array
+    {
+        return [];
     }
 }

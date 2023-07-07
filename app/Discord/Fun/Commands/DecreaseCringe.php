@@ -8,6 +8,7 @@ use App\Discord\Core\SlashCommand;
 use App\Discord\Roles\Enums\Permission;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Command\Option;
+use Discord\Parts\Interactions\Interaction;
 use Exception;
 
 class DecreaseCringe extends SlashCommand
@@ -61,5 +62,14 @@ class DecreaseCringe extends SlashCommand
         }
 
         return EmbedFactory::successEmbed($this, __('bot.cringe.change', ['name' => $user->tag(), 'count' => $count]));
+    }
+
+    /**
+     * @param Interaction $interaction
+     * @return array
+     */
+    public function autoComplete(Interaction $interaction): array
+    {
+        return [];
     }
 }

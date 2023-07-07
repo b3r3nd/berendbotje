@@ -6,6 +6,7 @@ use App\Discord\Core\Builders\EmbedBuilder;
 use App\Discord\Core\SlashIndexCommand;
 use App\Discord\Roles\Enums\Permission;
 use Discord\Parts\Embed\Embed;
+use Discord\Parts\Interactions\Interaction;
 use Exception;
 
 class CommandIndex extends SlashIndexCommand
@@ -38,5 +39,14 @@ class CommandIndex extends SlashIndexCommand
             $commands .= "** {$command->trigger} ** - {$command->response}\n";
         }
         return EmbedBuilder::create($this, __('bot.cmd.title'), __('bot.cmd.description', ['cmds' => $commands]))->getEmbed();
+    }
+
+    /**
+     * @param Interaction $interaction
+     * @return array
+     */
+    public function autoComplete(Interaction $interaction): array
+    {
+        return [];
     }
 }

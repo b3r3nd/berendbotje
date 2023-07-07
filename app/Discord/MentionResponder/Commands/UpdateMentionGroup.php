@@ -9,6 +9,7 @@ use App\Discord\MentionResponder\Models\MentionGroup;
 use App\Discord\Roles\Enums\Permission;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Command\Option;
+use Discord\Parts\Interactions\Interaction;
 use Exception;
 
 class UpdateMentionGroup extends SlashCommand
@@ -63,12 +64,21 @@ class UpdateMentionGroup extends SlashCommand
     {
         $group = MentionGroup::find($this->getOption('id'));
         if (!$group) {
-             return EmbedFactory::failedEmbed($this, __('bot.mentiongroup.notexist', ['group' => $this->getOption('id')]));
+            return EmbedFactory::failedEmbed($this, __('bot.mentiongroup.notexist', ['group' => $this->getOption('id')]));
         }
 
         (new UpdateMentionGroupAction($group, $this->interaction->data->options))->execute();
 
         $this->bot->getGuild($this->guildId)?->mentionResponder->loadReplies();
         return EmbedFactory::successEmbed($this, __('bot.mentiongroup.updated', ['group' => $this->getOption('id')]));
+    }
+
+    /**
+     * @param Interaction $interaction
+     * @return array
+     */
+    public function autoComplete(Interaction $interaction): array
+    {
+        return [];
     }
 }

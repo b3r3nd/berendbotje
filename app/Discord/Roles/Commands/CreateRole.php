@@ -9,6 +9,7 @@ use App\Discord\Roles\Enums\Permission;
 use App\Discord\Roles\Models\Role;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Command\Option;
+use Discord\Parts\Interactions\Interaction;
 use Exception;
 
 class CreateRole extends SlashCommand
@@ -54,5 +55,14 @@ class CreateRole extends SlashCommand
         ]);
 
         return EmbedFactory::successEmbed($this, __('bot.roles.created', ['role' => $role->name]));
+    }
+
+    /**
+     * @param Interaction $interaction
+     * @return array
+     */
+    public function autoComplete(Interaction $interaction): array
+    {
+        return [];
     }
 }

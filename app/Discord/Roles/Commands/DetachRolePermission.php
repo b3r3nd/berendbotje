@@ -7,6 +7,7 @@ use App\Discord\Roles\Actions\SyncRolePermissionsAction;
 use App\Discord\Roles\Enums\Permission;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Command\Option;
+use Discord\Parts\Interactions\Interaction;
 
 class DetachRolePermission extends SlashCommand
 {
@@ -50,5 +51,14 @@ class DetachRolePermission extends SlashCommand
     public function action(): MessageBuilder
     {
         return (new SyncRolePermissionsAction($this, $this->interaction->data->options, $this->guildId, false))->execute();
+    }
+
+    /**
+     * @param Interaction $interaction
+     * @return array
+     */
+    public function autoComplete(Interaction $interaction): array
+    {
+        return [];
     }
 }

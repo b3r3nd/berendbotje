@@ -10,6 +10,7 @@ use App\Discord\Roles\Enums\Permission;
 use App\Discord\Roles\Models\Role;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Command\Option;
+use Discord\Parts\Interactions\Interaction;
 use Exception;
 
 class DetachUserRole extends SlashCommand
@@ -64,5 +65,14 @@ class DetachUserRole extends SlashCommand
         $user->roles()->detach($role);
 
         return EmbedFactory::successEmbed($this, __('bot.roles.role-detached', ['role' => $role->name, 'user' => $user->tag()]));
+    }
+
+    /**
+     * @param Interaction $interaction
+     * @return array
+     */
+    public function autoComplete(Interaction $interaction): array
+    {
+        return [];
     }
 }

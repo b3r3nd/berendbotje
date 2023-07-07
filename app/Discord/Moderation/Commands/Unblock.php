@@ -8,6 +8,7 @@ use App\Discord\Moderation\Models\Abuser;
 use App\Discord\Roles\Enums\Permission;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Command\Option;
+use Discord\Parts\Interactions\Interaction;
 
 class Unblock extends SlashCommand
 {
@@ -41,12 +42,21 @@ class Unblock extends SlashCommand
     {
         $userId = $this->getOption('user_mention');
 
-        if(Abuser::where('discord_id', $userId)->get()->isEmpty()) {
-            return EmbedFactory::failedEmbed($this, __('bot.blacklist.unblocked',['user' => "<@{$userId}>"]));
+        if (Abuser::where('discord_id', $userId)->get()->isEmpty()) {
+            return EmbedFactory::failedEmbed($this, __('bot.blacklist.unblocked', ['user' => "<@{$userId}>"]));
         }
 
         $abusers = Abuser::where('discord_id', $userId)->first();
         $abusers->delete();
-        return EmbedFactory::successEmbed($this, __('bot.blacklist.unblock',['user' => "<@{$userId}>"]));
+        return EmbedFactory::successEmbed($this, __('bot.blacklist.unblock', ['user' => "<@{$userId}>"]));
+    }
+
+    /**
+     * @param Interaction $interaction
+     * @return array
+     */
+    public function autoComplete(Interaction $interaction): array
+    {
+        return [];
     }
 }

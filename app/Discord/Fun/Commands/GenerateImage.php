@@ -7,6 +7,7 @@ use App\Discord\Fun\Jobs\ProcessImageGeneration;
 use App\Discord\Roles\Enums\Permission;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Command\Option;
+use Discord\Parts\Interactions\Interaction;
 
 class GenerateImage extends SlashCommand
 {
@@ -41,5 +42,14 @@ class GenerateImage extends SlashCommand
     {
         ProcessImageGeneration::dispatch($this->interaction->channel_id, $this->getOption('prompt'));
         return MessageBuilder::new()->setContent("Generating Image with prompt _{$this->getOption('prompt')}_");
+    }
+
+    /**
+     * @param Interaction $interaction
+     * @return array
+     */
+    public function autoComplete(Interaction $interaction): array
+    {
+        return [];
     }
 }

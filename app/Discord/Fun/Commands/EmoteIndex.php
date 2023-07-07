@@ -8,6 +8,7 @@ use App\Discord\Fun\Models\Emote;
 use App\Discord\Levels\Helpers\Helper;
 use App\Discord\Roles\Enums\Permission;
 use Discord\Parts\Embed\Embed;
+use Discord\Parts\Interactions\Interaction;
 use Exception;
 
 class EmoteIndex extends SlashIndexCommand
@@ -44,6 +45,15 @@ class EmoteIndex extends SlashIndexCommand
             $description .= "**{$emote->emote}** • {$emote->count} \n";
         }
         return EmbedBuilder::create($this, __('bot.emotes.title'), __('bot.emotes.description', ['emotes' => $description]))->getEmbed();
+    }
+
+    /**
+     * @param Interaction $interaction
+     * @return array
+     */
+    public function autoComplete(Interaction $interaction): array
+    {
+        return [];
     }
 
 }

@@ -96,6 +96,16 @@ class Help extends SlashCommand
     }
 
     /**
+     * @param Interaction $interaction
+     * @return array
+     */
+    public function autoComplete(Interaction $interaction): array
+    {
+        return [];
+    }
+
+
+    /**
      * Makes sure commands are clickable!
      *
      * @param array $roleCommands
@@ -374,6 +384,8 @@ class Help extends SlashCommand
             ['name' => 'current_count', 'value' => 'Current counter', 'inline' => true],
             ['name' => 'enable_count', 'value' => 'Enable counting channel', 'inline' => true],
             ['name' => 'count_channel', 'value' => 'Counting channel', 'inline' => true],
+            ['name' => 'enable_join_role', 'value' => 'Enable giving a role when a user joins the server', 'inline' => true],
+            ['name' => 'join_role', 'value' => 'Role to give to users when they join the server', 'inline' => true],
         );
         return $embedBuilder;
     }

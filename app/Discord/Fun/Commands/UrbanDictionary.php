@@ -8,6 +8,7 @@ use App\Discord\Core\SlashCommand;
 use App\Discord\Roles\Enums\Permission;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Command\Option;
+use Discord\Parts\Interactions\Interaction;
 use Exception;
 use Illuminate\Support\Facades\Http;
 
@@ -58,5 +59,14 @@ class UrbanDictionary extends SlashCommand
             ->setFooter($response->json()['list'][0]['permalink'])
             ->setTitle($this->getOption('search_term'))
             ->setDescription($response->json()['list'][0]['definition'])->getEmbed());
+    }
+
+    /**
+     * @param Interaction $interaction
+     * @return array
+     */
+    public function autoComplete(Interaction $interaction): array
+    {
+        return [];
     }
 }

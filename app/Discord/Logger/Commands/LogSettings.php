@@ -7,6 +7,7 @@ use App\Discord\Core\SlashCommand;
 use App\Discord\Logger\Models\LogSetting;
 use App\Discord\Roles\Enums\Permission;
 use Discord\Builders\MessageBuilder;
+use Discord\Parts\Interactions\Interaction;
 use Exception;
 
 class LogSettings extends SlashCommand
@@ -43,5 +44,14 @@ class LogSettings extends SlashCommand
         $embedBuilder->setDescription($description);
 
         return MessageBuilder::new()->addEmbed($embedBuilder->getEmbed());
+    }
+
+    /**
+     * @param Interaction $interaction
+     * @return array
+     */
+    public function autoComplete(Interaction $interaction): array
+    {
+        return [];
     }
 }

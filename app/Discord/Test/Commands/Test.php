@@ -10,6 +10,7 @@ use App\Discord\Test\Jobs\ProcessTest;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Embed\Embed;
 use Discord\Parts\Interactions\Command\Option;
+use Discord\Parts\Interactions\Interaction;
 
 class Test extends SlashCommand
 {
@@ -43,5 +44,14 @@ class Test extends SlashCommand
 //        return MessageBuilder::new()->addEmbed($embed);
 
         return EmbedFactory::successEmbed($this, "nice");
+    }
+
+    /**
+     * @param Interaction $interaction
+     * @return array
+     */
+    public function autoComplete(Interaction $interaction): array
+    {
+        return [];
     }
 }

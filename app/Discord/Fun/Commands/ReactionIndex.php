@@ -7,6 +7,7 @@ use App\Discord\Core\SlashIndexCommand;
 use App\Discord\Fun\Models\Reaction;
 use App\Discord\Roles\Enums\Permission;
 use Discord\Parts\Embed\Embed;
+use Discord\Parts\Interactions\Interaction;
 use Exception;
 
 class ReactionIndex extends SlashIndexCommand
@@ -40,5 +41,14 @@ class ReactionIndex extends SlashIndexCommand
             $embedBuilder->getEmbed()->addField(['name' => $reaction->trigger, 'value' => $reaction->reaction, 'inline' => true]);
         }
         return $embedBuilder->getEmbed();
+    }
+
+    /**
+     * @param Interaction $interaction
+     * @return array
+     */
+    public function autoComplete(Interaction $interaction): array
+    {
+        return [];
     }
 }

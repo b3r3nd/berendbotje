@@ -9,6 +9,7 @@ use App\Discord\Levels\Models\RoleReward;
 use App\Discord\Roles\Enums\Permission;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Command\Option;
+use Discord\Parts\Interactions\Interaction;
 use Exception;
 
 class DeleteRoleReward extends SlashCommand
@@ -47,5 +48,14 @@ class DeleteRoleReward extends SlashCommand
     {
         RoleReward::where(['level' => $this->getOption('level'), 'guild_id' => Guild::get($this->guildId)->id])->delete();
         return EmbedFactory::successEmbed($this, __('bot.rewards.deleted', ['level' => $this->getOption('level')]));
+    }
+
+    /**
+     * @param Interaction $interaction
+     * @return array
+     */
+    public function autoComplete(Interaction $interaction): array
+    {
+        return [];
     }
 }

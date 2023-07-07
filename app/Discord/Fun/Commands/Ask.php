@@ -6,6 +6,7 @@ use App\Discord\Core\SlashCommand;
 use App\Discord\Roles\Enums\Permission;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Command\Option;
+use Discord\Parts\Interactions\Interaction;
 use Illuminate\Support\Facades\Http;
 
 class Ask extends SlashCommand
@@ -40,5 +41,14 @@ class Ask extends SlashCommand
         $response = Http::get('https://yesno.wtf/api');
 
         return MessageBuilder::new()->setContent($this->getOption('question') . "\n" . $response->json('image'));
+    }
+
+    /**
+     * @param Interaction $interaction
+     * @return array
+     */
+    public function autoComplete(Interaction $interaction): array
+    {
+        return [];
     }
 }

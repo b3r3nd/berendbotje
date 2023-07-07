@@ -7,6 +7,7 @@ use App\Discord\Roles\Actions\SyncRolePermissionsAction;
 use App\Discord\Roles\Enums\Permission;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Command\Option;
+use Discord\Parts\Interactions\Interaction;
 
 class AttachRolePermission extends SlashCommand
 {
@@ -51,5 +52,14 @@ class AttachRolePermission extends SlashCommand
     public function action(): MessageBuilder
     {
         return (new SyncRolePermissionsAction($this, $this->interaction->data->options, $this->guildId))->execute();
+    }
+
+    /**
+     * @param Interaction $interaction
+     * @return array
+     */
+    public function autoComplete(Interaction $interaction): array
+    {
+        return [];
     }
 }

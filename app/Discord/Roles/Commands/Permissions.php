@@ -6,6 +6,7 @@ use App\Discord\Core\Builders\EmbedBuilder;
 use App\Discord\Core\SlashIndexCommand;
 use App\Discord\Roles\Models\Permission;
 use Discord\Parts\Embed\Embed;
+use Discord\Parts\Interactions\Interaction;
 use Exception;
 
 class Permissions extends SlashIndexCommand
@@ -41,5 +42,14 @@ class Permissions extends SlashIndexCommand
         }
 
         return EmbedBuilder::create($this, __('bot.permissions.title'), __('bot.permissions.description', ['perms' => $description]))->getEmbed();
+    }
+
+    /**
+     * @param Interaction $interaction
+     * @return array
+     */
+    public function autoComplete(Interaction $interaction): array
+    {
+        return [];
     }
 }

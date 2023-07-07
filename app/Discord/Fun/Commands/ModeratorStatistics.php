@@ -8,6 +8,7 @@ use App\Discord\Core\Models\Guild;
 use App\Discord\Core\SlashCommand;
 use App\Discord\Roles\Enums\Permission;
 use Discord\Builders\MessageBuilder;
+use Discord\Parts\Interactions\Interaction;
 use Discord\Parts\User\User;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
@@ -64,4 +65,14 @@ class ModeratorStatistics extends SlashCommand
 
         return MessageBuilder::new()->addEmbed($embedBuilder->getEmbed());
     }
+
+    /**
+     * @param Interaction $interaction
+     * @return array
+     */
+    public function autoComplete(Interaction $interaction): array
+    {
+        return [];
+    }
+
 }

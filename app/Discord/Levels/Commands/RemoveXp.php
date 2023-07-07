@@ -8,6 +8,7 @@ use App\Discord\Levels\Actions\UpdateMessageCounterAction;
 use App\Discord\Roles\Enums\Permission;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Command\Option;
+use Discord\Parts\Interactions\Interaction;
 use Exception;
 
 class RemoveXp extends SlashCommand
@@ -51,5 +52,14 @@ class RemoveXp extends SlashCommand
     {
         (new UpdateMessageCounterAction($this->guildId, $this->getOption('user_mention'), $this->getOption('user_xp'), $this->bot, true))->execute();
         return EmbedFactory::successEmbed($this, __('bot.xp.removed', ['user' => $this->getOption('user_mention'), 'xp' => $this->getOption('user_xp')]));
+    }
+
+    /**
+     * @param Interaction $interaction
+     * @return array
+     */
+    public function autoComplete(Interaction $interaction): array
+    {
+        return [];
     }
 }

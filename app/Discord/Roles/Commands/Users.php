@@ -7,6 +7,7 @@ use App\Discord\Core\SlashIndexCommand;
 use App\Discord\Roles\Enums\Permission;
 use App\Discord\Roles\Models\Role;
 use Discord\Parts\Embed\Embed;
+use Discord\Parts\Interactions\Interaction;
 use Exception;
 
 class Users extends SlashIndexCommand
@@ -27,7 +28,6 @@ class Users extends SlashIndexCommand
         $this->description = __('bot.slash.users');
         parent::__construct();
     }
-
 
 
     /**
@@ -52,5 +52,14 @@ class Users extends SlashIndexCommand
         }
 
         return EmbedBuilder::create($this, __('bot.users.title'), $description)->getEmbed();
+    }
+
+    /**
+     * @param Interaction $interaction
+     * @return array
+     */
+    public function autoComplete(Interaction $interaction): array
+    {
+        return [];
     }
 }

@@ -41,6 +41,8 @@ class SettingsSeeder extends Seeder
             'enable_count' => true,
             'level_up_channel' => 0,
             'enable_lvl_msg' => 0,
+            'enable_join_role' => 0,
+            'join_role' => 0,
         ];
 
         foreach (Guild::all() as $guild) {

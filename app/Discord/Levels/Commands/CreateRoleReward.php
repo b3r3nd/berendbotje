@@ -8,6 +8,7 @@ use App\Discord\Levels\Models\RoleReward;
 use App\Discord\Roles\Enums\Permission;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Command\Option;
+use Discord\Parts\Interactions\Interaction;
 use Exception;
 
 class CreateRoleReward extends SlashCommand
@@ -52,5 +53,14 @@ class CreateRoleReward extends SlashCommand
         $roleReward = RoleReward::create(['level' => $this->getOption('level'), 'role' => $this->getOption('role'), 'guild_id' => \App\Discord\Core\Models\Guild::get($this->guildId)->id]);
         $roleReward->save();
         return EmbedFactory::successEmbed($this, __('bot.rewards.added', ['level' => $this->getOption('level'), 'role' => $roleReward->roleTag()]));
+    }
+
+    /**
+     * @param Interaction $interaction
+     * @return array
+     */
+    public function autoComplete(Interaction $interaction): array
+    {
+        return [];
     }
 }

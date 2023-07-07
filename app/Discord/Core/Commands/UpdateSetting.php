@@ -9,6 +9,7 @@ use App\Discord\Core\SlashCommand;
 use App\Discord\Roles\Enums\Permission;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Command\Option;
+use Discord\Parts\Interactions\Interaction;
 use Exception;
 
 class UpdateSetting extends SlashCommand
@@ -25,11 +26,6 @@ class UpdateSetting extends SlashCommand
 
     public function __construct()
     {
-        $choices = [];
-        foreach (Setting::where('guild_id', Guild::all()->first()->id)->get() as $setting) {
-            $choices[] = ['name' => $setting->key, 'value' => $setting->key];
-        }
-
         $this->description = __('bot.slash.set');
         $this->slashCommandOptions = [
             [
@@ -37,7 +33,7 @@ class UpdateSetting extends SlashCommand
                 'description' => __('bot.key'),
                 'type' => Option::STRING,
                 'required' => true,
-                'choices' => $choices,
+                'autocomplete' => true,
             ],
             [
                 'name' => 'setting_value',
@@ -67,5 +63,22 @@ class UpdateSetting extends SlashCommand
 
         $this->bot->getGuild($this->guildId)?->setSetting($key, $value);
         return EmbedFactory::successEmbed($this, __('bot.set.updated', ['key' => $key, 'value' => $value]));
+    }
+
+    /**
+     * @param Interaction $interaction
+     * @return array
+     */
+    public function autoComplete(Interaction $interaction): array
+    {
+        $choices = [];
+        $value = $interaction->data->options->get('name', 'setting_key')?->value;
+
+        $settings = Setting::where('key', 'LIKE', "%{$value}%")->limit(25)->get();
+        foreach ($settings as $setting) {
+            $choices[] = ['name' => $setting->key, 'value' => $setting->key];
+        }
+
+        return $choices;
     }
 }

@@ -7,6 +7,7 @@ use App\Discord\Core\SlashIndexCommand;
 use App\Discord\Levels\Models\RoleReward;
 use App\Discord\Roles\Enums\Permission;
 use Discord\Parts\Embed\Embed;
+use Discord\Parts\Interactions\Interaction;
 use Exception;
 
 class RoleRewards extends SlashIndexCommand
@@ -41,5 +42,14 @@ class RoleRewards extends SlashIndexCommand
             $description .= "**Level {$roleReward->level}** • {$roleReward->roleTag()} \n";
         }
         return EmbedBuilder::create($this, __('bot.rewards.title'), __('bot.rewards.description', ['rewards' => $description]))->getEmbed();
+    }
+
+    /**
+     * @param Interaction $interaction
+     * @return array
+     */
+    public function autoComplete(Interaction $interaction): array
+    {
+        return [];
     }
 }

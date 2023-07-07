@@ -9,6 +9,7 @@ use App\Discord\Fun\Models\CringeCounter;
 use App\Discord\Roles\Enums\Permission;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Command\Option;
+use Discord\Parts\Interactions\Interaction;
 use Exception;
 
 class IncreaseCringe extends SlashCommand
@@ -68,5 +69,14 @@ class IncreaseCringe extends SlashCommand
             return EmbedFactory::successEmbed($this, __('bot.cringe.fail', ['name' => $user->tag(), 'count' => $cringeCounter->count]));
         }
         return EmbedFactory::successEmbed($this, __('bot.cringe.change', ['name' => $user->tag(), 'count' => $cringeCounter->count]));
+    }
+
+    /**
+     * @param Interaction $interaction
+     * @return array
+     */
+    public function autoComplete(Interaction $interaction): array
+    {
+        return [];
     }
 }
