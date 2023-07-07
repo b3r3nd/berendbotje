@@ -33,6 +33,7 @@ class DeleteRole extends SlashCommand
                 'description' => __('bot.role'),
                 'type' => Option::STRING,
                 'required' => true,
+                'autocomplete' => true,
             ],
         ];
         parent::__construct();
@@ -65,6 +66,6 @@ class DeleteRole extends SlashCommand
      */
     public function autoComplete(Interaction $interaction): array
     {
-        return [];
+        return $this->getAutoComplete(Role::class, $interaction->guild_id, 'name', $this->getOption('role_name'));
     }
 }

@@ -10,6 +10,7 @@ use Discord\Builders\MessageBuilder;
 use Discord\Discord;
 use Discord\Parts\Interactions\Interaction;
 use Exception;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * Extendable class to easily create new Slash commands.
@@ -38,9 +39,9 @@ abstract class SlashCommand
     /**
      * Permissions required for using this command, you are required to use the Setting Enum
      *
+     * @return Permission
      * @see Setting
      *
-     * @return Permission
      */
     abstract public function permission(): Permission;
 
@@ -101,6 +102,7 @@ abstract class SlashCommand
             $guild->logWithMember($interaction->member, __('bot.log.success', ['trigger' => $this->trigger]), 'success');
             return $interaction->respondWithMessage($this->action());
         }, function (Interaction $interaction) {
+            $this->interaction = $interaction;
             return $this->autoComplete($interaction);
         });
         $this->discord->application->commands->save($command);
@@ -114,6 +116,28 @@ abstract class SlashCommand
     public function getOption(string $key): mixed
     {
         return $this->interaction->data->options->get('name', $key)?->value;
+    }
+
+    /**
+     * We have autocomplete for a lot of Models when using them in slash commands, they can all call this function to
+     * easily retrieve and map the matching instances.
+     *
+     * @param string $model
+     * @param string $guidId
+     * @param string $optionKey
+     * @param string $optionValue
+     * @return mixed
+     *
+     * @noinspection PhpUndefinedMethodInspection
+     */
+    public function getAutoComplete(string $model, string $guidId, string $optionKey, string $optionValue): mixed
+    {
+        return $model::byGuild($guidId)->where($optionKey, 'LIKE', "%{$optionValue}%")
+            ->limit(25)
+            ->get()
+            ->map(function ($modelInstance) use ($optionKey) {
+                return ['name' => $modelInstance->{$optionKey}, 'value' => $modelInstance->{$optionKey}];
+            })->toArray();
     }
 
     /**

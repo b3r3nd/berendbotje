@@ -34,6 +34,7 @@ class DeleteRoleReward extends SlashCommand
                 'description' => __('bot.level'),
                 'type' => Option::INTEGER,
                 'required' => true,
+                'autocomplete' => 'true',
             ],
         ];
         parent::__construct();
@@ -56,6 +57,6 @@ class DeleteRoleReward extends SlashCommand
      */
     public function autoComplete(Interaction $interaction): array
     {
-        return [];
+        return $this->getAutoComplete(RoleReward::class, $interaction->guild_id, 'level', $this->getOption('level'));
     }
 }

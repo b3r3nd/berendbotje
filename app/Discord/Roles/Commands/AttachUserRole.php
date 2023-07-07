@@ -5,6 +5,7 @@ namespace App\Discord\Roles\Commands;
 use App\Discord\Core\Builders\EmbedFactory;
 use App\Discord\Core\Models\DiscordUser;
 use App\Discord\Core\SlashCommand;
+use App\Discord\Levels\Models\RoleReward;
 use App\Discord\Roles\Enums\Permission;
 use App\Discord\Roles\Models\Role;
 use Discord\Builders\MessageBuilder;
@@ -40,6 +41,7 @@ class AttachUserRole extends SlashCommand
                 'description' => __('bot.role'),
                 'type' => Option::STRING,
                 'required' => true,
+                'autocomplete' => true,
             ],
         ];
         parent::__construct();
@@ -68,6 +70,6 @@ class AttachUserRole extends SlashCommand
      */
     public function autoComplete(Interaction $interaction): array
     {
-        return [];
+        return $this->getAutoComplete(Role::class, $interaction->guild_id, 'name', $this->getOption('role_name'));
     }
 }

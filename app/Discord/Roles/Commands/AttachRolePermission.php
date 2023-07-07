@@ -5,6 +5,7 @@ namespace App\Discord\Roles\Commands;
 use App\Discord\Core\SlashCommand;
 use App\Discord\Roles\Actions\SyncRolePermissionsAction;
 use App\Discord\Roles\Enums\Permission;
+use App\Discord\Roles\Models\Role;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Command\Option;
 use Discord\Parts\Interactions\Interaction;
@@ -36,6 +37,7 @@ class AttachRolePermission extends SlashCommand
                 'description' => __('bot.role'),
                 'type' => Option::STRING,
                 'required' => true,
+                'autocomplete' => true,
             ],
             [
                 'name' => 'permissions',
@@ -60,6 +62,7 @@ class AttachRolePermission extends SlashCommand
      */
     public function autoComplete(Interaction $interaction): array
     {
-        return [];
+        return $this->getAutoComplete(Role::class, $interaction->guild_id, 'name', $this->getOption('role_name'));
+
     }
 }

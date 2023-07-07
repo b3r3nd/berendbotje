@@ -71,14 +71,6 @@ class UpdateSetting extends SlashCommand
      */
     public function autoComplete(Interaction $interaction): array
     {
-        $choices = [];
-        $value = $interaction->data->options->get('name', 'setting_key')?->value;
-
-        $settings = Setting::where('key', 'LIKE', "%{$value}%")->where('guild_id', Guild::get($interaction->guild_id)->first()->id)->limit(25)->get();
-        foreach ($settings as $setting) {
-            $choices[] = ['name' => $setting->key, 'value' => $setting->key];
-        }
-
-        return $choices;
+        return $this->getAutoComplete(Setting::class, $interaction->guild_id, 'key', $this->getOption('setting_key'));
     }
 }
