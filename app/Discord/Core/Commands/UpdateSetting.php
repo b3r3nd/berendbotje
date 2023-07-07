@@ -74,7 +74,7 @@ class UpdateSetting extends SlashCommand
         $choices = [];
         $value = $interaction->data->options->get('name', 'setting_key')?->value;
 
-        $settings = Setting::where('key', 'LIKE', "%{$value}%")->limit(25)->get();
+        $settings = Setting::where('key', 'LIKE', "%{$value}%")->where('guild_id', Guild::get($interaction->guild_id)->first()->id)->limit(25)->get();
         foreach ($settings as $setting) {
             $choices[] = ['name' => $setting->key, 'value' => $setting->key];
         }
