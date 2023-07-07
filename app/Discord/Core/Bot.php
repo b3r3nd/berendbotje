@@ -91,20 +91,25 @@ use Exception;
  *
  * @property Discord $discord         Set with the global discord instance from DiscordPHP.
  * @property array $guilds            List of all active guilds using the bot.
- *
- * @property bool $devMode           If the bot runs in dev mode.
- * @property bool $updateCommands    If we need to update commands
- * @property bool $deleteCommands    If we need to delete commands
- * @property array $events            DiscordEvent listeners
- * @property array $commands          Commands by category
- * @property array $devCommands       Commands only in dev mode
- *
+ * @property bool $devMode            If the bot runs in dev mode.
+ * @property bool $updateCommands     If we need to update commands.
+ * @property bool $deleteCommands     If we need to delete commands.
+ * @property array $events            DiscordEvent listeners.
+ * @property array $commands          Commands by category.
+ * @property array $devCommands       Commands only in dev mode.
  */
 class Bot
 {
     public Discord $discord;
     private array $guilds;
     private bool $devMode, $updateCommands, $deleteCommands;
+
+    private array $devCommands = [
+        Test::class,
+        Help::class,
+        Settings::class,
+        UpdateSetting::class,
+    ];
 
     private array $events = [
         'levels' => [
@@ -134,14 +139,6 @@ class Bot
             TimeoutLogger::class,
             InviteLogger::class,
         ],
-    ];
-
-    private array $devCommands = [
-        Test::class,
-        Help::class,
-        Settings::class,
-        UpdateSetting::class,
-        ModeratorStatistics::class,
     ];
 
     private array $commands = [
@@ -251,7 +248,6 @@ class Bot
         $this->discord->on('ready', function (Discord $discord) {
             $this->loadEvents();
             $this->loadGuilds();
-
             if ($this->deleteCommands) {
                 $this->deleteSlashCommands();
             }
@@ -259,7 +255,6 @@ class Bot
                 $this->updateSlashCommands();
             }
         });
-
         $this->discord->run();
     }
 
