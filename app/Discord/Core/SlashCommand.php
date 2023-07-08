@@ -115,9 +115,10 @@ abstract class SlashCommand
      */
     public function getOption(string $key): mixed
     {
-        if ($this->interaction->data->options->first()->options->get('name', $key) === null) {
-            if ($this->interaction->data->options->first()->options->first()) {
-                return $this->interaction->data->options->first()->options->first()->options->get('name', $key)->value;
+        $option = $this->interaction->data->options->first();
+        if ($option->options->get('name', $key) === null) {
+            if ($option->options->first()) {
+                return $option->options->first()->options->get('name', $key)->value;
             }
             return null;
         }

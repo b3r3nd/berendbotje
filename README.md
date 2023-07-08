@@ -88,8 +88,8 @@ OPEN_AI_HOST=
 ```
 7. You can use the following commands to run the bot:
 - `bot:run` - Run the bot, does not create, update or delete slash commands
-- `bot:run --updatecmd` - Creates/Updates all slash commands first
-- `bot:run --delcmd` - Deletes all slash commands first
+- `bot:run --update` - Creates/Updates all slash commands first
+- `bot:run --delete` - Deletes all slash commands first
 8. In order to make the image generation with open ai and reminders work you also need to run the queue `php artisan queue:work` and install redis!
 
 # Functions
