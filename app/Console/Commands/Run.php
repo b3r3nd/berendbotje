@@ -14,9 +14,8 @@ class Run extends Command
      * @var string
      */
     protected $signature = 'bot:run
-    {--delcmd : Deletes all slash commands}
-    {--updatecmd : Also updates all slash commands}
-    {--dev : Run only development comands}';
+    {--update : Update all slash commands}
+    {--delete : Delete all slash commands}';
 
     /**
      * The console command description.
@@ -33,31 +32,16 @@ class Run extends Command
      */
     public function handle()
     {
-        $this->info("========================");
-        $this->info("Running bot...");
-        $this->info("Dev mode: {$this->option('dev')}");
-        $this->info("Update commands: {$this->option('updatecmd')}");
-        $this->info("Delete slash commands: {$this->option('delcmd')}");
-        $this->info("========================");
-
-        if ($this->option('delcmd') && !$this->confirm('Are you sure you want do DELETE ALL slash commands?')) {
+        if ($this->option('delete') && !$this->confirm('Are you sure you want do DELETE ALL slash commands?')) {
             $this->info("Quitting..");
             exit;
         }
-
-        if ($this->option('updatecmd') && !$this->confirm('Are you sure you want do UPDATE/REGISTER ALL slash commands?')) {
+        if ($this->option('update') && !$this->confirm('Are you sure you want do UPDATE/REGISTER ALL slash commands?')) {
             $this->info("Quitting..");
             exit;
         }
-
-        $bot = new Bot(
-            $this->option('dev'),
-            $this->option('updatecmd'),
-            $this->option('delcmd')
-        );
-
+        $bot = new Bot($this->option('update'), $this->option('delete'));
         $bot->connect();
-
         return Command::SUCCESS;
     }
 }

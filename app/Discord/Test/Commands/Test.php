@@ -36,14 +36,7 @@ class Test extends SlashCommand
      */
     public function action(): MessageBuilder
     {
-
-
-        //ProcessTest::dispatch()->delay(now()->addSeconds(2));
-
-//        $embed = EmbedBuilder::create($this->discord, $this->interaction, "Title test", "Description test");
-//        return MessageBuilder::new()->addEmbed($embed);
-
-        return EmbedFactory::successEmbed($this, $this->getOption('setting_key'));
+        return EmbedFactory::successEmbed($this, "test");
     }
 
     /**

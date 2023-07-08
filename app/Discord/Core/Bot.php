@@ -106,38 +106,33 @@ class Bot
     private bool $updateCommands, $deleteCommands;
 
     private array $events = [
-        'levels' => [
-            VoiceStateUpdate::class,
-            MessageXpCounter::class,
-            VoiceXpCounter::class,
-        ],
-        'moderation' => [
-            DetectTimeouts::class,
-            MediaFilter::class,
-            StickerFilter::class,
-            GiveJoinRole::class,
-        ],
-        'fun' => [
-            BumpCounter::class,
-            KickAndBanCounter::class,
-            EmoteCounter::class,
-            Reminder::class,
-            Count::class,
-            React::class,
-            CommandResponse::class,
-        ],
-        'logger' => [
-            VoiceStateLogger::class,
-            GuildMemberLogger::class,
-            MessageLogger::class,
-            TimeoutLogger::class,
-            InviteLogger::class,
-        ],
+        VoiceStateUpdate::class,
+        MessageXpCounter::class,
+        VoiceXpCounter::class,
+        DetectTimeouts::class,
+        MediaFilter::class,
+        StickerFilter::class,
+        GiveJoinRole::class,
+        BumpCounter::class,
+        KickAndBanCounter::class,
+        EmoteCounter::class,
+        Reminder::class,
+        Count::class,
+        React::class,
+        CommandResponse::class,
+        VoiceStateLogger::class,
+        GuildMemberLogger::class,
+        MessageLogger::class,
+        TimeoutLogger::class,
+        InviteLogger::class,
     ];
 
     private array $commands = [];
 
-    // list, add, delete, edit !!!!!!!!
+    /**
+     * @see https://discord.com/developers/docs/interactions/application-commands#subcommands-and-subcommand-groups
+     * @var array
+     */
     private array $slashCommandStructure = [
 
         'users' => [
@@ -242,57 +237,6 @@ class Bot
         ],
     ];
 
-
-    /**
-     * @param bool $updateCommands
-     * @param bool $deleteCommands
-     */
-    public function __construct(bool $updateCommands = false, bool $deleteCommands = false)
-    {
-        $this->updateCommands = $updateCommands;
-        $this->deleteCommands = $deleteCommands;
-    }
-
-    /**
-     * @return void
-     * @throws IntentException
-     */
-    public function connect(): void
-    {
-        $this->discord = new Discord([
-                'token' => config('discord.token'),
-                'loadAllMembers' => true,
-                'storeMessages' => true,
-                'intents' => Intents::getDefaultIntents() | Intents::GUILD_VOICE_STATES | Intents::GUILD_MEMBERS |
-                    Intents::MESSAGE_CONTENT | Intents::GUILDS | Intents::GUILD_INVITES | Intents::GUILD_EMOJIS_AND_STICKERS
-            ]
-        );
-        $this->discord->on('ready', function (Discord $discord) {
-            $this->loadEvents();
-            $this->loadGuilds();
-            if ($this->deleteCommands) {
-                $this->deleteSlashCommands();
-            }
-            if ($this->updateCommands) {
-                $this->updateSlashCommands();
-            }
-        });
-        $this->discord->run();
-    }
-
-    /**
-     * @return void
-     */
-    private function loadEvents(): void
-    {
-        foreach ($this->events as $category => $events) {
-            foreach ($events as $class) {
-                $instance = new $class($this);
-                $instance->registerEvent();
-            }
-        }
-    }
-
     /**
      * @return void
      * @throws Exception
@@ -342,6 +286,56 @@ class Bot
             }
         });
     }
+
+
+    /**
+     * @param bool $updateCommands
+     * @param bool $deleteCommands
+     */
+    public function __construct(bool $updateCommands = false, bool $deleteCommands = false)
+    {
+        $this->updateCommands = $updateCommands;
+        $this->deleteCommands = $deleteCommands;
+    }
+
+    /**
+     * @return void
+     * @throws IntentException
+     */
+    public function connect(): void
+    {
+        $this->discord = new Discord([
+                'token' => config('discord.token'),
+                'loadAllMembers' => true,
+                'storeMessages' => true,
+                'intents' => Intents::getDefaultIntents() | Intents::GUILD_VOICE_STATES | Intents::GUILD_MEMBERS |
+                    Intents::MESSAGE_CONTENT | Intents::GUILDS | Intents::GUILD_INVITES | Intents::GUILD_EMOJIS_AND_STICKERS
+            ]
+        );
+        $this->discord->on('ready', function (Discord $discord) {
+            $this->loadEvents();
+            $this->loadGuilds();
+            if ($this->deleteCommands) {
+                $this->deleteSlashCommands();
+            }
+            if ($this->updateCommands) {
+                $this->updateSlashCommands();
+            }
+        });
+        $this->discord->run();
+    }
+
+    /**
+     * @return void
+     */
+    private function loadEvents(): void
+    {
+        foreach ($this->events as $class) {
+            $instance = new $class($this);
+            $instance->registerEvent();
+        }
+    }
+
 
     /**
      * @param $command
