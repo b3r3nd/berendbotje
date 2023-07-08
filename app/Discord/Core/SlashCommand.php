@@ -37,6 +37,7 @@ abstract class SlashCommand
     public string $description;
     public array $slashCommandOptions;
     public Interaction $interaction;
+    public string $commandLabel = '';
 
     /**
      * Permissions required for using this command, you are required to use the Setting Enum
@@ -100,10 +101,10 @@ abstract class SlashCommand
         $this->guildId = $interaction->guild_id;
         $guild = $this->bot->getGuild($interaction->guild_id);
         if ($this->permission->value !== Permission::NONE->value && !DiscordUser::hasPermission($interaction->member->id, $interaction->guild_id, $this->permission->value)) {
-            $guild->logWithMember($interaction->member, __('bot.log.failed', ['trigger' => $this->trigger]), 'fail');
+            $guild->logWithMember($interaction->member, __('bot.log.failed', ['trigger' => $this->commandLabel]), 'fail');
             $interaction->respondWithMessage(EmbedFactory::lackAccessEmbed($this, __("bot.lack-access")));
         }
-        $guild->logWithMember($interaction->member, __('bot.log.success', ['trigger' => $this->trigger]), 'success');
+        $guild->logWithMember($interaction->member, __('bot.log.success', ['trigger' => $this->commandLabel]), 'success');
         $interaction->respondWithMessage($this->action());
     }
 
@@ -115,7 +116,7 @@ abstract class SlashCommand
     public function getOption(string $key): mixed
     {
         if ($this->interaction->data->options->first()->options->get('name', $key) === null) {
-            if($this->interaction->data->options->first()->options->first()) {
+            if ($this->interaction->data->options->first()->options->first()) {
                 return $this->interaction->data->options->first()->options->first()->options->get('name', $key)->value;
             }
             return null;
@@ -154,4 +155,15 @@ abstract class SlashCommand
         $this->bot = $bot;
         $this->discord = $bot->discord;
     }
+
+    /**
+     * @param string $commandLabel
+     * @return void
+     */
+    public function setCommandLabel(string $commandLabel): void
+    {
+        $this->commandLabel = str_replace('_', ' ', $commandLabel);
+    }
+
+
 }
