@@ -272,9 +272,10 @@ class Bot
         }
 
         $this->discord->on(Event::INTERACTION_CREATE, function (Interaction $interaction, Discord $discord) {
-            $trigger = "{$interaction->data->name}_{$interaction->data->options->first()?->name}";
-            if (!isset($this->commands[$trigger]) && $interaction->data->options->first()?->options->first()) {
-                $trigger = "{$interaction->data->options->first()?->name}_{$interaction->data->options->first()->options->first()?->name}";
+            $option = $interaction->data->options->first();
+            $trigger = "{$interaction->data->name}_{$option?->name}";
+            if (!isset($this->commands[$trigger]) && $option?->options->first()) {
+                $trigger = "{$option?->name}_{$option->options->first()?->name}";
             }
             if (isset($this->commands[$trigger])) {
                 if ($interaction->type === InteractionType::APPLICATION_COMMAND) {
@@ -346,7 +347,9 @@ class Bot
     {
         $instance = new $command();
         $instance->setBot($this);
-        $this->commands["{$subGroup}_{$instance->trigger}"] = $instance;
+        $commandTrigger = "{$subGroup}_{$instance->trigger}";
+        $instance->setCommandLabel($commandTrigger);
+        $this->commands[$commandTrigger] = $instance;
         $options = [
             'name' => $instance->trigger,
             'description' => $instance->description,
