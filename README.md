@@ -93,11 +93,8 @@ OPEN_AI_HOST=
 8. In order to make the image generation with open ai and reminders work you also need to run the queue `php artisan queue:work` and install redis!
 
 # Functions
-I will try to update this readme with new functionality as I add it, however I cannot promise I keep it entirely up to date.
-The bot only uses slash commands, there used to be message commands, however I moved everything to slash only. I tried
-to filter incoming user input as much as possible with the slash commands itself. For example allowing only roles
-when roles are required, integers when levels are required etc. Even with changing bot settings it reads the settings 
-from the database and will be preloaded in the slash command, so you do not have to remember each one.
+I will try to update this readme with new functionality as I add it. The bot uses only slash commands! 
+The slash commands all use sub commands to group them together and autocomplete is on where possible for all inputs!
 
 ## Multiple servers
 The bot runs on multiple servers, but each server requires some settings and values to be set in the database,
@@ -111,49 +108,25 @@ to as many roles as you like, those roles can be assigned to as many users as yo
 roles.
 
 ### Permissions
-
-* `roles`
-* `create-role`
-* `delete-role`
-* `update-role`
-* `permissions`
-* `attach-permission`
-* `attach-role`
-* `config`
-* `timeouts`
-* `channels`
-* `add-cringe`
-* `delete-cringe`
-* `commands`
-* `reactions`
-* `role-rewards`
-* `manage-xp`
-* `logs`
-* `role_rewards`
-* `manage_xp`
-* `add_mention`
-* `del_mention`
-* `manage_mention_group`
-* `openai`
-* `abusers`
+`roles` `create-role` `delete-role` `update-role` `permissions` `attach-permission` `attach-role` `config`
+`timeouts` `channels` `add-cringe` `delete-cringe` `commands` `reactions` `role-rewards` `manage-xp` `logs`
+`role_rewards` `manage_xp` `add_mention` `del_mention` `manage_mention_group` `openai` `abusers`
 
 ### Default Roles
-
-* **Admin**
-* **Moderator**
+`Admin` `Moderator`
 
 ### Commands
 
-* **roles** • Overview of all roles and their permissions
-* **permissions** • Overview of all permissions
-* **users** • Overview of all users and their roles
-* **role** `user_mention` • See your roles or those from another user
-* **addrole** `role_name` • Add a new role
-* **delrole** `role_name` • Delete a role
-* **addperm** `role_name` `perm_name` • Add permission(s) to a role
-* **delperm** `role_name` `perm_name` • Remove permission(s) from a role
-* **adduser** `user_mention` `role_name` • Add user to the given role
-* **deluser** `user_mention` `role_name` • Remove user from given role";
+* **roles list** • Overview of all roles and their permissions
+* **roles add** `role_name` • Add a new role
+* **roles delete** `role_name` • Delete a role
+* **roles roles** `user_mention` • See your roles or those from another user
+* **permissions list** • Overview of all permissions
+* **permissions add** `role_name` `perm_name` • Add permission(s) to a role
+* **permissions delete** `role_name` `perm_name` • Remove permission(s) from a role
+* **users list** • Overview of all users and their roles
+* **users add** `user_mention` `role_name` • Add user to the given role
+* **users delete** `user_mention` `role_name` • Remove user from given role";
 
 ## Levels and XP
 
@@ -175,22 +148,22 @@ XP system as MEE6 uses. You can read more here ->  https://github.com/Mee6/Mee6-
 
 ### Commands
 
-* **leaderboard** • Show the leaderboard with the highest ranking members at the top
-* **rank** `user_mention` • Show your own level, xp and messages or that of another user
-* **givexp** `user_mention` `xp_amount` • Give user xp
-* **removexp** `user_mention` `xp_amount` • Remove user xp
-* **resetxp** `user_mention` • Reset XP for user
-* **rewards** • Show the role rewards for different levels
-* **addreward** `level` `role_id` • Add a role reward to a level
-* **delreward** `level` • Delete role rewards from this level";
+* **xp leaderboard** • Show the leaderboard with the highest ranking members at the top
+* **xp rank** `user_mention` • Show your own level, xp and messages or that of another user
+* **xp give** `user_mention` `xp_amount` • Give user xp
+* **xp remove** `user_mention` `xp_amount` • Remove user xp
+* **xp reset** `user_mention` • Reset XP for user
+* **rolerewards list** • Show the role rewards for different levels
+* **rolerewards add** `level` `role_id` • Add a role reward to a level
+* **rolerewards delete** `level` • Delete role rewards from this level";
 
 ## Bot Config
 
 The bot loads a config from the settings table which can be viewed and changed, it allows only integer values! So when 
 setting channels or roles make sure to use the IDS.
 
-* **config**
-* **set** `setting_name` `new_value`
+* **config guid list**
+* **config guild edit** `setting_name` `new_value`
 
 Right now we have the following settings:
 
@@ -226,8 +199,8 @@ Users have their own settings per guild. For now, I only use a single setting bu
 - `no_role_rewards` - Disables gaining role rewards based on levels (if the guild has it enabled)
 
 You can use the following commands to view/change your own settings:
-- **userconfig** - Show your config
-- **userset** `<setting_key>` `<setting_value>` - Update a value in your user config
+- **config user list** - Show your config
+- **config user edit** `<setting_key>` `<setting_value>` - Update a value in your user config
 
 ## Logging
 
@@ -265,24 +238,26 @@ The following events are logged:
 
 You can enable/disable each event in the log config:
 
-* **logconfig** - Look at the log config
-* **logset** `key` `value` - Enable or disable one of the events
+* **config log list** - Look at the log config
+* **config log edit** `key` `value` - Enable or disable one of the events
 
 ## Moderation
 We have some commands which can help moderate the server, or improve other things!
 
 ### Channels
 
-You can set flags for channels, the no_xp flag can also be used for voice channels! For now there are four flags you can use:
+You can set flags for channels, the no_xp flag can also be used for voice channels!
 
+##### Flags
 * `no_xp` - Bot does not count xp for users when they send messages in this channel
 * `media_only` - Channel allows only media and URL, anything else will be deleted.
 * `no_stickers` - Stickers will be removed from the chat
 * `no_log` - Message logging is disabled for this channel
 
-* **channels** - List of channels with flags set
-* **markchannel** `channel` `flag` - add flag to a channel
-* **unmarkchannel** `channel` `flag` - remove flag from a channel
+##### Commands
+* **channels list** - List of channels with flags set
+* **channels flag** `channel` `flag` - add flag to a channel
+* **channels unflag** `channel` `flag` - remove flag from a channel
 
 ### Timeout detection
 We are not satisfied with the audit log and how timeouts are displayed and
@@ -291,16 +266,16 @@ out, for what reason and how long. Every timeout is automatically saved
 in the database including the reason and duration. We can easily see a history
 of timeouts + filter timeouts only for specific users.
 
-* **timeouts** `<user_mention>` - All timeouts or those from a specific user
-* **edittimeout** `<timeout_id>` `<new_reason>`- Update the reason for a timeout
-* **removetimeout** `<timeout_id>` - Remove a timeout from the log only
+* **timeouts list** `<user_mention>` - All timeouts or those from a specific user
+* **timeouts edit** `<timeout_id>` `<new_reason>`- Update the reason for a timeout
+* **timeouts delete** `<timeout_id>` - Remove a timeout from the log only
 
 ### Blacklist
 People can be put on a blacklist manually or automatically.
 
-* **blacklist** - Show everyone on the blacklist
-* **block** `<user_mention` `<reason>` - Add someone to the blacklist
-* **unblock** `<user_mention>`  - Remove someone from the blacklist
+* **blacklist list** - Show everyone on the blacklist
+* **blacklist block** `<user_mention` `<reason>` - Add someone to the blacklist
+* **blacklist unblock** `<user_mention>`  - Remove someone from the blacklist
 
 ## Join role
 You can make sure the bot gives users a role when they join the server. In order to make it work
@@ -311,7 +286,7 @@ you have to set the following settings:
 
 ## Mention Responder
 Small funny feature, when you tag the bot you will get a random reply from a list of mention replies. There are default
-replies, but you can also add your own replies based on certain roles in the server.
+replies, but you can also add your own replies based on certain roles or users in the server.
 
 The bot comes with some default groups and replies:
 - If you have a high rank in the server (according to the xp system)
@@ -322,29 +297,28 @@ The bot comes with some default groups and replies:
 - If you are highly ranked on the cringe counter leaderboard
 
 You can manage all groups and their replies by using these commands:
-- `replies` - show all replies grouped by available categories
-- `replies` `group_id` - Show all replies for a single group
-- `groups` - Show all groups
-- `addgroup` `discord_role` - Add a group 
-- `delgroup` `group_id` - Delete a group and its replies (!!!)
-- `addreply` `group_id` `reply_line` - Add a reply to a group
-- `delreply` `reply_id`- Delete a reply 
+- **mention groups list** - Show all groups
+- **mention groups add** `discord_role` - Add a group 
+- **mention groups delete** `group_id` - Delete a group and its replies (!!!)
+- **mention replies** `group_id` - Show all replies for a single group
+- **mention replies add** `group_id` `reply_line` - Add a reply to a group
+- **mention replies delete** `reply_id`- Delete a reply 
 
 
 ## Fun commands
 A few fun commands you can use!
 
-* **urb** `search_term` - Searches on urban dictionary
-* **8ball** `question` - Ask a question to the 8ball
-* **ask** `question` - Ask a question and get a gif response
-* **say** `something` - say something
-* **modstats** - Who got the power?
-* **image** - Generate an image using openai
-* **emotes** - List of most used emotes in the guild
-* **bumpcounter** `time-range` • Check the monthly or all time bump leaderboard
-* **addcringe** `<user>` - Increase someone's cringe counter
-* **delcringe** `<user>` - Decrease someone's cringe counter
-* **cringecounter** - Reset someone's cringe counter
+* **fun urb** `search_term` - Searches on urban dictionary
+* **fun 8ball** `question` - Ask a question to the 8ball
+* **fun ask** `question` - Ask a question and get a gif response
+* **fun say** `something` - say something
+* **fun modstats** - Who got the power?
+* **fun image** - Generate an image using openai
+* **fun emotes** - List of most used emotes in the guild
+* **fun bumpcounter** `time-range` • Check the monthly or all time bump leaderboard
+* **cringe add** `<user>` - Increase someone's cringe counter
+* **cringe delete** `<user>` - Decrease someone's cringe counter
+* **cringe reset** - Reset someone's cringe counter
 
 ### Bump Reminder
 In order to make the bump reminder work, you need to set the following 3 settings:
@@ -359,9 +333,9 @@ in a message the bot will add a reaction to the message with a set emote. These
 reactions can be added, removed and viewed with commands so nothing needs to be
 done in code.
 
-* **reactions**
-* **addreaction** `<word_trigger` `<reaction_emote>`
-* **delreaction** `<word_trigger`
+* **fun reactions list**
+* **fun reactions add** `<word_trigger` `<reaction_emote>`
+* **fun reactions delete** `<word_trigger`
 
 ### Simple commands
 
@@ -370,9 +344,9 @@ Same as with the reactions you can add and remove and view as many as you like
 without the necessity to enter any code. By default, these command triggers do not include the bot
 prefix, so if you want to trigger on prefix you need to include the bot prefix in the command.
 
-* **commands**
-* **addcmd** `<command>` `<response>`
-* **delcmd** `<command>`
+* **fun commands list**
+* **fun commands add** `<command>` `<response>`
+* **fun commands delete** `<command>`
 
 ### Counting channel
 People requested a channel where they can count. You can't count twice in a row and when you make a mistake the
