@@ -23,7 +23,7 @@ class DetachUserRole extends SlashCommand
 
     public function trigger(): string
     {
-        return 'deluser';
+        return 'delete';
     }
 
     public function __construct()

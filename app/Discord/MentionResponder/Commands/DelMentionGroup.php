@@ -21,7 +21,7 @@ class DelMentionGroup extends SlashCommand
 
     public function trigger(): string
     {
-        return 'delgroup';
+        return 'delete';
     }
 
     public function __construct()

@@ -21,7 +21,7 @@ class DeleteRole extends SlashCommand
 
     public function trigger(): string
     {
-        return 'delrole';
+        return 'delete';
     }
 
     public function __construct()

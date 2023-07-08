@@ -20,7 +20,7 @@ class LogSettings extends SlashCommand
 
     public function trigger(): string
     {
-        return 'logconfig';
+        return 'list';
     }
 
     public function __construct()

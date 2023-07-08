@@ -22,7 +22,7 @@ class UserRoles extends SlashCommand
 
     public function trigger(): string
     {
-        return 'role';
+        return 'roles';
     }
 
     public function __construct()

@@ -22,7 +22,7 @@ class DeleteCommand extends SlashCommand
 
     public function trigger(): string
     {
-        return 'delcmd';
+        return 'delete';
     }
 
     public function __construct()

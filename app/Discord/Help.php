@@ -26,7 +26,7 @@ class Help extends SlashCommand
 
     public function trigger(): string
     {
-        return "help";
+        return "general";
     }
 
     public function __construct()

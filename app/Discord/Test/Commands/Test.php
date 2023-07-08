@@ -22,12 +22,12 @@ class Test extends SlashCommand
 
     public function trigger(): string
     {
-        return "test";
+        return "testing";
     }
 
     public function __construct()
     {
-        $this->description = 'test';
+        $this->description = "test";
         parent::__construct();
     }
 
@@ -43,7 +43,7 @@ class Test extends SlashCommand
 //        $embed = EmbedBuilder::create($this->discord, $this->interaction, "Title test", "Description test");
 //        return MessageBuilder::new()->addEmbed($embed);
 
-        return EmbedFactory::successEmbed($this, "nice");
+        return EmbedFactory::successEmbed($this, $this->getOption('setting_key'));
     }
 
     /**

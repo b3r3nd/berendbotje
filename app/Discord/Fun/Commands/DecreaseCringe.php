@@ -20,7 +20,7 @@ class DecreaseCringe extends SlashCommand
 
     public function trigger(): string
     {
-        return 'delcringe';
+        return 'delete';
     }
 
     public function __construct()

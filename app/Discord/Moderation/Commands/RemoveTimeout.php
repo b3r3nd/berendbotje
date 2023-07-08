@@ -20,7 +20,7 @@ class RemoveTimeout extends SlashCommand
 
     public function trigger(): string
     {
-        return 'removetimeout';
+        return 'remove';
     }
 
     public function __construct()

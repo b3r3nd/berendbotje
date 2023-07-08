@@ -21,7 +21,7 @@ class UpdateSetting extends SlashCommand
 
     public function trigger(): string
     {
-        return 'set';
+        return 'edit';
     }
 
     public function __construct()

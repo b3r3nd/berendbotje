@@ -22,7 +22,7 @@ class DeleteRoleReward extends SlashCommand
 
     public function trigger(): string
     {
-        return 'delreward';
+        return 'delete';
     }
 
     public function __construct()

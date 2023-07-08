@@ -21,7 +21,7 @@ class Settings extends SlashCommand
 
     public function trigger(): string
     {
-        return 'config';
+        return 'list';
     }
 
     public function __construct()

@@ -20,7 +20,7 @@ class RoleRewards extends SlashIndexCommand
 
     public function trigger(): string
     {
-        return 'rewards';
+        return 'list';
     }
 
     public function __construct()

@@ -21,7 +21,7 @@ class GiveXp extends SlashCommand
 
     public function trigger(): string
     {
-        return 'givexp';
+        return 'give';
     }
 
     public function __construct()

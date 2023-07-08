@@ -25,7 +25,7 @@ class UpdateUserSetting extends SlashCommand
 
     public function trigger(): string
     {
-        return 'userset';
+        return 'edit';
     }
 
     public function __construct()

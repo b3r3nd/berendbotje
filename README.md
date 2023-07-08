@@ -77,18 +77,7 @@ class GuildSeeder extends Seeder
 }
 ```
 4. When that is done run `php artisan migrate --seed` to setup your database.
-5. Check the env file for any settings you want to change. Commands can be disabled for specific guilds by using its config in discord. However, you can disable parts of the bot entirely here, the commands will not be loaded.
-
-```
-ENABLE_FUN=TRUE
-ENABLE_LEVELS=TRUE
-ENABLE_LOGGER=TRUE
-ENABLE_MENTION_RESPONDER=TRUE
-ENABLE_ROLES=TRUE
-ENABLE_SETTINGS=TRUE
-ENABLE_MOD=TRUE
-ENABLE_HELP=TRUE
-```
+5. Check the env file for any settings you want to change.
 6. Also make sure to fill in any tokens and hosts if you wish to use the corresponding commands:
 ```
 BOT_TOKEN=
@@ -98,10 +87,9 @@ OPENAI_API_KEY=
 OPEN_AI_HOST=
 ```
 7. You can use the following commands to run the bot:
-- `bot:run` - Run the bot normally - does not create, update or delete slash commands
+- `bot:run` - Run the bot, does not create, update or delete slash commands
 - `bot:run --updatecmd` - Creates/Updates all slash commands first
 - `bot:run --delcmd` - Deletes all slash commands first
-- `bot:run --dev` - Load only test commands but always update the slash command
 8. In order to make the image generation with open ai and reminders work you also need to run the queue `php artisan queue:work` and install redis!
 
 # Functions

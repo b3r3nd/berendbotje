@@ -22,7 +22,7 @@ class DeleteReaction extends SlashCommand
 
     public function trigger(): string
     {
-        return 'delreaction';
+        return 'delete';
     }
 
     public function __construct()

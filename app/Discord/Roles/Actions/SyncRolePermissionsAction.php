@@ -45,8 +45,9 @@ class SyncRolePermissionsAction
      */
     public function execute(): MessageBuilder
     {
-        $roleOption = $this->options->get('name', 'role_name')->value;
-        $permOption = $this->options->get('name', 'permissions')->value;
+
+        $roleOption = $this->options->first()->options->get('name', 'role_name')->value;
+        $permOption = $this->options->first()->options->get('name', 'permissions')->value;
 
         if (!Role::exists($this->guildId, $roleOption)) {
             return EmbedFactory::failedEmbed($this->command, __('bot.roles.not-exist', ['role' => $roleOption]));

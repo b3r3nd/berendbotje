@@ -22,7 +22,7 @@ class UserSettings extends SlashCommand
 
     public function trigger(): string
     {
-        return 'userconfig';
+        return 'list';
     }
 
     public function __construct()

@@ -21,7 +21,7 @@ class MarkChannel extends SlashCommand
 
     public function trigger(): string
     {
-        return 'markchannel';
+        return 'flag';
     }
 
     public function __construct()

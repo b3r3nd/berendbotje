@@ -83,6 +83,9 @@ use App\Discord\Roles\Commands\Users;
 use App\Discord\Test\Commands\Test;
 use Discord\Discord;
 use Discord\Exceptions\IntentException;
+use Discord\InteractionType;
+use Discord\Parts\Interactions\Interaction;
+use Discord\WebSockets\Event;
 use Discord\WebSockets\Intents;
 use Exception;
 
@@ -91,25 +94,16 @@ use Exception;
  *
  * @property Discord $discord         Set with the global discord instance from DiscordPHP.
  * @property array $guilds            List of all active guilds using the bot.
- * @property bool $devMode            If the bot runs in dev mode.
  * @property bool $updateCommands     If we need to update commands.
  * @property bool $deleteCommands     If we need to delete commands.
  * @property array $events            DiscordEvent listeners.
  * @property array $commands          Commands by category.
- * @property array $devCommands       Commands only in dev mode.
  */
 class Bot
 {
     public Discord $discord;
     private array $guilds;
-    private bool $devMode, $updateCommands, $deleteCommands;
-
-    private array $devCommands = [
-        Test::class,
-        Help::class,
-        Settings::class,
-        UpdateSetting::class,
-    ];
+    private bool $updateCommands, $deleteCommands;
 
     private array $events = [
         'levels' => [
@@ -141,50 +135,91 @@ class Bot
         ],
     ];
 
-    private array $commands = [
-        'roles' => [
-            Roles::class,
-            Permissions::class,
+    private array $commands = [];
+
+    // list, add, delete, edit !!!!!!!!
+    private array $slashCommandStructure = [
+
+        'users' => [
             Users::class,
             UserRoles::class,
-            AttachRolePermission::class,
-            DetachRolePermission::class,
-            CreateRole::class,
-            DeleteRole::class,
             DetachUserRole::class,
             AttachUserRole::class,
         ],
-        'settings' => [
-            Settings::class,
-            UpdateSetting::class,
-            UserSettings::class,
-            UpdateUserSetting::class,
+        'roles' => [
+            Roles::class,
+            CreateRole::class,
+            DeleteRole::class,
         ],
-        'levels' => [
-            Leaderboard::class,
-            RoleRewards::class,
-            CreateRoleReward::class,
-            DeleteRoleReward::class,
-            UserRank::class,
-            GiveXp::class,
-            RemoveXp::class,
-            ResetXp::class,
+        'permissions' => [
+            Permissions::class,
+            AttachRolePermission::class,
+            DetachRolePermission::class,
         ],
-        'moderation' => [
-            Timeouts::class,
+        'config' => [
+            'guild' => [
+                Settings::class,
+                UpdateSetting::class,
+            ],
+            'user' => [
+                UserSettings::class,
+                UpdateUserSetting::class
+            ],
+            'log' => [
+                LogSettings::class,
+                UpdateLogSetting::class,
+            ],
+        ],
+        'channels' => [
             ChannelIndex::class,
             MarkChannel::class,
             UnmarkChannel::class,
-            Blacklist::class,
-            Unblock::class,
-            Block::class,
+        ],
+        'timeouts' => [
+            Timeouts::class,
             UpdateTimeoutReason::class,
             RemoveTimeout::class,
         ],
-        'mention' => [
+        'blacklist' => [
+            Blacklist::class,
+            Unblock::class,
+            Block::class,
+        ],
+        'rolerewards' => [
+            RoleRewards::class,
+            CreateRoleReward::class,
+            DeleteRoleReward::class,
+        ],
+        'xp' => [
+            GiveXp::class,
+            RemoveXp::class,
+            ResetXp::class,
+            Leaderboard::class,
+            UserRank::class,
+        ],
+        'cringe' => [
+            CringeIndex::class,
+            IncreaseCringe::class,
+            DecreaseCringe::class,
+            ResetCringe::class,
+        ],
+        'reactions' => [
+            ReactionIndex::class,
+            CreateReaction::class,
+            DeleteReaction::class,
+        ],
+        'commands' => [
+            CommandIndex::class,
+            CreateCommand::class,
+            DeleteCommand::class,
+        ],
+
+        'mentionreplies' => [
             MentionIndex::class,
             AddMentionReply::class,
             DelMentionReply::class,
+        ],
+        'mentiongroups' => [
             MentionGroupIndex::class,
             AddMentionGroup::class,
             DelMentionGroup::class,
@@ -198,35 +233,22 @@ class Bot
             Ask::class,
             UrbanDictionary::class,
             ModeratorStatistics::class,
-            ReactionIndex::class,
-            CreateReaction::class,
-            DeleteReaction::class,
-            CommandIndex::class,
-            CreateCommand::class,
-            DeleteCommand::class,
-            CringeIndex::class,
-            IncreaseCringe::class,
-            DecreaseCringe::class,
-            ResetCringe::class,
         ],
         'help' => [
             Help::class,
         ],
-        'logger' => [
-            LogSettings::class,
-            UpdateLogSetting::class,
+        'test' => [
+            Test::class,
         ],
     ];
 
 
     /**
-     * @param bool $devMode
      * @param bool $updateCommands
      * @param bool $deleteCommands
      */
-    public function __construct(bool $devMode = false, bool $updateCommands = false, bool $deleteCommands = false)
+    public function __construct(bool $updateCommands = false, bool $deleteCommands = false)
     {
-        $this->devMode = $devMode;
         $this->updateCommands = $updateCommands;
         $this->deleteCommands = $deleteCommands;
     }
@@ -251,7 +273,7 @@ class Bot
             if ($this->deleteCommands) {
                 $this->deleteSlashCommands();
             }
-            if ($this->updateCommands || $this->devMode) {
+            if ($this->updateCommands) {
                 $this->updateSlashCommands();
             }
         });
@@ -264,42 +286,83 @@ class Bot
     private function loadEvents(): void
     {
         foreach ($this->events as $category => $events) {
-            if (config("discord.modules.{$category}")) {
-                foreach ($events as $class) {
-                    $instance = new $class($this);
-                    $instance->registerEvent();
-                }
+            foreach ($events as $class) {
+                $instance = new $class($this);
+                $instance->registerEvent();
             }
         }
     }
 
     /**
-     * @param array $commands
      * @return void
-     */
-    private function loadCommands(array $commands): void
-    {
-        foreach ($commands as $class) {
-            $instance = new $class();
-            $instance->setBot($this);
-            $instance->registerSlashCommand($this);
-        }
-    }
-
-    /**
-     * @return void
+     * @throws Exception
      */
     private function updateSlashCommands(): void
     {
-        if ($this->devMode) {
-            $this->loadCommands($this->devCommands);
-        } else {
-            foreach ($this->commands as $category => $commands) {
-                if (config("discord.modules.{$category}")) {
-                    $this->loadCommands($commands);
+        foreach ($this->slashCommandStructure as $mainCommand => $subGroups) {
+            $subGroupOptions = [];
+            foreach ($subGroups as $subGroup => $subCommands) {
+                if (is_array($subCommands)) {
+                    $subCommandOptions = [];
+                    foreach ($subCommands as $subCommand) {
+                        $subCommandOptions[] = $this->getOptions($subCommand, $subGroup);
+                    }
+                    $subGroupOptions[] = [
+                        'name' => $subGroup,
+                        'description' => $subGroup,
+                        'type' => 2,
+                        'options' => $subCommandOptions,
+                    ];
+                } else {
+                    $subGroupOptions[] = $this->getOptions($subCommands, $mainCommand);
                 }
             }
+            $optionsArray = [
+                'name' => $mainCommand,
+                'description' => $mainCommand,
+                'options' => $subGroupOptions,
+            ];
+
+            $command = new \Discord\Parts\Interactions\Command\Command($this->discord, $optionsArray);
+            $this->discord->application->commands->save($command);
         }
+
+        $this->discord->on(Event::INTERACTION_CREATE, function (Interaction $interaction, Discord $discord) {
+            $trigger = "{$interaction->data->name}_{$interaction->data->options->first()?->name}";
+            if (!isset($this->commands[$trigger]) && $interaction->data->options->first()?->options->first()) {
+                $trigger = "{$interaction->data->options->first()?->name}_{$interaction->data->options->first()->options->first()?->name}";
+            }
+            if (isset($this->commands[$trigger])) {
+                if ($interaction->type === InteractionType::APPLICATION_COMMAND) {
+                    $this->commands[$trigger]->execute($interaction);
+                }
+                if ($interaction->type === InteractionType::APPLICATION_COMMAND_AUTOCOMPLETE) {
+                    $this->commands[$trigger]->complete($interaction);
+                }
+            }
+        });
+    }
+
+    /**
+     * @param $command
+     * @param $subGroup
+     * @return array
+     */
+    private function getOptions($command, $subGroup): array
+    {
+        $instance = new $command();
+        $instance->setBot($this);
+        $this->commands["{$subGroup}_{$instance->trigger}"] = $instance;
+        $options = [
+            'name' => $instance->trigger,
+            'description' => $instance->description,
+            'type' => 1,
+        ];
+
+        if (isset($instance->slashCommandOptions)) {
+            $options['options'] = $instance->slashCommandOptions;
+        }
+        return $options;
     }
 
     /**

@@ -21,7 +21,7 @@ class RemoveXp extends SlashCommand
 
     public function trigger(): string
     {
-        return 'removexp';
+        return 'remove';
     }
 
     public function __construct()

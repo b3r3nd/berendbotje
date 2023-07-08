@@ -20,7 +20,7 @@ class Blacklist extends SlashIndexCommand
 
     public function trigger(): string
     {
-        return 'blacklist';
+        return 'list';
     }
 
     public function __construct()

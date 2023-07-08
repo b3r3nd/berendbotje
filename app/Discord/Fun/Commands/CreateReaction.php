@@ -20,7 +20,7 @@ class CreateReaction extends SlashCommand
 
     public function trigger(): string
     {
-        return 'addreaction';
+        return 'add';
     }
 
     public function __construct()

@@ -19,7 +19,7 @@ class Roles extends SlashIndexCommand
 
     public function trigger(): string
     {
-        return 'roles';
+        return 'list';
     }
 
     public function __construct()
