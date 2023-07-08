@@ -36,10 +36,7 @@ class Run extends Command
             $this->info("Quitting..");
             exit;
         }
-        if ($this->option('update') && !$this->confirm('Are you sure you want do UPDATE/REGISTER ALL slash commands?')) {
-            $this->info("Quitting..");
-            exit;
-        }
+
         $bot = new Bot($this->option('update'), $this->option('delete'));
         $bot->connect();
         return Command::SUCCESS;

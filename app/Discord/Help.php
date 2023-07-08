@@ -151,7 +151,6 @@ class Help extends SlashCommand
         $subSelect = SelectMenu::new()
             ->addOption(Option::new("Reactions"))
             ->addOption(Option::new("Cringe Counter"))
-            ->addOption(Option::new("Bump Stats"))
             ->addOption(Option::new("Custom Commands"))
             ->addOption(Option::new("Extra"));
 
@@ -165,9 +164,6 @@ class Help extends SlashCommand
             }
             if ($option->getLabel() === 'Cringe Counter') {
                 $embedBuilder = $this->funCringePage($embedBuilder);
-            }
-            if ($option->getLabel() === 'Bump Stats') {
-                $embedBuilder = $this->funBumpPage($embedBuilder);
             }
             if ($option->getLabel() === 'Extra') {
                 $embedBuilder = $this->funExtraPage($embedBuilder);
@@ -190,8 +186,8 @@ class Help extends SlashCommand
     {
         $embedBuilder->setDescription("You can change settings on a guild basis. For now there is only a single setting: \n\n **no_role_rewards** - Disable gaining role rewards based on levels");
         $this->addCommands([
-            ['cmd' => 'userconfig', 'usage' => '', 'desc' => 'Shows your custom user settings'],
-            ['cmd' => 'userset', 'usage' => '`<setting_key>` `<new_value>`', 'desc' => 'Change custom user settings'],
+            ['cmd' => 'config user list', 'usage' => '', 'desc' => 'Shows your custom user settings'],
+            ['cmd' => 'config user set', 'usage' => '`<setting_key>` `<new_value>`', 'desc' => 'Change custom user settings'],
         ], $embedBuilder);
         return $embedBuilder;
     }
@@ -205,13 +201,13 @@ class Help extends SlashCommand
     {
         $embedBuilder->setDescription("List of other small fun commands");
         $this->addCommands([
-            ['cmd' => 'emotes', 'usage' => '', 'desc' => 'Shows scoreboard of most used emotes'],
-            ['cmd' => 'leaderboard', 'usage' => '', 'desc' => 'Shows leaderboard based on messages and xp gained'],
-            ['cmd' => 'rank', 'usage' => '', 'desc' => 'Shows your current rank, message counter and XP'],
-            ['cmd' => 'urb', 'usage' => '`<search_term>`', 'desc' => 'Search something on urban dictionary'],
-            ['cmd' => '8ball', 'usage' => '`<question>`', 'desc' => 'Ask the magic 8ball'],
-            ['cmd' => 'ask', 'usage' => '`<question>`', 'desc' => 'Yes? No? Hmm..?'],
-            ['cmd' => 'image', 'usage' => '`<term>`', 'desc' => 'Generate an Image using OpenAI'],
+            ['cmd' => 'fun emotes', 'usage' => '', 'desc' => 'Shows scoreboard of most used emotes'],
+            ['cmd' => 'fun leaderboard', 'usage' => '', 'desc' => 'Shows leaderboard based on messages and xp gained'],
+            ['cmd' => 'fun urb', 'usage' => '`<search_term>`', 'desc' => 'Search something on urban dictionary'],
+            ['cmd' => 'fun 8ball', 'usage' => '`<question>`', 'desc' => 'Ask the magic 8ball'],
+            ['cmd' => 'fun ask', 'usage' => '`<question>`', 'desc' => 'Yes? No? Hmm..?'],
+            ['cmd' => 'fun image', 'usage' => '`<term>`', 'desc' => 'Generate an Image using OpenAI'],
+            ['cmd' => 'bumpstats', 'usage' => '`<date_range>`', 'desc' => 'Show bumper elites leaderboard'],
         ], $embedBuilder);
         return $embedBuilder;
     }
@@ -232,21 +228,6 @@ class Help extends SlashCommand
         return $embedBuilder;
     }
 
-
-    /**
-     * @param EmbedBuilder $embedBuilder
-     * @return EmbedBuilder
-     */
-    public function funBumpPage(EmbedBuilder $embedBuilder): EmbedBuilder
-    {
-        $embedBuilder->setDescription("The bot keeps track of how often people bump our server, and shows some statistics");
-        $this->addCommands([
-            ['cmd' => 'bumpstats', 'usage' => '`<date_range>`', 'desc' => 'Show bumper elites leaderboard'],
-        ], $embedBuilder);
-        return $embedBuilder;
-    }
-
-
     /**
      * @param EmbedBuilder $embedBuilder
      * @return EmbedBuilder
@@ -255,9 +236,9 @@ class Help extends SlashCommand
     {
         $embedBuilder->setDescription("You can add custom message commands, make sure to include the trigger");
         $this->addCommands([
-            ['cmd' => 'commands', 'usage' => '', 'desc' => 'Show list of custom commands'],
-            ['cmd' => 'addcmd', 'usage' => '`<command>` `<response>`', 'desc' => 'Remove a custom command'],
-            ['cmd' => 'delcmd', 'usage' => '`<command>`', 'desc' => ''],
+            ['cmd' => 'fun commands list', 'usage' => '', 'desc' => 'Show list of custom commands'],
+            ['cmd' => 'fun commands delete', 'usage' => '`<command>` `<response>`', 'desc' => 'Remove a custom command'],
+            ['cmd' => 'fun commands add', 'usage' => '`<command>`', 'desc' => ''],
         ], $embedBuilder);
 
         return $embedBuilder;
@@ -271,9 +252,9 @@ class Help extends SlashCommand
     {
         $embedBuilder->setDescription("You can add reactions to words, when the bot detects those words, it will react!");
         $this->addCommands([
-            ['cmd' => 'reactions', 'usage' => '', 'desc' => 'Show list custom reactions'],
-            ['cmd' => 'addreaction', 'usage' => '`<trigger>` `<emoji>`', 'desc' => 'Add new reactions'],
-            ['cmd' => 'delreaction', 'usage' => '`<trigger>`', 'desc' => 'Delete a reaction'],
+            ['cmd' => 'fun reactions list', 'usage' => '', 'desc' => 'Show list custom reactions'],
+            ['cmd' => 'fun reactions add', 'usage' => '`<trigger>` `<emoji>`', 'desc' => 'Add new reactions'],
+            ['cmd' => 'fun reactions delete', 'usage' => '`<trigger>`', 'desc' => 'Delete a reaction'],
         ], $embedBuilder);
         return $embedBuilder;
     }
@@ -286,15 +267,16 @@ class Help extends SlashCommand
     {
         $embedBuilder->setDescription("The main Admin role cannot be deleted, permissions cannot be removed from the admin role and the role cannot be removed from the owner of the guild.");
         $this->addCommands([
-            ['cmd' => 'roles', 'usage' => '', 'desc' => 'Overview of all roles and their permissions'],
-            ['cmd' => 'permissions', 'usage' => '', 'desc' => 'Overview of all permissions'],
-            ['cmd' => 'role', 'usage' => '`<user_mention>`', 'desc' => 'See your roles or from another user'],
-            ['cmd' => 'addrole', 'usage' => '`<role_name>`', 'desc' => 'Add a new role'],
-            ['cmd' => 'delrole', 'usage' => '`<role_name>`', 'desc' => 'Delete a rol'],
-            ['cmd' => 'addperm', 'usage' => '`<role_name>` `<perm_name>`', 'desc' => 'Add permission(s) to a role'],
-            ['cmd' => 'delperm', 'usage' => '`<role_name>` `<perm_name>`', 'desc' => 'Remove permission(s) from a role'],
-            ['cmd' => 'adduser', 'usage' => '`<user_mention>` `<role_name>`', 'desc' => 'Add user to the given role'],
-            ['cmd' => 'deluser', 'usage' => '`<user_mention>` `<role_name>`', 'desc' => ' Remove user from given role'],
+            ['cmd' => 'users list', 'usage' => '', 'desc' => 'Show users and their roles'],
+            ['cmd' => 'users add', 'usage' => '`<user_mention>` `<role_name>`', 'desc' => 'Add user to the given role'],
+            ['cmd' => 'users delete', 'usage' => '`<user_mention>` `<role_name>`', 'desc' => ' Remove user from given role'],
+            ['cmd' => 'roles list', 'usage' => '', 'desc' => 'Overview of all roles and their permissions'],
+            ['cmd' => 'roles roles', 'usage' => '`<user_mention>`', 'desc' => 'See your roles or from another user'],
+            ['cmd' => 'roles add', 'usage' => '`<role_name>`', 'desc' => 'Add a new role'],
+            ['cmd' => 'roles delete', 'usage' => '`<role_name>`', 'desc' => 'Delete a rol'],
+            ['cmd' => 'permissions list', 'usage' => '', 'desc' => 'Overview of all permissions'],
+            ['cmd' => 'permissions add', 'usage' => '`<role_name>` `<perm_name>`', 'desc' => 'Add permission(s) to a role'],
+            ['cmd' => 'permissions delete', 'usage' => '`<role_name>` `<perm_name>`', 'desc' => 'Remove permission(s) from a role'],
         ], $embedBuilder);
         return $embedBuilder;
     }
@@ -307,19 +289,16 @@ class Help extends SlashCommand
     {
         $embedBuilder->setDescription("Timeouts are automatically detected and saved, bans and kicks are only counted.");
         $this->addCommands([
-            ['cmd' => 'timeouts', 'usage' => '`<user_mention>`', 'desc' => 'Show given timeout history or from a specific user'],
-            ['cmd' => 'edittimeout', 'usage' => '`<timeout_id>` `<reason>`', 'desc' => 'Update the reason for a given timeout'],
-            ['cmd' => 'removetimeout', 'usage' => '`<timeout_id>`', 'desc' => 'Remove a timeout from the log only'],
-            ['cmd' => 'unblock', 'usage' => '`<user_mention>`', 'desc' => 'Remove someone from the blacklist'],
-            ['cmd' => 'modstats', 'usage' => '', 'desc' => 'Show moderator statistics'],
-            ['cmd' => 'config', 'usage' => '', 'desc' => 'See server configuration'],
-            ['cmd' => 'set', 'usage' => '`<setting_key>` `<new_value>`', 'desc' => 'Update server setting'],
-            ['cmd' => 'channels', 'usage' => '', 'desc' => 'Shows a list of channels with their configured flags'],
-            ['cmd' => 'markchannel', 'usage' => '`<channel>` `<flag>`', 'desc' => 'Mark a channel with one of the available flags'],
-            ['cmd' => 'unmarkchannel', 'usage' => '`<channel>` `<flag>`', 'desc' => 'Unmark a channel with one of the available flags'],
+            ['cmd' => 'timeouts list', 'usage' => '`<user_mention>`', 'desc' => 'Show given timeout history or from a specific user'],
+            ['cmd' => 'timeouts edit', 'usage' => '`<timeout_id>` `<reason>`', 'desc' => 'Update the reason for a given timeout'],
+            ['cmd' => 'timeouts delete', 'usage' => '`<timeout_id>`', 'desc' => 'Remove a timeout from the log only'],
+            ['cmd' => 'channels list', 'usage' => '', 'desc' => 'Shows a list of channels with their configured flags'],
+            ['cmd' => 'channels flag', 'usage' => '`<channel>` `<flag>`', 'desc' => 'Mark a channel with one of the available flags'],
+            ['cmd' => 'channels unflag', 'usage' => '`<channel>` `<flag>`', 'desc' => 'Unmark a channel with one of the available flags'],
             ['cmd' => 'blacklist', 'usage' => '', 'desc' => 'Shows the abusers on the blacklist'],
-            ['cmd' => 'block', 'usage' => '`<user_mention>`', 'desc' => 'Add someone to the blacklist'],
-            ['cmd' => 'unblock', 'usage' => '`<user_mention>`', 'desc' => 'Remove someone from the blacklist'],
+            ['cmd' => 'blacklist lock', 'usage' => '`<user_mention>`', 'desc' => 'Add someone to the blacklist'],
+            ['cmd' => 'blacklist unblock', 'usage' => '`<user_mention>`', 'desc' => 'Remove someone from the blacklist'],
+
         ], $embedBuilder);
         $embedBuilder->getEmbed()->addField(
             ['name' => 'Channel flags', 'value' => "`no_xp` Users gain no XP in this channel \n `media_only` Channel allows only media and URLS. \n `no_stickers` Stickers will be removed from the chat \n `no_log` Message logging is disabled for this channel"],
@@ -337,14 +316,14 @@ class Help extends SlashCommand
         $helpCmd = $this->discord->application->commands->get('name', 'help') ? "</help:{$this->discord->application->commands->get('name', 'help')->id}>" : "`/help`";
         $embedBuilder->setDescription("The bot counts messages send by users and gives xp for each message, it also detects users in voice who are not muted and gives XP for time spend in voice. The amount of XP gained by each message, time spend in voice and the cooldown between messages can be changed with the {$configCmd} command see {$helpCmd} for more info.\n Role rewards for users are synced whenever they send a message to the server. When removing or adding XP from users their roles will persist until they send a message.");
         $this->addCommands([
-            ['cmd' => 'leaderboard', 'usage' => '', 'desc' => 'Show the leaderboard'],
-            ['cmd' => 'rank', 'usage' => '`<user_mention>`', 'desc' => 'Show level, xp and messages for you or another user'],
-            ['cmd' => 'givexp', 'usage' => '`<user_mention>` `<xp_amount>`', 'desc' => 'Give user xp'],
-            ['cmd' => 'removexp', 'usage' => '`<user_mention>` `<xp_amount>`', 'desc' => 'Remove user xp'],
-            ['cmd' => 'resetxp', 'usage' => '`<user_mention>`', 'desc' => 'Reset XP for user'],
-            ['cmd' => 'rewards', 'usage' => '', 'desc' => 'Show the role rewards for different levels'],
-            ['cmd' => 'addreward', 'usage' => '`<level>` `<role_id>`', 'desc' => 'Add a role reward to a level'],
-            ['cmd' => 'delreward', 'usage' => '`<level>`', 'desc' => 'Delete role rewards from this level'],
+            ['cmd' => 'xp leaderboard', 'usage' => '', 'desc' => 'Show the leaderboard'],
+            ['cmd' => 'xp rank', 'usage' => '`<user_mention>`', 'desc' => 'Show level, xp and messages for you or another user'],
+            ['cmd' => 'xp give', 'usage' => '`<user_mention>` `<xp_amount>`', 'desc' => 'Give user xp'],
+            ['cmd' => 'xp remove', 'usage' => '`<user_mention>` `<xp_amount>`', 'desc' => 'Remove user xp'],
+            ['cmd' => 'xp reset', 'usage' => '`<user_mention>`', 'desc' => 'Reset XP for user'],
+            ['cmd' => 'rolerewards list', 'usage' => '', 'desc' => 'Show the role rewards for different levels'],
+            ['cmd' => 'rolerewards add', 'usage' => '`<level>` `<role_id>`', 'desc' => 'Add a role reward to a level'],
+            ['cmd' => 'rolerewards delete', 'usage' => '`<level>`', 'desc' => 'Delete role rewards from this level'],
         ], $embedBuilder);
         return $embedBuilder;
     }
@@ -355,38 +334,50 @@ class Help extends SlashCommand
      */
     public function settingsPage(EmbedBuilder $embedBuilder): EmbedBuilder
     {
-        $embedBuilder->setDescription("All setting values are numeric, for booleans 0 = false, 1 = true. (`duration_in_voice` / `xp_voice_cooldown`) * `xp_voice_count` = Amount of XP gained, calculated on voice disconnect.");
+        $description = "All setting values are numeric, for booleans 0 = false, 1 = true.";
         $this->addCommands([
-            ['cmd' => 'config', 'usage' => '', 'desc' => 'Show all config settings'],
-            ['cmd' => 'set', 'usage' => '`<setting_key>` `<setting_value>`', 'desc' => 'Update a setting'],
+            ['cmd' => 'config guild list', 'usage' => '', 'desc' => ''],
+            ['cmd' => 'config guild edit', 'usage' => '`<setting_key>` `<setting_value>`', 'desc' => ''],
         ], $embedBuilder);
-        $embedBuilder->getEmbed()->addField(
-            ['name' => 'xp_count', 'value' => ' Amount of xp you gain per message', 'inline' => true],
-            ['name' => 'xp_cooldown', 'value' => 'Cooldown between messages before gain `xp_count` again.', 'inline' => true],
-            ['name' => 'xp__voice_count', 'value' => ' Amount of xp you gain in voice', 'inline' => true],
-            ['name' => 'xp_voice_cooldown', 'value' => 'Over how much time the XP is given.', 'inline' => true],
-            ['name' => 'enable_xp', 'value' => 'Enable the message XP system', 'inline' => true],
-            ['name' => 'enable_voice_xp', 'value' => 'Enable the voice XP system', 'inline' => true],
-            ['name' => 'enable_emote_counter', 'value' => 'Enable emote counter', 'inline' => true],
-            ['name' => 'enable_role_rewards', 'value' => 'Enable role rewards', 'inline' => true],
-            ['name' => 'enable_bump_counter', 'value' => 'Enable bump counter', 'inline' => true],
-            ['name' => 'enable_reactions', 'value' => 'Enable custom reactions', 'inline' => true],
-            ['name' => 'enable_commands', 'value' => 'Enable custom commands', 'inline' => true],
-            ['name' => 'enable_logging', 'value' => 'Enable general logs', 'inline' => true],
-            ['name' => 'log_channel', 'value' => 'ID of the log channel', 'inline' => true],
-            ['name' => 'enable_bump_reminder', 'value' => 'Enable the bump reminder', 'inline' => true],
-            ['name' => 'bump_reminder_role', 'value' => 'What role should be tagged for the bump reminder', 'inline' => true],
-            ['name' => 'bump_channel', 'value' => 'Channel where to tag the role', 'inline' => true],
-            ['name' => 'enable_mention_responder', 'value' => ' Enable the mention responder', 'inline' => true],
-            ['name' => 'enable_qotd_reminder', 'value' => 'Enable the role mention in set question of the day channel', 'inline' => true],
-            ['name' => 'qotd_channel', 'value' => 'Channel to tag qotd role', 'inline' => true],
-            ['name' => 'qotd_role', 'value' => 'role to tag in qotd channel', 'inline' => true],
-            ['name' => 'current_count', 'value' => 'Current counter', 'inline' => true],
-            ['name' => 'enable_count', 'value' => 'Enable counting channel', 'inline' => true],
-            ['name' => 'count_channel', 'value' => 'Counting channel', 'inline' => true],
-            ['name' => 'enable_join_role', 'value' => 'Enable giving a role when a user joins the server', 'inline' => true],
-            ['name' => 'join_role', 'value' => 'Role to give to users when they join the server', 'inline' => true],
-        );
+        $field = "`xp_count`  - Amount of xp you gain per message
+`xp_cooldown` - Amount of xp you gain per message
+`xp_voice_count` - Amount of xp you gain in voice
+`xp_voice_cooldown` - Over how much time the XP is given.
+`current_count` - Current counter in count channel";
+        $embedBuilder->getEmbed()->addField(['name' => 'General', 'value' => $field]);
+
+
+        $field = "`enable_xp` - Enable the message XP system
+`enable_voice_xp` - Enable the voice XP system
+`enable_emote_counter` - Counts used emotes
+`enable_role_rewards` - Gives roles based on gained levels
+`enable_bump_counter` - Counts people bumping the server
+`enable_reactions` - Enable emoji reactions
+`enable_commands` - Enable custom commands
+`enable_logging` - Enable general logs
+`enable_mention_responder` - Enable the mention responder
+`enable_bump_reminder` - Enable 2 hour bump reminder tag
+`enable_qotd_reminder` - Enable tag when message is posted in qotd channel
+`enable_count` - Enable counting channel
+`enable_join_role` - Give a role when a new user joins the server
+        ";
+        $embedBuilder->getEmbed()->addField(['name' => 'Enable/Disable', 'value' => $field]);
+
+        $field = "`log_channel` - channel where to post logs
+`bump_channel` - Channel where to tag the bump role
+`qotd_channel` - Channel to tag qotd role
+`count_channel` - Channel where counting is enabled
+        ";
+        $embedBuilder->getEmbed()->addField(['name' => 'Channels', 'value' => $field]);
+
+        $field = "`join_role` - Role to give to users when they join the server
+`qotd_role` - Role to tag in the qotd channel
+`bump_reminder_role` - What role should be tagged for the bump reminder
+        ";
+        $embedBuilder->getEmbed()->addField(['name' => 'Roles', 'value' => $field]);
+
+        $embedBuilder->setDescription($description);
+
         return $embedBuilder;
     }
 
@@ -420,8 +411,8 @@ class Help extends SlashCommand
 
         $embedBuilder->setDescription($desc);
         $this->addCommands([
-            ['cmd' => 'logconfig', 'usage' => '', 'desc' => 'See the log config'],
-            ['cmd' => 'logset', 'usage' => '`<key>` `<value>`', 'desc' => 'Update a value in the log config'],
+            ['cmd' => 'config log list', 'usage' => '', 'desc' => 'See the log config'],
+            ['cmd' => 'config log edit', 'usage' => '`<key>` `<value>`', 'desc' => 'Update a value in the log config'],
         ], $embedBuilder);
         return $embedBuilder;
     }
