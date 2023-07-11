@@ -21,7 +21,7 @@ class ResetCringe extends SlashCommand
 
     public function trigger(): string
     {
-        return 'resetcringe';
+        return 'reset';
     }
 
     public function __construct()

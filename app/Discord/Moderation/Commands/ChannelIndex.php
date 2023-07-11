@@ -20,7 +20,7 @@ class ChannelIndex extends SlashIndexCommand
 
     public function trigger(): string
     {
-        return 'channels';
+        return 'list';
     }
 
     public function __construct()

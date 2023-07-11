@@ -23,7 +23,7 @@ class MentionIndex extends SlashIndexCommand
 
     public function trigger(): string
     {
-        return 'replies';
+        return 'list';
     }
 
     public function __construct()

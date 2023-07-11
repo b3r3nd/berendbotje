@@ -21,7 +21,7 @@ class IncreaseCringe extends SlashCommand
 
     public function trigger(): string
     {
-        return 'addcringe';
+        return 'add';
     }
 
     public function __construct()

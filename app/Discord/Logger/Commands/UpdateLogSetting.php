@@ -21,7 +21,7 @@ class UpdateLogSetting extends SlashCommand
 
     public function trigger(): string
     {
-        return 'logset';
+        return 'edit';
     }
 
     public function __construct()

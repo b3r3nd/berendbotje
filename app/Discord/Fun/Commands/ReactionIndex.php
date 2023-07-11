@@ -19,7 +19,7 @@ class ReactionIndex extends SlashIndexCommand
 
     public function trigger(): string
     {
-        return 'reactions';
+        return 'list';
     }
 
     public function __construct()

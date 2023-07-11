@@ -21,7 +21,7 @@ class Timeouts extends SlashIndexCommand
 
     public function trigger(): string
     {
-        return 'timeouts';
+        return 'list';
     }
 
     public function __construct()

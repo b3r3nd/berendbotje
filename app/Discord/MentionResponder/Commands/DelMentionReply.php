@@ -21,7 +21,7 @@ class DelMentionReply extends SlashCommand
 
     public function trigger(): string
     {
-        return 'delreply';
+        return 'delete';
     }
 
     public function __construct()

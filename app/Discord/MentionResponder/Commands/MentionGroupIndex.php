@@ -22,7 +22,7 @@ class MentionGroupIndex extends SlashIndexCommand
 
     public function trigger(): string
     {
-        return 'groups';
+        return 'list';
     }
 
     public function __construct()

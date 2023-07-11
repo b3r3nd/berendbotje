@@ -21,7 +21,7 @@ class CreateRoleReward extends SlashCommand
 
     public function trigger(): string
     {
-        return 'addreward';
+        return 'add';
     }
 
     public function __construct()

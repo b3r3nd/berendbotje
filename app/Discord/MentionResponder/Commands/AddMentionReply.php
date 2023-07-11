@@ -22,7 +22,7 @@ class AddMentionReply extends SlashCommand
 
     public function trigger(): string
     {
-        return 'addreply';
+        return 'add';
     }
 
     public function __construct()

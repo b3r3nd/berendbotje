@@ -18,7 +18,7 @@ class Permissions extends SlashIndexCommand
 
     public function trigger(): string
     {
-        return 'permissions';
+        return 'list';
     }
 
     public function __construct()

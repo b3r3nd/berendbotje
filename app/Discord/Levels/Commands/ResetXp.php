@@ -22,7 +22,7 @@ class ResetXp extends SlashCommand
 
     public function trigger(): string
     {
-        return 'resetxp';
+        return 'reset';
     }
 
     public function __construct()

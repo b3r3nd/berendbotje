@@ -20,7 +20,7 @@ class CreateCommand extends SlashCommand
 
     public function trigger(): string
     {
-        return 'addcmd';
+        return 'add';
     }
 
     public function __construct()

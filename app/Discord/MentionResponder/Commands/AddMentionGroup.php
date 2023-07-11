@@ -23,7 +23,7 @@ class AddMentionGroup extends SlashCommand
 
     public function trigger(): string
     {
-        return 'addgroup';
+        return 'add';
     }
 
     public function __construct()

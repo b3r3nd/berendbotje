@@ -23,7 +23,7 @@ class AttachUserRole extends SlashCommand
 
     public function trigger(): string
     {
-        return 'adduser';
+        return 'add';
     }
 
     public function __construct()

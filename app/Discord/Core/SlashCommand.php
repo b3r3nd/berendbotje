@@ -9,8 +9,10 @@ use App\Discord\Roles\Enums\Permission;
 use Discord\Builders\MessageBuilder;
 use Discord\Discord;
 use Discord\Parts\Interactions\Interaction;
+use Discord\Repository\Interaction\OptionRepository;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
+use React\Promise\ExtendedPromiseInterface;
 
 /**
  * Extendable class to easily create new Slash commands.
@@ -30,11 +32,12 @@ abstract class SlashCommand
     public Bot $bot;
     public Discord $discord;
     protected Permission $permission;
-    protected string $trigger;
+    public string $trigger;
     protected string $guildId = '';
-    protected string $description;
-    protected array $slashCommandOptions;
+    public string $description;
+    public array $slashCommandOptions;
     public Interaction $interaction;
+    public string $commandLabel = '';
 
     /**
      * Permissions required for using this command, you are required to use the Setting Enum
@@ -74,38 +77,35 @@ abstract class SlashCommand
         $this->trigger = $this->trigger();
     }
 
+
     /**
+     * @param Interaction $interaction
      * @return void
+     */
+    public function complete(Interaction $interaction): void
+    {
+        $this->interaction = $interaction;
+        $interaction->autoCompleteResult($this->autoComplete($interaction));
+    }
+
+    /**
+     * @param Interaction $interaction
      * @throws Exception
      */
-    public function registerSlashCommand(): void
+    public function execute(Interaction $interaction): void
     {
-        $optionsArray = [
-            'name' => $this->trigger,
-            'description' => $this->description ?? $this->trigger
-        ];
-        if (isset($this->slashCommandOptions)) {
-            $optionsArray['options'] = $this->slashCommandOptions;
+        $this->interaction = $interaction;
+        if ($interaction->guild_id === null) {
+            $interaction->respondWithMessage(EmbedFactory::failedEmbed($this, __('bot.log.no-dm')));
         }
-        $command = new \Discord\Parts\Interactions\Command\Command($this->discord, $optionsArray);
-        $this->discord->listenCommand($this->trigger, function (Interaction $interaction) {
-            $this->interaction = $interaction;
-            if ($interaction->guild_id === null) {
-                return $interaction->respondWithMessage(EmbedFactory::failedEmbed($this, __('bot.log.no-dm')));
-            }
-            $this->guildId = $interaction->guild_id;
-            $guild = $this->bot->getGuild($interaction->guild_id);
-            if ($this->permission->value !== Permission::NONE->value && !DiscordUser::hasPermission($interaction->member->id, $interaction->guild_id, $this->permission->value)) {
-                $guild->logWithMember($interaction->member, __('bot.log.failed', ['trigger' => $this->trigger]), 'fail');
-                return $interaction->respondWithMessage(EmbedFactory::lackAccessEmbed($this, __("bot.lack-access")));
-            }
-            $guild->logWithMember($interaction->member, __('bot.log.success', ['trigger' => $this->trigger]), 'success');
-            return $interaction->respondWithMessage($this->action());
-        }, function (Interaction $interaction) {
-            $this->interaction = $interaction;
-            return $this->autoComplete($interaction);
-        });
-        $this->discord->application->commands->save($command);
+        $this->guildId = $interaction->guild_id;
+        $guild = $this->bot->getGuild($interaction->guild_id);
+        if ($this->permission->value !== Permission::NONE->value && !DiscordUser::hasPermission($interaction->member->id, $interaction->guild_id, $this->permission->value)) {
+            $guild->logWithMember($interaction->member, __('bot.log.failed', ['trigger' => $this->commandLabel]), 'fail');
+            $interaction->respondWithMessage(EmbedFactory::lackAccessEmbed($this, __("bot.lack-access")));
+        }
+        $guild->logWithMember($interaction->member, __('bot.log.success', ['trigger' => $this->commandLabel]), 'success');
+        $interaction->respondWithMessage($this->action());
     }
 
 
@@ -115,7 +115,14 @@ abstract class SlashCommand
      */
     public function getOption(string $key): mixed
     {
-        return $this->interaction->data->options->get('name', $key)?->value;
+        $option = $this->interaction->data->options->first();
+        if ($option->options->get('name', $key) === null) {
+            if ($option->options->first()) {
+                return $option->options->first()->options->get('name', $key)->value;
+            }
+            return null;
+        }
+        return $this->interaction->data->options->first()->options->get('name', $key)->value;
     }
 
     /**
@@ -130,7 +137,7 @@ abstract class SlashCommand
      *
      * @noinspection PhpUndefinedMethodInspection
      */
-    public function getAutoComplete(string $model, string $guidId, string $optionKey, string $optionValue): mixed
+    public function getAutoComplete(string $model, string $guidId, string $optionKey, string $optionValue = ''): mixed
     {
         return $model::byGuild($guidId)->where($optionKey, 'LIKE', "%{$optionValue}%")
             ->limit(25)
@@ -149,4 +156,15 @@ abstract class SlashCommand
         $this->bot = $bot;
         $this->discord = $bot->discord;
     }
+
+    /**
+     * @param string $commandLabel
+     * @return void
+     */
+    public function setCommandLabel(string $commandLabel): void
+    {
+        $this->commandLabel = str_replace('_', ' ', $commandLabel);
+    }
+
+
 }

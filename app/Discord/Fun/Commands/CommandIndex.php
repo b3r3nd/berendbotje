@@ -18,7 +18,7 @@ class CommandIndex extends SlashIndexCommand
 
     public function trigger(): string
     {
-        return 'commands';
+        return 'list';
     }
 
     public function __construct()

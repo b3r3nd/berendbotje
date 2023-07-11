@@ -20,7 +20,7 @@ class DetachRolePermission extends SlashCommand
 
     public function trigger(): string
     {
-        return 'delperm';
+        return 'delete';
     }
 
     public function __construct()

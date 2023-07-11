@@ -40,11 +40,12 @@ class FlagChannelAction implements Action
      */
     public function execute(): void
     {
-        $channel = Channel::get($this->options->get('name', 'channel')->value, $this->guildId);
-        if (!$channel) {
-            $channel = Channel::create(['channel_id' => $this->options->get('name', 'channel')->value, 'guild_id' => Guild::get($this->guildId)->id]);
+        $channel = $this->options->first()->options->get('name', 'channel')->value;
+        $channelModel = Channel::get($channel, $this->guildId);
+        if (!$channelModel) {
+            $channelModel = Channel::create(['channel_id' => $channel, 'guild_id' => Guild::get($this->guildId)->id]);
         }
-        $channel->update([$this->options->get('name', 'flag')->value => $this->added]);
-        $this->bot->getGuild($this->guildId)?->updateChannel($channel);
+        $channelModel->update([$this->options->first()->options->get('name', 'flag')->value => $this->added]);
+        $this->bot->getGuild($this->guildId)?->updateChannel($channelModel);
     }
 }

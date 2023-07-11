@@ -21,7 +21,7 @@ class UpdateTimeoutReason extends SlashCommand
 
     public function trigger(): string
     {
-        return "edittimeout";
+        return "edit";
     }
 
     public function __construct()

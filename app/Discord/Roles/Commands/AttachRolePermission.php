@@ -20,7 +20,7 @@ class AttachRolePermission extends SlashCommand
 
     public function trigger(): string
     {
-        return 'addperm';
+        return 'add';
     }
 
     public function __construct()

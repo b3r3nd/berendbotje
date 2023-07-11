@@ -20,7 +20,7 @@ class Users extends SlashIndexCommand
 
     public function trigger(): string
     {
-        return 'users';
+        return 'list';
     }
 
     public function __construct()

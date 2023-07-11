@@ -21,7 +21,7 @@ class UnmarkChannel extends SlashCommand
 
     public function trigger(): string
     {
-        return 'unmarkchannel';
+        return 'unflag';
     }
 
     public function __construct()

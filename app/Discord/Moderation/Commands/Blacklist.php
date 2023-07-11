@@ -20,7 +20,7 @@ class Blacklist extends SlashIndexCommand
 
     public function trigger(): string
     {
-        return 'blacklist';
+        return 'list';
     }
 
     public function __construct()
@@ -39,7 +39,7 @@ class Blacklist extends SlashIndexCommand
         $this->total = Abuser::byDiscordGuildId($this->guildId)->count();
         $description = "";
         foreach (Abuser::byDiscordGuildId(($this->guildId))->skip($this->getOffset($this->getLastUser()))->limit($this->perPage)->get() as $abuser) {
-            $description .= "{$abuser->created_at} - <@{$abuser->discord_id}> - {$abuser->reason}\n";
+            $description .= "{$abuser->created_at->format('Y-m-d')} - <@{$abuser->discord_id}> - {$abuser->reason}\n";
         }
         return EmbedBuilder::create($this, __('bot.blacklist.title'), $description)->getEmbed();
     }

@@ -20,7 +20,7 @@ class CringeIndex extends SlashIndexCommand
 
     public function trigger(): string
     {
-        return 'cringecounter';
+        return 'counter';
     }
 
     public function __construct()

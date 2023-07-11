@@ -22,7 +22,7 @@ class UpdateMentionGroup extends SlashCommand
 
     public function trigger(): string
     {
-        return 'updategroup';
+        return 'edit';
     }
 
     public function __construct()
