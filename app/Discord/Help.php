@@ -207,7 +207,7 @@ class Help extends SlashCommand
             ['cmd' => 'fun 8ball', 'usage' => '`<question>`', 'desc' => 'Ask the magic 8ball'],
             ['cmd' => 'fun ask', 'usage' => '`<question>`', 'desc' => 'Yes? No? Hmm..?'],
             ['cmd' => 'fun image', 'usage' => '`<term>`', 'desc' => 'Generate an Image using OpenAI'],
-            ['cmd' => 'bumpstats', 'usage' => '`<date_range>`', 'desc' => 'Show bumper elites leaderboard'],
+            ['cmd' => 'fun bumpstats', 'usage' => '`<date_range>`', 'desc' => 'Show bumper elites leaderboard'],
         ], $embedBuilder);
         return $embedBuilder;
     }
@@ -220,10 +220,10 @@ class Help extends SlashCommand
     {
         $embedBuilder->setDescription("Who is most cringe?");
         $this->addCommands([
-            ['cmd' => 'cringecounter', 'usage' => '', 'desc' => 'Show who is most cringe..'],
-            ['cmd' => 'addcringe', 'usage' => '`<user_mention>`', 'desc' => 'Increase cringe counter'],
-            ['cmd' => 'delcringe', 'usage' => '`<user_mention>`', 'desc' => 'Decrease cringe counter'],
-            ['cmd' => 'resetcringe', 'usage' => '`<user_mention>`', 'desc' => 'Reset cringe counter'],
+            ['cmd' => 'cringe list', 'usage' => '', 'desc' => 'Show who is most cringe..'],
+            ['cmd' => 'cringe add', 'usage' => '`<user_mention>`', 'desc' => 'Increase cringe counter'],
+            ['cmd' => 'cringe delete', 'usage' => '`<user_mention>`', 'desc' => 'Decrease cringe counter'],
+            ['cmd' => 'cringe reset', 'usage' => '`<user_mention>`', 'desc' => 'Reset cringe counter'],
         ], $embedBuilder);
         return $embedBuilder;
     }
@@ -236,9 +236,9 @@ class Help extends SlashCommand
     {
         $embedBuilder->setDescription("You can add custom message commands, make sure to include the trigger");
         $this->addCommands([
-            ['cmd' => 'fun commands list', 'usage' => '', 'desc' => 'Show list of custom commands'],
-            ['cmd' => 'fun commands delete', 'usage' => '`<command>` `<response>`', 'desc' => 'Remove a custom command'],
-            ['cmd' => 'fun commands add', 'usage' => '`<command>`', 'desc' => ''],
+            ['cmd' => 'commands list', 'usage' => '', 'desc' => 'Show list of custom commands'],
+            ['cmd' => 'commands delete', 'usage' => '`<command>` `<response>`', 'desc' => 'Remove a custom command'],
+            ['cmd' => 'commands add', 'usage' => '`<command>`', 'desc' => ''],
         ], $embedBuilder);
 
         return $embedBuilder;
@@ -252,9 +252,9 @@ class Help extends SlashCommand
     {
         $embedBuilder->setDescription("You can add reactions to words, when the bot detects those words, it will react!");
         $this->addCommands([
-            ['cmd' => 'fun reactions list', 'usage' => '', 'desc' => 'Show list custom reactions'],
-            ['cmd' => 'fun reactions add', 'usage' => '`<trigger>` `<emoji>`', 'desc' => 'Add new reactions'],
-            ['cmd' => 'fun reactions delete', 'usage' => '`<trigger>`', 'desc' => 'Delete a reaction'],
+            ['cmd' => 'reactions list', 'usage' => '', 'desc' => 'Show list custom reactions'],
+            ['cmd' => 'reactions add', 'usage' => '`<trigger>` `<emoji>`', 'desc' => 'Add new reactions'],
+            ['cmd' => 'reactions delete', 'usage' => '`<trigger>`', 'desc' => 'Delete a reaction'],
         ], $embedBuilder);
         return $embedBuilder;
     }
