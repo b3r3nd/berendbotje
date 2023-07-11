@@ -333,9 +333,9 @@ in a message the bot will add a reaction to the message with a set emote. These
 reactions can be added, removed and viewed with commands so nothing needs to be
 done in code.
 
-* **fun reactions list**
-* **fun reactions add** `<word_trigger` `<reaction_emote>`
-* **fun reactions delete** `<word_trigger`
+* **reactions list**
+* **reactions add** `<word_trigger` `<reaction_emote>`
+* **reactions delete** `<word_trigger`
 
 ### Simple commands
 
@@ -344,9 +344,9 @@ Same as with the reactions you can add and remove and view as many as you like
 without the necessity to enter any code. By default, these command triggers do not include the bot
 prefix, so if you want to trigger on prefix you need to include the bot prefix in the command.
 
-* **fun commands list**
-* **fun commands add** `<command>` `<response>`
-* **fun commands delete** `<command>`
+* **commands list**
+* **commands add** `<command>` `<response>`
+* **commands delete** `<command>`
 
 ### Counting channel
 People requested a channel where they can count. You can't count twice in a row and when you make a mistake the
