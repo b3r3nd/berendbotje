@@ -32,11 +32,6 @@ class Run extends Command
      */
     public function handle()
     {
-        if ($this->option('delete') && !$this->confirm('Are you sure you want do DELETE ALL slash commands?')) {
-            $this->info("Quitting..");
-            exit;
-        }
-
         $bot = new Bot($this->option('update'), $this->option('delete'));
         $bot->connect();
         return Command::SUCCESS;
