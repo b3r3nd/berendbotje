@@ -6,6 +6,7 @@ use App\Discord\Core\Commands\Settings;
 use App\Discord\Core\Commands\UpdateSetting;
 use App\Discord\Core\Commands\UpdateUserSetting;
 use App\Discord\Core\Commands\UserSettings;
+use App\Discord\Core\Events\InteractionCreate;
 use App\Discord\Core\Models\Guild;
 use App\Discord\Fun\Commands\Ask;
 use App\Discord\Fun\Commands\BumpStatistics;
@@ -106,6 +107,7 @@ class Bot
     private bool $updateCommands, $deleteCommands;
 
     private array $events = [
+        InteractionCreate::class,
         VoiceStateUpdate::class,
         MessageXpCounter::class,
         VoiceXpCounter::class,
@@ -127,7 +129,7 @@ class Bot
         InviteLogger::class,
     ];
 
-    private array $commands = [];
+    public array $commands = [];
 
     /**
      * @see https://discord.com/developers/docs/interactions/application-commands#subcommands-and-subcommand-groups
@@ -238,58 +240,6 @@ class Bot
     ];
 
     /**
-     * @return void
-     * @throws Exception
-     */
-    private function updateSlashCommands(): void
-    {
-        foreach ($this->slashCommandStructure as $mainCommand => $subGroups) {
-            $subGroupOptions = [];
-            foreach ($subGroups as $subGroup => $subCommands) {
-                if (is_array($subCommands)) {
-                    $subCommandOptions = [];
-                    foreach ($subCommands as $subCommand) {
-                        $subCommandOptions[] = $this->getOptions($subCommand, $subGroup);
-                    }
-                    $subGroupOptions[] = [
-                        'name' => $subGroup,
-                        'description' => $subGroup,
-                        'type' => 2,
-                        'options' => $subCommandOptions,
-                    ];
-                } else {
-                    $subGroupOptions[] = $this->getOptions($subCommands, $mainCommand);
-                }
-            }
-            $optionsArray = [
-                'name' => $mainCommand,
-                'description' => $mainCommand,
-                'options' => $subGroupOptions,
-            ];
-
-            $command = new \Discord\Parts\Interactions\Command\Command($this->discord, $optionsArray);
-            $this->discord->application->commands->save($command);
-        }
-
-        $this->discord->on(Event::INTERACTION_CREATE, function (Interaction $interaction, Discord $discord) {
-            $option = $interaction->data->options->first();
-            $trigger = "{$interaction->data->name}_{$option?->name}";
-            if (!isset($this->commands[$trigger]) && $option?->options->first()) {
-                $trigger = "{$option?->name}_{$option->options->first()?->name}";
-            }
-            if (isset($this->commands[$trigger])) {
-                if ($interaction->type === InteractionType::APPLICATION_COMMAND) {
-                    $this->commands[$trigger]->execute($interaction);
-                }
-                if ($interaction->type === InteractionType::APPLICATION_COMMAND_AUTOCOMPLETE) {
-                    $this->commands[$trigger]->complete($interaction);
-                }
-            }
-        });
-    }
-
-
-    /**
      * @param bool $updateCommands
      * @param bool $deleteCommands
      */
@@ -328,6 +278,41 @@ class Bot
 
     /**
      * @return void
+     * @throws Exception
+     */
+    private function updateSlashCommands(): void
+    {
+        foreach ($this->slashCommandStructure as $mainCommand => $subGroups) {
+            $subGroupOptions = [];
+            foreach ($subGroups as $subGroup => $subCommands) {
+                if (is_array($subCommands)) {
+                    $subCommandOptions = [];
+                    foreach ($subCommands as $subCommand) {
+                        $subCommandOptions[] = $this->getOptions($subCommand, $subGroup);
+                    }
+                    $subGroupOptions[] = [
+                        'name' => $subGroup,
+                        'description' => $subGroup,
+                        'type' => 2,
+                        'options' => $subCommandOptions,
+                    ];
+                } else {
+                    $subGroupOptions[] = $this->getOptions($subCommands, $mainCommand);
+                }
+            }
+            $optionsArray = [
+                'name' => $mainCommand,
+                'description' => $mainCommand,
+                'options' => $subGroupOptions,
+            ];
+
+            $command = new \Discord\Parts\Interactions\Command\Command($this->discord, $optionsArray);
+            $this->discord->application->commands->save($command);
+        }
+    }
+
+    /**
+     * @return void
      */
     private function loadEvents(): void
     {
@@ -336,7 +321,6 @@ class Bot
             $instance->registerEvent();
         }
     }
-
 
     /**
      * @param $command
@@ -355,7 +339,6 @@ class Bot
             'description' => $instance->description,
             'type' => 1,
         ];
-
         if (isset($instance->slashCommandOptions)) {
             $options['options'] = $instance->slashCommandOptions;
         }
