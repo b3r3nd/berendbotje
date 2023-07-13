@@ -7,6 +7,7 @@ use App\Discord\Core\Commands\UpdateSetting;
 use App\Discord\Core\Commands\UpdateUserSetting;
 use App\Discord\Core\Commands\UserSettings;
 use App\Discord\Core\Events\InteractionCreate;
+use App\Discord\Core\Models\DiscordUser;
 use App\Discord\Core\Models\Guild;
 use App\Discord\Fun\Commands\Ask;
 use App\Discord\Fun\Commands\BumpStatistics;
@@ -82,9 +83,14 @@ use App\Discord\Roles\Commands\Roles;
 use App\Discord\Roles\Commands\UserRoles;
 use App\Discord\Roles\Commands\Users;
 use App\Discord\Test\Commands\Test;
+use Database\Seeders\LogSettingsSeeder;
+use Database\Seeders\MentionResponderSeeder;
+use Database\Seeders\RoleSeeder;
+use Database\Seeders\SettingsSeeder;
 use Discord\Discord;
 use Discord\Exceptions\IntentException;
 use Discord\Parts\Interactions\Command\Command;
+use Discord\WebSockets\Event;
 use Discord\WebSockets\Intents;
 use Exception;
 
@@ -224,7 +230,6 @@ class Bot
         ],
 
         'fun' => [
-      //      GenerateImage::class,
             BumpStatistics::class,
             EmoteIndex::class,
             EightBall::class,
@@ -274,6 +279,33 @@ class Bot
                 $this->updateSlashCommands();
             }
         });
+
+
+        $this->discord->on(Event::GUILD_CREATE, function (object $guild, Discord $discord) {
+            if (!($guild instanceof \Discord\Parts\Guild\Guild)) {
+                return;
+            }
+            $guildModel = \App\Discord\Core\Models\Guild::get($guild->id);
+            if (!$guildModel) {
+                $owner = DiscordUser::get($guild->owner_id);
+                $guildModel = \App\Discord\Core\Models\Guild::create([
+                    'owner_id' => $owner->id,
+                    'guild_id' => $guild->id,
+                ]);
+
+                // Use normal seeders to setup data data
+                (new SettingsSeeder())->processSettings($guildModel);
+                (new LogSettingsSeeder())->processSettings($guildModel);
+                $roleSeeder = new RoleSeeder();
+                $roleSeeder->createAdminRole($guildModel, $owner);
+                $roleSeeder->createModRole($guildModel);
+                (new MentionResponderSeeder())->processMentionGroups($guildModel);
+
+                $this->addGuild($guildModel);
+            }
+        });
+
+
         $this->discord->run();
     }
 
@@ -366,7 +398,9 @@ class Bot
     public function loadGuilds(): void
     {
         foreach (Guild::all() as $guild) {
-            $this->guilds[$guild->guild_id] = new \App\Discord\Core\Guild($guild, $this);
+            if (!isset($this->guilds[$guild->guild_id])) {
+                $this->guilds[$guild->guild_id] = new \App\Discord\Core\Guild($guild, $this);
+            }
         }
     }
 
@@ -377,6 +411,18 @@ class Bot
     public function getGuild(string $id): mixed
     {
         return $this->guilds[$id] ?? null;
+    }
+
+    /**
+     * @param Guild $guild
+     * @return void
+     * @throws Exception
+     */
+    public function addGuild(Guild $guild): void
+    {
+        if (!isset($this->guilds[$guild->guild_id])) {
+            $this->guilds[$guild->guild_id] = new \App\Discord\Core\Guild($guild, $this);
+        }
     }
 
     /**
