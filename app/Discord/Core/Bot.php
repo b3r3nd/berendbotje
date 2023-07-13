@@ -61,12 +61,12 @@ use App\Discord\MentionResponder\Commands\UpdateMentionGroup;
 use App\Discord\Moderation\Commands\Blacklist;
 use App\Discord\Moderation\Commands\Block;
 use App\Discord\Moderation\Commands\ChannelIndex;
-use App\Discord\Moderation\Commands\RemoveTimeout;
-use App\Discord\Moderation\Commands\UpdateTimeoutReason;
 use App\Discord\Moderation\Commands\MarkChannel;
+use App\Discord\Moderation\Commands\RemoveTimeout;
 use App\Discord\Moderation\Commands\Timeouts;
 use App\Discord\Moderation\Commands\Unblock;
 use App\Discord\Moderation\Commands\UnmarkChannel;
+use App\Discord\Moderation\Commands\UpdateTimeoutReason;
 use App\Discord\Moderation\Events\DetectTimeouts;
 use App\Discord\Moderation\Events\GiveJoinRole;
 use App\Discord\Moderation\Events\MediaFilter;
@@ -84,9 +84,7 @@ use App\Discord\Roles\Commands\Users;
 use App\Discord\Test\Commands\Test;
 use Discord\Discord;
 use Discord\Exceptions\IntentException;
-use Discord\InteractionType;
-use Discord\Parts\Interactions\Interaction;
-use Discord\WebSockets\Event;
+use Discord\Parts\Interactions\Command\Command;
 use Discord\WebSockets\Intents;
 use Exception;
 
@@ -136,7 +134,6 @@ class Bot
      * @var array
      */
     private array $slashCommandStructure = [
-
         'users' => [
             Users::class,
             UserRoles::class,
@@ -194,12 +191,27 @@ class Bot
             Leaderboard::class,
             UserRank::class,
         ],
+
+        'mention' => [
+            'replies' => [
+                MentionIndex::class,
+                AddMentionReply::class,
+                DelMentionReply::class,
+            ],
+            'groups' => [
+                MentionGroupIndex::class,
+                AddMentionGroup::class,
+                DelMentionGroup::class,
+                UpdateMentionGroup::class,
+            ],
+        ],
         'cringe' => [
             CringeIndex::class,
             IncreaseCringe::class,
             DecreaseCringe::class,
             ResetCringe::class,
         ],
+
         'reactions' => [
             ReactionIndex::class,
             CreateReaction::class,
@@ -211,19 +223,8 @@ class Bot
             DeleteCommand::class,
         ],
 
-        'mentionreplies' => [
-            MentionIndex::class,
-            AddMentionReply::class,
-            DelMentionReply::class,
-        ],
-        'mentiongroups' => [
-            MentionGroupIndex::class,
-            AddMentionGroup::class,
-            DelMentionGroup::class,
-            UpdateMentionGroup::class,
-        ],
         'fun' => [
-            GenerateImage::class,
+      //      GenerateImage::class,
             BumpStatistics::class,
             EmoteIndex::class,
             EightBall::class,
@@ -288,7 +289,7 @@ class Bot
                 if (is_array($subCommands)) {
                     $subCommandOptions = [];
                     foreach ($subCommands as $subCommand) {
-                        $subCommandOptions[] = $this->getOptions($subCommand, $subGroup);
+                        $subCommandOptions[] = $this->initCommandOptions($subCommand, $subGroup);
                     }
                     $subGroupOptions[] = [
                         'name' => $subGroup,
@@ -297,7 +298,7 @@ class Bot
                         'options' => $subCommandOptions,
                     ];
                 } else {
-                    $subGroupOptions[] = $this->getOptions($subCommands, $mainCommand);
+                    $subGroupOptions[] = $this->initCommandOptions($subCommands, $mainCommand);
                 }
             }
             $optionsArray = [
@@ -327,7 +328,7 @@ class Bot
      * @param $subGroup
      * @return array
      */
-    private function getOptions($command, $subGroup): array
+    private function initCommandOptions($command, $subGroup): array
     {
         $instance = new $command();
         $instance->setBot($this);

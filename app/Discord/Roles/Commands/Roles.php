@@ -33,16 +33,19 @@ class Roles extends SlashIndexCommand
      */
     public function getEmbed(): Embed
     {
+        $this->perPage = 1;
         $this->total = Role::byDiscordGuildId($this->guildId)->count();
-        $description = "";
+        $embedBuilder = EmbedBuilder::create($this, __('bot.roles.title'), __('bot.roles.description'));
+
         foreach (Role::byDiscordGuildId(($this->guildId))->orderBy('created_at', 'desc')->skip($this->getOffset($this->getLastUser()))->limit($this->perPage)->get() as $role) {
             $perms = "";
             foreach ($role->permissions as $permission) {
-                $perms .= "{$permission->name}, ";
+                $tmp = __("bot.permissions-enum.{$permission->name}");
+                $perms .= " `{$tmp}` \n ";
             }
-            $description .= "** {$role->name} **\n $perms\n\n";
+            $embedBuilder->getEmbed()->addField(['name' => $role->name, 'value' => $perms, 'inline' => true]);
         }
-        return EmbedBuilder::create($this, __('bot.roles.title'), $description)->getEmbed();
+        return $embedBuilder->getEmbed();
     }
 
     /**

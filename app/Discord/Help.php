@@ -206,7 +206,6 @@ class Help extends SlashCommand
             ['cmd' => 'fun urb', 'usage' => '`<search_term>`', 'desc' => 'Search something on urban dictionary'],
             ['cmd' => 'fun 8ball', 'usage' => '`<question>`', 'desc' => 'Ask the magic 8ball'],
             ['cmd' => 'fun ask', 'usage' => '`<question>`', 'desc' => 'Yes? No? Hmm..?'],
-            ['cmd' => 'fun image', 'usage' => '`<term>`', 'desc' => 'Generate an Image using OpenAI'],
             ['cmd' => 'fun bumpstats', 'usage' => '`<date_range>`', 'desc' => 'Show bumper elites leaderboard'],
         ], $embedBuilder);
         return $embedBuilder;
@@ -425,13 +424,13 @@ class Help extends SlashCommand
     {
         $embedBuilder->setDescription("Small funny feature, when you tag the bot you will get a random reply from a list of mention replies. There are default replies, but you can also add your own replies based on certain roles in the server.");
         $this->addCommands([
-            ['cmd' => 'replies', 'usage' => '`<group_id>`', 'desc' => 'Show all replies or filter by group'],
-            ['cmd' => 'groups', 'usage' => '', 'desc' => 'Show all groups'],
-            ['cmd' => 'addgroup', 'usage' => '`<discord_role>` `<user/role>` `<multiplier>`', 'desc' => 'Add a group'],
-            ['cmd' => 'updategroup', 'usage' => '`<id>` `<user/role>` `<multiplier>`', 'desc' => 'Update a group'],
-            ['cmd' => 'delgroup', 'usage' => '`<group_id>`', 'desc' => 'Delete a group'],
-            ['cmd' => 'addreply', 'usage' => '`<group_id>` `<reply_line>`', 'desc' => 'Add a reply to a group'],
-            ['cmd' => 'delreply', 'usage' => '`<reply_id>`', 'desc' => 'Remove a reply'],
+            ['cmd' => 'mention replies list', 'usage' => '`<group_id>`', 'desc' => 'Show all replies or filter by group'],
+            ['cmd' => 'mention replies add', 'usage' => '`<group_id>` `<reply_line>`', 'desc' => 'Add a reply to a group'],
+            ['cmd' => 'mention replies delete', 'usage' => '`<reply_id>`', 'desc' => 'Remove a reply'],
+            ['cmd' => 'mention groups', 'usage' => '', 'desc' => 'Show all groups'],
+            ['cmd' => 'mention groups add', 'usage' => '`<discord_role>` `<user/role>` `<multiplier>`', 'desc' => 'Add a group'],
+            ['cmd' => 'mention groups update', 'usage' => '`<id>` `<user/role>` `<multiplier>`', 'desc' => 'Update a group'],
+            ['cmd' => 'mention groups delete', 'usage' => '`<group_id>`', 'desc' => 'Delete a group'],
         ], $embedBuilder);
         return $embedBuilder;
     }
