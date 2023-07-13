@@ -30,10 +30,10 @@ class StickerFilter extends DiscordEvent
                 if (!$channel->no_stickers) {
                     return;
                 }
-            }
-            // If message contains stickers we delete the message
-            if ($message->sticker_items) {
-                $message->delete();
+                // If message contains stickers we delete the message
+                if ($message->sticker_items) {
+                    $message->delete();
+                }
             }
         });
     }

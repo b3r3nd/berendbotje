@@ -19,7 +19,7 @@ class React extends DiscordEvent
                 return;
             }
             $guild = $this->bot->getGuild($message->guild_id);
-            if (!$guild->getSetting(\App\Discord\Core\Enums\Setting::ENABLE_REACTIONS)) {
+            if (!$guild?->getSetting(\App\Discord\Core\Enums\Setting::ENABLE_REACTIONS)) {
                 return;
             }
             $guild->model->refresh();

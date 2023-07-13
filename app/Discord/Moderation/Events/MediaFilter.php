@@ -30,19 +30,19 @@ class MediaFilter extends DiscordEvent
                 if (!$channel->media_only) {
                     return;
                 }
-            }
-            // If message contains Images, audio or any other file we allow it
-            if ($message->attachments->count() > 0) {
-                return;
-            }
-            // If the message contains a valid URL we allow it.
-            foreach (explode(' ', $message->content) as $word) {
-                if (filter_var($word, FILTER_VALIDATE_URL)) {
+                // If message contains Images, audio or any other file we allow it
+                if ($message->attachments->count() > 0) {
                     return;
                 }
+                // If the message contains a valid URL we allow it.
+                foreach (explode(' ', $message->content) as $word) {
+                    if (filter_var($word, FILTER_VALIDATE_URL)) {
+                        return;
+                    }
+                }
+                $message->delete();
+                $message->author->sendMessage(__('bot.media-deleted', ['channel' => $message->channel->name]));
             }
-            $message->delete();
-            $message->author->sendMessage(__('bot.media-deleted', ['channel' => $message->channel->name]));
         });
     }
 

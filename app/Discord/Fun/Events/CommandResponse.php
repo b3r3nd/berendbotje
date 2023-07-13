@@ -19,7 +19,7 @@ class CommandResponse extends DiscordEvent
                 return;
             }
             $guild = $this->bot->getGuild($message->guild_id);
-            if (!$guild->getSetting(\App\Discord\Core\Enums\Setting::ENABLE_COMMANDS)) {
+            if (!$guild?->getSetting(\App\Discord\Core\Enums\Setting::ENABLE_COMMANDS)) {
                 return;
             }
 
