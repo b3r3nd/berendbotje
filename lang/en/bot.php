@@ -12,7 +12,7 @@ return [
     */
 
     'no-guild' => 'Not a valid guild',
-    'lack-access' => 'You do not have permission to run this command. Use `/role` to check your roles in this server.',
+    'lack-access' => 'You do not have permission to run this command.',
     'error' => 'Error',
     'done' => 'Success',
     'media-deleted' => 'Your message in :channel has been deleted. Only media and URLs are allowed.',
@@ -331,6 +331,7 @@ return [
         'integer' => 'A group must be the ID of a server role! (for now).',
         'notexist' => 'No mention group found for id :group.',
         'updated' => 'Mention group updated.',
+        'delete-default' => 'Cannot delete default groups.'
     ],
     'log' => [
         'no-dm' => 'Slash commands dont work in DM.',
