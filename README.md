@@ -39,8 +39,20 @@ Short list of what this bot can do:
 
 # Installing
 1. Download this repo and install al its dependencies with `composer install`
-2. Create your env file `mv .env.example .env` and fill in database credentials and bot/api tokens
-3. You can edit the `GuildSeeder` and `DiscordUsersSeeder` to add your discord account and server.
+2. Create your env file `mv .env.example .env` and fill in database credentials
+3. Fill in you Discord bot token (BOT_TOKEN) and any other api credentials:
+```
+BOT_TOKEN=
+URB_TOKEN=
+URB_HOST=
+OPENAI_API_KEY=
+OPEN_AI_HOST=
+```
+
+ 
+## Database
+The bot will set up everything correctly when it detects a guild for the first time. However you can use the seeder
+`GuildSeeder` and `DiscordUsersSeeder` to setup any users and guilds manually.
 ```php
  class DiscordUsersSeeder extends Seeder
 {
@@ -76,30 +88,32 @@ class GuildSeeder extends Seeder
     }
 }
 ```
-4. When that is done run `php artisan migrate --seed` to setup your database.
-5. Check the env file for any settings you want to change.
-6. Also make sure to fill in any tokens and hosts if you wish to use the corresponding commands:
-```
-BOT_TOKEN=
-URB_TOKEN=
-URB_HOST=
-OPENAI_API_KEY=
-OPEN_AI_HOST=
-```
-7. You can use the following commands to run the bot:
+- If you to let the bot detect guilds itself you can set up the database using `php artisan migrate:fresh --seeder=PermissionSeeder`.
+- To run all seeders including users and guilds you can use `php artisan migrate --seed`.
+
+### Running the bot
+You can use the following commands to run the bot:
 - `bot:run` - Run the bot, does not create, update or delete slash commands
 - `bot:run --update` - Creates/Updates all slash commands first
 - `bot:run --delete` - Deletes all slash commands first
-8. In order to make the image generation with open ai and reminders work you also need to run the queue `php artisan queue:work` and install redis!
+
+In order to make the image generation with open ai and reminders work you also need to run the queue `php artisan queue:work` and install redis!
 
 # Functions
 I will try to update this readme with new functionality as I add it. The bot uses only slash commands! 
 The slash commands all use sub commands to group them together and autocomplete is on where possible for all inputs!
 
 ## Multiple servers
-The bot runs on multiple servers, but each server requires some settings and values to be set in the database,
-the plan is to let the bot do it automatically whenever he is invited and joins a server. For now, it needs to be
-done manually. The best way is to add your guild/server to the seeder and everything will be set properly.
+The bot runs on multiple servers, if it detects a guild for the first time it will set up everything required and loads
+some default settings. When adding the bot to your server the bot needs these permissions:
+- View audit log
+- Read messages
+- Send messages
+- Manage messages
+- Embed links
+- Read message history
+- Add Reactions
+- Use voice activity
 
 ## Roles and permissions
 
@@ -313,7 +327,6 @@ A few fun commands you can use!
 * **fun ask** `question` - Ask a question and get a gif response
 * **fun say** `something` - say something
 * **fun modstats** - Who got the power?
-* **fun image** - Generate an image using openai
 * **fun emotes** - List of most used emotes in the guild
 * **fun bumpcounter** `time-range` • Check the monthly or all time bump leaderboard
 * **cringe add** `<user>` - Increase someone's cringe counter
