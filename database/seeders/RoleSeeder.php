@@ -11,6 +11,11 @@ use Illuminate\Database\Seeder;
 
 class RoleSeeder extends Seeder
 {
+    public array $modPerms = ['timeouts', 'media-filter', 'add-cringe',
+        'delete-cringe', 'commands', 'reactions',
+        'add-mention', 'channels', 'delete-mention', 'openai'];
+
+
     /**
      * Run the database seeds.
      *
@@ -18,49 +23,36 @@ class RoleSeeder extends Seeder
      */
     public function run()
     {
+        $owner = DiscordUser::find(1);
 
-        $roles = [
-            'admin' => Permission::all(),
-            'moderator' => collect([]),
-            'cringecounter' => collect([]),
-            'mentionresponder' => collect([]),
-        ];
-
-        foreach (['timeouts', 'media-filter', 'add-cringe',
-                     'delete-cringe', 'commands', 'reactions',
-                     'add-mention', 'channels', 'delete-mention', 'openai'] as $permName) {
-            $roles['moderator']->push(Permission::get($permName));
+        foreach (Guild::all() as $guild) {
+            $this->createModRole($guild);
+            $this->createAdminRole($guild, $owner);
         }
+    }
 
-        $roles['cringecounter']->push(Permission::get('add-cringe'));
+    /**
+     * @param Guild $guild
+     * @param DiscordUser $owner
+     * @return void
+     */
+    public function createAdminRole(Guild $guild, DiscordUser $owner): void
+    {
+        $adminRole = Role::factory()->create(['name' => 'Administrator', 'guild_id' => $guild->id,]);
+        $adminRole->permissions()->attach(Permission::all()->pluck('id'));
+        $owner->roles()->attach($adminRole);
+    }
 
-
-        foreach (['add-mention', 'delete-mention'] as $permName) {
-            $roles['mentionresponder']->push(Permission::get($permName));
+    /**
+     * @param Guild $guild
+     * @return void
+     */
+    public function createModRole(Guild $guild): void
+    {
+        $modRole = Role::factory()->create(['name' => 'Moderator', 'guild_id' => $guild->id,]);
+        foreach ($this->modPerms as $permName) {
+            $modRole->permissions()->attach(Permission::get($permName)->id);
         }
-
-        $user = DiscordUser::find(1);
-        foreach ($roles as $roleName => $permissions) {
-            foreach (Guild::all() as $guild) {
-                $tmpRole = Role::factory()->create([
-                    'name' => $roleName,
-                    'guild_id' => $guild->id,
-                ]);
-
-                $tmpRole->permissions()->attach($permissions->pluck('id'));
-                $user->roles()->attach($tmpRole);
-            }
-        }
-
-
-        $guild = Guild::find(1);
-        $role = Role::factory()->create([
-            'name' => 'owners',
-            'guild_id' => $guild->id,
-            'is_admin' => true,
-        ]);
-        $role->permissions()->attach(Permission::withoutGlobalScope(PermissionScope::class)->get());
-        $user->roles()->attach($role);
     }
 
 }

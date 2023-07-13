@@ -22,16 +22,8 @@ class PermissionSeeder extends Seeder
             'logs', 'add-mention', 'delete-mention', 'manage-mention-groups', 'openai', 'abusers',
         ];
 
-        $adminPermissions = [
-            'servers', 'admins'
-        ];
-
         foreach ($permissions as $permission) {
             Permission::factory()->create(['name' => $permission]);
-        }
-
-        foreach ($adminPermissions as $permission) {
-            Permission::factory()->create(['name' => $permission, 'is_admin' => true]);
         }
     }
 }
