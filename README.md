@@ -50,7 +50,7 @@ OPEN_AI_HOST=
 ```
 
  
-## Database
+### Database
 The bot will set up everything correctly when it detects a guild for the first time. However you can use the seeder
 `GuildSeeder` and `DiscordUsersSeeder` to setup any users and guilds manually.
 ```php
@@ -88,7 +88,7 @@ class GuildSeeder extends Seeder
     }
 }
 ```
-- If you to let the bot detect guilds itself you can set up the database using `php artisan migrate:fresh --seeder=PermissionSeeder`.
+- If you let the bot detect guilds itself you can set up the database using `php artisan migrate:fresh --seeder=PermissionSeeder`.
 - To run all seeders including users and guilds you can use `php artisan migrate --seed`.
 
 ### Running the bot

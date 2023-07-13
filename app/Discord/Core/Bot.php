@@ -240,9 +240,9 @@ class Bot
         'help' => [
             Help::class,
         ],
-        'test' => [
-            Test::class,
-        ],
+//        'test' => [
+//            Test::class,
+//        ],
     ];
 
     /**
