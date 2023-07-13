@@ -17,7 +17,7 @@ class GiveJoinRole extends DiscordEvent
     {
         $this->discord->on(Event::GUILD_MEMBER_ADD, function (Member $member, Discord $discord) {
             $guild = $this->bot->getGuild($member->guild_id);
-            if ($guild->getSetting(Setting::ENABLE_JOIN_ROLE)) {
+            if ($guild?->getSetting(Setting::ENABLE_JOIN_ROLE)) {
                 $member->addRole($guild->getSetting(Setting::JOIN_ROLE));
             }
         });

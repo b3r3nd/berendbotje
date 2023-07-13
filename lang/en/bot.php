@@ -11,7 +11,8 @@ return [
     | and index pages!
     */
 
-    'lack-access' => 'You do not have permission to run this command. Use `/role` to check your roles in this server.',
+    'no-guild' => 'Not a valid guild',
+    'lack-access' => 'You do not have permission to run this command.',
     'error' => 'Error',
     'done' => 'Success',
     'media-deleted' => 'Your message in :channel has been deleted. Only media and URLs are allowed.',
@@ -68,29 +69,29 @@ return [
     ],
 
     'permissions-enum' => [
-        'roles' => 'Roles',
+        'roles' => 'View Roles',
         'create-role' => 'Create role',
         'delete-role' => 'Delete role',
         'update-role' => 'Update role',
         'permissions' => 'Permissions',
         'attach-permission' => 'Update permission from role',
         'attach-role' => 'Update roles from user',
-        'config' => 'See and update the config',
-        'timeouts' => 'See timeout history',
-        'add-cringe' => 'Increase the cringe counter',
-        'delete-cringe' => 'Decrease the cringe counter',
-        'commands' => 'Create and delete custom commands',
-        'reactions' => 'Create and delete custom reactions',
-        'role-rewards' => 'Create and update role rewards',
-        'manage-xp' => 'Modify XP for users',
-        'channels' => 'Set and update channel flags',
-        'logs' => 'Update the log config',
-        'add-mention' => 'Add new mention replies',
+        'config' => 'Manage the config',
+        'timeouts' => 'Manage timeouts',
+        'add-cringe' => 'Increase cringe counter',
+        'delete-cringe' => 'Decrease cringe counter',
+        'commands' => 'Manage custom commands',
+        'reactions' => 'Manage reactions',
+        'role-rewards' => 'Manage rewards',
+        'manage-xp' => 'Manage xp for users',
+        'channels' => 'Manage channel flags',
+        'logs' => 'Manage log config',
+        'add-mention' => 'Add mention replies',
         'delete-mention' => 'Remove mention replies',
-        'manage-mention-groups' => 'Manage mention reply groups',
+        'manage-mention-groups' => 'Manage reply groups',
         'media-filter' => 'Media filter',
-        'openai' => 'Use OpenAi Commands',
-        'abusers' => 'Manage the blacklist',
+        'openai' => 'OpenAi Commands',
+        'abusers' => 'Manage blacklist',
     ],
 
     'slash' => [
@@ -198,7 +199,7 @@ return [
 
     'roles' => [
         'title' => 'Roles for this server',
-        'description' => ':roles',
+        'description' => 'Overview of all roles and their permissions.',
         'exist' => 'Role already exists.',
         'created' => 'Role :role created.',
         'not-exist' => 'Role :role does not exist.',
@@ -330,6 +331,7 @@ return [
         'integer' => 'A group must be the ID of a server role! (for now).',
         'notexist' => 'No mention group found for id :group.',
         'updated' => 'Mention group updated.',
+        'delete-default' => 'Cannot delete default groups.'
     ],
     'log' => [
         'no-dm' => 'Slash commands dont work in DM.',

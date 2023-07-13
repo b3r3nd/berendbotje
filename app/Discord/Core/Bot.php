@@ -6,6 +6,8 @@ use App\Discord\Core\Commands\Settings;
 use App\Discord\Core\Commands\UpdateSetting;
 use App\Discord\Core\Commands\UpdateUserSetting;
 use App\Discord\Core\Commands\UserSettings;
+use App\Discord\Core\Events\InteractionCreate;
+use App\Discord\Core\Models\DiscordUser;
 use App\Discord\Core\Models\Guild;
 use App\Discord\Fun\Commands\Ask;
 use App\Discord\Fun\Commands\BumpStatistics;
@@ -60,12 +62,12 @@ use App\Discord\MentionResponder\Commands\UpdateMentionGroup;
 use App\Discord\Moderation\Commands\Blacklist;
 use App\Discord\Moderation\Commands\Block;
 use App\Discord\Moderation\Commands\ChannelIndex;
-use App\Discord\Moderation\Commands\RemoveTimeout;
-use App\Discord\Moderation\Commands\UpdateTimeoutReason;
 use App\Discord\Moderation\Commands\MarkChannel;
+use App\Discord\Moderation\Commands\RemoveTimeout;
 use App\Discord\Moderation\Commands\Timeouts;
 use App\Discord\Moderation\Commands\Unblock;
 use App\Discord\Moderation\Commands\UnmarkChannel;
+use App\Discord\Moderation\Commands\UpdateTimeoutReason;
 use App\Discord\Moderation\Events\DetectTimeouts;
 use App\Discord\Moderation\Events\GiveJoinRole;
 use App\Discord\Moderation\Events\MediaFilter;
@@ -81,10 +83,13 @@ use App\Discord\Roles\Commands\Roles;
 use App\Discord\Roles\Commands\UserRoles;
 use App\Discord\Roles\Commands\Users;
 use App\Discord\Test\Commands\Test;
+use Database\Seeders\LogSettingsSeeder;
+use Database\Seeders\MentionResponderSeeder;
+use Database\Seeders\RoleSeeder;
+use Database\Seeders\SettingsSeeder;
 use Discord\Discord;
 use Discord\Exceptions\IntentException;
-use Discord\InteractionType;
-use Discord\Parts\Interactions\Interaction;
+use Discord\Parts\Interactions\Command\Command;
 use Discord\WebSockets\Event;
 use Discord\WebSockets\Intents;
 use Exception;
@@ -106,6 +111,7 @@ class Bot
     private bool $updateCommands, $deleteCommands;
 
     private array $events = [
+        InteractionCreate::class,
         VoiceStateUpdate::class,
         MessageXpCounter::class,
         VoiceXpCounter::class,
@@ -127,14 +133,13 @@ class Bot
         InviteLogger::class,
     ];
 
-    private array $commands = [];
+    public array $commands = [];
 
     /**
      * @see https://discord.com/developers/docs/interactions/application-commands#subcommands-and-subcommand-groups
      * @var array
      */
     private array $slashCommandStructure = [
-
         'users' => [
             Users::class,
             UserRoles::class,
@@ -192,12 +197,27 @@ class Bot
             Leaderboard::class,
             UserRank::class,
         ],
+
+        'mention' => [
+            'replies' => [
+                MentionIndex::class,
+                AddMentionReply::class,
+                DelMentionReply::class,
+            ],
+            'groups' => [
+                MentionGroupIndex::class,
+                AddMentionGroup::class,
+                DelMentionGroup::class,
+                UpdateMentionGroup::class,
+            ],
+        ],
         'cringe' => [
             CringeIndex::class,
             IncreaseCringe::class,
             DecreaseCringe::class,
             ResetCringe::class,
         ],
+
         'reactions' => [
             ReactionIndex::class,
             CreateReaction::class,
@@ -209,19 +229,7 @@ class Bot
             DeleteCommand::class,
         ],
 
-        'mentionreplies' => [
-            MentionIndex::class,
-            AddMentionReply::class,
-            DelMentionReply::class,
-        ],
-        'mentiongroups' => [
-            MentionGroupIndex::class,
-            AddMentionGroup::class,
-            DelMentionGroup::class,
-            UpdateMentionGroup::class,
-        ],
         'fun' => [
-            GenerateImage::class,
             BumpStatistics::class,
             EmoteIndex::class,
             EightBall::class,
@@ -232,62 +240,10 @@ class Bot
         'help' => [
             Help::class,
         ],
-        'test' => [
-            Test::class,
-        ],
+//        'test' => [
+//            Test::class,
+//        ],
     ];
-
-    /**
-     * @return void
-     * @throws Exception
-     */
-    private function updateSlashCommands(): void
-    {
-        foreach ($this->slashCommandStructure as $mainCommand => $subGroups) {
-            $subGroupOptions = [];
-            foreach ($subGroups as $subGroup => $subCommands) {
-                if (is_array($subCommands)) {
-                    $subCommandOptions = [];
-                    foreach ($subCommands as $subCommand) {
-                        $subCommandOptions[] = $this->getOptions($subCommand, $subGroup);
-                    }
-                    $subGroupOptions[] = [
-                        'name' => $subGroup,
-                        'description' => $subGroup,
-                        'type' => 2,
-                        'options' => $subCommandOptions,
-                    ];
-                } else {
-                    $subGroupOptions[] = $this->getOptions($subCommands, $mainCommand);
-                }
-            }
-            $optionsArray = [
-                'name' => $mainCommand,
-                'description' => $mainCommand,
-                'options' => $subGroupOptions,
-            ];
-
-            $command = new \Discord\Parts\Interactions\Command\Command($this->discord, $optionsArray);
-            $this->discord->application->commands->save($command);
-        }
-
-        $this->discord->on(Event::INTERACTION_CREATE, function (Interaction $interaction, Discord $discord) {
-            $option = $interaction->data->options->first();
-            $trigger = "{$interaction->data->name}_{$option?->name}";
-            if (!isset($this->commands[$trigger]) && $option?->options->first()) {
-                $trigger = "{$option?->name}_{$option->options->first()?->name}";
-            }
-            if (isset($this->commands[$trigger])) {
-                if ($interaction->type === InteractionType::APPLICATION_COMMAND) {
-                    $this->commands[$trigger]->execute($interaction);
-                }
-                if ($interaction->type === InteractionType::APPLICATION_COMMAND_AUTOCOMPLETE) {
-                    $this->commands[$trigger]->complete($interaction);
-                }
-            }
-        });
-    }
-
 
     /**
      * @param bool $updateCommands
@@ -323,7 +279,69 @@ class Bot
                 $this->updateSlashCommands();
             }
         });
+
+
+        $this->discord->on(Event::GUILD_CREATE, function (object $guild, Discord $discord) {
+            if (!($guild instanceof \Discord\Parts\Guild\Guild)) {
+                return;
+            }
+            $guildModel = \App\Discord\Core\Models\Guild::get($guild->id);
+            if (!$guildModel) {
+                $owner = DiscordUser::get($guild->owner_id);
+                $guildModel = \App\Discord\Core\Models\Guild::create([
+                    'owner_id' => $owner->id,
+                    'guild_id' => $guild->id,
+                ]);
+
+                // Use normal seeders to setup data data
+                (new SettingsSeeder())->processSettings($guildModel);
+                (new LogSettingsSeeder())->processSettings($guildModel);
+                $roleSeeder = new RoleSeeder();
+                $roleSeeder->createAdminRole($guildModel, $owner);
+                $roleSeeder->createModRole($guildModel);
+                (new MentionResponderSeeder())->processMentionGroups($guildModel);
+
+                $this->addGuild($guildModel);
+            }
+        });
+
+
         $this->discord->run();
+    }
+
+    /**
+     * @return void
+     * @throws Exception
+     */
+    private function updateSlashCommands(): void
+    {
+        foreach ($this->slashCommandStructure as $mainCommand => $subGroups) {
+            $subGroupOptions = [];
+            foreach ($subGroups as $subGroup => $subCommands) {
+                if (is_array($subCommands)) {
+                    $subCommandOptions = [];
+                    foreach ($subCommands as $subCommand) {
+                        $subCommandOptions[] = $this->initCommandOptions($subCommand, $subGroup);
+                    }
+                    $subGroupOptions[] = [
+                        'name' => $subGroup,
+                        'description' => $subGroup,
+                        'type' => 2,
+                        'options' => $subCommandOptions,
+                    ];
+                } else {
+                    $subGroupOptions[] = $this->initCommandOptions($subCommands, $mainCommand);
+                }
+            }
+            $optionsArray = [
+                'name' => $mainCommand,
+                'description' => $mainCommand,
+                'options' => $subGroupOptions,
+            ];
+
+            $command = new \Discord\Parts\Interactions\Command\Command($this->discord, $optionsArray);
+            $this->discord->application->commands->save($command);
+        }
     }
 
     /**
@@ -337,13 +355,12 @@ class Bot
         }
     }
 
-
     /**
      * @param $command
      * @param $subGroup
      * @return array
      */
-    private function getOptions($command, $subGroup): array
+    private function initCommandOptions($command, $subGroup): array
     {
         $instance = new $command();
         $instance->setBot($this);
@@ -355,7 +372,6 @@ class Bot
             'description' => $instance->description,
             'type' => 1,
         ];
-
         if (isset($instance->slashCommandOptions)) {
             $options['options'] = $instance->slashCommandOptions;
         }
@@ -382,7 +398,9 @@ class Bot
     public function loadGuilds(): void
     {
         foreach (Guild::all() as $guild) {
-            $this->guilds[$guild->guild_id] = new \App\Discord\Core\Guild($guild, $this);
+            if (!isset($this->guilds[$guild->guild_id])) {
+                $this->guilds[$guild->guild_id] = new \App\Discord\Core\Guild($guild, $this);
+            }
         }
     }
 
@@ -393,6 +411,18 @@ class Bot
     public function getGuild(string $id): mixed
     {
         return $this->guilds[$id] ?? null;
+    }
+
+    /**
+     * @param Guild $guild
+     * @return void
+     * @throws Exception
+     */
+    public function addGuild(Guild $guild): void
+    {
+        if (!isset($this->guilds[$guild->guild_id])) {
+            $this->guilds[$guild->guild_id] = new \App\Discord\Core\Guild($guild, $this);
+        }
     }
 
     /**

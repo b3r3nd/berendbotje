@@ -26,7 +26,7 @@ class Count extends DiscordEvent
             $guild = $this->bot->getGuild($message->guild_id);
 
             // We are actually possibly comparing integers with stings here.. soo no strict check.
-            if ($message->channel_id != $guild->getSetting(SettingEnum::COUNT_CHANNEL) || !$guild->getSetting(SettingEnum::ENABLE_COUNT)) {
+            if ($message->channel_id != $guild?->getSetting(SettingEnum::COUNT_CHANNEL) || !$guild?->getSetting(SettingEnum::ENABLE_COUNT)) {
                 return;
             }
 
