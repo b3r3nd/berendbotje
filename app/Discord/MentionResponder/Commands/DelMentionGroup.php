@@ -51,6 +51,10 @@ class DelMentionGroup extends SlashCommand
             return EmbedFactory::failedEmbed($this, __('bot.mentiongroup.not-found', ['id' => $this->getOption('group_id')]));
         }
 
+        if(!$mentionGroup->is_custom) {
+            return EmbedFactory::failedEmbed($this, __('bot.mentiongroup.delete-default', ['id' => $this->getOption('group_id')]));
+        }
+
         $mentionGroup->replies()->delete();
         $mentionGroup->delete();
 
