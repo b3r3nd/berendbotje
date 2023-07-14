@@ -115,9 +115,10 @@ class Help extends SlashCommand
     public function addCommands(array $roleCommands, EmbedBuilder $embedBuilder): void
     {
         foreach ($roleCommands as $commandData) {
-            $cmd = $commandData['cmd'];
+            $cmd = explode(" ", $commandData['cmd'])[0];
+            $cmdName = $commandData['cmd'];
             $command = $this->discord->application->commands->get('name', $cmd);
-            $commandName = $command ? "</{$cmd}:{$command->id}>" : "/{$cmd}";
+            $commandName = $command ? "</{$cmdName}:{$command->id}>" : "/{$cmdName}";
             $embedBuilder->getEmbed()->addField(['name' => $commandName . ' ' . $commandData['usage'], 'value' => $commandData['desc']]);
         }
     }
@@ -187,7 +188,7 @@ class Help extends SlashCommand
         $embedBuilder->setDescription("You can change settings on a guild basis. For now there is only a single setting: \n\n **no_role_rewards** - Disable gaining role rewards based on levels");
         $this->addCommands([
             ['cmd' => 'config user list', 'usage' => '', 'desc' => 'Shows your custom user settings'],
-            ['cmd' => 'config user set', 'usage' => '`<setting_key>` `<new_value>`', 'desc' => 'Change custom user settings'],
+            ['cmd' => 'config user edit', 'usage' => '`<setting_key>` `<new_value>`', 'desc' => 'Change custom user settings'],
         ], $embedBuilder);
         return $embedBuilder;
     }

@@ -293,7 +293,7 @@ class Bot
                     'guild_id' => $guild->id,
                 ]);
 
-                // Use normal seeders to setup data data
+                // Use normal seeders to setup data
                 (new SettingsSeeder())->processSettings($guildModel);
                 (new LogSettingsSeeder())->processSettings($guildModel);
                 $roleSeeder = new RoleSeeder();

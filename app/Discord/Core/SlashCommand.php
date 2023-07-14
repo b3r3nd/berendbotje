@@ -122,7 +122,7 @@ abstract class SlashCommand
             }
             return null;
         }
-        return $this->interaction->data->options->first()->options->get('name', $key)->value;
+        return $option->options->get('name', $key)->value;
     }
 
     /**
