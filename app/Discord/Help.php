@@ -115,9 +115,10 @@ class Help extends SlashCommand
     public function addCommands(array $roleCommands, EmbedBuilder $embedBuilder): void
     {
         foreach ($roleCommands as $commandData) {
-            $cmd = $commandData['cmd'];
+            $cmd = explode(" ", $commandData['cmd'])[0];
+            $cmdName = $commandData['cmd'];
             $command = $this->discord->application->commands->get('name', $cmd);
-            $commandName = $command ? "</{$cmd}:{$command->id}>" : "/{$cmd}";
+            $commandName = $command ? "</{$cmdName}:{$command->id}>" : "/{$cmdName}";
             $embedBuilder->getEmbed()->addField(['name' => $commandName . ' ' . $commandData['usage'], 'value' => $commandData['desc']]);
         }
     }
@@ -187,7 +188,7 @@ class Help extends SlashCommand
         $embedBuilder->setDescription("You can change settings on a guild basis. For now there is only a single setting: \n\n **no_role_rewards** - Disable gaining role rewards based on levels");
         $this->addCommands([
             ['cmd' => 'config user list', 'usage' => '', 'desc' => 'Shows your custom user settings'],
-            ['cmd' => 'config user set', 'usage' => '`<setting_key>` `<new_value>`', 'desc' => 'Change custom user settings'],
+            ['cmd' => 'config user edit', 'usage' => '`<setting_key>` `<new_value>`', 'desc' => 'Change custom user settings'],
         ], $embedBuilder);
         return $embedBuilder;
     }
@@ -202,7 +203,6 @@ class Help extends SlashCommand
         $embedBuilder->setDescription("List of other small fun commands");
         $this->addCommands([
             ['cmd' => 'fun emotes', 'usage' => '', 'desc' => 'Shows scoreboard of most used emotes'],
-            ['cmd' => 'fun leaderboard', 'usage' => '', 'desc' => 'Shows leaderboard based on messages and xp gained'],
             ['cmd' => 'fun urb', 'usage' => '`<search_term>`', 'desc' => 'Search something on urban dictionary'],
             ['cmd' => 'fun 8ball', 'usage' => '`<question>`', 'desc' => 'Ask the magic 8ball'],
             ['cmd' => 'fun ask', 'usage' => '`<question>`', 'desc' => 'Yes? No? Hmm..?'],
@@ -219,7 +219,7 @@ class Help extends SlashCommand
     {
         $embedBuilder->setDescription("Who is most cringe?");
         $this->addCommands([
-            ['cmd' => 'cringe list', 'usage' => '', 'desc' => 'Show who is most cringe..'],
+            ['cmd' => 'cringe counter', 'usage' => '', 'desc' => 'Show who is most cringe..'],
             ['cmd' => 'cringe add', 'usage' => '`<user_mention>`', 'desc' => 'Increase cringe counter'],
             ['cmd' => 'cringe delete', 'usage' => '`<user_mention>`', 'desc' => 'Decrease cringe counter'],
             ['cmd' => 'cringe reset', 'usage' => '`<user_mention>`', 'desc' => 'Reset cringe counter'],
@@ -269,8 +269,8 @@ class Help extends SlashCommand
             ['cmd' => 'users list', 'usage' => '', 'desc' => 'Show users and their roles'],
             ['cmd' => 'users add', 'usage' => '`<user_mention>` `<role_name>`', 'desc' => 'Add user to the given role'],
             ['cmd' => 'users delete', 'usage' => '`<user_mention>` `<role_name>`', 'desc' => ' Remove user from given role'],
+            ['cmd' => 'users roles', 'usage' => '`<user_mention>`', 'desc' => 'See your roles or from another user'],
             ['cmd' => 'roles list', 'usage' => '', 'desc' => 'Overview of all roles and their permissions'],
-            ['cmd' => 'roles roles', 'usage' => '`<user_mention>`', 'desc' => 'See your roles or from another user'],
             ['cmd' => 'roles add', 'usage' => '`<role_name>`', 'desc' => 'Add a new role'],
             ['cmd' => 'roles delete', 'usage' => '`<role_name>`', 'desc' => 'Delete a rol'],
             ['cmd' => 'permissions list', 'usage' => '', 'desc' => 'Overview of all permissions'],
@@ -290,12 +290,12 @@ class Help extends SlashCommand
         $this->addCommands([
             ['cmd' => 'timeouts list', 'usage' => '`<user_mention>`', 'desc' => 'Show given timeout history or from a specific user'],
             ['cmd' => 'timeouts edit', 'usage' => '`<timeout_id>` `<reason>`', 'desc' => 'Update the reason for a given timeout'],
-            ['cmd' => 'timeouts delete', 'usage' => '`<timeout_id>`', 'desc' => 'Remove a timeout from the log only'],
+            ['cmd' => 'timeouts remove', 'usage' => '`<timeout_id>`', 'desc' => 'Remove a timeout from the log only'],
             ['cmd' => 'channels list', 'usage' => '', 'desc' => 'Shows a list of channels with their configured flags'],
             ['cmd' => 'channels flag', 'usage' => '`<channel>` `<flag>`', 'desc' => 'Mark a channel with one of the available flags'],
             ['cmd' => 'channels unflag', 'usage' => '`<channel>` `<flag>`', 'desc' => 'Unmark a channel with one of the available flags'],
-            ['cmd' => 'blacklist', 'usage' => '', 'desc' => 'Shows the abusers on the blacklist'],
-            ['cmd' => 'blacklist lock', 'usage' => '`<user_mention>`', 'desc' => 'Add someone to the blacklist'],
+            ['cmd' => 'blacklist list', 'usage' => '', 'desc' => 'Shows the abusers on the blacklist'],
+            ['cmd' => 'blacklist block', 'usage' => '`<user_mention>`', 'desc' => 'Add someone to the blacklist'],
             ['cmd' => 'blacklist unblock', 'usage' => '`<user_mention>`', 'desc' => 'Remove someone from the blacklist'],
 
         ], $embedBuilder);
@@ -427,9 +427,9 @@ class Help extends SlashCommand
             ['cmd' => 'mention replies list', 'usage' => '`<group_id>`', 'desc' => 'Show all replies or filter by group'],
             ['cmd' => 'mention replies add', 'usage' => '`<group_id>` `<reply_line>`', 'desc' => 'Add a reply to a group'],
             ['cmd' => 'mention replies delete', 'usage' => '`<reply_id>`', 'desc' => 'Remove a reply'],
-            ['cmd' => 'mention groups', 'usage' => '', 'desc' => 'Show all groups'],
+            ['cmd' => 'mention groups list', 'usage' => '', 'desc' => 'Show all groups'],
             ['cmd' => 'mention groups add', 'usage' => '`<discord_role>` `<user/role>` `<multiplier>`', 'desc' => 'Add a group'],
-            ['cmd' => 'mention groups update', 'usage' => '`<id>` `<user/role>` `<multiplier>`', 'desc' => 'Update a group'],
+            ['cmd' => 'mention groups edit', 'usage' => '`<id>` `<user/role>` `<multiplier>`', 'desc' => 'Update a group'],
             ['cmd' => 'mention groups delete', 'usage' => '`<group_id>`', 'desc' => 'Delete a group'],
         ], $embedBuilder);
         return $embedBuilder;
