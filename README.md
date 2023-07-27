@@ -13,6 +13,7 @@ Short list of what this bot can do:
 - Leveling by sending messages and hanging out in voice + commands to manage xp
 - Role Rewards based on levels
 - Extensive bot config where almost all settings can be changed
+- Enable / disable server invites through command to allow mods to use it (has separate permission)
 - User config where user can set specific settings for that guild
 - Extensive logging with ability to enable/disable each event individually
 - Adding flags to channels to for example not gain xp there, or not allow stickers, or only allow media
@@ -124,7 +125,7 @@ roles.
 ### Permissions
 `roles` `create-role` `delete-role` `update-role` `permissions` `attach-permission` `attach-role` `config`
 `timeouts` `channels` `add-cringe` `delete-cringe` `commands` `reactions` `role-rewards` `manage-xp` `logs`
-`role_rewards` `manage_xp` `add_mention` `del_mention` `manage_mention_group` `openai` `abusers`
+`role_rewards` `manage_xp` `add_mention` `del_mention` `manage_mention_group` `openai` `abusers`, `invites`
 
 ### Default Roles
 `Admin` `Moderator`
@@ -298,6 +299,14 @@ you have to set the following settings:
 * `enable_join_role` - Enable or disable giving the role
 * `join_role` - ID of the actual role to give
 
+## Disable server invites
+Since discord requires a "Mange server" permission to pause invites I added a simple command to
+do it with the bot:
+
+- **invites toggle** - Enable/disable invites
+
+There is a separate permission available `invites` which is required for this command. Only
+the admin has it by default.
 ## Mention Responder
 Small funny feature, when you tag the bot you will get a random reply from a list of mention replies. There are default
 replies, but you can also add your own replies based on certain roles or users in the server.

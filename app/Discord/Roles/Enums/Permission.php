@@ -32,6 +32,7 @@ enum Permission: string
     case MANAGE_MENTION_GROUP = 'manage-mention-groups';
     case OPENAI = 'openai';
     case BLACKLIST = 'abusers';
+    case INVITES = 'invites';
 
     // Bot Owner permissions not available in public servers
     case ADMIN_SERVER = 'servers';

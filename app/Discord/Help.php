@@ -288,6 +288,7 @@ class Help extends SlashCommand
     {
         $embedBuilder->setDescription("Timeouts are automatically detected and saved, bans and kicks are only counted.");
         $this->addCommands([
+            ['cmd' => 'invites toggle', 'usage' => '', 'desc' => 'Enable/disable server invites'],
             ['cmd' => 'timeouts list', 'usage' => '`<user_mention>`', 'desc' => 'Show given timeout history or from a specific user'],
             ['cmd' => 'timeouts edit', 'usage' => '`<timeout_id>` `<reason>`', 'desc' => 'Update the reason for a given timeout'],
             ['cmd' => 'timeouts remove', 'usage' => '`<timeout_id>`', 'desc' => 'Remove a timeout from the log only'],
