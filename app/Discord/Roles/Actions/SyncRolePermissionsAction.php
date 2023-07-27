@@ -8,30 +8,29 @@ use App\Discord\Roles\Models\Permission;
 use App\Discord\Roles\Models\Role;
 use Discord\Builders\MessageBuilder;
 use Discord\Discord;
-use Discord\Repository\Interaction\OptionRepository;
 use Exception;
 use Illuminate\Support\Collection;
 
 /**
- * @property OptionRepository $options  List of options retrieved from the slash command using this action.
+ * @property Collection $options  List of options retrieved from the slash command using this action.
  * @property string $guildId            Discord guild id.
  * @property bool $attach               Attaching or detaching roles.
  * @property SlashCommand $command      Actual slash command this action was triggered in.
  */
 class SyncRolePermissionsAction
 {
-    private OptionRepository $options;
+    private Collection $options;
     private string $guildId;
     private bool $attach;
     private SlashCommand $command;
 
     /**
      * @param SlashCommand $command
-     * @param OptionRepository $options
+     * @param Collection $options
      * @param string $guildId
      * @param bool $attach
      */
-    public function __construct(SlashCommand $command, OptionRepository $options, string $guildId, bool $attach = true)
+    public function __construct(SlashCommand $command, Collection $options, string $guildId, bool $attach = true)
     {
         $this->command = $command;
         $this->options = $options;
