@@ -103,6 +103,7 @@ abstract class SlashCommand
         if ($this->permission->value !== Permission::NONE->value && !DiscordUser::hasPermission($interaction->member->id, $interaction->guild_id, $this->permission->value)) {
             $guild->logWithMember($interaction->member, __('bot.log.failed', ['trigger' => $this->commandLabel]), 'fail');
             $interaction->respondWithMessage(EmbedFactory::lackAccessEmbed($this, __("bot.lack-access")));
+            return;
         }
         $guild->logWithMember($interaction->member, __('bot.log.success', ['trigger' => $this->commandLabel]), 'success');
         $interaction->respondWithMessage($this->action());
