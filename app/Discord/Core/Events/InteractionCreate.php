@@ -16,7 +16,7 @@ class InteractionCreate extends DiscordEvent
     public function registerEvent(): void
     {
         $this->discord->on(Event::INTERACTION_CREATE, function (Interaction $interaction, Discord $discord) {
-            $option = $interaction->data->options->first();
+            $option = $interaction->data->options?->first();
             $trigger = "{$interaction->data->name}_{$option?->name}";
             if (!isset($this->bot->commands[$trigger]) && $option?->options->first()) {
                 $trigger = "{$option?->name}_{$option->options->first()?->name}";
