@@ -8,8 +8,8 @@ use App\Discord\Roles\Models\Permission;
 use App\Discord\Roles\Models\Role;
 use Discord\Builders\MessageBuilder;
 use Discord\Discord;
+use Discord\Helpers\Collection;
 use Exception;
-use Illuminate\Support\Collection;
 
 /**
  * @property Collection $options  List of options retrieved from the slash command using this action.
@@ -74,7 +74,7 @@ class SyncRolePermissionsAction
      * @param $parameters
      * @return bool|Collection
      */
-    private function processPermissions($parameters): bool|Collection
+    private function processPermissions($parameters): bool|\Illuminate\Support\Collection
     {
         $parameters = strtolower($parameters);
         if (str_contains($parameters, ',')) {
