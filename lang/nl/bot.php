@@ -140,6 +140,11 @@ return [
         'not-found' => 'Geen gebruikersinstellingen gevonden, zie `/help` -> gebruikersinstellingen voor meer informatie.',
     ],
 
+    'invites' => [
+        'disabled' => 'Server invites are **disabled**!',
+        'enabled' => 'Server invites are **enabled**!',
+    ],
+
     'blacklist' => [
         'title' => 'Gebruikerszwarte lijst',
         'block' => ":user toegevoegd aan de zwarte lijst.",

@@ -92,9 +92,11 @@ return [
         'media-filter' => 'Media filter',
         'openai' => 'OpenAi Commands',
         'abusers' => 'Manage blacklist',
+        'invites' => 'Manage server invites',
     ],
 
     'slash' => [
+        'toggle-invite' => 'Toggle invites',
         'remove-timeout' => 'Remove a timeout from the LOG only!',
         'edit-timeout' => 'Update the reason for a given timeout',
         'userset' => 'Update user specific settings for this guild',
@@ -156,6 +158,11 @@ return [
         'delreply' => 'Delete a new reply from a mention group',
         'searchreply ' => 'Search for a reply',
         'mentiongroups' => 'Mention responder group',
+    ],
+
+    'invites' => [
+        'disabled' => 'Server invites are **disabled**!',
+        'enabled' => 'Server invites are **enabled**!',
     ],
 
     'userconfig' => [

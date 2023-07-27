@@ -65,6 +65,7 @@ use App\Discord\Moderation\Commands\ChannelIndex;
 use App\Discord\Moderation\Commands\MarkChannel;
 use App\Discord\Moderation\Commands\RemoveTimeout;
 use App\Discord\Moderation\Commands\Timeouts;
+use App\Discord\Moderation\Commands\ToggleInvites;
 use App\Discord\Moderation\Commands\Unblock;
 use App\Discord\Moderation\Commands\UnmarkChannel;
 use App\Discord\Moderation\Commands\UpdateTimeoutReason;
@@ -236,6 +237,9 @@ class Bot
             Ask::class,
             UrbanDictionary::class,
             ModeratorStatistics::class,
+        ],
+        'invites' => [
+            ToggleInvites::class,
         ],
         'help' => [
             Help::class,

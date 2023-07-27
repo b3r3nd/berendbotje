@@ -16,7 +16,7 @@
         "php-webdriver/webdriver": "^1.14",
         "predis/predis": "~1.0",
         "symfony/css-selector": "^6.3",
-        "team-reflex/discord-php": "^7.3"
+        "team-reflex/discord-php": "dev-master#680a553"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
