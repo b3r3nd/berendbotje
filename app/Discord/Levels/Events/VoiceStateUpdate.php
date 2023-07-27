@@ -23,9 +23,11 @@ class VoiceStateUpdate extends DiscordEvent
     {
         $this->discord->on(Event::VOICE_STATE_UPDATE, function (DVoiceStateUpdate $state, Discord $discord, $oldstate) {
             if ($state->channel) {
-                foreach ($state->channel->guild->voice_states as $voiceState) {
-                    if ($voiceState->user_id === $state->user_id) {
-                        $voiceState->channel_id = $state->channel_id;
+                if (is_array($state->channel->guild->voice_states)) {
+                    foreach ($state->channel->guild->voice_states as $voiceState) {
+                        if ($voiceState->user_id === $state->user_id) {
+                            $voiceState->channel_id = $state->channel_id;
+                        }
                     }
                 }
             }
