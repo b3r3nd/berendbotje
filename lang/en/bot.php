@@ -354,7 +354,7 @@ return [
         'remove-invite' => 'Invite link by <@:inviter> removed',
         'send-dm' => "Send DM:\n\n :content",
         'update-msg' => "<@:user> updated message in <#:channel>\n\n**Old Message**\n:old\n\n**New Message**\n:new",
-        'delete-msg' => "<@:user> deleted his message in <#:channel>\n\n**Message**\n:message",
+        'delete-msg' => "A message by <@:user> was deleted in <#:channel>\n\n**Message**\n:message",
         'timeout' => '<@:user> has received a timeout',
         'joined-call' => "<@:user> joined <#:channel>",
         'left-call' => "<@:user> left <#:channel>",

@@ -36,6 +36,7 @@ class SettingsSeeder extends Seeder
         'enable_lvl_msg' => false,
         'enable_join_role' => false,
         'join_role' => 0,
+        'enable_cmd_log' => false,
     ];
 
     /**
