@@ -9,10 +9,7 @@ use App\Discord\Roles\Enums\Permission;
 use Discord\Builders\MessageBuilder;
 use Discord\Discord;
 use Discord\Parts\Interactions\Interaction;
-use Discord\Repository\Interaction\OptionRepository;
 use Exception;
-use Illuminate\Database\Eloquent\Model;
-use React\Promise\ExtendedPromiseInterface;
 
 /**
  * Extendable class to easily create new Slash commands.
@@ -101,11 +98,15 @@ abstract class SlashCommand
         $this->guildId = $interaction->guild_id;
         $guild = $this->bot->getGuild($interaction->guild_id);
         if ($this->permission->value !== Permission::NONE->value && !DiscordUser::hasPermission($interaction->member->id, $interaction->guild_id, $this->permission->value)) {
-            $guild->logWithMember($interaction->member, __('bot.log.failed', ['trigger' => $this->commandLabel]), 'fail');
+            if ($guild->getSetting(Setting::ENABLE_CMD_LOG)) {
+                $guild->logWithMember($interaction->member, __('bot.log.failed', ['trigger' => $this->commandLabel]), 'fail');
+            }
             $interaction->respondWithMessage(EmbedFactory::lackAccessEmbed($this, __("bot.lack-access")));
             return;
         }
-        $guild->logWithMember($interaction->member, __('bot.log.success', ['trigger' => $this->commandLabel]), 'success');
+        if ($guild->getSetting(Setting::ENABLE_CMD_LOG)) {
+            $guild->logWithMember($interaction->member, __('bot.log.success', ['trigger' => $this->commandLabel]), 'success');
+        }
         $interaction->respondWithMessage($this->action());
     }
 

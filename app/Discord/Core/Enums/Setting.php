@@ -31,4 +31,5 @@ enum Setting: string
     case ENABLE_LVL_MSG = 'enable_lvl_msg';
     case ENABLE_JOIN_ROLE = 'enable_join_role';
     case JOIN_ROLE = 'join_role';
+    case ENABLE_CMD_LOG = 'enable_cmd_log';
 }
