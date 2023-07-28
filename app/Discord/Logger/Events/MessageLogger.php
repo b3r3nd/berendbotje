@@ -37,9 +37,12 @@ class MessageLogger extends DiscordEvent
             if ($channel && !$channel->no_stickers) {
                 return;
             }
+            if ($oldMessage?->content === $message->content) {
+                return;
+            }
 
-            if ($oldMessage && $oldMessage->pinned === $message->pinned && $guild->getLogSetting(LogSetting::MESSAGE_UPDATED) && count($oldMessage->embeds) === count($message->embeds)) {
-                $guild->logWithMember($message->member, __('bot.log.update-msg', ['user' => $message->member->id, 'channel' => $message->channel_id, 'old' => $oldMessage->content, 'new' => $message->content]), 'warning');
+            if ($guild->getLogSetting(LogSetting::MESSAGE_UPDATED)) {
+                $guild->logWithMember($message->member, __('bot.log.update-msg', ['user' => $message->member->id, 'channel' => $message->channel_id, 'old' => $oldMessage?->content, 'new' => $message->content]), 'warning');
             }
         });
 
