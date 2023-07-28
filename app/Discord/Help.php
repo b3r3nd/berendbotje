@@ -9,6 +9,7 @@ use Discord\Builders\Components\ActionRow;
 use Discord\Builders\Components\Button;
 use Discord\Builders\Components\Option;
 use Discord\Builders\Components\SelectMenu;
+use Discord\Builders\Components\StringSelect;
 use Discord\Builders\MessageBuilder;
 use Discord\Helpers\Collection;
 use Discord\Parts\Embed\Embed;
@@ -41,7 +42,7 @@ class Help extends SlashCommand
     public function action(): MessageBuilder
     {
         $messageBuilder = MessageBuilder::new();
-        $select = SelectMenu::new()
+        $select = StringSelect::new()
             ->addOption(Option::new("Home"))
             ->addOption(Option::new("Roles"))
             ->addOption(Option::new("Moderation"))
