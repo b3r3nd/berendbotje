@@ -131,21 +131,24 @@ abstract class SlashCommand
      * We have autocomplete for a lot of Models when using them in slash commands, they can all call this function to
      * easily retrieve and map the matching instances.
      *
+     * You cannot show more than 25 options at a time and the name of the option cannot be longer than 32 characters.
+     *
      * @param string $model
      * @param string $guidId
      * @param string $optionKey
      * @param string $optionValue
+     * @param string|null $optionLabel
      * @return mixed
      *
      * @noinspection PhpUndefinedMethodInspection
      */
-    public function getAutoComplete(string $model, string $guidId, string $optionKey, string $optionValue = ''): mixed
+    public function getAutoComplete(string $model, string $guidId, string $optionKey, string $optionValue = '', string $optionLabel = null): mixed
     {
         return $model::byGuild($guidId)->where($optionKey, 'LIKE', "%{$optionValue}%")
             ->limit(25)
             ->get()
-            ->map(function ($modelInstance) use ($optionKey) {
-                return ['name' => $modelInstance->{$optionKey}, 'value' => $modelInstance->{$optionKey}];
+            ->map(function ($modelInstance) use ($optionKey, $optionLabel) {
+                return ['name' => substr($modelInstance->{$optionLabel ?? $optionKey}, 0, 32), 'value' => $modelInstance->{$optionKey}];
             })->toArray();
     }
 

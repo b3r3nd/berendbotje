@@ -21,22 +21,24 @@ class SettingsSeeder extends Seeder
         'enable_reactions' => true,
         'enable_commands' => false,
         'enable_logging' => false,
-        'log_channel_id' => 0,
-        'enable_bump_reminder' => false,
-        'bump_reminder_role' => 0,
-        'bump_channel' => 0,
+        'enable_count' => false,
         'enable_mention_responder' => false,
         'enable_qotd_reminder' => false,
-        'qotd_channel' => 0,
-        'qotd_role' => 0,
-        'count_channel' => 0,
-        'current_count' => 0,
-        'enable_count' => false,
-        'level_up_channel' => 0,
         'enable_lvl_msg' => false,
         'enable_join_role' => false,
-        'join_role' => 0,
         'enable_cmd_log' => false,
+        'enable_welcome_msg' => false,
+        'enable_bump_reminder' => false,
+        'log_channel_id' => 0,
+        'bump_channel' => 0,
+        'qotd_channel' => 0,
+        'count_channel' => 0,
+        'level_up_channel' => 0,
+        'welcome_msg_channel' => 0,
+        'qotd_role' => 0,
+        'bump_reminder_role' => 0,
+        'join_role' => 0,
+        'current_count' => 0,
     ];
 
     /**
@@ -47,9 +49,7 @@ class SettingsSeeder extends Seeder
     public function run(): void
     {
         foreach (Guild::all() as $guild) {
-            foreach ($this->settings as $key => $value) {
-                $this->processSettings($guild);
-            }
+            $this->processSettings($guild);
         }
     }
 
