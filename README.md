@@ -12,6 +12,7 @@ Short list of what this bot can do:
 - Role and permissions system with complete control to assign permissions as you see fit
 - Leveling by sending messages and hanging out in voice + commands to manage xp
 - Role Rewards based on levels
+- Custom level up messages
 - Extensive bot config where almost all settings can be changed
 - Enable / disable server invites through command to allow mods to use it (has separate permission)
 - User config where user can set specific settings for that guild
@@ -20,6 +21,7 @@ Short list of what this bot can do:
 - Automatic timeout detection to get a better overview of who has been timed out, why and how often
 - User blacklist where users can be added and prevented from using certain functions of the bot
 - Assign roles to users when they join the server
+- Custom welcome messages when people join the server
 - Add replies based on roles in the server when you mention the bot
 - Reminders - send a reminder every xx time in a certain channel
 - Add emotes as custom reactions to strings, when those strings are detected the bot will react with set emote
@@ -180,8 +182,7 @@ setting channels or roles make sure to use the IDS.
 * **config guid list**
 * **config guild edit** `setting_name` `new_value`
 
-Right now we have the following settings:
-
+### Settings
 * `xp_count` - xp gained per message
 * `xp_cooldown` - seconds cooldown after last message before it counts again
 * `xp_voice_count` - xp gained in voice
@@ -194,19 +195,24 @@ Right now we have the following settings:
 * `enable_reactions` - enable custom reactions
 * `enable_commands` - enable custom commands
 * `enable_logging` - enable general logging
-* `log_channel_id` - set the channel ID where the log sends messages
-* `enable_bump_reminder` - enable reminder tag
-* `bump_reminder_role` - Role to be tagged for bump reminders
-* `bump_channel` - Channel where the bump reminders are tagged
 * `enable_mention_responder` - Enable the responses when you mention the bot
 * `enable_qotd_reminder` - Enable the role mention in set question of the day channel
-* `qotd_channel` - Channel to tag qotd role
-* `qotd_role` - Role to tag in qotd channel   
-* `current_count` - Current counter for counting channel
-* `enable_count` - Enable the counting channel
-* `count_channel` - Counting channel ID
 * `enable_join_role` - Enables giving users a role when they join the server
+* `enable_welcome_msg` - Enable the welcome message
+* `enable_lvl_msg` - Enable level up message
+* `enable_bump_reminder` - enable reminder tag
+* `enable_count` - Enable the counting channel
+* `bump_channel` - Channel where the bump reminders are tagged
+* `qotd_channel` - Channel to tag qotd role
+* `count_channel` - Counting channel ID
+* `welcome_msg_channel` - Channel to welcome user
+* `level_up_channel` - Channel to send level up messages
+* `log_channel_id` - set the channel ID where the log sends messages
+* `bump_reminder_role` - Role to be tagged for bump reminders
+* `qotd_role` - Role to tag in qotd channel
 * `join_role` - Actual role to give when a user joins the server
+* `current_count` - Current counter for counting channel
+
 
 ## User config
 Users have their own settings per guild. For now, I only use a single setting but more to come soon.
@@ -292,21 +298,44 @@ People can be put on a blacklist manually or automatically.
 * **blacklist block** `<user_mention` `<reason>` - Add someone to the blacklist
 * **blacklist unblock** `<user_mention>`  - Remove someone from the blacklist
 
-## Join role
+### Join role
 You can make sure the bot gives users a role when they join the server. In order to make it work
 you have to set the following settings:
 
 * `enable_join_role` - Enable or disable giving the role
 * `join_role` - ID of the actual role to give
 
-## Disable server invites
+### Disable server invites
 Since discord requires a "Mange server" permission to pause invites I added a simple command to
 do it with the bot:
 
 - **invites toggle** - Enable/disable invites
 
-There is a separate permission available `invites` which is required for this command. Only
-the admin has it by default.
+### Custom messages
+When adding custom messages you can use the `:user` parameter in you message to be replaced with a tag of the user, 
+for level up messages you can also use `:level`. Example:
+* `Welcome :user!`
+* `Congrats :user you are now :level!`
+
+#### Welcome
+You can add custom welcome messages to the bot. It wil pick one of the random messages and sends it in the channel
+set in the config.
+* **messages welcome list** - Show list of custom level up messages
+* **messages welcome add**  `<message>` - Add new level up message
+* **messages welcome delete** `<message>` - Delete level up message (Message is autocompleted)
+
+
+#### Levels
+You can set custom messages when users level up to a certain level. If you don't set any, a default message will
+be used if level up messages are enabled. When a user levels up, it checks for the highest message in the list 
+which is not higher than that users level. Meaning if you set 2 messages, one for level 1 and one for level 10. 
+The level 1 message will be used until that user reached level 10.
+
+* **messages levels list** - Show list of custom level up messages
+* **messages levels add** `<level>` `<message>` - Add new level up message
+* **messages levels delete** `<level>` - Delete level up message
+
+
 ## Mention Responder
 Small funny feature, when you tag the bot you will get a random reply from a list of mention replies. There are default
 replies, but you can also add your own replies based on certain roles or users in the server.

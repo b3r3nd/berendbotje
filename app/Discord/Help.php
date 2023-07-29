@@ -289,6 +289,12 @@ class Help extends SlashCommand
     {
         $embedBuilder->setDescription("Timeouts are automatically detected and saved, bans and kicks are only counted.");
         $this->addCommands([
+            ['cmd' => 'messages levels list', 'usage' => '', 'desc' => 'Sho all level up messages'],
+            ['cmd' => 'messages levels add', 'usage' => '`<level>` `<message>`', 'desc' => 'Add level up message'],
+            ['cmd' => 'messages levels delete', 'usage' => '`<level>`', 'desc' => 'Delete a level up message'],
+            ['cmd' => 'messages welcome list', 'usage' => '', 'desc' => 'Show all welcomes messages'],
+            ['cmd' => 'messages welcome add', 'usage' => '`<message>`', 'desc' => 'Add a new welcome message'],
+            ['cmd' => 'messages welcome delete', 'usage' => '`<message>`', 'desc' => 'Delete a welcome message'],
             ['cmd' => 'invites toggle', 'usage' => '', 'desc' => 'Enable/disable server invites'],
             ['cmd' => 'timeouts list', 'usage' => '`<user_mention>`', 'desc' => 'Show given timeout history or from a specific user'],
             ['cmd' => 'timeouts edit', 'usage' => '`<timeout_id>` `<reason>`', 'desc' => 'Update the reason for a given timeout'],
