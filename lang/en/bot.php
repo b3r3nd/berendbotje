@@ -49,24 +49,8 @@ return [
     'counting-since' => 'Counting emotes since :date',
     'timeout-id' => 'Timeout ID',
     'timeout-reason' => 'Timeout Reason',
-
-
-    'lvlup' => [
-        'default-1' => 'Hey <@:user>, je bent nu level :level, gefeliciteerd!',
-        'default-20' => 'Hey strijder <@:user>, je bent nu level :level, gefeliciteerd! Verdien je nog een drankje?',
-        'default-30' => 'Hey strijder <@:user>, je bent nu level :level, gefeliciteerd! Berend zal je nu op een drankje trakteren!',
-        'default-40' => 'Hey krijger <@:user>, je bent nu level :level, gefeliciteerd! Cassidy zal je nu op een drankje trakteren want het word berend wat te duur.',
-        'default-50' => 'Hey ... <@:user>, en je al dronken van al die drankjes? Anders krijg je er nog een voor je level :level!',
-        '1' => 'Gefeliciteerd <@:user>, je eerste level! Ga zo door!',
-        '5' => 'Rookie member alweer <@:user>, nieuw kleurtje!!',
-        '10' => 'Gefeliciteerd, active member <@:user>! Nu heb je wel een drankje verdiend..',
-        '20' => 'Level 20.. master member. <@:user> nu ben je echt onderdeel van onze community :)',
-        '30' => 'EPIC MEMBER WHOOP WHOOP <@:user>!!',
-        '40' => 'Dit gaat de goede kant op <@:user>, level 40!',
-        '50' => 'Level 50.. Ultimate member.. kom je nog wel buiten <@:user>?',
-        '60' => 'L-E-G-E-N-D-A-R-Y MEMBER.. Jij gaat er voor of niet <@:user>?',
-        '70' => 'Wat moet ik zeggen? level 70? Mythical member? Ernstig hoor <@:user>',
-    ],
+    'message' => 'Message',
+    'levelup' => 'Congrats <@:user> you are now level :level!',
 
     'permissions-enum' => [
         'roles' => 'View Roles',
@@ -93,6 +77,7 @@ return [
         'openai' => 'OpenAi Commands',
         'abusers' => 'Manage blacklist',
         'invites' => 'Manage server invites',
+        'messages' => 'Manage custom messages',
     ],
 
     'slash' => [
@@ -158,6 +143,27 @@ return [
         'delreply' => 'Delete a new reply from a mention group',
         'searchreply ' => 'Search for a reply',
         'mentiongroups' => 'Mention responder group',
+        'level-index' => 'List of custom level up messages',
+        'welcome-index' => 'List of custom welcome messages',
+        'delete-level-msg' => 'Delete custom level message',
+        'delete-welcome-msg' => 'Delete custom welcome message',
+        'add-level-msg' => 'Add custom level message',
+        'add-welcome-msg' => 'Add custom welcome message',
+    ],
+
+    'msg' => [
+        'welcome' => [
+            'title' => 'Custom welcome messages',
+            'saved' => "Welcome message saved: \n\n:message",
+            'deleted' => "Welcome message deleted.",
+            'not-found' => "Can't find message: \n\n:message",
+        ],
+        'level' => [
+            'title' => 'Custom level up messages',
+            'saved' => "level up message for level :level saved: \n\n:message",
+            'deleted' => "level up message for level :level deleted.",
+            'not-found' => "Can't find message for level :level",
+        ],
     ],
 
     'invites' => [

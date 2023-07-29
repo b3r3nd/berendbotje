@@ -6,6 +6,7 @@ use App\Discord\Core\Bot;
 use App\Discord\Core\Enums\Setting;
 use App\Discord\Core\Interfaces\Action;
 use App\Discord\Core\Models\DiscordUser;
+use App\Discord\CustomMessages\Models\CustomMessage;
 use App\Discord\Levels\Helpers\Helper;
 use Discord\Http\Exceptions\NoPermissionsException;
 use Discord\Parts\User\Member;
@@ -69,28 +70,13 @@ class UpdateMessageCounterAction implements Action
                 $oldLevel = Helper::calcLevel($messageCounter->xp);
                 $messageCounter->update(['xp' => $messageCounter->xp + $this->xpCount]);
                 $newLevel = Helper::calcLevel($messageCounter->xp);
-
-                /**
-                 * Hardcoded for now, will make proper commands to change these for each server :)
-                 */
                 if ($newLevel > $oldLevel && $guild->getSetting(Setting::ENABLE_LVL_MSG)) {
-                    $msg = 'default-1';
-                    if ($newLevel > 20) {
-                        $msg = 'default-20';
+                    $levelUpMessage = CustomMessage::byGuild($this->guildId)->where('level', '<=', $newLevel)->orderBy('level', 'desc')->get()->first();
+                    if ($levelUpMessage) {
+                        $message = str_replace([':user', ':level'], ["<@{$messageCounter->user->discord_id}>", $newLevel], $levelUpMessage->message);
+                    } else {
+                        $message = __("bot.levelup", ['user' => $messageCounter->user->discord_id, 'level' => $newLevel]);
                     }
-                    if ($newLevel > 30) {
-                        $msg = 'default-30';
-                    }
-                    if ($newLevel > 40) {
-                        $msg = 'default-40';
-                    }
-                    if ($newLevel > 50) {
-                        $msg = 'default-50';
-                    }
-                    if ($newLevel === 1 || $newLevel === 5 || $newLevel === 10 || $newLevel === 20 || $newLevel === 30 || $newLevel === 40 || $newLevel === 50 || $newLevel === 60 || $newLevel === 70) {
-                        $msg = $newLevel;
-                    }
-                    $message = __("bot.lvlup.{$msg}", ['user' => $messageCounter->user->discord_id, 'level' => $newLevel]);
                     $this->bot->discord->getChannel($guild->getSetting(Setting::LEVEL_UP_CHAN))?->sendMessage($message);
                 }
             }

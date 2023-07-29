@@ -4,22 +4,22 @@ namespace App\Discord\MentionResponder\Actions;
 
 use App\Discord\Core\Interfaces\Action;
 use App\Discord\MentionResponder\Models\MentionGroup;
-use Discord\Repository\Interaction\OptionRepository;
+use Discord\Helpers\Collection;
 
 /**
- * @property OptionRepository $options  List of options retrieved from the slash command which triggered this action
+ * @property Collection $options  List of options retrieved from the slash command which triggered this action
  * @property MentionGroup $mentionGroup Mention group to update
  */
 class UpdateMentionGroupAction implements Action
 {
-    private OptionRepository $options;
+    private Collection $options;
     private MentionGroup $mentionGroup;
 
     /**
      * @param MentionGroup $mentionGroup
-     * @param OptionRepository $options
+     * @param Collection $options
      */
-    public function __construct(MentionGroup $mentionGroup, OptionRepository $options)
+    public function __construct(MentionGroup $mentionGroup, Collection $options)
     {
         $this->options = $options;
         $this->mentionGroup = $mentionGroup;

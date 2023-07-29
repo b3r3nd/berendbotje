@@ -9,6 +9,12 @@ use App\Discord\Core\Commands\UserSettings;
 use App\Discord\Core\Events\InteractionCreate;
 use App\Discord\Core\Models\DiscordUser;
 use App\Discord\Core\Models\Guild;
+use App\Discord\CustomMessages\Commands\AddLevelMessage;
+use App\Discord\CustomMessages\Commands\AddWelcomeMessage;
+use App\Discord\CustomMessages\Commands\DeleteLevelMessage;
+use App\Discord\CustomMessages\Commands\DeleteWelcomeMessage;
+use App\Discord\CustomMessages\Commands\LevelMessagesIndex;
+use App\Discord\CustomMessages\Commands\WelcomeMessagesIndex;
 use App\Discord\Fun\Commands\Ask;
 use App\Discord\Fun\Commands\BumpStatistics;
 use App\Discord\Fun\Commands\CommandIndex;
@@ -240,6 +246,18 @@ class Bot
         ],
         'invites' => [
             ToggleInvites::class,
+        ],
+        'messages' => [
+            'welcome' => [
+                WelcomeMessagesIndex::class,
+                AddWelcomeMessage::class,
+                DeleteWelcomeMessage::class,
+            ],
+            'levels' => [
+                LevelMessagesIndex::class,
+                AddLevelMessage::class,
+                DeleteLevelMessage::class,
+            ]
         ],
         'help' => [
             Help::class,

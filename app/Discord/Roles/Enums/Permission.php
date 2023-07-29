@@ -33,8 +33,9 @@ enum Permission: string
     case OPENAI = 'openai';
     case BLACKLIST = 'abusers';
     case INVITES = 'invites';
+    case MESSAGES = 'messages';
 
-    // Bot Owner permissions not available in public servers
+        // Bot Owner permissions not available in public servers
     case ADMIN_SERVER = 'servers';
     case ADMINS = 'admins';
 

@@ -32,4 +32,6 @@ enum Setting: string
     case ENABLE_JOIN_ROLE = 'enable_join_role';
     case JOIN_ROLE = 'join_role';
     case ENABLE_CMD_LOG = 'enable_cmd_log';
+    case ENABLE_WELCOME_MSG = 'enable_welcome_msg';
+    case WELCOME_MSG_CHAN = 'welcome_msg_channel';
 }
