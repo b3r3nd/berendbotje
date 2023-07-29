@@ -25,13 +25,11 @@ class MessageLogger extends DiscordEvent
             $guild->logWithMember($message->author, __('bot.log.send-dm', ['content' => $message->content]), 'success');
         });
 
-        $this->discord->on(Event::MESSAGE_UPDATE, function (Message $message, Discord $discord, ?Message $oldMessage) {
-            if ($message->author?->bot) {
+        $this->discord->on(Event::MESSAGE_UPDATE, function (object $message, Discord $discord, ?Message $oldMessage) {
+            if (!$message instanceof Message || $message->author?->bot || !$message->guild_id) {
                 return;
             }
-            if (!$message->guild_id) {
-                return;
-            }
+
             $guild = $this->bot->getGuild($message->guild_id);
             $channel = $guild->getChannel($message->channel_id);
             if ($channel && !$channel->no_stickers) {
