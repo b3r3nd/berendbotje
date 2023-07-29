@@ -9,12 +9,6 @@ use App\Discord\Core\Commands\UserSettings;
 use App\Discord\Core\Events\InteractionCreate;
 use App\Discord\Core\Models\DiscordUser;
 use App\Discord\Core\Models\Guild;
-use App\Discord\CustomMessages\Commands\AddLevelMessage;
-use App\Discord\CustomMessages\Commands\AddWelcomeMessage;
-use App\Discord\CustomMessages\Commands\DeleteLevelMessage;
-use App\Discord\CustomMessages\Commands\DeleteWelcomeMessage;
-use App\Discord\CustomMessages\Commands\LevelMessagesIndex;
-use App\Discord\CustomMessages\Commands\WelcomeMessagesIndex;
 use App\Discord\Fun\Commands\Ask;
 use App\Discord\Fun\Commands\BumpStatistics;
 use App\Discord\Fun\Commands\CommandIndex;
@@ -26,7 +20,6 @@ use App\Discord\Fun\Commands\DeleteCommand;
 use App\Discord\Fun\Commands\DeleteReaction;
 use App\Discord\Fun\Commands\EightBall;
 use App\Discord\Fun\Commands\EmoteIndex;
-use App\Discord\Fun\Commands\GenerateImage;
 use App\Discord\Fun\Commands\IncreaseCringe;
 use App\Discord\Fun\Commands\ModeratorStatistics;
 use App\Discord\Fun\Commands\ReactionIndex;
@@ -65,9 +58,14 @@ use App\Discord\MentionResponder\Commands\DelMentionReply;
 use App\Discord\MentionResponder\Commands\MentionGroupIndex;
 use App\Discord\MentionResponder\Commands\MentionIndex;
 use App\Discord\MentionResponder\Commands\UpdateMentionGroup;
+use App\Discord\Moderation\Commands\AddLevelMessage;
+use App\Discord\Moderation\Commands\AddWelcomeMessage;
 use App\Discord\Moderation\Commands\Blacklist;
 use App\Discord\Moderation\Commands\Block;
 use App\Discord\Moderation\Commands\ChannelIndex;
+use App\Discord\Moderation\Commands\DeleteLevelMessage;
+use App\Discord\Moderation\Commands\DeleteWelcomeMessage;
+use App\Discord\Moderation\Commands\LevelMessagesIndex;
 use App\Discord\Moderation\Commands\MarkChannel;
 use App\Discord\Moderation\Commands\RemoveTimeout;
 use App\Discord\Moderation\Commands\Timeouts;
@@ -75,8 +73,9 @@ use App\Discord\Moderation\Commands\ToggleInvites;
 use App\Discord\Moderation\Commands\Unblock;
 use App\Discord\Moderation\Commands\UnmarkChannel;
 use App\Discord\Moderation\Commands\UpdateTimeoutReason;
+use App\Discord\Moderation\Commands\WelcomeMessagesIndex;
 use App\Discord\Moderation\Events\DetectTimeouts;
-use App\Discord\Moderation\Events\GiveJoinRole;
+use App\Discord\Moderation\Events\GuildMemberAdd;
 use App\Discord\Moderation\Events\MediaFilter;
 use App\Discord\Moderation\Events\StickerFilter;
 use App\Discord\Roles\Commands\AttachRolePermission;
@@ -89,14 +88,12 @@ use App\Discord\Roles\Commands\Permissions;
 use App\Discord\Roles\Commands\Roles;
 use App\Discord\Roles\Commands\UserRoles;
 use App\Discord\Roles\Commands\Users;
-use App\Discord\Test\Commands\Test;
 use Database\Seeders\LogSettingsSeeder;
 use Database\Seeders\MentionResponderSeeder;
 use Database\Seeders\RoleSeeder;
 use Database\Seeders\SettingsSeeder;
 use Discord\Discord;
 use Discord\Exceptions\IntentException;
-use Discord\Parts\Interactions\Command\Command;
 use Discord\WebSockets\Event;
 use Discord\WebSockets\Intents;
 use Exception;
@@ -125,7 +122,7 @@ class Bot
         DetectTimeouts::class,
         MediaFilter::class,
         StickerFilter::class,
-        GiveJoinRole::class,
+        GuildMemberAdd::class,
         BumpCounter::class,
         KickAndBanCounter::class,
         EmoteCounter::class,

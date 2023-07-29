@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Discord\CustomMessages\Models;
+namespace App\Discord\Moderation\Models;
 
 use App\Discord\Core\Models\Guild;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -23,11 +23,11 @@ class CustomMessage extends Model
 
     public static function level($guildId): mixed
     {
-        return self::byGuild($guildId)->where('type', \App\Discord\CustomMessages\Enums\CustomMessage::LEVEL->value);
+        return self::byGuild($guildId)->where('type', \App\Discord\Moderation\Enums\CustomMessage::LEVEL->value);
     }
 
     public static function welcome($guildId): mixed
     {
-        return self::byGuild($guildId)->where('type', \App\Discord\CustomMessages\Enums\CustomMessage::WELCOME->value);
+        return self::byGuild($guildId)->where('type', \App\Discord\Moderation\Enums\CustomMessage::WELCOME->value);
     }
 }

@@ -4,12 +4,12 @@ namespace App\Discord\Moderation\Events;
 
 use App\Discord\Core\DiscordEvent;
 use App\Discord\Core\Enums\Setting;
-use App\Discord\CustomMessages\Models\CustomMessage;
+use App\Discord\Moderation\Models\CustomMessage;
 use Discord\Discord;
 use Discord\Parts\User\Member;
 use Discord\WebSockets\Event;
 
-class GiveJoinRole extends DiscordEvent
+class GuildMemberAdd extends DiscordEvent
 {
     /**
      * @return void
