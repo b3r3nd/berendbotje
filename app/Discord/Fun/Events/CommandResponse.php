@@ -2,33 +2,29 @@
 
 namespace App\Discord\Fun\Events;
 
-use App\Discord\Core\DiscordEvent;
-use Discord\Discord;
+use App\Discord\Core\Bot;
+use App\Discord\Core\Enums\Setting;
+use App\Discord\Core\Guild;
+use App\Discord\Core\MessageCreateEvent;
+use App\Models\Channel;
+use Discord\Http\Exceptions\NoPermissionsException;
 use Discord\Parts\Channel\Message;
-use Discord\WebSockets\Event;
 
-class CommandResponse extends DiscordEvent
+class CommandResponse implements MessageCreateEvent
 {
     /**
-     * @return void
+     * @throws NoPermissionsException
      */
-    public function registerEvent(): void
+    public function execute(Bot $bot, Guild $guild, Message $message, ?Channel $channel): void
     {
-        $this->discord->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) {
-            if ($message->author->bot || !$message->guild_id) {
-                return;
+        if (!$guild->getSetting(Setting::ENABLE_COMMANDS)) {
+            return;
+        }
+        $guild->model->refresh();
+        foreach ($guild->model->commands as $command) {
+            if (strtolower($message->content) === strtolower($command->trigger)) {
+                $message->channel->sendMessage($command->response);
             }
-            $guild = $this->bot->getGuild($message->guild_id);
-            if (!$guild?->getSetting(\App\Discord\Core\Enums\Setting::ENABLE_COMMANDS)) {
-                return;
-            }
-
-            $guild->model->refresh();
-            foreach ($guild->model->commands as $command) {
-                if (strtolower($message->content) === strtolower($command->trigger)) {
-                    $message->channel->sendMessage($command->response);
-                }
-            }
-        });
+        }
     }
 }

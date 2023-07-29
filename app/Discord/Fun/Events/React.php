@@ -2,40 +2,37 @@
 
 namespace App\Discord\Fun\Events;
 
-use App\Discord\Core\DiscordEvent;
-use Discord\Discord;
+use App\Discord\Core\Bot;
+use App\Discord\Core\Enums\Setting;
+use App\Discord\Core\Guild;
+use App\Discord\Core\MessageCreateEvent;
+use App\Models\Channel;
+use Discord\Http\Exceptions\NoPermissionsException;
 use Discord\Parts\Channel\Message;
-use Discord\WebSockets\Event;
 
-class React extends DiscordEvent
+class React implements MessageCreateEvent
 {
     /**
-     * @return void
+     * @throws NoPermissionsException
      */
-    public function registerEvent(): void
+    public function execute(Bot $bot, Guild $guild, Message $message, ?Channel $channel): void
     {
-        $this->discord->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) {
-            if (!$message->guild_id || $message->author->bot) {
-                return;
-            }
-            $guild = $this->bot->getGuild($message->guild_id);
-            if (!$guild?->getSetting(\App\Discord\Core\Enums\Setting::ENABLE_REACTIONS)) {
-                return;
-            }
-            $guild->model->refresh();
-            $msg = strtolower($message->content);
+        if (!$guild->getSetting(Setting::ENABLE_REACTIONS)) {
+            return;
+        }
+        $guild->model->refresh();
+        $msg = strtolower($message->content);
 
-            foreach ($guild->model->reactions as $reaction) {
-                preg_match("/\b{$reaction->trigger}\b|^{$reaction->trigger}\b|\b{$reaction->trigger}$/", $msg, $result);
+        foreach ($guild->model->reactions as $reaction) {
+            preg_match("/\b{$reaction->trigger}\b|^{$reaction->trigger}\b|\b{$reaction->trigger}$/", $msg, $result);
 
-                if (!empty($result)) {
-                    if (str_contains($reaction->reaction, "<")) {
-                        $message->react(str_replace(["<", ">"], "", $reaction->reaction));
-                    } else {
-                        $message->react($reaction->reaction);
-                    }
+            if (!empty($result)) {
+                if (str_contains($reaction->reaction, "<")) {
+                    $message->react(str_replace(["<", ">"], "", $reaction->reaction));
+                } else {
+                    $message->react($reaction->reaction);
                 }
             }
-        });
+        }
     }
 }

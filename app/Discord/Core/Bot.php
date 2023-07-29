@@ -7,6 +7,7 @@ use App\Discord\Core\Commands\UpdateSetting;
 use App\Discord\Core\Commands\UpdateUserSetting;
 use App\Discord\Core\Commands\UserSettings;
 use App\Discord\Core\Events\InteractionCreate;
+use App\Discord\Core\Events\MessageCreate;
 use App\Discord\Core\Models\DiscordUser;
 use App\Discord\Core\Models\Guild;
 use App\Discord\Fun\Commands\Ask;
@@ -114,22 +115,35 @@ class Bot
     private array $guilds;
     private bool $updateCommands, $deleteCommands;
 
-    private array $events = [
-        InteractionCreate::class,
-        VoiceStateUpdate::class,
+    /**
+     * @TODO only tmp list for testing
+     */
+    public array $messageEvents = [
         MessageXpCounter::class,
-        VoiceXpCounter::class,
-        DetectTimeouts::class,
         MediaFilter::class,
         StickerFilter::class,
-        GuildMemberAdd::class,
-        BumpCounter::class,
-        KickAndBanCounter::class,
-        EmoteCounter::class,
-        Reminder::class,
         Count::class,
         React::class,
         CommandResponse::class,
+        EmoteCounter::class,
+    ];
+
+
+    /**
+     * @var array|string[]
+     * @TODO !!!
+     */
+    private array $events = [
+        InteractionCreate::class,
+        MessageCreate::class,
+
+        VoiceStateUpdate::class,
+        VoiceXpCounter::class,
+        DetectTimeouts::class,
+        GuildMemberAdd::class,
+        BumpCounter::class,
+        KickAndBanCounter::class,
+        Reminder::class,
         VoiceStateLogger::class,
         GuildMemberLogger::class,
         MessageLogger::class,
@@ -427,7 +441,7 @@ class Bot
      * @param string $id
      * @return mixed|null
      */
-    public function getGuild(string $id): mixed
+    public function getGuild(string $id): ?\App\Discord\Core\Guild
     {
         return $this->guilds[$id] ?? null;
     }
