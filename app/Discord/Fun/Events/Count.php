@@ -17,7 +17,7 @@ class Count implements MessageCreateEvent
 
     public function execute(Bot $bot, Guild $guild, Message $message, ?Channel $channel): void
     {
-        if ($message->channel_id != $guild?->getSetting(SettingEnum::COUNT_CHANNEL) || !$guild?->getSetting(SettingEnum::ENABLE_COUNT)) {
+        if ($message->channel_id != $guild->getSetting(SettingEnum::COUNT_CHANNEL) || !$guild->getSetting(SettingEnum::ENABLE_COUNT)) {
             return;
         }
 
