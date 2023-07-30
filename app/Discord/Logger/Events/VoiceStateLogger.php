@@ -2,7 +2,7 @@
 
 namespace App\Discord\Logger\Events;
 
-use App\Discord\Core\DiscordEvent;
+use App\Discord\Core\Events\DiscordEvent;
 use App\Discord\Logger\Enums\LogSetting;
 use Discord\Discord;
 use Discord\Parts\WebSockets\VoiceStateUpdate as DVoiceStateUpdate;
@@ -10,7 +10,7 @@ use Discord\WebSockets\Event;
 
 class VoiceStateLogger extends DiscordEvent
 {
-    public function registerEvent(): void
+    public function register(): void
     {
         $this->discord->on(Event::VOICE_STATE_UPDATE, function (DVoiceStateUpdate $state, Discord $discord, $oldstate) {
             $guild = $this->bot->getGuild($state->guild_id ?? $oldstate->guild_id);

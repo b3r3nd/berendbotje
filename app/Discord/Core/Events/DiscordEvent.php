@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Discord\Core;
+namespace App\Discord\Core\Events;
 
+use App\Discord\Core\Bot;
 use Discord\Discord;
 
 /**
@@ -22,5 +23,5 @@ abstract class DiscordEvent
         $this->discord = $bot->discord;
     }
 
-    abstract public function registerEvent();
+    abstract public function register();
 }

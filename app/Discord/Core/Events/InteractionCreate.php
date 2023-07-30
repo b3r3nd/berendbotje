@@ -2,7 +2,6 @@
 
 namespace App\Discord\Core\Events;
 
-use App\Discord\Core\DiscordEvent;
 use Discord\Discord;
 use Discord\InteractionType;
 use Discord\Parts\Interactions\Interaction;
@@ -13,7 +12,7 @@ class InteractionCreate extends DiscordEvent
     /**
      * @return void
      */
-    public function registerEvent(): void
+    public function register(): void
     {
         $this->discord->on(Event::INTERACTION_CREATE, function (Interaction $interaction, Discord $discord) {
             $option = $interaction->data->options?->first();

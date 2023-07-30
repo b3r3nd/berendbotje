@@ -2,8 +2,8 @@
 
 namespace App\Discord\Fun\Events;
 
-use App\Discord\Core\DiscordEvent;
 use App\Discord\Core\Enums\Setting;
+use App\Discord\Core\Events\DiscordEvent;
 use App\Discord\Core\Models\DiscordUser;
 use App\Discord\Core\Models\Guild;
 use App\Discord\Fun\Jobs\ProcessBumpReminder;
@@ -18,7 +18,7 @@ class BumpCounter extends DiscordEvent
     /**
      * @return void
      */
-    public function registerEvent(): void
+    public function register(): void
     {
         $this->discord->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) {
             if ($message->type === 20 && $message->interaction->name === 'bump') {

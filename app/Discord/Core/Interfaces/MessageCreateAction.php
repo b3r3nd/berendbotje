@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Discord\Core;
+namespace App\Discord\Core\Interfaces;
 
+use App\Discord\Core\Bot;
+use App\Discord\Core\Guild;
 use App\Models\Channel;
 use Discord\Parts\Channel\Message;
 
-interface MessageCreateEvent
+interface MessageCreateAction
 {
     /**
      * @param Bot $bot

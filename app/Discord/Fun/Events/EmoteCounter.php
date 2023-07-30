@@ -5,7 +5,7 @@ namespace App\Discord\Fun\Events;
 use App\Discord\Core\Bot;
 use App\Discord\Core\Enums\Setting;
 use App\Discord\Core\Guild;
-use App\Discord\Core\MessageCreateEvent;
+use App\Discord\Core\Interfaces\MessageCreateAction;
 use App\Discord\Fun\Models\Emote;
 use App\Models\Channel;
 use Discord\Parts\Channel\Message;
@@ -14,7 +14,7 @@ use function Emoji\detect_emoji;
 /**
  * It will only count emoji ONCE per message, te prevent people just spamming emotes 10x in a single message.
  */
-class EmoteCounter implements MessageCreateEvent
+class EmoteCounter implements MessageCreateAction
 {
     public function execute(Bot $bot, Guild $guild, Message $message, ?Channel $channel): void
     {

@@ -2,10 +2,10 @@
 
 namespace App\Discord\Core;
 
-use App\Discord\Core\Interfaces\PaginationIndex;
 use Discord\Builders\Components\ActionRow;
 use Discord\Builders\Components\Button;
 use Discord\Builders\MessageBuilder;
+use Discord\Parts\Embed\Embed;
 use Discord\Parts\Interactions\Interaction;
 
 /**
@@ -17,12 +17,17 @@ use Discord\Parts\Interactions\Interaction;
  * @property int $total         MUST BE SET in child in order to disable buttons when you are on the last page.
  * @property int $lastUser      User who last clicked a button or used a command (to get the correct data in getEmbed)
  */
-abstract class SlashIndexCommand extends SlashCommand implements PaginationIndex
+abstract class SlashIndexCommand extends SlashCommand
 {
     public array $offset = [];
     public int $perPage = 15;
     public int $total = 0;
     public int $lastUser = 0;
+
+    /**
+     * @return Embed
+     */
+    abstract public function getEmbed(): Embed;
 
     /**
      * @return MessageBuilder

@@ -22,7 +22,6 @@ use Exception;
  * @property string $description            Description for the (slash) command.
  * @property array $slashCommandOptions     Array of all options @see https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-option-structure
  * @property Interaction $interaction       Set with the interaction instance which triggered the command
- *
  */
 abstract class SlashCommand
 {
@@ -34,7 +33,7 @@ abstract class SlashCommand
     public string $description;
     public array $slashCommandOptions;
     public Interaction $interaction;
-    public string $commandLabel = '';
+    public string $commandLabel;
 
     /**
      * Permissions required for using this command, you are required to use the Setting Enum
@@ -60,7 +59,7 @@ abstract class SlashCommand
     abstract public function action(): MessageBuilder;
 
     /**
-     * If you are using slash command options, this function will receive when the user is typing,
+     * If you are using slash command options, this function will receive the input when the user is typing,
      * so you can find options matching what the user is searching for and display them!
      *
      * @param Interaction $interaction
@@ -168,8 +167,6 @@ abstract class SlashCommand
      */
     public function setCommandLabel(string $commandLabel): void
     {
-        $this->commandLabel = str_replace('_', ' ', $commandLabel);
+        $this->commandLabel = $commandLabel;
     }
-
-
 }

@@ -2,7 +2,7 @@
 
 namespace App\Discord\Logger\Events;
 
-use App\Discord\Core\DiscordEvent;
+use App\Discord\Core\Events\DiscordEvent;
 use App\Discord\Logger\Enums\LogSetting;
 use Discord\Discord;
 use Discord\Parts\Channel\Message;
@@ -11,7 +11,7 @@ use Discord\WebSockets\Event;
 class MessageLogger extends DiscordEvent
 {
 
-    public function registerEvent(): void
+    public function register(): void
     {
         $this->discord->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) {
             if ($message->author?->bot) {

@@ -2,7 +2,6 @@
 
 namespace App\Discord\Core\Events;
 
-use App\Discord\Core\DiscordEvent;
 use Discord\Discord;
 use Discord\Parts\Channel\Message;
 use Discord\WebSockets\Event;
@@ -12,7 +11,7 @@ class MessageCreate extends DiscordEvent
     /**
      * @return void
      */
-    public function registerEvent(): void
+    public function register(): void
     {
         $this->discord->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) {
             if ($message->author->bot || !$message->guild_id) {
@@ -23,9 +22,8 @@ class MessageCreate extends DiscordEvent
                 return;
             }
             $channel = $guild->getChannel($message->channel_id);
-
-            foreach ($this->bot->messageEvents as $messageEvent) {
-                (new $messageEvent())->execute($this->bot, $guild, $message, $channel);
+            foreach ($this->bot->messageActions as $messageEvent) {
+                $messageEvent->execute($this->bot, $guild, $message, $channel ?: null);
             }
         });
     }

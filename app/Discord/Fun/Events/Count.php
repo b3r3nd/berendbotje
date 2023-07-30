@@ -5,13 +5,13 @@ namespace App\Discord\Fun\Events;
 use App\Discord\Core\Bot;
 use App\Discord\Core\Enums\Setting as SettingEnum;
 use App\Discord\Core\Guild;
-use App\Discord\Core\MessageCreateEvent;
+use App\Discord\Core\Interfaces\MessageCreateAction;
 use App\Discord\Moderation\Models\Abuser;
 use App\Models\Channel;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Channel\Message;
 
-class Count implements MessageCreateEvent
+class Count implements MessageCreateAction
 {
     private string $lastCount = "";
 

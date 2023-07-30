@@ -2,8 +2,8 @@
 
 namespace App\Discord\Moderation\Events;
 
-use App\Discord\Core\DiscordEvent;
 use App\Discord\Core\Enums\Setting;
+use App\Discord\Core\Events\DiscordEvent;
 use App\Discord\Moderation\Models\CustomMessage;
 use Discord\Discord;
 use Discord\Parts\User\Member;
@@ -14,7 +14,7 @@ class GuildMemberAdd extends DiscordEvent
     /**
      * @return void
      */
-    public function registerEvent(): void
+    public function register(): void
     {
         $this->discord->on(Event::GUILD_MEMBER_ADD, function (Member $member, Discord $discord) {
             $guild = $this->bot->getGuild($member->guild_id);

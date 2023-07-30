@@ -2,8 +2,8 @@
 
 namespace App\Discord\Levels\Events;
 
-use App\Discord\Core\DiscordEvent;
 use App\Discord\Core\Enums\Setting;
+use App\Discord\Core\Events\DiscordEvent;
 use App\Discord\Core\Guild;
 use App\Discord\Core\Models\DiscordUser;
 use App\Discord\Levels\Helpers\Helper;
@@ -51,7 +51,7 @@ class VoiceXpCounter extends DiscordEvent
     /**
      * @return void
      */
-    public function registerEvent(): void
+    public function register(): void
     {
         $this->discord->on(Event::VOICE_STATE_UPDATE, function (DVoiceStateUpdate $state, Discord $discord, $oldstate) {
             $guild = $this->bot->getGuild($state->guild_id ?? $oldstate->guild_id);

@@ -2,8 +2,8 @@
 
 namespace App\Discord\Fun\Events;
 
-use App\Discord\Core\DiscordEvent;
 use App\Discord\Core\Enums\Setting as SettingEnum;
+use App\Discord\Core\Events\DiscordEvent;
 use Discord\Builders\MessageBuilder;
 use Discord\Discord;
 use Discord\Parts\Channel\Message;
@@ -14,7 +14,7 @@ class Reminder extends DiscordEvent
     /**
      * @return void
      */
-    public function registerEvent(): void
+    public function register(): void
     {
         $this->discord->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) {
             if ($message->author->bot || !$message->guild_id ||

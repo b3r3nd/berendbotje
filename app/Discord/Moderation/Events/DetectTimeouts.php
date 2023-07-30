@@ -2,7 +2,7 @@
 
 namespace App\Discord\Moderation\Events;
 
-use App\Discord\Core\DiscordEvent;
+use App\Discord\Core\Events\DiscordEvent;
 use App\Discord\Core\Models\DiscordUser;
 use App\Discord\Moderation\Models\Timeout;
 use Carbon\Carbon;
@@ -25,7 +25,7 @@ class DetectTimeouts extends DiscordEvent
     /**
      * @return void
      */
-    public function registerEvent(): void
+    public function register(): void
     {
         $this->discord->on(Event::GUILD_MEMBER_UPDATE, function (Member $member, Discord $discord) {
             if ($member->communication_disabled_until == NULL || $member->communication_disabled_until <= Carbon::now()) {

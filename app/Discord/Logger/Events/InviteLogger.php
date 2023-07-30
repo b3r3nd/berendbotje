@@ -2,7 +2,7 @@
 
 namespace App\Discord\Logger\Events;
 
-use App\Discord\Core\DiscordEvent;
+use App\Discord\Core\Events\DiscordEvent;
 use App\Discord\Logger\Enums\LogSetting;
 use Discord\Discord;
 use Discord\Parts\Channel\Invite;
@@ -10,7 +10,7 @@ use Discord\WebSockets\Event;
 
 class InviteLogger extends DiscordEvent
 {
-    public function registerEvent(): void
+    public function register(): void
     {
         $this->discord->on(Event::INVITE_CREATE, function (Invite $invite, Discord $discord) {
             $guild = $this->bot->getGuild($invite->guild_id);

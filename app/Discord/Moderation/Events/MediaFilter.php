@@ -4,11 +4,11 @@ namespace App\Discord\Moderation\Events;
 
 use App\Discord\Core\Bot;
 use App\Discord\Core\Guild;
-use App\Discord\Core\MessageCreateEvent;
+use App\Discord\Core\Interfaces\MessageCreateAction;
 use App\Models\Channel;
 use Discord\Parts\Channel\Message;
 
-class MediaFilter implements MessageCreateEvent
+class MediaFilter implements MessageCreateAction
 {
     public function execute(Bot $bot, Guild $guild, Message $message, ?Channel $channel): void
     {

@@ -6,16 +6,15 @@ use App\Discord\Core\Bot;
 use App\Discord\Core\Enums\Setting;
 use App\Discord\Core\Enums\UserSetting;
 use App\Discord\Core\Guild;
-use App\Discord\Core\MessageCreateEvent;
+use App\Discord\Core\Interfaces\MessageCreateAction;
 use App\Discord\Core\Models\DiscordUser;
 use App\Discord\Levels\Actions\SyncRoleRewardsAction;
 use App\Discord\Levels\Actions\UpdateMessageCounterAction;
 use App\Models\Channel;
 use Carbon\Carbon;
-use Discord\Http\Exceptions\NoPermissionsException;
 use Discord\Parts\Channel\Message;
 
-class MessageXpCounter implements MessageCreateEvent
+class MessageXpCounter implements MessageCreateAction
 {
     public function execute(Bot $bot, Guild $guild, Message $message, ?Channel $channel): void
     {

@@ -2,7 +2,7 @@
 
 namespace App\Discord\Logger\Events;
 
-use App\Discord\Core\DiscordEvent;
+use App\Discord\Core\Events\DiscordEvent;
 use App\Discord\Logger\Enums\LogSetting;
 use Discord\Discord;
 use Discord\Parts\Guild\AuditLog\AuditLog;
@@ -13,7 +13,7 @@ use Discord\WebSockets\Event;
 
 class GuildMemberLogger extends DiscordEvent
 {
-    public function registerEvent(): void
+    public function register(): void
     {
         $this->discord->on(Event::GUILD_MEMBER_ADD, function (Member $member, Discord $discord) {
             $guild = $this->bot->getGuild($member->guild_id);
