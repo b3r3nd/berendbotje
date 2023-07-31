@@ -2,9 +2,10 @@
 
 namespace App\Discord\Core\Events;
 
-use Discord\WebSockets\Event;
+use App\Discord\Core\DiscordEvent;
 use Discord\Discord;
 use Discord\Parts\WebSockets\VoiceStateUpdate as DVoiceStateUpdate;
+use Discord\WebSockets\Event;
 
 /**
  * For some reason the voice_states in the server is not updated after a user switches channel. It should update

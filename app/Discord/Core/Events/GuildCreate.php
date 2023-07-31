@@ -2,14 +2,15 @@
 
 namespace App\Discord\Core\Events;
 
+use App\Discord\Core\DiscordEvent;
 use App\Discord\Core\Models\DiscordUser;
+use App\Discord\Core\Models\Guild as GuildModel;
 use Database\Seeders\LogSettingsSeeder;
 use Database\Seeders\MentionResponderSeeder;
 use Database\Seeders\RoleSeeder;
 use Database\Seeders\SettingsSeeder;
 use Discord\Discord;
 use Discord\Parts\Guild\Guild;
-use App\Discord\Core\Models\Guild as GuildModel;
 use Discord\WebSockets\Event;
 use Exception;
 

@@ -2,10 +2,10 @@
 
 namespace App\Discord\Moderation\Events;
 
-use App\Discord\Core\Events\DiscordEvent;
+use App\Discord\Core\DiscordEvent;
 use App\Discord\Core\Models\DiscordUser;
-use App\Discord\Moderation\Models\Timeout;
 use App\Discord\Core\Models\Guild as GuildModel;
+use App\Discord\Moderation\Models\Timeout;
 use Carbon\Carbon;
 use Discord\Discord;
 use Discord\Parts\Guild\AuditLog\AuditLog;

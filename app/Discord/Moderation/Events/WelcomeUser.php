@@ -2,8 +2,8 @@
 
 namespace App\Discord\Moderation\Events;
 
+use App\Discord\Core\DiscordEvent;
 use App\Discord\Core\Enums\Setting;
-use App\Discord\Core\Events\DiscordEvent;
 use App\Discord\Moderation\Models\CustomMessage;
 use Discord\Discord;
 use Discord\Http\Exceptions\NoPermissionsException;

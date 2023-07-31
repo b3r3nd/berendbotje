@@ -2,7 +2,7 @@
 
 namespace App\Discord\Logger\Events;
 
-use App\Discord\Core\Events\DiscordEvent;
+use App\Discord\Core\DiscordEvent;
 use Discord\Discord;
 use Discord\Parts\Channel\Message;
 use Discord\WebSockets\Event;

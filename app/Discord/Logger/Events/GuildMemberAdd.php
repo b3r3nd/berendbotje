@@ -2,7 +2,7 @@
 
 namespace App\Discord\Logger\Events;
 
-use App\Discord\Core\Events\DiscordEvent;
+use App\Discord\Core\DiscordEvent;
 use App\Discord\Logger\Enums\LogSetting;
 use Discord\Discord;
 use Discord\Parts\User\Member;

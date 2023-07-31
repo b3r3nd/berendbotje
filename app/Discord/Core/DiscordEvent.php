@@ -1,10 +1,8 @@
 <?php
 
-namespace App\Discord\Core\Events;
+namespace App\Discord\Core;
 
-use App\Discord\Core\Bot;
 use Discord\Discord;
-use Discord\WebSockets\Event;
 
 /**
  * @property Bot $bot            Bot the event belongs to.

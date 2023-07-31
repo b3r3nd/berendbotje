@@ -2,8 +2,8 @@
 
 namespace App\Discord\Levels\Events;
 
+use App\Discord\Core\DiscordEvent;
 use App\Discord\Core\Enums\Setting;
-use App\Discord\Core\Events\DiscordEvent;
 use App\Discord\Core\Guild;
 use App\Discord\Core\Models\DiscordUser;
 use App\Discord\Levels\Helpers\Helper;
