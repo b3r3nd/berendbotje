@@ -4,9 +4,8 @@ namespace App\Discord\Core\Interfaces;
 
 use App\Discord\Core\Bot;
 use App\Discord\Core\Guild;
-use App\Models\Channel;
 use Discord\Parts\Channel\Message;
-
+use App\Discord\Moderation\Models\Channel;
 interface MessageCreateAction
 {
     /**

@@ -7,7 +7,7 @@ use App\Discord\Core\Enums\Setting as SettingEnum;
 use App\Discord\Core\Guild;
 use App\Discord\Core\Interfaces\MessageCreateAction;
 use App\Discord\Moderation\Models\Abuser;
-use App\Models\Channel;
+use App\Discord\Moderation\Models\Channel;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Channel\Message;
 

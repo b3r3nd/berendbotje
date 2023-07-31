@@ -9,7 +9,7 @@ use App\Discord\Core\Interfaces\MessageCreateAction;
 use App\Discord\Core\Models\DiscordUser;
 use App\Discord\Fun\Jobs\ProcessBumpReminder;
 use App\Discord\Fun\Models\Bump;
-use App\Models\Channel;
+use App\Discord\Moderation\Models\Channel;
 use Discord\Parts\Channel\Message;
 
 
@@ -21,7 +21,6 @@ class MessageBumpCounter implements MessageCreateAction
             if (!$guild->getSetting(Setting::ENABLE_BUMP)) {
                 return;
             }
-
             $user = DiscordUser::get($message->interaction->user->id);
             $bumpCounter = new Bump(['count' => 1, 'guild_id' => $guild->model->id]);
             $user->bumpCounters()->save($bumpCounter);

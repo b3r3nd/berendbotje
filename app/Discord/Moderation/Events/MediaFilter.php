@@ -5,7 +5,7 @@ namespace App\Discord\Moderation\Events;
 use App\Discord\Core\Bot;
 use App\Discord\Core\Guild;
 use App\Discord\Core\Interfaces\MessageCreateAction;
-use App\Models\Channel;
+use App\Discord\Moderation\Models\Channel;
 use Discord\Parts\Channel\Message;
 
 class MediaFilter implements MessageCreateAction

@@ -10,9 +10,9 @@ use App\Discord\Core\Interfaces\MessageCreateAction;
 use App\Discord\Core\Models\DiscordUser;
 use App\Discord\Levels\Actions\SyncRoleRewardsAction;
 use App\Discord\Levels\Actions\UpdateMessageCounterAction;
-use App\Models\Channel;
 use Carbon\Carbon;
 use Discord\Parts\Channel\Message;
+use App\Discord\Moderation\Models\Channel;
 
 class MessageXpCounter implements MessageCreateAction
 {

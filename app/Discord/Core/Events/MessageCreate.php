@@ -39,5 +39,4 @@ class MessageCreate extends DiscordEvent
             $messageEvent->execute($this->bot, $guild, $message, $channel ?: null);
         }
     }
-
 }

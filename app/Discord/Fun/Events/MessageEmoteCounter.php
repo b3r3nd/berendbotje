@@ -7,7 +7,7 @@ use App\Discord\Core\Enums\Setting;
 use App\Discord\Core\Guild;
 use App\Discord\Core\Interfaces\MessageCreateAction;
 use App\Discord\Fun\Models\Emote;
-use App\Models\Channel;
+use App\Discord\Moderation\Models\Channel;
 use Discord\Parts\Channel\Message;
 use function Emoji\detect_emoji;
 
