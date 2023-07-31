@@ -11,6 +11,7 @@ use Discord\Parts\Guild\AuditLog\AuditLog;
 use Discord\Parts\Guild\Guild;
 use Discord\Parts\User\Member;
 use Discord\WebSockets\Event;
+use Exception;
 
 /**
  * This event triggers for whenever somebody leaves, gets kicked or gets banned. We need to read the audit log
@@ -20,11 +21,21 @@ use Discord\WebSockets\Event;
  * action_type 22 = ban
  * action_type 25 = leave -> we ignore this
  */
-class KickAndBanCounter extends DiscordEvent
+class BanKickCounter extends DiscordEvent
 {
-    public function register(): void
+    public function event(): string
     {
-        $this->discord->on(Event::GUILD_MEMBER_REMOVE, function (Member $member, Discord $discord) {
+        return Event::GUILD_MEMBER_REMOVE;
+    }
+
+    /**
+     * @param Member $member
+     * @param Discord $discord
+     * @return void
+     * @throws Exception
+     */
+    public function execute(Member $member, Discord $discord): void
+    {
             $discord->guilds->fetch($member->guild_id)->done(function (Guild $guild) use ($member) {
                 $guild->getAuditLog(['limit' => 1])->done(function (AuditLog $auditLog) use ($member, $guild) {
                     foreach ($auditLog->audit_log_entries as $entry) {
@@ -50,6 +61,6 @@ class KickAndBanCounter extends DiscordEvent
                     }
                 });
             });
-        });
+
     }
 }

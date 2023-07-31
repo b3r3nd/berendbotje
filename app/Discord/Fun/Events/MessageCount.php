@@ -11,19 +11,19 @@ use App\Models\Channel;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Channel\Message;
 
-class Count implements MessageCreateAction
+class MessageCount implements MessageCreateAction
 {
     private string $lastCount = "";
 
-    public function execute(Bot $bot, Guild $guild, Message $message, ?Channel $channel): void
+    public function execute(Bot $bot, Guild $guildModel, Message $message, ?Channel $channel): void
     {
-        if ($message->channel_id != $guild->getSetting(SettingEnum::COUNT_CHANNEL) || !$guild->getSetting(SettingEnum::ENABLE_COUNT)) {
+        if ($message->channel_id != $guildModel->getSetting(SettingEnum::COUNT_CHANNEL) || !$guildModel->getSetting(SettingEnum::ENABLE_COUNT)) {
             return;
         }
 
         if (is_numeric($message->content)) {
             $number = (int)$message->content;
-            $count = $guild->getSetting(SettingEnum::CURRENT_COUNT);
+            $count = $guildModel->getSetting(SettingEnum::CURRENT_COUNT);
             $newCount = $count + 1;
 
 
@@ -46,7 +46,7 @@ class Count implements MessageCreateAction
             if ($number !== $newCount) {
                 $count = 0;
                 $this->lastCount = "";
-                $guild->setSetting(SettingEnum::CURRENT_COUNT->value, $count);
+                $guildModel->setSetting(SettingEnum::CURRENT_COUNT->value, $count);
                 $message->react("❌");
                 Abuser::create(['discord_id' => $message->author->id, 'guild_id' => $message->guild_id, 'reason' => __('bot.cannot-count')]);
                 $message->channel->sendMessage(MessageBuilder::new()->setContent(__('bot.wrong-number', ['count' => $count])));
@@ -55,7 +55,7 @@ class Count implements MessageCreateAction
 
             $this->lastCount = $message->author->id;
             $count++;
-            $guild->setSetting(SettingEnum::CURRENT_COUNT->value, $count);
+            $guildModel->setSetting(SettingEnum::CURRENT_COUNT->value, $count);
 
             $message->react("✅");
         } else {

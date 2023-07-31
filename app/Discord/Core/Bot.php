@@ -9,7 +9,7 @@ use App\Discord\Core\Commands\UserSettings;
 use App\Discord\Core\Events\GuildCreate;
 use App\Discord\Core\Events\InteractionCreate;
 use App\Discord\Core\Events\MessageCreate;
-use App\Discord\Core\Models\DiscordUser;
+use App\Discord\Core\Events\VoiceStateUpdate;
 use App\Discord\Core\Models\Guild;
 use App\Discord\Fun\Commands\Ask;
 use App\Discord\Fun\Commands\BumpStatistics;
@@ -27,13 +27,13 @@ use App\Discord\Fun\Commands\ModeratorStatistics;
 use App\Discord\Fun\Commands\ReactionIndex;
 use App\Discord\Fun\Commands\ResetCringe;
 use App\Discord\Fun\Commands\UrbanDictionary;
-use App\Discord\Fun\Events\BumpCounter;
-use App\Discord\Fun\Events\CommandResponse;
-use App\Discord\Fun\Events\Count;
-use App\Discord\Fun\Events\EmoteCounter;
-use App\Discord\Fun\Events\KickAndBanCounter;
-use App\Discord\Fun\Events\React;
-use App\Discord\Fun\Events\Reminder;
+use App\Discord\Fun\Events\MessageBumpCounter;
+use App\Discord\Fun\Events\MessageCommandResponse;
+use App\Discord\Fun\Events\MessageCount;
+use App\Discord\Fun\Events\MessageEmoteCounter;
+use App\Discord\Fun\Events\BanKickCounter;
+use App\Discord\Fun\Events\MessageReact;
+use App\Discord\Fun\Events\MessageReminder;
 use App\Discord\Help;
 use App\Discord\Levels\Commands\CreateRoleReward;
 use App\Discord\Levels\Commands\DeleteRoleReward;
@@ -44,14 +44,18 @@ use App\Discord\Levels\Commands\ResetXp;
 use App\Discord\Levels\Commands\RoleRewards;
 use App\Discord\Levels\Commands\UserRank;
 use App\Discord\Levels\Events\MessageXpCounter;
-use App\Discord\Levels\Events\VoiceStateUpdate;
 use App\Discord\Levels\Events\VoiceXpCounter;
 use App\Discord\Logger\Commands\LogSettings;
 use App\Discord\Logger\Commands\UpdateLogSetting;
-use App\Discord\Logger\Events\GuildMemberLogger;
-use App\Discord\Logger\Events\InviteLogger;
-use App\Discord\Logger\Events\MessageLogger;
-use App\Discord\Logger\Events\TimeoutLogger;
+use App\Discord\Logger\Events\GuildBanRemove;
+use App\Discord\Logger\Events\GuildMemberAdd;
+use App\Discord\Logger\Events\GuildMemberRemove;
+use App\Discord\Logger\Events\GuildMemberUpdate;
+use App\Discord\Logger\Events\InviteCreate;
+use App\Discord\Logger\Events\InviteDelete;
+use App\Discord\Logger\Events\MessageDelete;
+use App\Discord\Logger\Events\MessageDMLogger;
+use App\Discord\Logger\Events\MessageUpdate;
 use App\Discord\Logger\Events\VoiceStateLogger;
 use App\Discord\MentionResponder\Commands\AddMentionGroup;
 use App\Discord\MentionResponder\Commands\AddMentionReply;
@@ -76,8 +80,8 @@ use App\Discord\Moderation\Commands\Unblock;
 use App\Discord\Moderation\Commands\UnmarkChannel;
 use App\Discord\Moderation\Commands\UpdateTimeoutReason;
 use App\Discord\Moderation\Commands\WelcomeMessagesIndex;
-use App\Discord\Moderation\Events\DetectTimeouts;
-use App\Discord\Moderation\Events\GuildMemberAdd;
+use App\Discord\Moderation\Events\DetectTimeout;
+use App\Discord\Moderation\Events\WelcomeUser;
 use App\Discord\Moderation\Events\MediaFilter;
 use App\Discord\Moderation\Events\StickerFilter;
 use App\Discord\Roles\Commands\AttachRolePermission;
@@ -90,14 +94,9 @@ use App\Discord\Roles\Commands\Permissions;
 use App\Discord\Roles\Commands\Roles;
 use App\Discord\Roles\Commands\UserRoles;
 use App\Discord\Roles\Commands\Users;
-use Database\Seeders\LogSettingsSeeder;
-use Database\Seeders\MentionResponderSeeder;
-use Database\Seeders\RoleSeeder;
-use Database\Seeders\SettingsSeeder;
 use Discord\Discord;
 use Discord\Exceptions\IntentException;
 use Discord\Parts\Interactions\Command\Command;
-use Discord\WebSockets\Event;
 use Discord\WebSockets\Intents;
 use Exception;
 
@@ -125,10 +124,12 @@ class Bot
         MessageXpCounter::class,
         MediaFilter::class,
         StickerFilter::class,
-        Count::class,
-        React::class,
-        CommandResponse::class,
-        EmoteCounter::class
+        MessageCount::class,
+        MessageReact::class,
+        MessageCommandResponse::class,
+        MessageEmoteCounter::class,
+        MessageBumpCounter::class,
+        MessageReminder::class,
     ];
 
     private array $eventClasses = [
@@ -136,16 +137,19 @@ class Bot
         MessageCreate::class,
         VoiceStateUpdate::class,
         VoiceXpCounter::class,
-        DetectTimeouts::class,
-        GuildMemberAdd::class,
-        BumpCounter::class,
-        KickAndBanCounter::class,
-        Reminder::class,
         VoiceStateLogger::class,
-        GuildMemberLogger::class,
-        MessageLogger::class,
-        TimeoutLogger::class,
-        InviteLogger::class,
+        DetectTimeout::class,
+        WelcomeUser::class,
+        BanKickCounter::class,
+        GuildBanRemove::class,
+        GuildMemberAdd::class,
+        GuildMemberRemove::class,
+        GuildMemberUpdate::class,
+        InviteCreate::class,
+        InviteDelete::class,
+        MessageDelete::class,
+        MessageUpdate::class,
+        MessageDMLogger::class,
     ];
 
     /**
@@ -305,6 +309,7 @@ class Bot
                 $this->updateSlashCommands();
             }
         });
+        // Register the GUILD_CREATE event listener before the bot initializes because guilds are loaded before that
         (new GuildCreate($this))->register();
         $this->discord->run();
     }
@@ -370,7 +375,11 @@ class Bot
         $instance = new $command();
         $instance->setBot($this);
         $commandLabel = "{$subGroup}_{$instance->trigger}";
-        $instance->setCommandLabel("{$mainCommand}_{$commandLabel}");
+        if ($mainCommand === $subGroup) {
+            $instance->setCommandLabel($commandLabel);
+        } else {
+            $instance->setCommandLabel("{$mainCommand}_{$commandLabel}");
+        }
         $this->commands[$commandLabel] = $instance;
         $options = [
             'name' => $instance->trigger,

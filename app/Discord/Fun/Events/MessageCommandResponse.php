@@ -10,18 +10,18 @@ use App\Models\Channel;
 use Discord\Http\Exceptions\NoPermissionsException;
 use Discord\Parts\Channel\Message;
 
-class CommandResponse implements MessageCreateAction
+class MessageCommandResponse implements MessageCreateAction
 {
     /**
      * @throws NoPermissionsException
      */
-    public function execute(Bot $bot, Guild $guild, Message $message, ?Channel $channel): void
+    public function execute(Bot $bot, Guild $guildModel, Message $message, ?Channel $channel): void
     {
-        if (!$guild->getSetting(Setting::ENABLE_COMMANDS)) {
+        if (!$guildModel->getSetting(Setting::ENABLE_COMMANDS)) {
             return;
         }
-        $guild->model->refresh();
-        foreach ($guild->model->commands as $command) {
+        $guildModel->model->refresh();
+        foreach ($guildModel->model->commands as $command) {
             if (strtolower($message->content) === strtolower($command->trigger)) {
                 $message->channel->sendMessage($command->response);
             }

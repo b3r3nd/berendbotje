@@ -10,7 +10,7 @@ use Discord\Parts\Channel\Message;
 
 class StickerFilter implements MessageCreateAction
 {
-    public function execute(Bot $bot, Guild $guild, Message $message, ?Channel $channel): void
+    public function execute(Bot $bot, Guild $guildModel, Message $message, ?Channel $channel): void
     {
         if (!$channel || !$channel->no_stickers) {
             return;

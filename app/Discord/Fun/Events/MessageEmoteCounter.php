@@ -14,11 +14,11 @@ use function Emoji\detect_emoji;
 /**
  * It will only count emoji ONCE per message, te prevent people just spamming emotes 10x in a single message.
  */
-class EmoteCounter implements MessageCreateAction
+class MessageEmoteCounter implements MessageCreateAction
 {
-    public function execute(Bot $bot, Guild $guild, Message $message, ?Channel $channel): void
+    public function execute(Bot $bot, Guild $guildModel, Message $message, ?Channel $channel): void
     {
-        if (!$guild->getSetting(Setting::ENABLE_EMOTE)) {
+        if (!$guildModel->getSetting(Setting::ENABLE_EMOTE)) {
             return;
         }
 

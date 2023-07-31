@@ -11,10 +11,10 @@ interface MessageCreateAction
 {
     /**
      * @param Bot $bot
-     * @param Guild $guild
+     * @param Guild $guildModel
      * @param Message $message
      * @param Channel|null $channel
      * @return void
      */
-    public function execute(Bot $bot, Guild $guild, Message $message, ?Channel $channel): void;
+    public function execute(Bot $bot, Guild $guildModel, Message $message, ?Channel $channel): void;
 }

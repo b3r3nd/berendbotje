@@ -10,20 +10,20 @@ use App\Models\Channel;
 use Discord\Http\Exceptions\NoPermissionsException;
 use Discord\Parts\Channel\Message;
 
-class React implements MessageCreateAction
+class MessageReact implements MessageCreateAction
 {
     /**
      * @throws NoPermissionsException
      */
-    public function execute(Bot $bot, Guild $guild, Message $message, ?Channel $channel): void
+    public function execute(Bot $bot, Guild $guildModel, Message $message, ?Channel $channel): void
     {
-        if (!$guild->getSetting(Setting::ENABLE_REACTIONS)) {
+        if (!$guildModel->getSetting(Setting::ENABLE_REACTIONS)) {
             return;
         }
-        $guild->model->refresh();
+        $guildModel->model->refresh();
         $msg = strtolower($message->content);
 
-        foreach ($guild->model->reactions as $reaction) {
+        foreach ($guildModel->model->reactions as $reaction) {
             preg_match("/\b{$reaction->trigger}\b|^{$reaction->trigger}\b|\b{$reaction->trigger}$/", $msg, $result);
 
             if (!empty($result)) {

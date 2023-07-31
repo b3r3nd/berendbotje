@@ -16,18 +16,18 @@ use Discord\Parts\Channel\Message;
 
 class MessageXpCounter implements MessageCreateAction
 {
-    public function execute(Bot $bot, Guild $guild, Message $message, ?Channel $channel): void
+    public function execute(Bot $bot, Guild $guildModel, Message $message, ?Channel $channel): void
     {
-        if (($channel && $channel->no_xp) || !$guild->getSetting(Setting::ENABLE_XP)) {
+        if (($channel && $channel->no_xp) || !$guildModel->getSetting(Setting::ENABLE_XP)) {
             return;
         }
-        $lastMessageDate = $guild->getLastMessage($message->author->id);
-        if ($lastMessageDate->diffInSeconds(Carbon::now()) >= $guild->getSetting(Setting::XP_COOLDOWN)) {
-            $guild->setLastMessage($message->author->id);
-            (new UpdateMessageCounterAction($message->guild_id, $message->author->id, $guild->getSetting(Setting::XP_COUNT), $bot))->execute();
+        $lastMessageDate = $guildModel->getLastMessage($message->author->id);
+        if ($lastMessageDate->diffInSeconds(Carbon::now()) >= $guildModel->getSetting(Setting::XP_COOLDOWN)) {
+            $guildModel->setLastMessage($message->author->id);
+            (new UpdateMessageCounterAction($message->guild_id, $message->author->id, $guildModel->getSetting(Setting::XP_COUNT), $bot))->execute();
 
             $user = DiscordUser::get($message->author->id);
-            if ($guild->getSetting(Setting::ENABLE_ROLE_REWARDS) && !$user->enabledSetting(UserSetting::NO_ROLE_REWARDS->value, $message->guild_id)) {
+            if ($guildModel->getSetting(Setting::ENABLE_ROLE_REWARDS) && !$user->enabledSetting(UserSetting::NO_ROLE_REWARDS->value, $message->guild_id)) {
                 (new SyncRoleRewardsAction($message, $message->author->id))->execute();
             }
         }
