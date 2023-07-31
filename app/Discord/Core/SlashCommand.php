@@ -167,6 +167,6 @@ abstract class SlashCommand
      */
     public function setCommandLabel(string $commandLabel): void
     {
-        $this->commandLabel = $commandLabel;
+        $this->commandLabel = str_replace('_', ' ', $commandLabel);
     }
 }

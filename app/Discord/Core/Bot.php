@@ -321,7 +321,7 @@ class Bot
                 if (is_array($subCommands)) {
                     $subCommandOptions = [];
                     foreach ($subCommands as $subCommand) {
-                        $subCommandOptions[] = $this->initCommandOptions($subCommand, $subGroup);
+                        $subCommandOptions[] = $this->initCommandOptions($mainCommand, $subCommand, $subGroup);
                     }
                     $subGroupOptions[] = [
                         'name' => $subGroup,
@@ -330,7 +330,7 @@ class Bot
                         'options' => $subCommandOptions,
                     ];
                 } else {
-                    $subGroupOptions[] = $this->initCommandOptions($subCommands, $mainCommand);
+                    $subGroupOptions[] = $this->initCommandOptions($mainCommand, $subCommands, $mainCommand);
                 }
             }
             $optionsArray = [
@@ -359,17 +359,18 @@ class Bot
     }
 
     /**
+     * @param $mainCommand
      * @param $command
      * @param $subGroup
      * @return array
      */
-    private function initCommandOptions($command, $subGroup): array
+    private function initCommandOptions($mainCommand, $command, $subGroup): array
     {
         /** @var SlashCommand $instance */
         $instance = new $command();
         $instance->setBot($this);
         $commandLabel = "{$subGroup}_{$instance->trigger}";
-        $instance->setCommandLabel($commandLabel);
+        $instance->setCommandLabel("{$mainCommand}_{$commandLabel}");
         $this->commands[$commandLabel] = $instance;
         $options = [
             'name' => $instance->trigger,
