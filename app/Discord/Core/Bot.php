@@ -54,7 +54,7 @@ use App\Discord\Logger\Events\GuildMemberUpdate;
 use App\Discord\Logger\Events\InviteCreate;
 use App\Discord\Logger\Events\InviteDelete;
 use App\Discord\Logger\Events\MessageDelete;
-use App\Discord\Logger\Events\MessageDMLogger;
+use App\Discord\Logger\Events\DMLogger;
 use App\Discord\Logger\Events\MessageUpdate;
 use App\Discord\Logger\Events\VoiceStateLogger;
 use App\Discord\MentionResponder\Commands\AddMentionGroup;
@@ -82,8 +82,8 @@ use App\Discord\Moderation\Commands\UpdateTimeoutReason;
 use App\Discord\Moderation\Commands\WelcomeMessagesIndex;
 use App\Discord\Moderation\Events\DetectTimeout;
 use App\Discord\Moderation\Events\WelcomeUser;
-use App\Discord\Moderation\Events\MediaFilter;
-use App\Discord\Moderation\Events\StickerFilter;
+use App\Discord\Moderation\Events\MessageMediaFilter;
+use App\Discord\Moderation\Events\MessageStickerFilter;
 use App\Discord\Roles\Commands\AttachRolePermission;
 use App\Discord\Roles\Commands\AttachUserRole;
 use App\Discord\Roles\Commands\CreateRole;
@@ -122,8 +122,8 @@ class Bot
 
     private array $messageClasses = [
         MessageXpCounter::class,
-        MediaFilter::class,
-        StickerFilter::class,
+        MessageMediaFilter::class,
+        MessageStickerFilter::class,
         MessageCount::class,
         MessageReact::class,
         MessageCommandResponse::class,
@@ -149,7 +149,7 @@ class Bot
         InviteDelete::class,
         MessageDelete::class,
         MessageUpdate::class,
-        MessageDMLogger::class,
+        DMLogger::class,
     ];
 
     /**

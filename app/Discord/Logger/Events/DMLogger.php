@@ -8,7 +8,7 @@ use Discord\Parts\Channel\Message;
 use Discord\WebSockets\Event;
 use Exception;
 
-class MessageDMLogger extends DiscordEvent
+class DMLogger extends DiscordEvent
 {
     public function event(): string
     {

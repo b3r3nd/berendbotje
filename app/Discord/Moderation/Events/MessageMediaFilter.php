@@ -8,7 +8,7 @@ use App\Discord\Core\Interfaces\MessageCreateAction;
 use App\Discord\Moderation\Models\Channel;
 use Discord\Parts\Channel\Message;
 
-class MediaFilter implements MessageCreateAction
+class MessageMediaFilter implements MessageCreateAction
 {
     public function execute(Bot $bot, Guild $guildModel, Message $message, ?Channel $channel): void
     {
