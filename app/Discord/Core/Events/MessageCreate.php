@@ -3,6 +3,7 @@
 namespace App\Discord\Core\Events;
 
 use App\Discord\Core\DiscordEvent;
+use App\Discord\Core\Models\DiscordUser;
 use Discord\Discord;
 use Discord\Parts\Channel\Message;
 use Discord\WebSockets\Event;
@@ -35,6 +36,9 @@ class MessageCreate extends DiscordEvent
         if (!$guild) {
             return;
         }
+
+        DiscordUser::get($message->member);
+
         $channel = $guild->getChannel($message->channel_id);
         foreach ($this->bot->messageActions as $messageEvent) {
             $messageEvent->execute($this->bot, $guild, $message, $channel ?: null);

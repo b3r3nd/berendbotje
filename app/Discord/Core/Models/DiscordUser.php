@@ -12,6 +12,7 @@ use App\Discord\Moderation\Models\Timeout;
 use App\Discord\Roles\Models\Role;
 use App\Discord\Roles\Scopes\PermissionScope;
 use Database\Factories\DiscordUserFactory;
+use Discord\Parts\User\Member;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -22,7 +23,7 @@ class DiscordUser extends Model
     use HasFactory;
 
     protected $table = 'discord_users';
-    protected $fillable = ['discord_id'];
+    protected $fillable = ['discord_id', 'username'];
 
 
     /**
@@ -59,13 +60,32 @@ class DiscordUser extends Model
         return $setting && $setting->value === "1";
     }
 
-    /**
-     * @param $discordId
-     * @return mixed
-     */
-    public static function get($discordId): mixed
+
+    public static function get(Member|string $member): mixed
     {
-        return self::firstOrCreate(['discord_id' => $discordId]);
+        if ($member instanceof Member) {
+            if($member->user->discriminator !== "0") {
+                $username = "{$member->username}#{$member->user->discriminator}";
+            } else {
+                $username = $member->username;
+            }
+
+            $localUser = self::where('discord_id', $member->id)->first();
+            if ($localUser && !$localUser->username) {
+                $localUser->update(['username' => $username]);
+            }
+            return $localUser ?? self::create(['discord_id' => $member->id, 'username' => $username]);
+        }
+
+        return self::firstOrCreate(['discord_id' => $member]);
+    }
+
+    /**
+     * @return string
+     */
+    public function tag(): string
+    {
+        return $this->username ? "`{$this->username}`" : "<@{$this->discord_id}>";
     }
 
 
@@ -92,14 +112,6 @@ class DiscordUser extends Model
             }
         }
         return $permissions;
-    }
-
-    /**
-     * @return string
-     */
-    public function tag(): string
-    {
-        return "<@{$this->discord_id}>";
     }
 
     /**
