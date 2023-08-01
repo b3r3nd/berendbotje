@@ -39,7 +39,7 @@ class UserSettings extends SlashCommand
     {
         $embedBuilder = EmbedBuilder::create($this, __('bot.userconfig.title'));
 
-        $user = DiscordUser::get($this->interaction->member->id);
+        $user = DiscordUser::get($this->interaction->member);
 
         if ($user->settings->isEmpty()) {
             $embedBuilder->setDescription(__('bot.userconfig.not-found'));

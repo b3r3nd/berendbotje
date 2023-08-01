@@ -21,7 +21,7 @@ class MessageBumpCounter implements MessageCreateAction
             if (!$guild->getSetting(Setting::ENABLE_BUMP)) {
                 return;
             }
-            $user = DiscordUser::get($message->interaction->user->id);
+            $user = DiscordUser::get($message->interaction->member);
             $bumpCounter = new Bump(['count' => 1, 'guild_id' => $guild->model->id]);
             $user->bumpCounters()->save($bumpCounter);
             $user->refresh();

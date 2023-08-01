@@ -17,9 +17,9 @@ class UserSetting extends Model
      * @param string $guildId
      * @return mixed
      */
-    public static function byUserId(string $guildId): mixed
+    public static function byUserId(string $userId): mixed
     {
-        return self::where(['user_id' => DiscordUser::get($guildId)->id]);
+        return self::where(['user_id' => DiscordUser::get($userId)->id]);
     }
 
 
