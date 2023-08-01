@@ -50,7 +50,7 @@ class UserRank extends SlashCommand
         if ($this->getOption('user_mention')) {
             $user = DiscordUser::get($this->getOption('user_mention'));
         } else {
-            $user = DiscordUser::get($this->interaction->member->id);
+            $user = DiscordUser::get($this->interaction->member);
         }
 
         $guild = Guild::get($this->guildId);

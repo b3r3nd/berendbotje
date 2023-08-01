@@ -26,8 +26,8 @@ class RoleSeeder extends Seeder
         $owner = DiscordUser::find(1);
 
         foreach (Guild::all() as $guild) {
-            $this->createModRole($guild);
             $this->createAdminRole($guild, $owner);
+            $this->createModRole($guild);
         }
     }
 

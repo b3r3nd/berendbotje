@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Discord\Levels\Events;
+namespace App\Discord\Core\Events;
 
 use App\Discord\Core\DiscordEvent;
 use Discord\Discord;
@@ -16,21 +16,27 @@ use Discord\WebSockets\Event;
  */
 class VoiceStateUpdate extends DiscordEvent
 {
+    public function event(): string
+    {
+        return Event::VOICE_STATE_UPDATE;
+    }
+
     /**
+     * @param DVoiceStateUpdate $state
+     * @param Discord $discord
+     * @param $oldstate
      * @return void
      */
-    public function registerEvent(): void
+    public function execute(DVoiceStateUpdate $state, Discord $discord, $oldstate): void
     {
-        $this->discord->on(Event::VOICE_STATE_UPDATE, function (DVoiceStateUpdate $state, Discord $discord, $oldstate) {
-            if ($state->channel) {
-                if (is_array($state->channel->guild->voice_states)) {
-                    foreach ($state->channel->guild->voice_states as $voiceState) {
-                        if ($voiceState->user_id === $state->user_id) {
-                            $voiceState->channel_id = $state->channel_id;
-                        }
+        if ($state->channel) {
+            if (is_array($state->channel->guild->voice_states)) {
+                foreach ($state->channel->guild->voice_states as $voiceState) {
+                    if ($voiceState->user_id === $state->user_id) {
+                        $voiceState->channel_id = $state->channel_id;
                     }
                 }
             }
-        });
+        }
     }
 }

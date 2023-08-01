@@ -70,7 +70,7 @@ class UpdateUserSetting extends SlashCommand
             return EmbedFactory::failedEmbed($this, __('bot.set.not-numeric', ['value' => $value]));
         }
 
-        $user = DiscordUser::get($this->interaction->member->id);
+        $user = DiscordUser::get($this->interaction->member);
         $guild = $this->bot->getGuild($this->guildId);
 
         $setting = $user->settings()->where('key', $key)->first();

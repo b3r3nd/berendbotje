@@ -51,7 +51,7 @@ class IncreaseCringe extends SlashCommand
 
 
         if (in_array($user->discord_id, ['259461260645629953', '651378995245613056', '1034642309289091207'], true)) {
-            $user = DiscordUser::get($this->interaction->member->id);
+            $user = DiscordUser::get($this->interaction->member);
             $fail = true;
         }
 

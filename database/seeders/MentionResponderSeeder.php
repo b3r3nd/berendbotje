@@ -78,7 +78,7 @@ class MentionResponderSeeder extends Seeder
             "You. You should just go. I don't have enough ale to stomach talking to you.",
             "Get out of here. Get out of here and never come back!",
         ],
-        'BumpCounter' => [
+        'MessageBumpCounter' => [
             "By Shor, you really bump a lot.",
             "The Gods blessed you with two hands, and you use both for bumping this discord, I can respect that.",
             "Well, look at you. If only everyone bumped like you did.",

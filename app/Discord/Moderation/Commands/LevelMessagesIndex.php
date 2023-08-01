@@ -1,18 +1,16 @@
 <?php
 
-namespace App\Discord\CustomMessages\Commands;
+namespace App\Discord\Moderation\Commands;
 
 use App\Discord\Core\Builders\EmbedBuilder;
 use App\Discord\Core\SlashIndexCommand;
-use App\Discord\CustomMessages\Models\CustomMessage;
-use App\Discord\CustomMessages\Enums\CustomMessage as CustomMessageEnum;
-use App\Discord\Fun\Models\CringeCounter;
-use App\Discord\Levels\Helpers\Helper;
+use App\Discord\Moderation\Enums\CustomMessage as CustomMessageEnum;
+use App\Discord\Moderation\Models\CustomMessage;
 use App\Discord\Roles\Enums\Permission;
 use Discord\Parts\Embed\Embed;
 use Discord\Parts\Interactions\Interaction;
 
-class WelcomeMessagesIndex extends SlashIndexCommand
+class LevelMessagesIndex extends SlashIndexCommand
 {
     public function permission(): Permission
     {
@@ -26,7 +24,7 @@ class WelcomeMessagesIndex extends SlashIndexCommand
 
     public function __construct()
     {
-        $this->description = __('bot.slash.welcome-index');
+        $this->description = __('bot.slash.level-index');
         parent::__construct();
     }
 
@@ -34,17 +32,17 @@ class WelcomeMessagesIndex extends SlashIndexCommand
     {
         $this->total = CustomMessage::byGuild($this->guildId)->count();
         $description = "";
-        foreach (CustomMessage::byGuild($this->guildId)->where('type', CustomMessageEnum::WELCOME->value)->skip($this->getOffset($this->getLastUser()))->limit($this->perPage)->get() as $message) {
-            $description .= "**{$message->id}** • {$message->message} \n";
+        foreach (CustomMessage::byGuild($this->guildId)->where('type', CustomMessageEnum::LEVEL->value)->skip($this->getOffset($this->getLastUser()))->limit($this->perPage)->get() as $message) {
+            $description .= "**{$message->level}** • {$message->message} \n";
         }
         return EmbedBuilder::create($this)
-            ->setTitle(__('bot.msg.welcome.title'))
+            ->setTitle(__('bot.msg.level.title'))
             ->setDescription($description)
             ->getEmbed();
     }
 
     public function autoComplete(Interaction $interaction): array
     {
-        return [];
+       return [];
     }
 }

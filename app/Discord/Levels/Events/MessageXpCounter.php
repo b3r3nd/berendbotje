@@ -2,53 +2,34 @@
 
 namespace App\Discord\Levels\Events;
 
-use App\Discord\Core\DiscordEvent;
+use App\Discord\Core\Bot;
 use App\Discord\Core\Enums\Setting;
 use App\Discord\Core\Enums\UserSetting;
+use App\Discord\Core\Guild;
+use App\Discord\Core\Interfaces\MessageCreateAction;
 use App\Discord\Core\Models\DiscordUser;
 use App\Discord\Levels\Actions\SyncRoleRewardsAction;
 use App\Discord\Levels\Actions\UpdateMessageCounterAction;
 use Carbon\Carbon;
-use Discord\Discord;
 use Discord\Parts\Channel\Message;
-use Discord\WebSockets\Event;
+use App\Discord\Moderation\Models\Channel;
 
-class MessageXpCounter extends DiscordEvent
+class MessageXpCounter implements MessageCreateAction
 {
-    /**
-     * @return void
-     */
-    public function registerEvent(): void
+    public function execute(Bot $bot, Guild $guildModel, Message $message, ?Channel $channel): void
     {
-        $this->discord->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) {
-            if ($message->author->bot) {
-                return;
-            }
-            if (!$message->guild_id) {
-                return;
-            }
+        if (($channel && $channel->no_xp) || !$guildModel->getSetting(Setting::ENABLE_XP)) {
+            return;
+        }
+        $lastMessageDate = $guildModel->getLastMessage($message->author->id);
+        if ($lastMessageDate->diffInSeconds(Carbon::now()) >= $guildModel->getSetting(Setting::XP_COOLDOWN)) {
+            $guildModel->setLastMessage($message->author->id);
+            (new UpdateMessageCounterAction($message->guild_id, $message->author->id, $guildModel->getSetting(Setting::XP_COUNT), $bot))->execute();
 
-            $guild = $this->bot->getGuild($message->guild_id);
-            if ($guild) {
-                if (!$guild->getSetting(Setting::ENABLE_XP)) {
-                    return;
-                }
-                $channel = $guild->getChannel($message->channel_id);
-                if ($channel && $channel->no_xp) {
-                    return;
-                }
-
-                $lastMessageDate = $guild->getLastMessage($message->author->id);
-                if ($lastMessageDate->diffInSeconds(Carbon::now()) >= $guild->getSetting(Setting::XP_COOLDOWN)) {
-                    $guild->setLastMessage($message->author->id);
-                    (new UpdateMessageCounterAction($message->guild_id, $message->author->id, $guild->getSetting(Setting::XP_COUNT), $this->bot))->execute();
-
-                    $user = DiscordUser::get($message->author->id);
-                    if ($guild->getSetting(Setting::ENABLE_ROLE_REWARDS) && !$user->enabledSetting(UserSetting::NO_ROLE_REWARDS->value, $message->guild_id)) {
-                        (new SyncRoleRewardsAction($message, $message->author->id))->execute();
-                    }
-                }
+            $user = DiscordUser::get($message->author->id);
+            if ($guildModel->getSetting(Setting::ENABLE_ROLE_REWARDS) && !$user->enabledSetting(UserSetting::NO_ROLE_REWARDS->value, $message->guild_id)) {
+                (new SyncRoleRewardsAction($message, $message->author->id))->execute();
             }
-        });
+        }
     }
 }

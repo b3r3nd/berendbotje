@@ -33,17 +33,21 @@ class Roles extends SlashIndexCommand
      */
     public function getEmbed(): Embed
     {
-        $this->perPage = 1;
+        $this->perPage = 5;
         $this->total = Role::byDiscordGuildId($this->guildId)->count();
-        $embedBuilder = EmbedBuilder::create($this, __('bot.roles.title'), __('bot.roles.description'));
+        $embedBuilder = EmbedBuilder::create($this, __('bot.roles.title'));
 
-        foreach (Role::byDiscordGuildId(($this->guildId))->orderBy('created_at', 'desc')->skip($this->getOffset($this->getLastUser()))->limit($this->perPage)->get() as $role) {
+        foreach (Role::byDiscordGuildId(($this->guildId))->orderBy('created_at', 'asc')->skip($this->getOffset($this->getLastUser()))->limit($this->perPage)->get() as $role) {
             $perms = "";
+            $last = $role->permissions->last();
             foreach ($role->permissions as $permission) {
                 $tmp = __("bot.permissions-enum.{$permission->name}");
-                $perms .= " `{$tmp}` \n ";
+                $perms .= " `{$tmp}`";
+                if($last !== $permission) {
+                    $perms .= ",";
+                }
             }
-            $embedBuilder->getEmbed()->addField(['name' => $role->name, 'value' => $perms, 'inline' => true]);
+            $embedBuilder->getEmbed()->addField(['name' => $role->name, 'value' => $perms]);
         }
         return $embedBuilder->getEmbed();
     }

@@ -292,7 +292,7 @@ return [
         'change' => "Cringe counter for :name is now :count.",
         'not-cringe' => ":name is not cringe.",
         'reset' => "Cringe for :user is reset to 0.",
-        'fail' => "Nice try noob, I increased your cringe counter instead. Count is now :count."
+        'fail' => "Nice try noob, I increased your cringe counter instead. MessageCount is now :count."
     ],
 
     'cmd' => [

@@ -47,7 +47,7 @@ class UserRoles extends SlashCommand
     {
         $description = "";
 
-        $user = DiscordUser::get($this->getOption('user_mention') ?? $this->interaction->member->id);
+        $user = DiscordUser::get($this->getOption('user_mention') ?? $this->interaction->member);
 
         if ($user->roles->isEmpty()) {
             return EmbedFactory::failedEmbed($this, __('bot.userroles.none', ['user' => $user->tag()]));

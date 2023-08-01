@@ -6,11 +6,9 @@ use App\Discord\Core\Bot;
 use App\Discord\Core\Enums\Setting;
 use App\Discord\Core\Interfaces\Action;
 use App\Discord\Core\Models\DiscordUser;
-use App\Discord\CustomMessages\Models\CustomMessage;
 use App\Discord\Levels\Helpers\Helper;
+use App\Discord\Moderation\Models\CustomMessage;
 use Discord\Http\Exceptions\NoPermissionsException;
-use Discord\Parts\User\Member;
-use Discord\Parts\User\User;
 
 /**
  * @property string $userId     Discord user id of the user whose XP is being modified.

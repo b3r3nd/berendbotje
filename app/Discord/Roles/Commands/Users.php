@@ -35,24 +35,22 @@ class Users extends SlashIndexCommand
      */
     public function getEmbed(): Embed
     {
-        $this->perPage = 20;
+        $this->perPage = 5;
         $this->total = Role::byDiscordGuildId($this->guildId)->count();
-        $userRoles = [];
-        foreach (Role::byDiscordGuildId(($this->guildId))->orderBy('created_at', 'asc')->skip($this->getOffset($this->getLastUser()))->limit($this->perPage)->get() as $role) {
+
+        $roles = Role::byDiscordGuildId(($this->guildId))->orderBy('created_at', 'asc')->skip($this->getOffset($this->getLastUser()))->limit($this->perPage)->get();
+
+        $embedBuilder = EmbedBuilder::create($this, __('bot.users.title'));
+
+        foreach ($roles as $role) {
+            $users = "";
             foreach ($role->users as $user) {
-                $userRoles[$user->tag()][] = $role->name;
+                $users .= " {$user->tag()} ";
             }
+            $embedBuilder->getEmbed()->addField(['name' => $role->name, 'value' => $users]);
         }
 
-        $description = "";
-        foreach ($userRoles as $user => $roles) {
-            $description .= "\n**{$user}** • ";
-            foreach ($roles as $role) {
-                $description .= "{$role} ";
-            }
-        }
-
-        return EmbedBuilder::create($this, __('bot.users.title'), $description)->getEmbed();
+        return $embedBuilder->getEmbed();
     }
 
     /**

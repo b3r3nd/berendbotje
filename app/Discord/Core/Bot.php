@@ -6,15 +6,11 @@ use App\Discord\Core\Commands\Settings;
 use App\Discord\Core\Commands\UpdateSetting;
 use App\Discord\Core\Commands\UpdateUserSetting;
 use App\Discord\Core\Commands\UserSettings;
+use App\Discord\Core\Events\GuildCreate;
 use App\Discord\Core\Events\InteractionCreate;
-use App\Discord\Core\Models\DiscordUser;
+use App\Discord\Core\Events\MessageCreate;
+use App\Discord\Core\Events\VoiceStateUpdate;
 use App\Discord\Core\Models\Guild;
-use App\Discord\CustomMessages\Commands\AddLevelMessage;
-use App\Discord\CustomMessages\Commands\AddWelcomeMessage;
-use App\Discord\CustomMessages\Commands\DeleteLevelMessage;
-use App\Discord\CustomMessages\Commands\DeleteWelcomeMessage;
-use App\Discord\CustomMessages\Commands\LevelMessagesIndex;
-use App\Discord\CustomMessages\Commands\WelcomeMessagesIndex;
 use App\Discord\Fun\Commands\Ask;
 use App\Discord\Fun\Commands\BumpStatistics;
 use App\Discord\Fun\Commands\CommandIndex;
@@ -26,19 +22,18 @@ use App\Discord\Fun\Commands\DeleteCommand;
 use App\Discord\Fun\Commands\DeleteReaction;
 use App\Discord\Fun\Commands\EightBall;
 use App\Discord\Fun\Commands\EmoteIndex;
-use App\Discord\Fun\Commands\GenerateImage;
 use App\Discord\Fun\Commands\IncreaseCringe;
 use App\Discord\Fun\Commands\ModeratorStatistics;
 use App\Discord\Fun\Commands\ReactionIndex;
 use App\Discord\Fun\Commands\ResetCringe;
 use App\Discord\Fun\Commands\UrbanDictionary;
-use App\Discord\Fun\Events\BumpCounter;
-use App\Discord\Fun\Events\CommandResponse;
-use App\Discord\Fun\Events\Count;
-use App\Discord\Fun\Events\EmoteCounter;
-use App\Discord\Fun\Events\KickAndBanCounter;
-use App\Discord\Fun\Events\React;
-use App\Discord\Fun\Events\Reminder;
+use App\Discord\Fun\Events\MessageBumpCounter;
+use App\Discord\Fun\Events\MessageCommandResponse;
+use App\Discord\Fun\Events\MessageCount;
+use App\Discord\Fun\Events\MessageEmoteCounter;
+use App\Discord\Fun\Events\BanKickCounter;
+use App\Discord\Fun\Events\MessageReact;
+use App\Discord\Fun\Events\MessageReminder;
 use App\Discord\Help;
 use App\Discord\Levels\Commands\CreateRoleReward;
 use App\Discord\Levels\Commands\DeleteRoleReward;
@@ -49,14 +44,18 @@ use App\Discord\Levels\Commands\ResetXp;
 use App\Discord\Levels\Commands\RoleRewards;
 use App\Discord\Levels\Commands\UserRank;
 use App\Discord\Levels\Events\MessageXpCounter;
-use App\Discord\Levels\Events\VoiceStateUpdate;
 use App\Discord\Levels\Events\VoiceXpCounter;
 use App\Discord\Logger\Commands\LogSettings;
 use App\Discord\Logger\Commands\UpdateLogSetting;
-use App\Discord\Logger\Events\GuildMemberLogger;
-use App\Discord\Logger\Events\InviteLogger;
-use App\Discord\Logger\Events\MessageLogger;
-use App\Discord\Logger\Events\TimeoutLogger;
+use App\Discord\Logger\Events\GuildBanRemove;
+use App\Discord\Logger\Events\GuildMemberAdd;
+use App\Discord\Logger\Events\GuildMemberRemove;
+use App\Discord\Logger\Events\GuildMemberUpdate;
+use App\Discord\Logger\Events\InviteCreate;
+use App\Discord\Logger\Events\InviteDelete;
+use App\Discord\Logger\Events\MessageDelete;
+use App\Discord\Logger\Events\DMLogger;
+use App\Discord\Logger\Events\MessageUpdate;
 use App\Discord\Logger\Events\VoiceStateLogger;
 use App\Discord\MentionResponder\Commands\AddMentionGroup;
 use App\Discord\MentionResponder\Commands\AddMentionReply;
@@ -65,9 +64,14 @@ use App\Discord\MentionResponder\Commands\DelMentionReply;
 use App\Discord\MentionResponder\Commands\MentionGroupIndex;
 use App\Discord\MentionResponder\Commands\MentionIndex;
 use App\Discord\MentionResponder\Commands\UpdateMentionGroup;
+use App\Discord\Moderation\Commands\AddLevelMessage;
+use App\Discord\Moderation\Commands\AddWelcomeMessage;
 use App\Discord\Moderation\Commands\Blacklist;
 use App\Discord\Moderation\Commands\Block;
 use App\Discord\Moderation\Commands\ChannelIndex;
+use App\Discord\Moderation\Commands\DeleteLevelMessage;
+use App\Discord\Moderation\Commands\DeleteWelcomeMessage;
+use App\Discord\Moderation\Commands\LevelMessagesIndex;
 use App\Discord\Moderation\Commands\MarkChannel;
 use App\Discord\Moderation\Commands\RemoveTimeout;
 use App\Discord\Moderation\Commands\Timeouts;
@@ -75,10 +79,11 @@ use App\Discord\Moderation\Commands\ToggleInvites;
 use App\Discord\Moderation\Commands\Unblock;
 use App\Discord\Moderation\Commands\UnmarkChannel;
 use App\Discord\Moderation\Commands\UpdateTimeoutReason;
-use App\Discord\Moderation\Events\DetectTimeouts;
-use App\Discord\Moderation\Events\GiveJoinRole;
-use App\Discord\Moderation\Events\MediaFilter;
-use App\Discord\Moderation\Events\StickerFilter;
+use App\Discord\Moderation\Commands\WelcomeMessagesIndex;
+use App\Discord\Moderation\Events\DetectTimeout;
+use App\Discord\Moderation\Events\WelcomeUser;
+use App\Discord\Moderation\Events\MessageMediaFilter;
+use App\Discord\Moderation\Events\MessageStickerFilter;
 use App\Discord\Roles\Commands\AttachRolePermission;
 use App\Discord\Roles\Commands\AttachUserRole;
 use App\Discord\Roles\Commands\CreateRole;
@@ -89,58 +94,63 @@ use App\Discord\Roles\Commands\Permissions;
 use App\Discord\Roles\Commands\Roles;
 use App\Discord\Roles\Commands\UserRoles;
 use App\Discord\Roles\Commands\Users;
-use App\Discord\Test\Commands\Test;
-use Database\Seeders\LogSettingsSeeder;
-use Database\Seeders\MentionResponderSeeder;
-use Database\Seeders\RoleSeeder;
-use Database\Seeders\SettingsSeeder;
 use Discord\Discord;
 use Discord\Exceptions\IntentException;
 use Discord\Parts\Interactions\Command\Command;
-use Discord\WebSockets\Event;
 use Discord\WebSockets\Intents;
 use Exception;
 
 /**
- * Main bot class, theoretically you could create more instances from this class to have multiple bots running.
+ * @property Discord $discord               Set with the global discord instance from DiscordPHP.
+ * @property array $guilds                  List of all active guilds using the bot.
+ * @property bool $updateCommands           If we need to update commands.
+ * @property bool $deleteCommands           If we need to delete commands.
+ * @property array $messageActions          List with action instances to execute on MESSAGE_CREATE.
+ * @property array $commands                List of slash command instances active in the bot.
  *
- * @property Discord $discord         Set with the global discord instance from DiscordPHP.
- * @property array $guilds            List of all active guilds using the bot.
- * @property bool $updateCommands     If we need to update commands.
- * @property bool $deleteCommands     If we need to delete commands.
- * @property array $events            DiscordEvent listeners.
- * @property array $commands          Commands by category.
+ * @property array $messageClasses          List of actions to execute on the MESSAGE_CREATE event.
+ * @property array $eventClasses            Listeners for discord events.
+ * @property array $slashCommandStructure   Structure for slash command groups and subgroups.
  */
 class Bot
 {
     public Discord $discord;
     private array $guilds;
     private bool $updateCommands, $deleteCommands;
+    public array $messageActions = [];
+    public array $commands = [];
 
-    private array $events = [
-        InteractionCreate::class,
-        VoiceStateUpdate::class,
+    private array $messageClasses = [
         MessageXpCounter::class,
-        VoiceXpCounter::class,
-        DetectTimeouts::class,
-        MediaFilter::class,
-        StickerFilter::class,
-        GiveJoinRole::class,
-        BumpCounter::class,
-        KickAndBanCounter::class,
-        EmoteCounter::class,
-        Reminder::class,
-        Count::class,
-        React::class,
-        CommandResponse::class,
-        VoiceStateLogger::class,
-        GuildMemberLogger::class,
-        MessageLogger::class,
-        TimeoutLogger::class,
-        InviteLogger::class,
+        MessageMediaFilter::class,
+        MessageStickerFilter::class,
+        MessageCount::class,
+        MessageReact::class,
+        MessageCommandResponse::class,
+        MessageEmoteCounter::class,
+        MessageBumpCounter::class,
+        MessageReminder::class,
     ];
 
-    public array $commands = [];
+    private array $eventClasses = [
+        InteractionCreate::class,
+        MessageCreate::class,
+        VoiceStateUpdate::class,
+        VoiceXpCounter::class,
+        VoiceStateLogger::class,
+        DetectTimeout::class,
+        WelcomeUser::class,
+        BanKickCounter::class,
+        GuildBanRemove::class,
+        GuildMemberAdd::class,
+        GuildMemberRemove::class,
+        GuildMemberUpdate::class,
+        InviteCreate::class,
+        InviteDelete::class,
+        MessageDelete::class,
+        MessageUpdate::class,
+        DMLogger::class,
+    ];
 
     /**
      * @see https://discord.com/developers/docs/interactions/application-commands#subcommands-and-subcommand-groups
@@ -204,7 +214,6 @@ class Bot
             Leaderboard::class,
             UserRank::class,
         ],
-
         'mention' => [
             'replies' => [
                 MentionIndex::class,
@@ -224,7 +233,6 @@ class Bot
             DecreaseCringe::class,
             ResetCringe::class,
         ],
-
         'reactions' => [
             ReactionIndex::class,
             CreateReaction::class,
@@ -291,7 +299,7 @@ class Bot
                     Intents::MESSAGE_CONTENT | Intents::GUILDS | Intents::GUILD_INVITES | Intents::GUILD_EMOJIS_AND_STICKERS
             ]
         );
-        $this->discord->on('ready', function (Discord $discord) {
+        $this->discord->on('init', function (Discord $discord) {
             $this->loadEvents();
             $this->loadGuilds();
             if ($this->deleteCommands) {
@@ -301,33 +309,8 @@ class Bot
                 $this->updateSlashCommands();
             }
         });
-
-
-        $this->discord->on(Event::GUILD_CREATE, function (object $guild, Discord $discord) {
-            if (!($guild instanceof \Discord\Parts\Guild\Guild)) {
-                return;
-            }
-            $guildModel = \App\Discord\Core\Models\Guild::get($guild->id);
-            if (!$guildModel) {
-                $owner = DiscordUser::get($guild->owner_id);
-                $guildModel = \App\Discord\Core\Models\Guild::create([
-                    'owner_id' => $owner->id,
-                    'guild_id' => $guild->id,
-                ]);
-
-                // Use normal seeders to setup data
-                (new SettingsSeeder())->processSettings($guildModel);
-                (new LogSettingsSeeder())->processSettings($guildModel);
-                $roleSeeder = new RoleSeeder();
-                $roleSeeder->createAdminRole($guildModel, $owner);
-                $roleSeeder->createModRole($guildModel);
-                (new MentionResponderSeeder())->processMentionGroups($guildModel);
-
-                $this->addGuild($guildModel);
-            }
-        });
-
-
+        // Register the GUILD_CREATE event listener before the bot initializes because guilds are loaded before that
+        (new GuildCreate($this))->register();
         $this->discord->run();
     }
 
@@ -343,7 +326,7 @@ class Bot
                 if (is_array($subCommands)) {
                     $subCommandOptions = [];
                     foreach ($subCommands as $subCommand) {
-                        $subCommandOptions[] = $this->initCommandOptions($subCommand, $subGroup);
+                        $subCommandOptions[] = $this->initCommandOptions($mainCommand, $subCommand, $subGroup);
                     }
                     $subGroupOptions[] = [
                         'name' => $subGroup,
@@ -352,7 +335,7 @@ class Bot
                         'options' => $subCommandOptions,
                     ];
                 } else {
-                    $subGroupOptions[] = $this->initCommandOptions($subCommands, $mainCommand);
+                    $subGroupOptions[] = $this->initCommandOptions($mainCommand, $subCommands, $mainCommand);
                 }
             }
             $optionsArray = [
@@ -361,7 +344,7 @@ class Bot
                 'options' => $subGroupOptions,
             ];
 
-            $command = new \Discord\Parts\Interactions\Command\Command($this->discord, $optionsArray);
+            $command = new Command($this->discord, $optionsArray);
             $this->discord->application->commands->save($command);
         }
     }
@@ -371,24 +354,33 @@ class Bot
      */
     private function loadEvents(): void
     {
-        foreach ($this->events as $class) {
+        foreach ($this->eventClasses as $class) {
             $instance = new $class($this);
-            $instance->registerEvent();
+            $instance->register();
+        }
+        foreach ($this->messageClasses as $class) {
+            $this->messageActions[] = new $class();
         }
     }
 
     /**
+     * @param $mainCommand
      * @param $command
      * @param $subGroup
      * @return array
      */
-    private function initCommandOptions($command, $subGroup): array
+    private function initCommandOptions($mainCommand, $command, $subGroup): array
     {
+        /** @var SlashCommand $instance */
         $instance = new $command();
         $instance->setBot($this);
-        $commandTrigger = "{$subGroup}_{$instance->trigger}";
-        $instance->setCommandLabel($commandTrigger);
-        $this->commands[$commandTrigger] = $instance;
+        $commandLabel = "{$subGroup}_{$instance->trigger}";
+        if ($mainCommand === $subGroup) {
+            $instance->setCommandLabel($commandLabel);
+        } else {
+            $instance->setCommandLabel("{$mainCommand}_{$commandLabel}");
+        }
+        $this->commands[$commandLabel] = $instance;
         $options = [
             'name' => $instance->trigger,
             'description' => $instance->description,
@@ -430,7 +422,7 @@ class Bot
      * @param string $id
      * @return mixed|null
      */
-    public function getGuild(string $id): mixed
+    public function getGuild(string $id): ?\App\Discord\Core\Guild
     {
         return $this->guilds[$id] ?? null;
     }

@@ -22,5 +22,21 @@ abstract class DiscordEvent
         $this->discord = $bot->discord;
     }
 
-    abstract public function registerEvent();
+    /**
+     * Discord event to add listener to
+     *
+     * @see Event
+     * @return string
+     */
+    abstract public function event(): string;
+
+    /**
+     * Register the listener so it calls function directly
+     * @return void
+     */
+    public function register(): void
+    {
+        $this->discord->on($this->event(), array($this, 'execute'));
+    }
+
 }

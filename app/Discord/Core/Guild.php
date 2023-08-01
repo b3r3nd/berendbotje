@@ -20,7 +20,6 @@ use Exception;
  *
  * @property Discord $discord                   Set with the global discord instance from DiscordPHP.
  * @property Bot $bot                           Easy reference to the bot this guild runs in.
- * @property array $guilds                      List of all active guilds using the bot.
  * @property array $settings                    List of cached settings, so we do not need to read from the database each time.
  * @property array $logSettings                 List of cached log settings, so we do not need to read from the database each time.
  * @property array $lastMessages                Last message send by user in guild, used for the xp cooldown.

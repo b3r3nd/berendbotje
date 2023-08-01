@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Discord\CustomMessages\Enums;
+namespace App\Discord\Moderation\Enums;
 
 enum CustomMessage: int
 {
