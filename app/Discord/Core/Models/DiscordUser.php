@@ -71,7 +71,7 @@ class DiscordUser extends Model
             }
 
             $localUser = self::where('discord_id', $member->id)->first();
-            if ($localUser && !$localUser->username) {
+            if ($localUser && $username !== $localUser->username) {
                 $localUser->update(['username' => $username]);
             }
             return $localUser ?? self::create(['discord_id' => $member->id, 'username' => $username]);

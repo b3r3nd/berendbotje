@@ -37,6 +37,7 @@ class MessageCreate extends DiscordEvent
             return;
         }
 
+        // @TODO remove when all new usernames are updated
         DiscordUser::get($message->member);
 
         $channel = $guild->getChannel($message->channel_id);
