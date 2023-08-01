@@ -29,7 +29,7 @@ class MessageUpdate extends DiscordEvent
             return;
         }
         if ($guild->getLogSetting(LogSetting::MESSAGE_UPDATED)) {
-            $guild->logWithMember($message->member, __('bot.log.update-msg', ['user' => $message->member->id, 'channel' => $message->channel_id, 'old' => $oldMessage?->content, 'new' => $message->content]), 'warning');
+            $guild->logWithMember($message->member, __('bot.log.update-msg', ['user' => $message->member->id, 'channel' => $message->channel_id, 'old' => substr($oldMessage?->content,0, 500), 'new' => substr($message->content,0, 500)]), 'warning');
         }
     }
 }
