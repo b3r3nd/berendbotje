@@ -38,7 +38,7 @@ class Users extends SlashIndexCommand
         $this->perPage = 20;
         $this->total = Role::byDiscordGuildId($this->guildId)->count();
         $userRoles = [];
-        foreach (Role::byDiscordGuildId(($this->guildId))->orderBy('created_at', 'asc')->skip($this->getOffset($this->getLastUser()))->limit($this->perPage)->get() as $role) {
+        foreach (Role::byDiscordGuildId(($this->guildId))->orderBy('name', 'asc')->skip($this->getOffset($this->getLastUser()))->limit($this->perPage)->get() as $role) {
             foreach ($role->users as $user) {
                 $userRoles[$user->tag()][] = $role->name;
             }
