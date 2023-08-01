@@ -279,7 +279,7 @@ return [
     ],
 
     'bump' => [
-        'inc' => ":name has bumped this discord :count times!",
+        'inc' => "Bedankt :name!! Je bump counter staat nu op :count!",
         'title' => 'Bump Elites',
         'description' => "Bump counters of all time!\n\n:bumpers",
         'description-month' => "Bump counters of this month!\n\n:bumpers",

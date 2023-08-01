@@ -128,7 +128,6 @@ class Bot
         MessageReact::class,
         MessageCommandResponse::class,
         MessageEmoteCounter::class,
-        MessageBumpCounter::class,
         MessageReminder::class,
     ];
 
@@ -150,6 +149,7 @@ class Bot
         MessageDelete::class,
         MessageUpdate::class,
         DMLogger::class,
+        MessageBumpCounter::class,
     ];
 
     /**

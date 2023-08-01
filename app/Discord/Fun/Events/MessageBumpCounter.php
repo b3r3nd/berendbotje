@@ -3,6 +3,7 @@
 namespace App\Discord\Fun\Events;
 
 use App\Discord\Core\Bot;
+use App\Discord\Core\DiscordEvent;
 use App\Discord\Core\Enums\Setting;
 use App\Discord\Core\Guild;
 use App\Discord\Core\Interfaces\MessageCreateAction;
@@ -10,18 +11,37 @@ use App\Discord\Core\Models\DiscordUser;
 use App\Discord\Fun\Jobs\ProcessBumpReminder;
 use App\Discord\Fun\Models\Bump;
 use App\Discord\Moderation\Models\Channel;
+use Discord\Discord;
+use Discord\Http\Exceptions\NoPermissionsException;
 use Discord\Parts\Channel\Message;
+use Discord\WebSockets\Event;
 
 
-class MessageBumpCounter implements MessageCreateAction
+class MessageBumpCounter extends DiscordEvent
 {
-    public function execute(Bot $bot, Guild $guild, Message $message, ?Channel $channel): void
+    public function event(): string
     {
-        if ($message->type === 20 && $message->interaction->name === 'bump') {
+        return Event::MESSAGE_CREATE;
+    }
+
+    /**
+     * @param Message $message
+     * @param Discord $discord
+     * @return void
+     * @throws NoPermissionsException
+     */
+    public function execute(Message $message, Discord $discord): void
+    {
+        if ($message->type === 20 && $message->interaction->name === 'help') {
+
+            $guild = $this->bot->getGuild($message->guild_id);
+            if (!$guild) {
+                return;
+            }
             if (!$guild->getSetting(Setting::ENABLE_BUMP)) {
                 return;
             }
-            $user = DiscordUser::get($message->interaction->member);
+            $user = DiscordUser::get($message->member);
             $bumpCounter = new Bump(['count' => 1, 'guild_id' => $guild->model->id]);
             $user->bumpCounters()->save($bumpCounter);
             $user->refresh();
