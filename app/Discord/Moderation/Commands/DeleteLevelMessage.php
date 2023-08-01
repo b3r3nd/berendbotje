@@ -59,7 +59,7 @@ class DeleteLevelMessage extends SlashCommand
             ->limit(25)
             ->get()
             ->map(function ($modelInstance) {
-                return ['name' => substr($modelInstance->message, 0, 32), 'value' => $modelInstance->level];
+                return ['name' => $modelInstance->level, 'value' => $modelInstance->level];
             })->toArray();
     }
 }

@@ -55,7 +55,7 @@ class DeleteWelcomeMessage extends SlashCommand
 
     public function autoComplete(Interaction $interaction): array
     {
-        return CustomMessage::welcome($interaction->guild_id)->where('id', 'LIKE', "%{$this->getOption('message')}%")
+        return CustomMessage::welcome($interaction->guild_id)->where('message', 'LIKE', "%{$this->getOption('message')}%")
             ->limit(25)
             ->get()
             ->map(function ($modelInstance) {
