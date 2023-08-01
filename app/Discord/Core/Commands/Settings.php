@@ -6,12 +6,14 @@ use App\Discord\Core\Builders\EmbedBuilder;
 use App\Discord\Core\Enums\Setting as SettingEnum;
 use App\Discord\Core\Models\Setting;
 use App\Discord\Core\SlashCommand;
+use App\Discord\Core\SlashIndexCommand;
 use App\Discord\Roles\Enums\Permission;
 use Discord\Builders\MessageBuilder;
+use Discord\Parts\Embed\Embed;
 use Discord\Parts\Interactions\Interaction;
 use Exception;
 
-class Settings extends SlashCommand
+class Settings extends SlashIndexCommand
 {
 
     public function permission(): Permission
@@ -31,41 +33,32 @@ class Settings extends SlashCommand
     }
 
     /**
-     * @return MessageBuilder
+     * @return Embed
      * @throws Exception
      */
-    public function action(): MessageBuilder
+    public function getEmbed(): Embed
     {
+        $this->perPage = 15;
+        $this->total = Setting::byDiscordGuildId($this->guildId)->count();
         $embedBuilder = EmbedBuilder::create($this, __('bot.set.title'));
 
-        $channels = [
-            SettingEnum::LOG_CHANNEL->value,
-            SettingEnum::BUMP_CHANNEL->value,
-            SettingEnum::REMINDER_CHANNEL->value,
-            SettingEnum::COUNT_CHANNEL->value,
-            SettingEnum::LEVEL_UP_CHAN->value,
-            SettingEnum::WELCOME_MSG_CHAN->value
-        ];
-
-        $roles = [
-            SettingEnum::BUMP_REMINDER_ROLE->value,
-            SettingEnum::REMINDER_ROLE->value,
-            SettingEnum::JOIN_ROLE->value,
-        ];
-
         $description = "";
-        foreach (Setting::byDiscordGuildId($this->guildId)->get() as $setting) {
-            if (in_array($setting->key, $channels, true)) {
-                $description .= "**{$setting->key}** = <#{$setting->value}>\n";
-            } elseif (in_array($setting->key, $roles, true)) {
-                $description .= "**{$setting->key}** = <@&{$setting->value}>\n";
-            } else {
-                $description .= "**{$setting->key}** = {$setting->value}\n";
+        foreach (Setting::byDiscordGuildId($this->guildId)->orderBy('key', 'desc')->skip($this->getOffset($this->getLastUser()))->limit($this->perPage)->get() as $setting) {
+            $value = $setting->value;
+
+            if (str_contains($setting->key, 'channel')) {
+                $value = "<#{$setting->value}>";
+            } elseif (str_contains($setting->key, 'role')) {
+                $value = "<@&{$setting->value}>";
+            } elseif (str_contains($setting->key, 'enable')) {
+                $value = $setting->value ? "On" : "Off";
             }
+
+            $description .= "**{$setting->key}** = {$value}\n";
         }
         $embedBuilder->setDescription($description);
 
-        return MessageBuilder::new()->addEmbed($embedBuilder->getEmbed());
+        return $embedBuilder->getEmbed();
     }
 
     public function autoComplete(Interaction $interaction): array
