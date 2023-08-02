@@ -32,7 +32,7 @@ class MessageBumpCounter extends DiscordEvent
      */
     public function execute(Message $message, Discord $discord): void
     {
-        if ($message->type === 20 && $message->interaction->name === 'help') {
+        if ($message->type === 20 && $message->interaction->name === 'bump') {
 
             $guild = $this->bot->getGuild($message->guild_id);
             if (!$guild) {
@@ -41,7 +41,7 @@ class MessageBumpCounter extends DiscordEvent
             if (!$guild->getSetting(Setting::ENABLE_BUMP)) {
                 return;
             }
-            $user = DiscordUser::get($message->member);
+            $user = DiscordUser::get($message->interaction->user->id);
             $bumpCounter = new Bump(['count' => 1, 'guild_id' => $guild->model->id]);
             $user->bumpCounters()->save($bumpCounter);
             $user->refresh();
