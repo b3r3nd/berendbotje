@@ -9,6 +9,7 @@ use App\Discord\Core\Models\Guild as GuildModel;
 use App\Discord\Moderation\Models\Timeout;
 use Carbon\Carbon;
 use Discord\Discord;
+use Discord\Http\Exceptions\NoPermissionsException;
 use Discord\Parts\Guild\AuditLog\AuditLog;
 use Discord\Parts\Guild\Guild;
 use Discord\Parts\User\Member;
@@ -42,36 +43,40 @@ class DetectTimeout extends DiscordEvent implements GUILD_MEMBER_UPDATE
         if ($member->communication_disabled_until == NULL || $member->communication_disabled_until <= Carbon::now()) {
             return;
         }
-        $discord->guilds->fetch($member->guild_id)->done(function (Guild $guild) use ($member) {
-            $guild->getAuditLog(['limit' => 1])->done(function (AuditLog $auditLog) use ($member, $guild) {
-                foreach ($auditLog->audit_log_entries as $entry) {
-                    $endTime = $member->communication_disabled_until;
-                    $startTime = Carbon::now();
-                    if ($endTime) {
-                        $user = DiscordUser::get($entry->user->id);
-                        $diff = $endTime->diffInSeconds($startTime);
-                        $timeout = Timeout::byGuild($guild->id)->where(['discord_id' => $member->id])->get()->last();
-                        $timeoutData = [
-                            'discord_id' => $member->id,
-                            'discord_username' => $member->username,
-                            'length' => $diff ?? 0,
-                            'reason' => $entry->reason ?? "Empty",
-                            'giver_id' => $user->id,
-                            'guild_id' => GuildModel::get($guild->id)->id,
-                        ];
+        try {
+            $discord->guilds->fetch($member->guild_id)->done(function (Guild $guild) use ($member) {
+                $guild->getAuditLog(['limit' => 1])->done(function (AuditLog $auditLog) use ($member, $guild) {
+                    foreach ($auditLog->audit_log_entries as $entry) {
+                        $endTime = $member->communication_disabled_until;
+                        $startTime = Carbon::now();
+                        if ($endTime) {
+                            $user = DiscordUser::get($entry->user->id);
+                            $diff = $endTime->diffInSeconds($startTime);
+                            $timeout = Timeout::byGuild($guild->id)->where(['discord_id' => $member->id])->get()->last();
+                            $timeoutData = [
+                                'discord_id' => $member->id,
+                                'discord_username' => $member->username,
+                                'length' => $diff ?? 0,
+                                'reason' => $entry->reason ?? "Empty",
+                                'giver_id' => $user->id,
+                                'guild_id' => GuildModel::get($guild->id)->id,
+                            ];
 
-                        if (!$timeout) {
-                            Timeout::create($timeoutData);
-                        } else {
-                            $createdAt = Carbon::create($timeout->created_at);
-                            $timeoutEnd = $createdAt->addSeconds($timeout->length);
-                            if ($timeoutEnd->isBefore(Carbon::now())) {
+                            if (!$timeout) {
                                 Timeout::create($timeoutData);
+                            } else {
+                                $createdAt = Carbon::create($timeout->created_at);
+                                $timeoutEnd = $createdAt->addSeconds($timeout->length);
+                                if ($timeoutEnd->isBefore(Carbon::now())) {
+                                    Timeout::create($timeoutData);
+                                }
                             }
                         }
                     }
-                }
+                });
             });
-        });
+        } catch (NoPermissionsException) {
+            $this->bot->getGuild($member->guild_id)?->log(__('bot.exception.audit'), "fail");
+        }
     }
 }
