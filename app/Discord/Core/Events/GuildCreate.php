@@ -3,6 +3,7 @@
 namespace App\Discord\Core\Events;
 
 use App\Discord\Core\DiscordEvent;
+use App\Discord\Core\Interfaces\Events\GUILD_CREATE;
 use App\Discord\Core\Models\DiscordUser;
 use App\Discord\Core\Models\Guild as GuildModel;
 use Database\Seeders\LogSettingsSeeder;
@@ -14,7 +15,7 @@ use Discord\Parts\Guild\Guild;
 use Discord\WebSockets\Event;
 use Exception;
 
-class GuildCreate extends DiscordEvent
+class GuildCreate extends DiscordEvent implements GUILD_CREATE
 {
     public function event(): string
     {

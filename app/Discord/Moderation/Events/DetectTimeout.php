@@ -3,6 +3,7 @@
 namespace App\Discord\Moderation\Events;
 
 use App\Discord\Core\DiscordEvent;
+use App\Discord\Core\Interfaces\Events\GUILD_MEMBER_UPDATE;
 use App\Discord\Core\Models\DiscordUser;
 use App\Discord\Core\Models\Guild as GuildModel;
 use App\Discord\Moderation\Models\Timeout;
@@ -22,7 +23,7 @@ use Exception;
  *
  * What a mess.
  */
-class DetectTimeout extends DiscordEvent
+class DetectTimeout extends DiscordEvent implements GUILD_MEMBER_UPDATE
 {
     public function event(): string
     {
@@ -32,10 +33,11 @@ class DetectTimeout extends DiscordEvent
     /**
      * @param Member $member
      * @param Discord $discord
+     * @param Member|null $oldMember
      * @return void
      * @throws Exception
      */
-    public function execute(Member $member, Discord $discord): void
+    public function execute(Member $member, Discord $discord, ?Member $oldMember): void
     {
         if ($member->communication_disabled_until == NULL || $member->communication_disabled_until <= Carbon::now()) {
             return;

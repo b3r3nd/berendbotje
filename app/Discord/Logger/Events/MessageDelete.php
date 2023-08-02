@@ -3,13 +3,14 @@
 namespace App\Discord\Logger\Events;
 
 use App\Discord\Core\DiscordEvent;
+use App\Discord\Core\Interfaces\Events\MESSAGE_DELETE;
 use App\Discord\Logger\Enums\LogSetting;
 use Discord\Discord;
 use Discord\Parts\Channel\Message;
 use Discord\WebSockets\Event;
 use Exception;
 
-class MessageDelete extends DiscordEvent
+class MessageDelete extends DiscordEvent implements MESSAGE_DELETE
 {
     public function event(): string
     {

@@ -3,6 +3,7 @@
 namespace App\Discord\Fun\Events;
 
 use App\Discord\Core\DiscordEvent;
+use App\Discord\Core\Interfaces\Events\GUILD_MEMBER_REMOVE;
 use App\Discord\Core\Models\DiscordUser;
 use App\Discord\Fun\Models\BanCounter;
 use App\Discord\Fun\Models\KickCounter;
@@ -21,7 +22,7 @@ use Exception;
  * action_type 22 = ban
  * action_type 25 = leave -> we ignore this
  */
-class BanKickCounter extends DiscordEvent
+class BanKickCounter extends DiscordEvent implements GUILD_MEMBER_REMOVE
 {
     public function event(): string
     {

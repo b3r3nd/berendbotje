@@ -3,12 +3,14 @@
 namespace App\Discord\Core\Events;
 
 use App\Discord\Core\DiscordEvent;
+use App\Discord\Core\Interfaces\Events\GUILD_CREATE;
+use App\Discord\Core\Interfaces\Events\INTERACTION_CREATE;
 use Discord\Discord;
 use Discord\InteractionType;
 use Discord\Parts\Interactions\Interaction;
 use Discord\WebSockets\Event;
 
-class InteractionCreate extends DiscordEvent
+class InteractionCreate extends DiscordEvent implements INTERACTION_CREATE
 {
     public function event(): string
     {

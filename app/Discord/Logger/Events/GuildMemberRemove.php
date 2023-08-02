@@ -3,6 +3,7 @@
 namespace App\Discord\Logger\Events;
 
 use App\Discord\Core\DiscordEvent;
+use App\Discord\Core\Interfaces\Events\GUILD_MEMBER_REMOVE;
 use App\Discord\Logger\Enums\LogSetting;
 use Discord\Discord;
 use Discord\Parts\Guild\AuditLog\AuditLog;
@@ -11,7 +12,7 @@ use Discord\Parts\User\Member;
 use Discord\WebSockets\Event;
 use Exception;
 
-class GuildMemberRemove extends DiscordEvent
+class GuildMemberRemove extends DiscordEvent implements GUILD_MEMBER_REMOVE
 {
 
     public function event(): string

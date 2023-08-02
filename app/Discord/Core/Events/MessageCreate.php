@@ -3,6 +3,7 @@
 namespace App\Discord\Core\Events;
 
 use App\Discord\Core\DiscordEvent;
+use App\Discord\Core\Interfaces\Events\MESSAGE_CREATE;
 use App\Discord\Core\Models\DiscordUser;
 use Discord\Discord;
 use Discord\Parts\Channel\Message;
@@ -15,7 +16,7 @@ use Discord\WebSockets\Event;
  *
  * This listener is simply a kind of wrapper which calls the actual Event listeners on the MESSAGE_CREATE event.
  */
-class MessageCreate extends DiscordEvent
+class MessageCreate extends DiscordEvent implements MESSAGE_CREATE
 {
     public function event(): string
     {

@@ -3,12 +3,13 @@
 namespace App\Discord\Logger\Events;
 
 use App\Discord\Core\DiscordEvent;
+use App\Discord\Core\Interfaces\Events\MESSAGE_CREATE;
 use Discord\Discord;
 use Discord\Parts\Channel\Message;
 use Discord\WebSockets\Event;
 use Exception;
 
-class DMLogger extends DiscordEvent
+class DMLogger extends DiscordEvent implements MESSAGE_CREATE
 {
     public function event(): string
     {

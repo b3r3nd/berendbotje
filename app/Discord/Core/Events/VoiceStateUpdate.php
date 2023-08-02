@@ -3,6 +3,7 @@
 namespace App\Discord\Core\Events;
 
 use App\Discord\Core\DiscordEvent;
+use App\Discord\Core\Interfaces\Events\VOICE_STATE_UPDATE;
 use Discord\Discord;
 use Discord\Parts\WebSockets\VoiceStateUpdate as DVoiceStateUpdate;
 use Discord\WebSockets\Event;
@@ -14,7 +15,7 @@ use Discord\WebSockets\Event;
  *
  * Probably, I am doing something wrong... but hey this works for now...
  */
-class VoiceStateUpdate extends DiscordEvent
+class VoiceStateUpdate extends DiscordEvent implements VOICE_STATE_UPDATE
 {
     public function event(): string
     {
