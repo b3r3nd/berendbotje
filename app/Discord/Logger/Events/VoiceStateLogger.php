@@ -3,13 +3,14 @@
 namespace App\Discord\Logger\Events;
 
 use App\Discord\Core\DiscordEvent;
+use App\Discord\Core\Interfaces\Events\VOICE_STATE_UPDATE;
 use App\Discord\Logger\Enums\LogSetting;
 use Discord\Discord;
 use Discord\Parts\WebSockets\VoiceStateUpdate as DVoiceStateUpdate;
 use Discord\WebSockets\Event;
 use Exception;
 
-class VoiceStateLogger extends DiscordEvent
+class VoiceStateLogger extends DiscordEvent implements VOICE_STATE_UPDATE
 {
     public function event(): string
     {

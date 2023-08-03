@@ -3,12 +3,13 @@
 namespace App\Discord\Logger\Events;
 
 use App\Discord\Core\DiscordEvent;
+use App\Discord\Core\Interfaces\Events\MESSAGE_UPDATE;
 use App\Discord\Logger\Enums\LogSetting;
 use Discord\Discord;
 use Discord\Parts\Channel\Message;
 use Discord\WebSockets\Event;
 
-class MessageUpdate extends DiscordEvent
+class MessageUpdate extends DiscordEvent implements MESSAGE_UPDATE
 {
     public function event(): string
     {

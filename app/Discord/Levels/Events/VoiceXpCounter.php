@@ -5,13 +5,14 @@ namespace App\Discord\Levels\Events;
 use App\Discord\Core\DiscordEvent;
 use App\Discord\Core\Enums\Setting;
 use App\Discord\Core\Guild;
+use App\Discord\Core\Interfaces\Events\VOICE_STATE_UPDATE;
 use App\Discord\Core\Models\DiscordUser;
 use App\Discord\Levels\Helpers\Helper;
 use Discord\Discord;
 use Discord\Parts\WebSockets\VoiceStateUpdate as DVoiceStateUpdate;
 use Discord\WebSockets\Event;
 
-class VoiceXpCounter extends DiscordEvent
+class VoiceXpCounter extends DiscordEvent implements VOICE_STATE_UPDATE
 {
     public function event(): string
     {

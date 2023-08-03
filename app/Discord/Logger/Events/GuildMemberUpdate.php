@@ -3,6 +3,7 @@
 namespace App\Discord\Logger\Events;
 
 use App\Discord\Core\DiscordEvent;
+use App\Discord\Core\Interfaces\Events\GUILD_MEMBER_UPDATE;
 use App\Discord\Logger\Enums\LogSetting;
 use Carbon\Carbon;
 use Discord\Discord;
@@ -10,7 +11,7 @@ use Discord\Parts\User\Member;
 use Discord\WebSockets\Event;
 use Exception;
 
-class GuildMemberUpdate extends DiscordEvent
+class GuildMemberUpdate extends DiscordEvent implements GUILD_MEMBER_UPDATE
 {
     public function event(): string
     {

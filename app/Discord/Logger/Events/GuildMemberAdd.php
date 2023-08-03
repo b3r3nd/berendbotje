@@ -3,13 +3,14 @@
 namespace App\Discord\Logger\Events;
 
 use App\Discord\Core\DiscordEvent;
+use App\Discord\Core\Interfaces\Events\GUILD_MEMBER_ADD;
 use App\Discord\Logger\Enums\LogSetting;
 use Discord\Discord;
 use Discord\Parts\User\Member;
 use Discord\WebSockets\Event;
 use Exception;
 
-class GuildMemberAdd extends DiscordEvent
+class GuildMemberAdd extends DiscordEvent implements GUILD_MEMBER_ADD
 {
     public function event(): string
     {

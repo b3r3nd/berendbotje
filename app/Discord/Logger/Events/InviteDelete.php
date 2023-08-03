@@ -3,13 +3,14 @@
 namespace App\Discord\Logger\Events;
 
 use App\Discord\Core\DiscordEvent;
+use App\Discord\Core\Interfaces\Events\INVITE_DELETE;
 use App\Discord\Logger\Enums\LogSetting;
 use Discord\Discord;
 use Discord\Parts\Channel\Invite;
 use Discord\WebSockets\Event;
 use Exception;
 
-class InviteDelete extends DiscordEvent
+class InviteDelete extends DiscordEvent implements INVITE_DELETE
 {
     public function event(): string
     {

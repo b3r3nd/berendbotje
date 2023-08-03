@@ -3,13 +3,14 @@
 namespace App\Discord\Logger\Events;
 
 use App\Discord\Core\DiscordEvent;
+use App\Discord\Core\Interfaces\Events\INVITE_CREATE;
 use App\Discord\Logger\Enums\LogSetting;
 use Discord\Discord;
 use Discord\Parts\Channel\Invite;
 use Discord\WebSockets\Event;
 use Exception;
 
-class InviteCreate extends DiscordEvent
+class InviteCreate extends DiscordEvent implements INVITE_CREATE
 {
 
     public function event(): string

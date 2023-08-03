@@ -3,10 +3,12 @@
 namespace App\Discord\Fun\Events;
 
 use App\Discord\Core\DiscordEvent;
+use App\Discord\Core\Interfaces\Events\GUILD_MEMBER_REMOVE;
 use App\Discord\Core\Models\DiscordUser;
 use App\Discord\Fun\Models\BanCounter;
 use App\Discord\Fun\Models\KickCounter;
 use Discord\Discord;
+use Discord\Http\Exceptions\NoPermissionsException;
 use Discord\Parts\Guild\AuditLog\AuditLog;
 use Discord\Parts\Guild\Guild;
 use Discord\Parts\User\Member;
@@ -21,7 +23,7 @@ use Exception;
  * action_type 22 = ban
  * action_type 25 = leave -> we ignore this
  */
-class BanKickCounter extends DiscordEvent
+class BanKickCounter extends DiscordEvent implements GUILD_MEMBER_REMOVE
 {
     public function event(): string
     {
@@ -36,6 +38,7 @@ class BanKickCounter extends DiscordEvent
      */
     public function execute(Member $member, Discord $discord): void
     {
+        try {
             $discord->guilds->fetch($member->guild_id)->done(function (Guild $guild) use ($member) {
                 $guild->getAuditLog(['limit' => 1])->done(function (AuditLog $auditLog) use ($member, $guild) {
                     foreach ($auditLog->audit_log_entries as $entry) {
@@ -61,6 +64,8 @@ class BanKickCounter extends DiscordEvent
                     }
                 });
             });
-
+        } catch (NoPermissionsException) {
+            $this->bot->getGuild($member->guild_id)?->log(__('bot.exception.audit'), "fail");
+        }
     }
 }

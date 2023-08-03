@@ -372,4 +372,8 @@ return [
         'enable-cam' => '<@:user> enabled his webcam in <#:channel>',
         'disable-cam' => '<@:user> disabled his webcam in <#:channel>',
     ],
+
+    'exception' => [
+       'audit' => 'Bot lacks permission to read Audit log.'
+    ],
 ];

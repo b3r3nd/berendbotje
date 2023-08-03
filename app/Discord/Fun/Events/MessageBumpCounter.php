@@ -6,6 +6,7 @@ use App\Discord\Core\Bot;
 use App\Discord\Core\DiscordEvent;
 use App\Discord\Core\Enums\Setting;
 use App\Discord\Core\Guild;
+use App\Discord\Core\Interfaces\Events\MESSAGE_CREATE;
 use App\Discord\Core\Interfaces\MessageCreateAction;
 use App\Discord\Core\Models\DiscordUser;
 use App\Discord\Fun\Jobs\ProcessBumpReminder;
@@ -17,7 +18,7 @@ use Discord\Parts\Channel\Message;
 use Discord\WebSockets\Event;
 
 
-class MessageBumpCounter extends DiscordEvent
+class MessageBumpCounter extends DiscordEvent implements MESSAGE_CREATE
 {
     public function event(): string
     {
