@@ -101,7 +101,7 @@ class Bot
     }
 
     /**
-     * @param \App\Discord\Core\Guild $guild
+     * @param Guild $guild
      * @return void
      * @throws Exception
      */
