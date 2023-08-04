@@ -3,10 +3,10 @@
 namespace App\Discord\Fun\Events;
 
 use App\Discord\Core\Bot;
-use App\Discord\Core\Enums\Setting;
 use App\Discord\Core\Guild;
 use App\Discord\Core\Interfaces\MessageCreateAction;
-use App\Discord\Moderation\Models\Channel;
+use App\Domain\Discord\Channel;
+use App\Domain\Setting\Enums\Setting;
 use Discord\Http\Exceptions\NoPermissionsException;
 use Discord\Parts\Channel\Message;
 

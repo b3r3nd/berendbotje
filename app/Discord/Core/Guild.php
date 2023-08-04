@@ -2,13 +2,13 @@
 
 namespace App\Discord\Core;
 
-use App\Discord\Core\Enums\Setting as SettingEnum;
-use App\Discord\Core\Models\Guild as GuildModel;
-use App\Discord\Core\Models\Setting;
 use App\Discord\Logger\Logger;
-use App\Discord\Logger\Models\LogSetting;
 use App\Discord\MentionResponder\MentionResponder;
-use App\Discord\Moderation\Models\Channel;
+use App\Domain\Discord\Channel;
+use App\Domain\Discord\Guild as GuildModel;
+use App\Domain\Setting\Enums\Setting as SettingEnum;
+use App\Domain\Setting\Models\LogSetting;
+use App\Domain\Setting\Models\Setting;
 use Carbon\Carbon;
 use Discord\Discord;
 use Discord\Parts\User\Member;
@@ -193,10 +193,10 @@ class Guild
     }
 
     /**
-     * @param \App\Discord\Logger\Enums\LogSetting $setting
+     * @param \App\Domain\Setting\Enums\LogSetting $setting
      * @return false|mixed
      */
-    public function getLogSetting(\App\Discord\Logger\Enums\LogSetting $setting): mixed
+    public function getLogSetting(\App\Domain\Setting\Enums\LogSetting $setting): mixed
     {
         return $this->logSettings[$setting->value] ?? false;
     }

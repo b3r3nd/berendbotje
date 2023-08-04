@@ -4,7 +4,7 @@ namespace App\Discord\Logger\Events;
 
 use App\Discord\Core\DiscordEvent;
 use App\Discord\Core\Interfaces\Events\VOICE_STATE_UPDATE;
-use App\Discord\Logger\Enums\LogSetting;
+use App\Domain\Setting\Enums\LogSetting;
 use Discord\Discord;
 use Discord\Parts\WebSockets\VoiceStateUpdate as DVoiceStateUpdate;
 use Discord\WebSockets\Event;

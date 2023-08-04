@@ -4,9 +4,9 @@ namespace App\Discord\Moderation\Events;
 
 use App\Discord\Core\DiscordEvent;
 use App\Discord\Core\Interfaces\Events\GUILD_MEMBER_UPDATE;
-use App\Discord\Core\Models\DiscordUser;
-use App\Discord\Core\Models\Guild as GuildModel;
-use App\Discord\Moderation\Models\Timeout;
+use App\Domain\Discord\Guild as GuildModel;
+use App\Domain\Discord\User;
+use App\Domain\Moderation\Models\Timeout;
 use Carbon\Carbon;
 use Discord\Discord;
 use Discord\Http\Exceptions\NoPermissionsException;
@@ -50,7 +50,7 @@ class DetectTimeout extends DiscordEvent implements GUILD_MEMBER_UPDATE
                         $endTime = $member->communication_disabled_until;
                         $startTime = Carbon::now();
                         if ($endTime) {
-                            $user = DiscordUser::get($entry->user->id);
+                            $user = User::get($entry->user->id);
                             $diff = $endTime->diffInSeconds($startTime);
                             $timeout = Timeout::byGuild($guild->id)->where(['discord_id' => $member->id])->get()->last();
                             $timeoutData = [

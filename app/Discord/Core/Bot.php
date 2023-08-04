@@ -2,11 +2,12 @@
 
 namespace App\Discord\Core;
 
+use App\Discord\Core;
 use App\Discord\Core\Interfaces\MessageCreateAction;
-use App\Discord\Core\Models\Guild;
 use App\Discord\Core\Providers\EventServiceProvider;
 use App\Discord\Core\Providers\GuildServiceProvider;
 use App\Discord\Core\Providers\SlashCommandServiceProvider;
+use App\Domain\Discord\Guild;
 use Discord\Discord;
 use Discord\Exceptions\IntentException;
 use Discord\WebSockets\Intents;
@@ -100,14 +101,14 @@ class Bot
     }
 
     /**
-     * @param Guild $guild
+     * @param \App\Discord\Core\Guild $guild
      * @return void
      * @throws Exception
      */
     public function addGuild(Guild $guild): void
     {
         if (!isset($this->guilds[$guild->guild_id])) {
-            $this->guilds[$guild->guild_id] = new \App\Discord\Core\Guild($guild, $this);
+            $this->guilds[$guild->guild_id] = new Core\Guild($guild, $this);
         }
     }
 
@@ -115,7 +116,7 @@ class Bot
      * @param string $id
      * @return mixed|null
      */
-    public function getGuild(string $id): ?\App\Discord\Core\Guild
+    public function getGuild(string $id): ?Core\Guild
     {
         return $this->guilds[$id] ?? null;
     }

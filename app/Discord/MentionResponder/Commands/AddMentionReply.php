@@ -4,9 +4,9 @@ namespace App\Discord\MentionResponder\Commands;
 
 use App\Discord\Core\Builders\EmbedFactory;
 use App\Discord\Core\SlashCommand;
-use App\Discord\MentionResponder\Models\MentionGroup;
-use App\Discord\MentionResponder\Models\MentionReply;
-use App\Discord\Roles\Enums\Permission;
+use App\Domain\Fun\Models\MentionGroup;
+use App\Domain\Fun\Models\MentionReply;
+use App\Domain\Permission\Enums\Permission;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Command\Option;
 use Discord\Parts\Interactions\Interaction;
@@ -52,7 +52,7 @@ class AddMentionReply extends SlashCommand
      */
     public function action(): MessageBuilder
     {
-        $guildModel = \App\Discord\Core\Models\Guild::get($this->guildId);
+        $guildModel = \App\Domain\Discord\Guild::get($this->guildId);
         $mentionGroup = MentionGroup::find($this->getOption('group_id'));
         if (!$mentionGroup) {
             return EmbedFactory::failedEmbed($this, __('bot.mention.no-group'));

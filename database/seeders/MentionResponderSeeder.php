@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Discord\Core\Models\Guild;
-use App\Discord\MentionResponder\Models\MentionGroup;
-use App\Discord\MentionResponder\Models\MentionReply;
+use App\Domain\Discord\Guild;
+use App\Domain\Fun\Models\MentionGroup;
+use App\Domain\Fun\Models\MentionReply;
 use Illuminate\Database\Seeder;
 
 class MentionResponderSeeder extends Seeder
@@ -78,7 +78,7 @@ class MentionResponderSeeder extends Seeder
             "You. You should just go. I don't have enough ale to stomach talking to you.",
             "Get out of here. Get out of here and never come back!",
         ],
-        'MessageBumpCounter' => [
+        'BumpCounter' => [
             "By Shor, you really bump a lot.",
             "The Gods blessed you with two hands, and you use both for bumping this discord, I can respect that.",
             "Well, look at you. If only everyone bumped like you did.",

@@ -3,9 +3,9 @@
 namespace App\Discord\Moderation\Events;
 
 use App\Discord\Core\DiscordEvent;
-use App\Discord\Core\Enums\Setting;
 use App\Discord\Core\Interfaces\Events\GUILD_MEMBER_ADD;
-use App\Discord\Moderation\Models\CustomMessage;
+use App\Domain\Fun\Models\CustomMessage;
+use App\Domain\Setting\Enums\Setting;
 use Discord\Discord;
 use Discord\Http\Exceptions\NoPermissionsException;
 use Discord\Parts\User\Member;

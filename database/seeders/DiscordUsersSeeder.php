@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Discord\Core\Models\DiscordUser;
+use App\Domain\Discord\User;
 use Illuminate\Database\Seeder;
 
 class DiscordUsersSeeder extends Seeder
@@ -21,7 +21,7 @@ class DiscordUsersSeeder extends Seeder
 
 
         foreach ($ids as $id) {
-            DiscordUser::factory()->create([
+            User::factory()->create([
                 'discord_id' => $id,
             ]);
         }

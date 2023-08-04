@@ -2,15 +2,15 @@
 
 namespace Database\Factories;
 
-use App\Discord\Core\Models\DiscordUser;
+use App\Domain\Discord\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Discord\Core\Models\DiscordUser>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Domain\Discord\User>
  */
 class DiscordUserFactory extends Factory
 {
-    protected $model = DiscordUser::class;
+    protected $model = User::class;
     /**
      * Define the model's default state.
      *

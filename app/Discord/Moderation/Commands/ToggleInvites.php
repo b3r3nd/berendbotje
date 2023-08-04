@@ -4,10 +4,9 @@ namespace App\Discord\Moderation\Commands;
 
 use App\Discord\Core\Builders\EmbedFactory;
 use App\Discord\Core\SlashCommand;
-use App\Discord\Roles\Enums\Permission;
+use App\Domain\Permission\Enums\Permission;
 use Discord\Builders\MessageBuilder;
 use Discord\Http\Exceptions\NoPermissionsException;
-use Discord\Parts\Guild\Guild;
 use Discord\Parts\Interactions\Interaction;
 
 class ToggleInvites extends SlashCommand

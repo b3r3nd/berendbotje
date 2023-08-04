@@ -4,8 +4,8 @@ namespace App\Discord\Core\Events;
 
 use App\Discord\Core\DiscordEvent;
 use App\Discord\Core\Interfaces\Events\GUILD_CREATE;
-use App\Discord\Core\Models\DiscordUser;
-use App\Discord\Core\Models\Guild as GuildModel;
+use App\Domain\Discord\Guild as GuildModel;
+use App\Domain\Discord\User;
 use Database\Seeders\LogSettingsSeeder;
 use Database\Seeders\MentionResponderSeeder;
 use Database\Seeders\RoleSeeder;
@@ -35,7 +35,7 @@ class GuildCreate extends DiscordEvent implements GUILD_CREATE
         }
         $guildModel = GuildModel::get($guild->id);
         if (!$guildModel) {
-            $owner = DiscordUser::get($guild->owner_id);
+            $owner = User::get($guild->owner_id);
             $guildModel = GuildModel::create([
                 'owner_id' => $owner->id,
                 'guild_id' => $guild->id,

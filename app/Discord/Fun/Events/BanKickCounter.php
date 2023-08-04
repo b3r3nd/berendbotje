@@ -4,9 +4,9 @@ namespace App\Discord\Fun\Events;
 
 use App\Discord\Core\DiscordEvent;
 use App\Discord\Core\Interfaces\Events\GUILD_MEMBER_REMOVE;
-use App\Discord\Core\Models\DiscordUser;
-use App\Discord\Fun\Models\BanCounter;
-use App\Discord\Fun\Models\KickCounter;
+use App\Domain\Discord\User;
+use App\Domain\Moderation\Models\BanCounter;
+use App\Domain\Moderation\Models\KickCounter;
 use Discord\Discord;
 use Discord\Http\Exceptions\NoPermissionsException;
 use Discord\Parts\Guild\AuditLog\AuditLog;
@@ -42,8 +42,8 @@ class BanKickCounter extends DiscordEvent implements GUILD_MEMBER_REMOVE
             $discord->guilds->fetch($member->guild_id)->done(function (Guild $guild) use ($member) {
                 $guild->getAuditLog(['limit' => 1])->done(function (AuditLog $auditLog) use ($member, $guild) {
                     foreach ($auditLog->audit_log_entries as $entry) {
-                        $user = DiscordUser::get($entry->user->id);
-                        $guildModel = \App\Discord\Core\Models\Guild::get($guild->id);
+                        $user = User::get($entry->user->id);
+                        $guildModel = \App\Domain\Discord\Guild::get($guild->id);
                         if ($entry->action_type == 20) {
                             $kickCounters = $user->kickCounters()->where('guild_id', $guildModel->id)->get();
                             if ($kickCounters->isEmpty()) {

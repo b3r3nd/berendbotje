@@ -3,11 +3,11 @@
 namespace App\Discord\Fun\Events;
 
 use App\Discord\Core\Bot;
-use App\Discord\Core\Enums\Setting;
 use App\Discord\Core\Guild;
 use App\Discord\Core\Interfaces\MessageCreateAction;
-use App\Discord\Fun\Models\Emote;
-use App\Discord\Moderation\Models\Channel;
+use App\Domain\Discord\Channel;
+use App\Domain\Fun\Models\Emote;
+use App\Domain\Setting\Enums\Setting;
 use Discord\Parts\Channel\Message;
 use function Emoji\detect_emoji;
 
@@ -25,7 +25,7 @@ class MessageEmoteCounter implements MessageCreateAction
         // Checks for custom emotes
         if (preg_match('/<a?:.+?:\d+>/', $message->content, $matches)) {
             foreach ($matches as $match) {
-                $emoteInstance = Emote::firstOrCreate(['emote' => $match, 'guild_id' => \App\Discord\Core\Models\Guild::get($message->guild_id)->id]);
+                $emoteInstance = Emote::firstOrCreate(['emote' => $match, 'guild_id' => \App\Domain\Discord\Guild::get($message->guild_id)->id]);
                 $this->processEmote($emoteInstance);
             }
         }
@@ -36,7 +36,7 @@ class MessageEmoteCounter implements MessageCreateAction
             $usedEmotes = [];
             foreach ($emotes as $emote) {
                 if (!in_array($emote['hex_str'], $usedEmotes, true)) {
-                    $emoteInstance = Emote::firstOrCreate(['hex' => $emote['hex_str'], 'emote' => $emote['emoji'], 'guild_id' => \App\Discord\Core\Models\Guild::get($message->guild_id)->id]);
+                    $emoteInstance = Emote::firstOrCreate(['hex' => $emote['hex_str'], 'emote' => $emote['emoji'], 'guild_id' => \App\Domain\Discord\Guild::get($message->guild_id)->id]);
                     $this->processEmote($emoteInstance);
                     $usedEmotes[] = $emote['hex_str'];
                 }

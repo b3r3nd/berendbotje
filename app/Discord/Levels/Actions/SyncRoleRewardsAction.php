@@ -4,9 +4,9 @@ namespace App\Discord\Levels\Actions;
 
 use App\Discord\Core\Bot;
 use App\Discord\Core\Interfaces\Action;
-use App\Discord\Core\Models\DiscordUser;
-use App\Discord\Core\Models\Guild;
-use App\Discord\Levels\Models\RoleReward;
+use App\Domain\Discord\Guild;
+use App\Domain\Discord\User;
+use App\Domain\Fun\Models\RoleReward;
 use Discord\Http\Exceptions\NoPermissionsException;
 use Discord\Parts\Channel\Message;
 use Exception;
@@ -39,7 +39,7 @@ class SyncRoleRewardsAction implements Action
      */
     public function execute(): void
     {
-        $user = DiscordUser::get($this->userId);
+        $user = User::get($this->userId);
         $messageCounter = $user->messageCounters()->where('guild_id', Guild::get($this->message->guild_id)->id)->get()->first();
 
         // Give role if a role reward has been reached

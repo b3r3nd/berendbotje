@@ -2,11 +2,11 @@
 
 namespace Database\Factories;
 
-use App\Discord\Roles\Models\Permission;
+use App\Domain\Permission\Models\Permission;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Discord\Roles\Models\Permission>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Domain\Permission\Models\Permission>
  */
 class PermissionFactory extends Factory
 {

@@ -4,7 +4,7 @@ namespace App\Discord\Logger\Events;
 
 use App\Discord\Core\DiscordEvent;
 use App\Discord\Core\Interfaces\Events\GUILD_BAN_REMOVE;
-use App\Discord\Logger\Enums\LogSetting;
+use App\Domain\Setting\Enums\LogSetting;
 use Discord\Discord;
 use Discord\Parts\Guild\Ban;
 use Discord\WebSockets\Event;

@@ -3,11 +3,10 @@
 namespace App\Discord\Roles\Commands;
 
 use App\Discord\Core\Builders\EmbedFactory;
-use App\Discord\Core\Models\DiscordUser;
 use App\Discord\Core\SlashCommand;
-use App\Discord\Levels\Models\RoleReward;
-use App\Discord\Roles\Enums\Permission;
-use App\Discord\Roles\Models\Role;
+use App\Domain\Discord\User;
+use App\Domain\Permission\Enums\Permission;
+use App\Domain\Permission\Models\Role;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Command\Option;
 use Discord\Parts\Interactions\Interaction;
@@ -58,7 +57,7 @@ class AttachUserRole extends SlashCommand
         }
         $role = Role::get($this->guildId, $this->getOption('role_name'));
 
-        $user = DiscordUser::get($this->getOption('user_mention'));
+        $user = User::get($this->getOption('user_mention'));
         $user->roles()->attach($role);
 
         return EmbedFactory::successEmbed($this, __('bot.roles.role-attached', ['role' => $role->name, 'user' => $user->tag()]));

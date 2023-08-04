@@ -4,7 +4,7 @@ namespace App\Discord\Core\Events;
 
 use App\Discord\Core\DiscordEvent;
 use App\Discord\Core\Interfaces\Events\MESSAGE_CREATE;
-use App\Discord\Core\Models\DiscordUser;
+use App\Domain\Discord\User;
 use Discord\Discord;
 use Discord\Parts\Channel\Message;
 use Discord\WebSockets\Event;
@@ -39,7 +39,7 @@ class MessageCreate extends DiscordEvent implements MESSAGE_CREATE
         }
 
         // @TODO remove when all new usernames are updated
-        DiscordUser::get($message->member);
+        User::get($message->member);
 
         $channel = $guild->getChannel($message->channel_id);
         foreach ($this->bot->messageActions as $messageEvent) {

@@ -4,8 +4,8 @@ namespace App\Discord\Roles\Commands;
 
 use App\Discord\Core\Builders\EmbedBuilder;
 use App\Discord\Core\SlashIndexCommand;
-use App\Discord\Roles\Enums\Permission;
-use App\Discord\Roles\Models\Role;
+use App\Domain\Permission\Enums\Permission;
+use App\Domain\Permission\Models\Role;
 use Discord\Parts\Embed\Embed;
 use Discord\Parts\Interactions\Interaction;
 use Exception;

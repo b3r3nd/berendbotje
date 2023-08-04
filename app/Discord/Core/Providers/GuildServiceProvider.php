@@ -4,7 +4,7 @@ namespace App\Discord\Core\Providers;
 
 use App\Discord\Core\Bot;
 use App\Discord\Core\Interfaces\ServiceProvider;
-use App\Discord\Core\Models\Guild;
+use App\Domain\Discord\Guild;
 use Exception;
 
 class GuildServiceProvider implements ServiceProvider

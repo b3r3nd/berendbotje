@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Discord\Roles\Models\Permission;
+use App\Domain\Permission\Models\Permission;
 use Illuminate\Database\Seeder;
 
 class PermissionSeeder extends Seeder

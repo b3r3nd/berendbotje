@@ -3,13 +3,12 @@
 namespace App\Discord\Fun\Commands;
 
 use App\Discord\Core\Builders\EmbedBuilder;
-use App\Discord\Core\Models\DiscordUser;
-use App\Discord\Core\Models\Guild;
 use App\Discord\Core\SlashCommand;
-use App\Discord\Roles\Enums\Permission;
+use App\Domain\Discord\Guild;
+use App\Domain\Discord\User;
+use App\Domain\Permission\Enums\Permission;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Interaction;
-use Discord\Parts\User\User;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -34,7 +33,7 @@ class ModeratorStatistics extends SlashCommand
 
     private function getCounter(string $counter, Guild $guild)
     {
-        return DiscordUser::whereHas($counter, function (Builder $query) use ($guild) {
+        return User::whereHas($counter, function (Builder $query) use ($guild) {
             $query->where('guild_id', '=', $guild->id);
         })->get();
     }

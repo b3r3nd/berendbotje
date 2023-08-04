@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Discord\Core\Models\Guild;
+use App\Domain\Discord\Guild;
 use Illuminate\Database\Seeder;
 
 class GuildSeeder extends Seeder

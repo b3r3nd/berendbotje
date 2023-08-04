@@ -3,7 +3,6 @@
 namespace App\Discord\Logger;
 
 use App\Discord\Core\Builders\EmbedBuilder;
-use Carbon\Carbon;
 use Discord\Discord;
 use Discord\Parts\Embed\Embed;
 use Discord\Parts\User\Member;
