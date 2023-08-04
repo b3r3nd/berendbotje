@@ -11,11 +11,15 @@ use App\Discord\Core\Models\DiscordUser;
 use App\Discord\Levels\Actions\SyncRoleRewardsAction;
 use App\Discord\Levels\Actions\UpdateMessageCounterAction;
 use Carbon\Carbon;
+use Discord\Http\Exceptions\NoPermissionsException;
 use Discord\Parts\Channel\Message;
 use App\Discord\Moderation\Models\Channel;
 
 class MessageXpCounter implements MessageCreateAction
 {
+    /**
+     * @throws NoPermissionsException
+     */
     public function execute(Bot $bot, Guild $guildModel, Message $message, ?Channel $channel): void
     {
         if (($channel && $channel->no_xp) || !$guildModel->getSetting(Setting::ENABLE_XP)) {
@@ -28,7 +32,7 @@ class MessageXpCounter implements MessageCreateAction
 
             $user = DiscordUser::get($message->author->id);
             if ($guildModel->getSetting(Setting::ENABLE_ROLE_REWARDS) && !$user->enabledSetting(UserSetting::NO_ROLE_REWARDS->value, $message->guild_id)) {
-                (new SyncRoleRewardsAction($message, $message->author->id))->execute();
+                (new SyncRoleRewardsAction($bot, $message, $message->author->id))->execute();
             }
         }
     }

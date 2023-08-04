@@ -31,11 +31,6 @@ class Bot
     private array $services = [];
 
     /**
-     * Service providers are the central place where all things in the bot will be registered. Service providers
-     * "provide a service".
-     *
-     * Implement the interface and add them here.
-     *
      * @see \App\Discord\Core\Interfaces\ServiceProvider
      * @var array|string[]
      */

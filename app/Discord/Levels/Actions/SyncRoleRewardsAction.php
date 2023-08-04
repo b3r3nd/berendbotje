@@ -2,11 +2,14 @@
 
 namespace App\Discord\Levels\Actions;
 
+use App\Discord\Core\Bot;
 use App\Discord\Core\Interfaces\Action;
 use App\Discord\Core\Models\DiscordUser;
 use App\Discord\Core\Models\Guild;
 use App\Discord\Levels\Models\RoleReward;
+use Discord\Http\Exceptions\NoPermissionsException;
 use Discord\Parts\Channel\Message;
+use Exception;
 
 /**
  * @property Message $message   Message instance which triggered this event.
@@ -16,19 +19,23 @@ class SyncRoleRewardsAction implements Action
 {
     private Message $message;
     private string $userId;
+    private Bot $bot;
 
     /**
+     * @param Bot $bot
      * @param Message $message
      * @param $userId
      */
-    public function __construct(Message $message, $userId)
+    public function __construct(Bot $bot, Message $message, $userId)
     {
+        $this->bot = $bot;
         $this->message = $message;
         $this->userId = $userId;
     }
 
     /**
      * @return void
+     * @throws Exception
      */
     public function execute(): void
     {
@@ -42,7 +49,11 @@ class SyncRoleRewardsAction implements Action
                 $role = $reward->role;
                 $rolesCollection = collect($this->message->member->roles);
                 if (($messageCounter->level >= $reward->level) && !$rolesCollection->contains('id', $role)) {
-                    $this->message->member->addRole($role);
+                    try {
+                        $this->message->member->addRole($role);
+                    } catch(NoPermissionsException) {
+                        $this->bot->getGuild($this->message->guild_id)?->log(__('bot.exception.role'), "fail");
+                    }
                 }
             }
         }

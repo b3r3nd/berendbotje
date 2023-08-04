@@ -374,6 +374,7 @@ return [
     ],
 
     'exception' => [
-       'audit' => 'Bot lacks permission to read Audit log.'
+       'audit' => 'Bot lacks permission to read Audit log...',
+        'role' => 'Bot lacks permission to give roles..',
     ],
 ];

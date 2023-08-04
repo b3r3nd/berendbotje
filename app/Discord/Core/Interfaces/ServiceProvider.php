@@ -7,7 +7,7 @@ use App\Discord\Core\Bot;
 interface ServiceProvider
 {
     /**
-     * Function is called before the is ready.
+     * Function is called before the bot is ready.
      *
      * @param Bot $bot
      * @return void

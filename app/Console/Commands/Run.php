@@ -30,7 +30,7 @@ class Run extends Command
      * @return int
      * @throws IntentException
      */
-    public function handle()
+    public function handle(): int
     {
         $bot = new Bot($this->option('update'), $this->option('delete'));
         $bot->connect();
