@@ -4,18 +4,14 @@ namespace App\Discord;
 
 use App\Discord\Core\Builders\EmbedBuilder;
 use App\Discord\Core\SlashCommand;
-use App\Discord\Roles\Enums\Permission;
-use Discord\Builders\Components\ActionRow;
-use Discord\Builders\Components\Button;
+use App\Domain\Permission\Enums\Permission;
 use Discord\Builders\Components\Option;
 use Discord\Builders\Components\SelectMenu;
 use Discord\Builders\Components\StringSelect;
 use Discord\Builders\MessageBuilder;
 use Discord\Helpers\Collection;
-use Discord\Parts\Embed\Embed;
 use Discord\Parts\Interactions\Interaction;
 use Exception;
-use http\Message;
 
 class Help extends SlashCommand
 {

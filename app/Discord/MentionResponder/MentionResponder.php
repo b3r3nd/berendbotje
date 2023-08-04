@@ -3,10 +3,10 @@
 namespace App\Discord\MentionResponder;
 
 use App\Discord\Core\Bot;
-use App\Discord\Core\Enums\Setting as SettingEnum;
-use App\Discord\Core\Models\DiscordUser;
-use App\Discord\MentionResponder\Models\MentionGroup;
-use App\Discord\Moderation\Models\Timeout;
+use App\Domain\Discord\User;
+use App\Domain\Fun\Models\MentionGroup;
+use App\Domain\Moderation\Models\Timeout;
+use App\Domain\Setting\Enums\Setting as SettingEnum;
 use Carbon\Carbon;
 use Discord\Discord;
 use Discord\Parts\Channel\Message;
@@ -43,7 +43,7 @@ class MentionResponder
         $this->discord = $bot->discord;
         $this->bot = $bot;
         $this->guildId = $guildId;
-        $this->guildModelId = \App\Discord\Core\Models\Guild::get($guildId)->id;
+        $this->guildModelId = \App\Domain\Discord\Guild::get($guildId)->id;
         $this->loadReplies();
         $this->registerMentionResponder();
     }
@@ -144,7 +144,7 @@ class MentionResponder
                 }
             }
 
-            $discordUser = DiscordUser::get($message->author->id);
+            $discordUser = User::get($message->author->id);
             $cringeCounter = $discordUser->cringeCounters()->where('guild_id', $this->guildModelId)->get()->first()->count ?? 0;
             $bumpCounter = $discordUser->bumpCounters()->where('guild_id', $this->guildModelId)->selectRaw('*, sum(count) as total')->first();
             $timeoutCounter = Timeout::byGuild($message->guild_id)->where(['discord_id' => $message->author->id])->count();

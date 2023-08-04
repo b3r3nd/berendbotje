@@ -4,8 +4,8 @@ namespace App\Discord\Moderation\Actions;
 
 use App\Discord\Core\Bot;
 use App\Discord\Core\Interfaces\Action;
-use App\Discord\Core\Models\Guild;
-use App\Discord\Moderation\Models\Channel;
+use App\Domain\Discord\Channel;
+use App\Domain\Discord\Guild;
 use Discord\Helpers\Collection;
 
 /**

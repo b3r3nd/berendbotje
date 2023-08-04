@@ -2,7 +2,7 @@
 
 namespace App\Discord\Fun\Jobs;
 
-use App\Discord\Core\Models\Guild;
+use App\Domain\Discord\Guild;
 use Discord\Discord;
 use Discord\WebSockets\Intents;
 use Illuminate\Bus\Queueable;

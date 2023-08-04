@@ -3,11 +3,11 @@
 namespace App\Discord\MentionResponder\Commands;
 
 use App\Discord\Core\Builders\EmbedFactory;
-use App\Discord\Core\Models\Guild;
 use App\Discord\Core\SlashCommand;
 use App\Discord\MentionResponder\Actions\UpdateMentionGroupAction;
-use App\Discord\MentionResponder\Models\MentionGroup;
-use App\Discord\Roles\Enums\Permission;
+use App\Domain\Discord\Guild;
+use App\Domain\Fun\Models\MentionGroup;
+use App\Domain\Permission\Enums\Permission;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Command\Option;
 use Discord\Parts\Interactions\Interaction;

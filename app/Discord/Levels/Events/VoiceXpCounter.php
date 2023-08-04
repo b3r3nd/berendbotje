@@ -3,11 +3,11 @@
 namespace App\Discord\Levels\Events;
 
 use App\Discord\Core\DiscordEvent;
-use App\Discord\Core\Enums\Setting;
 use App\Discord\Core\Guild;
 use App\Discord\Core\Interfaces\Events\VOICE_STATE_UPDATE;
-use App\Discord\Core\Models\DiscordUser;
-use App\Discord\Levels\Helpers\Helper;
+use App\Domain\Discord\User;
+use App\Domain\Fun\Helpers\Helper;
+use App\Domain\Setting\Enums\Setting;
 use Discord\Discord;
 use Discord\Parts\WebSockets\VoiceStateUpdate as DVoiceStateUpdate;
 use Discord\WebSockets\Event;
@@ -28,7 +28,7 @@ class VoiceXpCounter extends DiscordEvent implements VOICE_STATE_UPDATE
     public function execute(DVoiceStateUpdate $state, Discord $discord, $oldstate): void
     {
         $guild = $this->bot->getGuild($state->guild_id ?? $oldstate->guild_id);
-        $user = DiscordUser::get($state->user_id);
+        $user = User::get($state->user_id);
 
         if ($state->channel) {
             if (!isset($oldstate)) {
@@ -49,11 +49,11 @@ class VoiceXpCounter extends DiscordEvent implements VOICE_STATE_UPDATE
 
     /**
      * @param Guild $guild
-     * @param DiscordUser $user
+     * @param User $user
      * @param DVoiceStateUpdate $oldstate
      * @return void
      */
-    private function leaveVoice(Guild $guild, DiscordUser $user, DVoiceStateUpdate $oldstate): void
+    private function leaveVoice(Guild $guild, User $user, DVoiceStateUpdate $oldstate): void
     {
         if ($guild->getSetting(Setting::ENABLE_VOICE_XP)) {
             $duration = $guild->leftVoice($oldstate->user_id);
@@ -62,7 +62,7 @@ class VoiceXpCounter extends DiscordEvent implements VOICE_STATE_UPDATE
             $amount = round(($duration / $cooldown) * $xp);
 
             $messageCounters = $user->messageCounters()->where('guild_id', $guild->model->id)->get();
-            $messageCounter = new \App\Discord\Levels\Models\UserXP([
+            $messageCounter = new \App\Domain\Fun\Models\UserXP([
                 'count' => 0,
                 'guild_id' => $guild->model->id,
                 'xp' => $amount,

@@ -4,10 +4,10 @@ namespace App\Discord\Levels\Commands;
 
 use App\Discord\Core\Builders\EmbedBuilder;
 use App\Discord\Core\Builders\EmbedFactory;
-use App\Discord\Core\Models\DiscordUser;
-use App\Discord\Core\Models\Guild;
 use App\Discord\Core\SlashCommand;
-use App\Discord\Roles\Enums\Permission;
+use App\Domain\Discord\Guild;
+use App\Domain\Discord\User;
+use App\Domain\Permission\Enums\Permission;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Command\Option;
 use Discord\Parts\Interactions\Interaction;
@@ -48,9 +48,9 @@ class UserRank extends SlashCommand
     public function action(): MessageBuilder
     {
         if ($this->getOption('user_mention')) {
-            $user = DiscordUser::get($this->getOption('user_mention'));
+            $user = User::get($this->getOption('user_mention'));
         } else {
-            $user = DiscordUser::get($this->interaction->member);
+            $user = User::get($this->interaction->member);
         }
 
         $guild = Guild::get($this->guildId);

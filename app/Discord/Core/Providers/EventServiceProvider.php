@@ -9,8 +9,7 @@ use App\Discord\Core\Events\MessageCreate;
 use App\Discord\Core\Events\VoiceStateUpdate;
 use App\Discord\Core\Interfaces\ServiceProvider;
 use App\Discord\Fun\Events\BanKickCounter;
-use App\Discord\Fun\Events\MessageBumpCounter;
-use App\Discord\Fun\Events\MessageCommandResponse;
+use App\Discord\Fun\Events\BumpCounter;
 use App\Discord\Fun\Events\MessageCount;
 use App\Discord\Fun\Events\MessageEmoteCounter;
 use App\Discord\Fun\Events\MessageReact;
@@ -28,6 +27,7 @@ use App\Discord\Logger\Events\MessageDelete;
 use App\Discord\Logger\Events\MessageUpdate;
 use App\Discord\Logger\Events\VoiceStateLogger;
 use App\Discord\Moderation\Events\DetectTimeout;
+use App\Discord\Moderation\Events\MessageCommandResponse;
 use App\Discord\Moderation\Events\MessageMediaFilter;
 use App\Discord\Moderation\Events\MessageStickerFilter;
 use App\Discord\Moderation\Events\WelcomeUser;
@@ -63,7 +63,7 @@ class EventServiceProvider implements ServiceProvider
         MessageDelete::class,
         MessageUpdate::class,
         DMLogger::class,
-        MessageBumpCounter::class,
+        BumpCounter::class,
     ];
 
     public function boot(Bot $bot): void

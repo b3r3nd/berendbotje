@@ -4,9 +4,9 @@ namespace App\Discord\Roles\Commands;
 
 use App\Discord\Core\Builders\EmbedBuilder;
 use App\Discord\Core\Builders\EmbedFactory;
-use App\Discord\Core\Models\DiscordUser;
 use App\Discord\Core\SlashCommand;
-use App\Discord\Roles\Enums\Permission;
+use App\Domain\Discord\User;
+use App\Domain\Permission\Enums\Permission;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Command\Option;
 use Discord\Parts\Interactions\Interaction;
@@ -47,7 +47,7 @@ class UserRoles extends SlashCommand
     {
         $description = "";
 
-        $user = DiscordUser::get($this->getOption('user_mention') ?? $this->interaction->member);
+        $user = User::get($this->getOption('user_mention') ?? $this->interaction->member);
 
         if ($user->roles->isEmpty()) {
             return EmbedFactory::failedEmbed($this, __('bot.userroles.none', ['user' => $user->tag()]));

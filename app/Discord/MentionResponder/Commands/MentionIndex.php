@@ -4,10 +4,10 @@ namespace App\Discord\MentionResponder\Commands;
 
 use App\Discord\Core\Builders\EmbedBuilder;
 use App\Discord\Core\SlashIndexCommand;
-use App\Discord\Levels\Helpers\Helper;
-use App\Discord\MentionResponder\Models\MentionGroup;
-use App\Discord\MentionResponder\Models\MentionReply;
-use App\Discord\Roles\Enums\Permission;
+use App\Domain\Fun\Helpers\Helper;
+use App\Domain\Fun\Models\MentionGroup;
+use App\Domain\Fun\Models\MentionReply;
+use App\Domain\Permission\Enums\Permission;
 use Discord\Parts\Embed\Embed;
 use Discord\Parts\Interactions\Command\Option;
 use Discord\Parts\Interactions\Interaction;

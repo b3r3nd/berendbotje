@@ -3,7 +3,7 @@
 namespace App\Discord\MentionResponder\Actions;
 
 use App\Discord\Core\Interfaces\Action;
-use App\Discord\MentionResponder\Models\MentionGroup;
+use App\Domain\Fun\Models\MentionGroup;
 use Discord\Helpers\Collection;
 
 /**

@@ -4,8 +4,8 @@ namespace App\Discord\Logger\Commands;
 
 use App\Discord\Core\Builders\EmbedBuilder;
 use App\Discord\Core\SlashCommand;
-use App\Discord\Logger\Models\LogSetting;
-use App\Discord\Roles\Enums\Permission;
+use App\Domain\Permission\Enums\Permission;
+use App\Domain\Setting\Models\LogSetting;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Interaction;
 use Exception;

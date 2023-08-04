@@ -3,9 +3,9 @@
 namespace App\Discord\Core;
 
 use App\Discord\Core\Builders\EmbedFactory;
-use App\Discord\Core\Enums\Setting;
-use App\Discord\Core\Models\DiscordUser;
-use App\Discord\Roles\Enums\Permission;
+use App\Domain\Discord\User;
+use App\Domain\Permission\Enums\Permission;
+use App\Domain\Setting\Enums\Setting;
 use Discord\Builders\MessageBuilder;
 use Discord\Discord;
 use Discord\Parts\Interactions\Interaction;
@@ -96,7 +96,7 @@ abstract class SlashCommand
         }
         $this->guildId = $interaction->guild_id;
         $guild = $this->bot->getGuild($interaction->guild_id);
-        if ($this->permission->value !== Permission::NONE->value && !DiscordUser::hasPermission($interaction->member->id, $interaction->guild_id, $this->permission->value)) {
+        if ($this->permission->value !== Permission::NONE->value && !User::hasPermission($interaction->member->id, $interaction->guild_id, $this->permission->value)) {
             if ($guild->getSetting(Setting::ENABLE_CMD_LOG)) {
                 $guild->logWithMember($interaction->member, __('bot.log.failed', ['trigger' => $this->commandLabel]), 'fail');
             }

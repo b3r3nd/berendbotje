@@ -4,9 +4,9 @@ namespace App\Discord\Levels\Commands;
 
 use App\Discord\Core\Builders\EmbedBuilder;
 use App\Discord\Core\SlashIndexCommand;
-use App\Discord\Levels\Helpers\Helper;
-use App\Discord\Levels\Models\UserXP;
-use App\Discord\Roles\Enums\Permission;
+use App\Domain\Fun\Helpers\Helper;
+use App\Domain\Fun\Models\UserXP;
+use App\Domain\Permission\Enums\Permission;
 use Discord\Parts\Embed\Embed;
 use Discord\Parts\Interactions\Interaction;
 use Exception;

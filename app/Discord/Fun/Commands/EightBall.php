@@ -3,7 +3,7 @@
 namespace App\Discord\Fun\Commands;
 
 use App\Discord\Core\SlashCommand;
-use App\Discord\Roles\Enums\Permission;
+use App\Domain\Permission\Enums\Permission;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Command\Option;
 use Discord\Parts\Interactions\Interaction;

@@ -3,11 +3,10 @@
 namespace App\Discord\Core\Commands;
 
 use App\Discord\Core\Builders\EmbedFactory;
-use App\Discord\Core\Models\DiscordUser;
-use App\Discord\Core\Models\Setting;
-use App\Discord\Core\Models\UserSetting;
 use App\Discord\Core\SlashCommand;
-use App\Discord\Roles\Enums\Permission;
+use App\Domain\Discord\User;
+use App\Domain\Permission\Enums\Permission;
+use App\Domain\Setting\Models\UserSetting;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Command\Option;
 use Discord\Parts\Interactions\Interaction;
@@ -70,7 +69,7 @@ class UpdateUserSetting extends SlashCommand
             return EmbedFactory::failedEmbed($this, __('bot.set.not-numeric', ['value' => $value]));
         }
 
-        $user = DiscordUser::get($this->interaction->member);
+        $user = User::get($this->interaction->member);
         $guild = $this->bot->getGuild($this->guildId);
 
         $setting = $user->settings()->where('key', $key)->first();

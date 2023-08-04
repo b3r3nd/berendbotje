@@ -3,10 +3,9 @@
 namespace App\Discord\Core\Commands;
 
 use App\Discord\Core\Builders\EmbedFactory;
-use App\Discord\Core\Models\Guild;
-use App\Discord\Core\Models\Setting;
 use App\Discord\Core\SlashCommand;
-use App\Discord\Roles\Enums\Permission;
+use App\Domain\Permission\Enums\Permission;
+use App\Domain\Setting\Models\Setting;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Command\Option;
 use Discord\Parts\Interactions\Interaction;

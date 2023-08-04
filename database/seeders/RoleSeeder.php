@@ -2,11 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Discord\Core\Models\DiscordUser;
-use App\Discord\Core\Models\Guild;
-use App\Discord\Roles\Models\Permission;
-use App\Discord\Roles\Models\Role;
-use App\Discord\Roles\Scopes\PermissionScope;
+use App\Domain\Discord\Guild;
+use App\Domain\Discord\User;
+use App\Domain\Permission\Models\Permission;
+use App\Domain\Permission\Models\Role;
 use Illuminate\Database\Seeder;
 
 class RoleSeeder extends Seeder
@@ -23,7 +22,7 @@ class RoleSeeder extends Seeder
      */
     public function run()
     {
-        $owner = DiscordUser::find(1);
+        $owner = User::find(1);
 
         foreach (Guild::all() as $guild) {
             $this->createAdminRole($guild, $owner);
@@ -33,10 +32,10 @@ class RoleSeeder extends Seeder
 
     /**
      * @param Guild $guild
-     * @param DiscordUser $owner
+     * @param User $owner
      * @return void
      */
-    public function createAdminRole(Guild $guild, DiscordUser $owner): void
+    public function createAdminRole(Guild $guild, User $owner): void
     {
         $adminRole = Role::factory()->create(['name' => 'Administrator', 'guild_id' => $guild->id,]);
         $adminRole->permissions()->attach(Permission::all()->pluck('id'));

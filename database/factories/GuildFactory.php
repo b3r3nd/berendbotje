@@ -2,11 +2,11 @@
 
 namespace Database\Factories;
 
-use App\Discord\Core\Models\Guild;
+use App\Domain\Discord\Guild;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Discord\Core\Models\Guild>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Domain\Discord\Guild>
  */
 class GuildFactory extends Factory
 {

@@ -3,11 +3,11 @@
 namespace App\Discord\Levels\Actions;
 
 use App\Discord\Core\Bot;
-use App\Discord\Core\Enums\Setting;
 use App\Discord\Core\Interfaces\Action;
-use App\Discord\Core\Models\DiscordUser;
-use App\Discord\Levels\Helpers\Helper;
-use App\Discord\Moderation\Models\CustomMessage;
+use App\Domain\Discord\User;
+use App\Domain\Fun\Helpers\Helper;
+use App\Domain\Fun\Models\CustomMessage;
+use App\Domain\Setting\Enums\Setting;
 use Discord\Http\Exceptions\NoPermissionsException;
 
 /**
@@ -47,11 +47,11 @@ class UpdateMessageCounterAction implements Action
      */
     public function execute(): void
     {
-        $user = DiscordUser::get($this->userId);
+        $user = User::get($this->userId);
         $guild = $this->bot->getGuild($this->guildId);
 
         $messageCounters = $user->messageCounters()->where('guild_id', $guild->model->id)->get();
-        $messageCounter = new \App\Discord\Levels\Models\UserXP([
+        $messageCounter = new \App\Domain\Fun\Models\UserXP([
             'count' => 1,
             'guild_id' => $guild->model->id,
             'xp' => $this->xpCount,

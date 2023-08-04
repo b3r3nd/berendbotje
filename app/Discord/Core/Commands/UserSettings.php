@@ -3,11 +3,9 @@
 namespace App\Discord\Core\Commands;
 
 use App\Discord\Core\Builders\EmbedBuilder;
-use App\Discord\Core\Enums\Setting as SettingEnum;
-use App\Discord\Core\Models\DiscordUser;
-use App\Discord\Core\Models\Setting;
 use App\Discord\Core\SlashCommand;
-use App\Discord\Roles\Enums\Permission;
+use App\Domain\Discord\User;
+use App\Domain\Permission\Enums\Permission;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Interaction;
 use Exception;
@@ -39,7 +37,7 @@ class UserSettings extends SlashCommand
     {
         $embedBuilder = EmbedBuilder::create($this, __('bot.userconfig.title'));
 
-        $user = DiscordUser::get($this->interaction->member);
+        $user = User::get($this->interaction->member);
 
         if ($user->settings->isEmpty()) {
             $embedBuilder->setDescription(__('bot.userconfig.not-found'));

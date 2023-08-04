@@ -4,8 +4,8 @@ namespace App\Discord\Roles\Commands;
 
 use App\Discord\Core\SlashCommand;
 use App\Discord\Roles\Actions\SyncRolePermissionsAction;
-use App\Discord\Roles\Enums\Permission;
-use App\Discord\Roles\Models\Role;
+use App\Domain\Permission\Enums\Permission;
+use App\Domain\Permission\Models\Role;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Command\Option;
 use Discord\Parts\Interactions\Interaction;
@@ -26,7 +26,7 @@ class DetachRolePermission extends SlashCommand
     public function __construct()
     {
         $choices = [];
-        foreach (\App\Discord\Roles\Models\Permission::all() as $permission) {
+        foreach (\App\Domain\Permission\Models\Permission::all() as $permission) {
             $choices[] = ['name' => __("bot.permissions-enum.{$permission->name}"), 'value' => $permission->name];
         }
 

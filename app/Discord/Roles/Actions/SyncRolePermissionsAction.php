@@ -4,10 +4,9 @@ namespace App\Discord\Roles\Actions;
 
 use App\Discord\Core\Builders\EmbedFactory;
 use App\Discord\Core\SlashCommand;
-use App\Discord\Roles\Models\Permission;
-use App\Discord\Roles\Models\Role;
+use App\Domain\Permission\Models\Permission;
+use App\Domain\Permission\Models\Role;
 use Discord\Builders\MessageBuilder;
-use Discord\Discord;
 use Discord\Helpers\Collection;
 use Exception;
 

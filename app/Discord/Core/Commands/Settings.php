@@ -3,12 +3,9 @@
 namespace App\Discord\Core\Commands;
 
 use App\Discord\Core\Builders\EmbedBuilder;
-use App\Discord\Core\Enums\Setting as SettingEnum;
-use App\Discord\Core\Models\Setting;
-use App\Discord\Core\SlashCommand;
 use App\Discord\Core\SlashIndexCommand;
-use App\Discord\Roles\Enums\Permission;
-use Discord\Builders\MessageBuilder;
+use App\Domain\Permission\Enums\Permission;
+use App\Domain\Setting\Models\Setting;
 use Discord\Parts\Embed\Embed;
 use Discord\Parts\Interactions\Interaction;
 use Exception;

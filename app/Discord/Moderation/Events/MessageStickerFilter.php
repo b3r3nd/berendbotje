@@ -5,7 +5,7 @@ namespace App\Discord\Moderation\Events;
 use App\Discord\Core\Bot;
 use App\Discord\Core\Guild;
 use App\Discord\Core\Interfaces\MessageCreateAction;
-use App\Discord\Moderation\Models\Channel;
+use App\Domain\Discord\Channel;
 use Discord\Parts\Channel\Message;
 
 class MessageStickerFilter implements MessageCreateAction
