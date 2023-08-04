@@ -193,9 +193,6 @@ class SlashCommandServiceProvider implements ServiceProvider
         'help' => [
             Help::class,
         ],
-//        'test' => [
-//            Test::class,
-//        ],
     ];
 
 
