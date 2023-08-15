@@ -39,6 +39,7 @@ class GuildCreate extends DiscordEvent implements GUILD_CREATE
             $guildModel = GuildModel::create([
                 'owner_id' => $owner->id,
                 'guild_id' => $guild->id,
+                'name' => $guild->name,
             ]);
 
             // Use normal seeders to setup data
