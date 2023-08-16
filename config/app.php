@@ -155,6 +155,7 @@ return [
     */
 
     'providers' => [
+        Illuminate\Notifications\NotificationServiceProvider::class,
         Illuminate\Cache\CacheServiceProvider::class,
         Illuminate\Foundation\Providers\ConsoleSupportServiceProvider::class,
         Illuminate\Cookie\CookieServiceProvider::class,
