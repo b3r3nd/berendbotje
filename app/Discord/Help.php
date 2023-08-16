@@ -6,7 +6,6 @@ use App\Discord\Core\Builders\EmbedBuilder;
 use App\Discord\Core\SlashCommand;
 use App\Domain\Permission\Enums\Permission;
 use Discord\Builders\Components\Option;
-use Discord\Builders\Components\SelectMenu;
 use Discord\Builders\Components\StringSelect;
 use Discord\Builders\MessageBuilder;
 use Discord\Helpers\Collection;
@@ -30,6 +29,7 @@ class Help extends SlashCommand
     {
         $this->description = "Help and information";
         parent::__construct();
+
     }
 
     /**
@@ -142,11 +142,11 @@ class Help extends SlashCommand
     }
 
     /**
-     * @return SelectMenu
+     * @return StringSelect
      */
-    public function funSubSelect(): SelectMenu
+    public function funSubSelect(): StringSelect
     {
-        $subSelect = SelectMenu::new()
+        $subSelect = StringSelect::new()
             ->addOption(Option::new("Reactions"))
             ->addOption(Option::new("Cringe Counter"))
             ->addOption(Option::new("Custom Commands"))
