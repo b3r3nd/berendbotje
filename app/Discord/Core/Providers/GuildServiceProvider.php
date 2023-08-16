@@ -21,7 +21,7 @@ class GuildServiceProvider implements ServiceProvider
     public function init(Bot $bot): void
     {
         foreach (Guild::all() as $guild) {
-            if (!isset($this->guilds[$guild->guild_id])) {
+            if (!isset($bot->guilds[$guild->guild_id])) {
                 $bot->addGuild($guild);
             }
         }

@@ -2,10 +2,6 @@
 
 namespace App\Domain\Permission\Enums;
 
-/**
- * Permissions are hardcoded in our permission seeder, they might change, or get updated. Use this ENUM instead of
- * hardcoded string names to prevent issues in the future.
- */
 enum Permission: string
 {
     case NONE = "";
@@ -34,9 +30,4 @@ enum Permission: string
     case BLACKLIST = 'abusers';
     case INVITES = 'invites';
     case MESSAGES = 'messages';
-
-        // Bot Owner permissions not available in public servers
-    case ADMIN_SERVER = 'servers';
-    case ADMINS = 'admins';
-
 }

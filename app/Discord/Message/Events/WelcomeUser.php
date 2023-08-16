@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Discord\Moderation\Events;
+namespace App\Discord\Message\Events;
 
 use App\Discord\Core\DiscordEvent;
 use App\Discord\Core\Interfaces\Events\GUILD_MEMBER_ADD;
-use App\Domain\Fun\Models\CustomMessage;
+use App\Domain\Message\Models\CustomMessage;
 use App\Domain\Setting\Enums\Setting;
 use Discord\Discord;
 use Discord\Http\Exceptions\NoPermissionsException;
