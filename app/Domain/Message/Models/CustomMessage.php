@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Fun\Models;
+namespace App\Domain\Message\Models;
 
 use App\Domain\Discord\Guild;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -23,11 +23,11 @@ class CustomMessage extends Model
 
     public static function level($guildId): mixed
     {
-        return self::byGuild($guildId)->where('type', \App\Domain\Fun\Enums\CustomMessage::LEVEL->value);
+        return self::byGuild($guildId)->where('type', \App\Domain\Message\Enums\CustomMessage::LEVEL->value);
     }
 
     public static function welcome($guildId): mixed
     {
-        return self::byGuild($guildId)->where('type', \App\Domain\Fun\Enums\CustomMessage::WELCOME->value);
+        return self::byGuild($guildId)->where('type', \App\Domain\Message\Enums\CustomMessage::WELCOME->value);
     }
 }

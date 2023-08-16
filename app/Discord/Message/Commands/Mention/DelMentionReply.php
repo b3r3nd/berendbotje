@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Discord\MentionResponder\Commands;
+namespace App\Discord\Message\Commands\Mention;
 
 use App\Discord\Core\Builders\EmbedFactory;
 use App\Discord\Core\SlashCommand;
-use App\Domain\Fun\Models\MentionReply;
+use App\Domain\Message\Models\MentionReply;
 use App\Domain\Permission\Enums\Permission;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Command\Option;

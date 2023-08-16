@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Discord\Moderation\Commands\Message;
+namespace App\Discord\Message\Commands\Welcome;
 
 use App\Discord\Core\Builders\EmbedFactory;
 use App\Discord\Core\SlashCommand;
 use App\Domain\Discord\Guild;
-use App\Domain\Fun\Models\CustomMessage;
+use App\Domain\Message\Models\CustomMessage;
 use App\Domain\Permission\Enums\Permission;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Command\Option;

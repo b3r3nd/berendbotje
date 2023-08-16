@@ -3,8 +3,8 @@
 namespace Database\Seeders;
 
 use App\Domain\Discord\Guild;
-use App\Domain\Fun\Models\MentionGroup;
-use App\Domain\Fun\Models\MentionReply;
+use App\Domain\Message\Models\MentionGroup;
+use App\Domain\Message\Models\MentionReply;
 use Illuminate\Database\Seeder;
 
 class MentionResponderSeeder extends Seeder

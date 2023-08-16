@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Fun\Enums;
+namespace App\Domain\Message\Enums;
 
 enum CustomMessage: int
 {

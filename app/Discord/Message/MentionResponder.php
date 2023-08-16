@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Discord\MentionResponder;
+namespace App\Discord\Message;
 
 use App\Discord\Core\Bot;
 use App\Domain\Discord\User;
-use App\Domain\Fun\Models\MentionGroup;
+use App\Domain\Message\Models\MentionGroup;
 use App\Domain\Moderation\Models\Timeout;
 use App\Domain\Setting\Enums\Setting as SettingEnum;
 use Carbon\Carbon;

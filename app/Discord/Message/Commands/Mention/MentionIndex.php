@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Discord\MentionResponder\Commands;
+namespace App\Discord\Message\Commands\Mention;
 
 use App\Discord\Core\Builders\EmbedBuilder;
 use App\Discord\Core\SlashIndexCommand;
 use App\Domain\Fun\Helpers\Helper;
-use App\Domain\Fun\Models\MentionGroup;
-use App\Domain\Fun\Models\MentionReply;
+use App\Domain\Message\Models\MentionGroup;
+use App\Domain\Message\Models\MentionReply;
 use App\Domain\Permission\Enums\Permission;
 use Discord\Parts\Embed\Embed;
 use Discord\Parts\Interactions\Command\Option;
