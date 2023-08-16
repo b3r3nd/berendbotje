@@ -20,7 +20,6 @@ use Exception;
  * @property int $guildModelId      Model ID for the guild this responder belongs to
  * @property array $roleReplies     List of mention replies for this guild which require a certain role
  * @property array $noRoleReplies   List of mention replies for this guild which require NOT to have a certain role
- * @property array $lastResponses   List of responses recently used (60 sec) so no duplicates are send
  * @property array $userReplies     List of mention replies for this guild for specific users
  * @property array $lastMessages    List of last replies for each user to determine cooldowns
  */
