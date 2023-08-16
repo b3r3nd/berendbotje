@@ -2,7 +2,7 @@
 
 namespace App\Domain\Fun\Helpers;
 
-use App\Domain\Fun\Models\MentionGroup;
+use App\Domain\Message\Models\MentionGroup;
 
 class Helper
 {

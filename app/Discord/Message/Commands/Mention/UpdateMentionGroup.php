@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Discord\MentionResponder\Commands;
+namespace App\Discord\Message\Commands\Mention;
 
 use App\Discord\Core\Builders\EmbedFactory;
 use App\Discord\Core\SlashCommand;
-use App\Discord\MentionResponder\Actions\UpdateMentionGroupAction;
-use App\Domain\Fun\Models\MentionGroup;
+use App\Discord\Message\Actions\UpdateMentionGroupAction;
+use App\Domain\Message\Models\MentionGroup;
 use App\Domain\Permission\Enums\Permission;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Command\Option;

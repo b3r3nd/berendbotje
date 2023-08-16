@@ -26,11 +26,11 @@ use App\Discord\Logger\Events\InviteDelete;
 use App\Discord\Logger\Events\MessageDelete;
 use App\Discord\Logger\Events\MessageUpdate;
 use App\Discord\Logger\Events\VoiceStateLogger;
+use App\Discord\Message\Events\MessageCommandResponse;
+use App\Discord\Message\Events\WelcomeUser;
 use App\Discord\Moderation\Events\DetectTimeout;
-use App\Discord\Moderation\Events\MessageCommandResponse;
 use App\Discord\Moderation\Events\MessageMediaFilter;
 use App\Discord\Moderation\Events\MessageStickerFilter;
-use App\Discord\Moderation\Events\WelcomeUser;
 
 class EventServiceProvider implements ServiceProvider
 {

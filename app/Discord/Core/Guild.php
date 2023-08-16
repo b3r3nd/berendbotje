@@ -3,7 +3,7 @@
 namespace App\Discord\Core;
 
 use App\Discord\Logger\Logger;
-use App\Discord\MentionResponder\MentionResponder;
+use App\Discord\Message\MentionResponder;
 use App\Domain\Discord\Channel;
 use App\Domain\Discord\Guild as GuildModel;
 use App\Domain\Setting\Enums\Setting as SettingEnum;

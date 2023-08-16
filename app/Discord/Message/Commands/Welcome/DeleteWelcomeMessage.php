@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Discord\Moderation\Commands\Message;
+namespace App\Discord\Message\Commands\Welcome;
 
 use App\Discord\Core\Builders\EmbedFactory;
 use App\Discord\Core\SlashCommand;
 use App\Domain\Discord\Guild;
-use App\Domain\Fun\Models\CustomMessage;
+use App\Domain\Message\Models\CustomMessage;
 use App\Domain\Permission\Enums\Permission;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Command\Option;
 use Discord\Parts\Interactions\Interaction;
 
-class DeleteLevelMessage extends SlashCommand
+class DeleteWelcomeMessage extends SlashCommand
 {
     public function permission(): Permission
     {
@@ -25,11 +25,11 @@ class DeleteLevelMessage extends SlashCommand
 
     public function __construct()
     {
-        $this->description = __('bot.slash.delete-level-msg');
+        $this->description = __('bot.slash.delete-welcome-msg');
         $this->slashCommandOptions = [
             [
-                'name' => 'level',
-                'description' => __('bot.level'),
+                'name' => 'message',
+                'description' => __('bot.message'),
                 'type' => Option::INTEGER,
                 'required' => true,
                 'autocomplete' => true,
@@ -41,25 +41,25 @@ class DeleteLevelMessage extends SlashCommand
     public function action(): MessageBuilder
     {
         $customMessage = CustomMessage::where([
-            'level' => $this->getOption('level'),
+            'id' => $this->getOption('message'),
             'guild_id' => Guild::get($this->guildId)->id,
         ])->first();
 
         if (!$customMessage) {
-            return EmbedFactory::failedEmbed($this, __('bot.msg.level.not-found', ['level' => $this->getOption('level')]));
+            return EmbedFactory::failedEmbed($this, __('bot.msg.welcome.not-found', ['message' => $this->getOption('message')]));
         }
 
         $customMessage->delete();
-        return EmbedFactory::successEmbed($this, __('bot.msg.level.deleted', ['level' => $this->getOption('level')]));
+        return EmbedFactory::successEmbed($this, __('bot.msg.welcome.deleted'));
     }
 
     public function autoComplete(Interaction $interaction): array
     {
-        return CustomMessage::level($interaction->guild_id)->where('level', 'LIKE', "%{$this->getOption('level')}%")
+        return CustomMessage::welcome($interaction->guild_id)->where('message', 'LIKE', "%{$this->getOption('message')}%")
             ->limit(25)
             ->get()
             ->map(function ($modelInstance) {
-                return ['name' => $modelInstance->level, 'value' => $modelInstance->level];
+                return ['name' => substr($modelInstance->message, 0, 32), 'value' => $modelInstance->id];
             })->toArray();
     }
 }

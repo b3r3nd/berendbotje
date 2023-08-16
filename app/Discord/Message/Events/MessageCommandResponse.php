@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Discord\Moderation\Events;
+namespace App\Discord\Message\Events;
 
 use App\Discord\Core\Bot;
 use App\Discord\Core\Guild;

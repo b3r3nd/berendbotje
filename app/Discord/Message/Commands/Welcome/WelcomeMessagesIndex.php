@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Discord\Moderation\Commands\Message;
+namespace App\Discord\Message\Commands\Welcome;
 
 use App\Discord\Core\Builders\EmbedBuilder;
 use App\Discord\Core\SlashIndexCommand;
-use App\Domain\Fun\Enums\CustomMessage as CustomMessageEnum;
-use App\Domain\Fun\Models\CustomMessage;
+use App\Domain\Message\Enums\CustomMessage as CustomMessageEnum;
+use App\Domain\Message\Models\CustomMessage;
 use App\Domain\Permission\Enums\Permission;
 use Discord\Parts\Embed\Embed;
 use Discord\Parts\Interactions\Interaction;

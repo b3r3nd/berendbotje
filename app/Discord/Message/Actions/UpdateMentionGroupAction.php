@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Discord\MentionResponder\Actions;
+namespace App\Discord\Message\Actions;
 
 use App\Discord\Core\Interfaces\Action;
-use App\Domain\Fun\Models\MentionGroup;
+use App\Domain\Message\Models\MentionGroup;
 use Discord\Helpers\Collection;
 
 /**

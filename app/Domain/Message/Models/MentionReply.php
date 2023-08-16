@@ -1,25 +1,25 @@
 <?php
 
-namespace App\Domain\Fun\Models;
+namespace App\Domain\Message\Models;
 
 use App\Domain\Discord\Guild;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class MentionGroup extends Model
+class MentionReply extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'guild_id', 'is_custom', 'has_role', 'has_user', 'multiplier'];
 
+    protected $fillable = ['reply', 'guild_id'];
 
     /**
-     * @return HasMany
+     * @return BelongsTo
      */
-    public function replies(): HasMany
+    public function group(): BelongsTo
     {
-        return $this->hasMany(MentionReply::class, 'group_id');
+        return $this->belongsTo(MentionGroup::class);
     }
 
     /**

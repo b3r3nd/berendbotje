@@ -6,7 +6,7 @@ use App\Discord\Core\Bot;
 use App\Discord\Core\Interfaces\Action;
 use App\Domain\Discord\User;
 use App\Domain\Fun\Helpers\Helper;
-use App\Domain\Fun\Models\CustomMessage;
+use App\Domain\Message\Models\CustomMessage;
 use App\Domain\Setting\Enums\Setting;
 use Discord\Http\Exceptions\NoPermissionsException;
 
