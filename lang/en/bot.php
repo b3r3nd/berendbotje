@@ -149,6 +149,7 @@ return [
         'delete-welcome-msg' => 'Delete custom welcome message',
         'add-level-msg' => 'Add custom level message',
         'add-welcome-msg' => 'Add custom welcome message',
+        'guilds' => 'Overview of all guilds',
     ],
 
     'msg' => [
@@ -372,9 +373,11 @@ return [
         'enable-cam' => '<@:user> enabled his webcam in <#:channel>',
         'disable-cam' => '<@:user> disabled his webcam in <#:channel>',
     ],
-
     'exception' => [
-       'audit' => 'Bot lacks permission to read Audit log...',
+        'audit' => 'Bot lacks permission to read Audit log...',
         'role' => 'Bot lacks permission to give roles..',
+    ],
+    'guilds' => [
+        'title' => 'Active guilds',
     ],
 ];
