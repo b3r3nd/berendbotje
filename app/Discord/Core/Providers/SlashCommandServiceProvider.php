@@ -2,6 +2,7 @@
 
 namespace App\Discord\Core\Providers;
 
+use App\Discord\Admin\Commands\Guilds;
 use App\Discord\Core\Bot;
 use App\Discord\Core\Commands\Settings;
 use App\Discord\Core\Commands\UpdateSetting;
@@ -69,6 +70,7 @@ use App\Discord\Roles\Commands\Permissions;
 use App\Discord\Roles\Commands\Roles;
 use App\Discord\Roles\Commands\UserRoles;
 use App\Discord\Roles\Commands\Users;
+use Discord\Parts\Guild\Guild;
 use Discord\Parts\Interactions\Command\Command;
 use Exception;
 
@@ -195,6 +197,12 @@ class SlashCommandServiceProvider implements ServiceProvider
         ],
     ];
 
+    private array $guildCommands = [
+        'guilds' => [
+            Guilds::class,
+        ],
+    ];
+
 
     public function boot(Bot $bot): void
     {
@@ -211,17 +219,20 @@ class SlashCommandServiceProvider implements ServiceProvider
             $this->deleteSlashCommands();
         }
         if ($bot->needsCommandUpdate()) {
-            $this->updateSlashCommands();
+            $this->updateSlashCommands($this->slashCommandStructure);
+            $this->updateSlashCommands($this->guildCommands, true);
         }
     }
 
     /**
+     * @param array $commands
+     * @param bool $guildCommand
      * @return void
      * @throws Exception
      */
-    public function updateSlashCommands(): void
+    public function updateSlashCommands(array $commands, $guildCommand = false): void
     {
-        foreach ($this->slashCommandStructure as $mainCommand => $subGroups) {
+        foreach ($commands as $mainCommand => $subGroups) {
             $subGroupOptions = [];
             foreach ($subGroups as $subGroup => $subCommands) {
                 if (is_array($subCommands)) {
@@ -245,8 +256,15 @@ class SlashCommandServiceProvider implements ServiceProvider
                 'options' => $subGroupOptions,
             ];
 
+
             $command = new Command($this->bot->discord, $optionsArray);
-            $this->bot->discord->application->commands->save($command);
+            if ($guildCommand) {
+                $this->bot->discord->guilds->fetch(config('discord.support-guild'))->done(function (Guild $guild) use ($command) {
+                    $guild->commands->save($command);
+                });
+            } else {
+                $this->bot->discord->application->commands->save($command);
+            }
         }
     }
 
@@ -256,7 +274,8 @@ class SlashCommandServiceProvider implements ServiceProvider
      * @param $subGroup
      * @return array
      */
-    private function initCommandOptions($mainCommand, $command, $subGroup): array
+    private
+    function initCommandOptions($mainCommand, $command, $subGroup): array
     {
         /** @var SlashCommand $instance */
         $instance = new $command();
@@ -283,7 +302,8 @@ class SlashCommandServiceProvider implements ServiceProvider
      * @return void
      * @throws Exception
      */
-    private function deleteSlashCommands(): void
+    private
+    function deleteSlashCommands(): void
     {
         $this->bot->discord->application->commands->freshen()->done(function ($commands) {
             foreach ($commands as $command) {

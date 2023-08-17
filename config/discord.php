@@ -6,4 +6,5 @@ return [
     'urb-host' => env('URB_HOST', ' '),
     'open-ai-key' => env('OPENAI_API_KEY', ' '),
     'open-ai-host' => env('OPEN_AI_HOST', ' '),
+    'support-guild' => env('SUPPORT_GUILD', ' '),
 ];
