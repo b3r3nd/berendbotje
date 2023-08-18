@@ -151,6 +151,7 @@ return [
         'add-welcome-msg' => 'Add custom welcome message',
         'guilds' => 'Overview of all guilds',
         'vote' => 'Vote for Berend Botje on top.gg',
+        'support' => 'Support Server for Berend Botje',
     ],
 
     'msg' => [

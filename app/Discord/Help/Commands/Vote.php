@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Discord\Fun\Commands;
+namespace App\Discord\Help\Commands;
 
 use App\Discord\Core\SlashCommand;
 use App\Domain\Permission\Enums\Permission;
