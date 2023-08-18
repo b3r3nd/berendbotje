@@ -31,27 +31,23 @@ use Exception;
  */
 class Guild
 {
-    protected Discord $discord;
-    protected Bot $bot;
-    private array $settings = [];
-    private array $logSettings = [];
-    private array $lastMessages = [];
-    private array $inVoice = [];
-    private Logger $logger;
-    private array $channels = [];
-    public GuildModel $model;
-    public MentionResponder $mentionResponder;
-
     /**
-     * @param GuildModel $guild
-     * @param Bot $bot
      * @throws Exception
      */
-    public function __construct(GuildModel $guild, Bot $bot)
+    public function __construct(
+        public GuildModel        $model,
+        protected Bot            $bot,
+        protected ?Discord       $discord = null,
+        private array            $settings = [],
+        private array            $logSettings = [],
+        private array            $lastMessages = [],
+        private array            $inVoice = [],
+        private ?Logger          $logger = null,
+        private array            $channels = [],
+        public ?MentionResponder $mentionResponder = null,
+    )
     {
-        $this->model = $guild;
         $this->discord = $bot->discord;
-        $this->bot = $bot;
 
         foreach ($this->model->settings as $setting) {
             $this->settings[$setting->key] = $setting->value;
@@ -65,8 +61,8 @@ class Guild
             $this->channels[$channel->channel_id] = $channel;
         }
 
-        $this->logger = new Logger($this->getSetting(SettingEnum::LOG_CHANNEL), $this->discord);
-        $this->mentionResponder = new MentionResponder($this->model->guild_id, $this->bot);
+        $this->logger ??= new Logger($this->getSetting(SettingEnum::LOG_CHANNEL), $this->discord);
+        $this->mentionResponder ??= new MentionResponder($this->model->guild_id, $this->bot);
     }
 
     /**

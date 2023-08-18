@@ -24,13 +24,6 @@ use Exception;
  */
 class Bot
 {
-    public Discord $discord;
-    private array $guilds;
-    private bool $updateCommands, $deleteCommands;
-    public array $messageActions = [];
-    public array $commands = [];
-    private array $services = [];
-
     /**
      * @see \App\Discord\Core\Interfaces\ServiceProvider
      * @var array|string[]
@@ -41,16 +34,16 @@ class Bot
         SlashCommandServiceProvider::class,
     ];
 
-
-    /**
-     * @param bool $updateCommands
-     * @param bool $deleteCommands
-     */
-    public function __construct(bool $updateCommands = false, bool $deleteCommands = false)
+    public function __construct(
+        private readonly bool $updateCommands,
+        private readonly bool $deleteCommands,
+        public ?Discord       $discord = null,
+        private array         $guilds = [],
+        public array          $messageActions = [],
+        public array          $commands = [],
+        private array         $services = [],
+    )
     {
-        $this->updateCommands = $updateCommands;
-        $this->deleteCommands = $deleteCommands;
-
         foreach ($this->serviceProviders as $serviceProvider) {
             $this->services[] = new $serviceProvider();
         }

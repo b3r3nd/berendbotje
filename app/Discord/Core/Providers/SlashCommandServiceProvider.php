@@ -103,98 +103,98 @@ class SlashCommandServiceProvider implements ServiceProvider
                 Settings::class,
                 UpdateSetting::class,
             ],
-            'user' => [
-                UserSettings::class,
-                UpdateUserSetting::class
-            ],
-            'log' => [
-                LogSettings::class,
-                UpdateLogSetting::class,
-            ],
+//            'user' => [
+//                UserSettings::class,
+//                UpdateUserSetting::class
+//            ],
+//            'log' => [
+//                LogSettings::class,
+//                UpdateLogSetting::class,
+//            ],
         ],
-        'channels' => [
-            ChannelIndex::class,
-            MarkChannel::class,
-            UnmarkChannel::class,
-        ],
-        'timeouts' => [
-            Timeouts::class,
-            UpdateTimeoutReason::class,
-            RemoveTimeout::class,
-        ],
-        'blacklist' => [
-            Blacklist::class,
-            Unblock::class,
-            Block::class,
-        ],
-        'rolerewards' => [
-            RoleRewards::class,
-            CreateRoleReward::class,
-            DeleteRoleReward::class,
-        ],
-        'xp' => [
-            GiveXp::class,
-            RemoveXp::class,
-            ResetXp::class,
-            Leaderboard::class,
-            UserRank::class,
-        ],
-        'mention' => [
-            'replies' => [
-                MentionIndex::class,
-                AddMentionReply::class,
-                DelMentionReply::class,
-            ],
-            'groups' => [
-                MentionGroupIndex::class,
-                AddMentionGroup::class,
-                DelMentionGroup::class,
-                UpdateMentionGroup::class,
-            ],
-        ],
-        'cringe' => [
-            CringeIndex::class,
-            IncreaseCringe::class,
-            DecreaseCringe::class,
-            ResetCringe::class,
-        ],
-        'reactions' => [
-            ReactionIndex::class,
-            CreateReaction::class,
-            DeleteReaction::class,
-        ],
-        'commands' => [
-            CommandIndex::class,
-            CreateCommand::class,
-            DeleteCommand::class,
-        ],
-
-        'fun' => [
-            BumpStatistics::class,
-            EmoteIndex::class,
-            EightBall::class,
-            Ask::class,
-            UrbanDictionary::class,
-            ModeratorStatistics::class,
-        ],
-        'invites' => [
-            ToggleInvites::class,
-        ],
-        'messages' => [
-            'welcome' => [
-                WelcomeMessagesIndex::class,
-                AddWelcomeMessage::class,
-                DeleteWelcomeMessage::class,
-            ],
-            'levels' => [
-                LevelMessagesIndex::class,
-                AddLevelMessage::class,
-                DeleteLevelMessage::class,
-            ]
-        ],
-        'help' => [
-            Help::class,
-        ],
+//        'channels' => [
+//            ChannelIndex::class,
+//            MarkChannel::class,
+//            UnmarkChannel::class,
+//        ],
+//        'timeouts' => [
+//            Timeouts::class,
+//            UpdateTimeoutReason::class,
+//            RemoveTimeout::class,
+//        ],
+//        'blacklist' => [
+//            Blacklist::class,
+//            Unblock::class,
+//            Block::class,
+//        ],
+//        'rolerewards' => [
+//            RoleRewards::class,
+//            CreateRoleReward::class,
+//            DeleteRoleReward::class,
+//        ],
+//        'xp' => [
+//            GiveXp::class,
+//            RemoveXp::class,
+//            ResetXp::class,
+//            Leaderboard::class,
+//            UserRank::class,
+//        ],
+//        'mention' => [
+//            'replies' => [
+//                MentionIndex::class,
+//                AddMentionReply::class,
+//                DelMentionReply::class,
+//            ],
+//            'groups' => [
+//                MentionGroupIndex::class,
+//                AddMentionGroup::class,
+//                DelMentionGroup::class,
+//                UpdateMentionGroup::class,
+//            ],
+//        ],
+//        'cringe' => [
+//            CringeIndex::class,
+//            IncreaseCringe::class,
+//            DecreaseCringe::class,
+//            ResetCringe::class,
+//        ],
+//        'reactions' => [
+//            ReactionIndex::class,
+//            CreateReaction::class,
+//            DeleteReaction::class,
+//        ],
+//        'commands' => [
+//            CommandIndex::class,
+//            CreateCommand::class,
+//            DeleteCommand::class,
+//        ],
+//
+//        'fun' => [
+//            BumpStatistics::class,
+//            EmoteIndex::class,
+//            EightBall::class,
+//            Ask::class,
+//            UrbanDictionary::class,
+//            ModeratorStatistics::class,
+//        ],
+//        'invites' => [
+//            ToggleInvites::class,
+//        ],
+//        'messages' => [
+//            'welcome' => [
+//                WelcomeMessagesIndex::class,
+//                AddWelcomeMessage::class,
+//                DeleteWelcomeMessage::class,
+//            ],
+//            'levels' => [
+//                LevelMessagesIndex::class,
+//                AddLevelMessage::class,
+//                DeleteLevelMessage::class,
+//            ]
+//        ],
+//        'help' => [
+//            Help::class,
+//        ],
     ];
 
     private array $guildCommands = [
@@ -230,7 +230,7 @@ class SlashCommandServiceProvider implements ServiceProvider
      * @return void
      * @throws Exception
      */
-    public function updateSlashCommands(array $commands, $guildCommand = false): void
+    public function updateSlashCommands(array $commands, bool $guildCommand = false): void
     {
         foreach ($commands as $mainCommand => $subGroups) {
             $subGroupOptions = [];
