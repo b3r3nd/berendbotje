@@ -8,31 +8,21 @@ use App\Domain\Discord\Channel;
 use App\Domain\Discord\Guild;
 use Discord\Helpers\Collection;
 
-/**
- * @property Collection $options  List of options from the slash command using this action.
- * @property string $guildId            Discord id of the guild.
- * @property bool $added                If the channel flag is being added or removed.
- * @property Bot $bot                   Main bot instance.
- */
 class FlagChannelAction implements Action
 {
-    private Collection $options;
-    private string $guildId;
-    private bool $added;
-    private Bot $bot;
-
     /**
      * @param Collection $options
      * @param string $guildId
      * @param bool $added
      * @param Bot $bot
      */
-    public function __construct(Collection $options, string $guildId, bool $added, Bot $bot)
+    public function __construct(
+        private readonly Collection $options,
+        private readonly string     $guildId,
+        private readonly bool       $added,
+        private readonly Bot        $bot,
+    )
     {
-        $this->bot = $bot;
-        $this->guildId = $guildId;
-        $this->options = $options;
-        $this->added = $added;
     }
 
     /**

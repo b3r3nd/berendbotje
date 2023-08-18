@@ -6,24 +6,17 @@ use App\Discord\Core\Interfaces\Action;
 use App\Domain\Message\Models\MentionGroup;
 use Discord\Helpers\Collection;
 
-/**
- * @property Collection $options  List of options retrieved from the slash command which triggered this action
- * @property MentionGroup $mentionGroup Mention group to update
- */
 class UpdateMentionGroupAction implements Action
 {
-    private Collection $options;
-    private MentionGroup $mentionGroup;
-
     /**
      * @param MentionGroup $mentionGroup
      * @param Collection $options
      */
-    public function __construct(MentionGroup $mentionGroup, Collection $options)
+    public function __construct(
+        private readonly MentionGroup $mentionGroup,
+        private readonly Collection   $options,
+    )
     {
-        $this->options = $options;
-        $this->mentionGroup = $mentionGroup;
-
     }
 
     /**
