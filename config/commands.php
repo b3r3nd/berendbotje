@@ -201,7 +201,6 @@ return [
             Ask::class,
             UrbanDictionary::class,
             ModeratorStatistics::class,
-            Vote::class,
         ],
         'invites' => [
             ToggleInvites::class,
@@ -220,6 +219,7 @@ return [
         ],
         'help' => [
             Help::class,
+            Vote::class,
         ],
     ],
 
