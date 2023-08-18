@@ -18,6 +18,7 @@ use App\Discord\Fun\Commands\Reaction\CreateReaction;
 use App\Discord\Fun\Commands\Reaction\DeleteReaction;
 use App\Discord\Fun\Commands\Reaction\ReactionIndex;
 use App\Discord\Fun\Commands\UrbanDictionary;
+use App\Discord\Fun\Commands\Vote;
 use App\Discord\Help;
 use App\Discord\Levels\Commands\GiveXp;
 use App\Discord\Levels\Commands\Leaderboard;
@@ -200,6 +201,7 @@ return [
             Ask::class,
             UrbanDictionary::class,
             ModeratorStatistics::class,
+            Vote::class,
         ],
         'invites' => [
             ToggleInvites::class,
