@@ -75,6 +75,8 @@ return [
     | Here you may specify all your slash commands used by the bot. Remember to
     | add classes which extend the SlashCommand or SlashIndexCommand.
     |
+    | 'GLOBAL' AND 'GUILD' ARE NOT PART OF THE STRUCTURE!!!!
+    |
     |--------------------------------------------------------------------------
     |   command
     |   |
@@ -219,7 +221,9 @@ return [
             Help::class,
         ],
     ],
-    'guilds' => [
-        Guilds::class,
+    'guild' => [
+        'guilds' => [
+            Guilds::class,
+        ],
     ],
 ];
