@@ -15,25 +15,43 @@ use Discord\Parts\User\Member;
 use Discord\Parts\User\User;
 use Exception;
 
+/**
+ * Guild settings are loaded on boot and only updated when the actual setting is changed using commands.
+ *
+ * @property Discord $discord                   Set with the global discord instance from DiscordPHP.
+ * @property Bot $bot                           Easy reference to the bot this guild runs in.
+ * @property array $settings                    List of cached settings, so we do not need to read from the database each time.
+ * @property array $logSettings                 List of cached log settings, so we do not need to read from the database each time.
+ * @property array $lastMessages                Last message send by user in guild, used for the xp cooldown.
+ * @property array $inVoice                     List of people who are currently in voice in the guild, used to calculate xp.
+ * @property Logger $logger                     Logger instance for this specific guild which can log events.
+ * @property array $channels                    List of channels which have special flags set, for example media channels.
+ * @property GuildModel $model                  Eloquent model for the guild.
+ * @property MentionResponder $mentionResponder MentionResponder for this guild.
+ */
 class Guild
 {
+    protected Discord $discord;
+    protected Bot $bot;
+    private array $settings = [];
+    private array $logSettings = [];
+    private array $lastMessages = [];
+    private array $inVoice = [];
+    private Logger $logger;
+    private array $channels = [];
+    public GuildModel $model;
+    public MentionResponder $mentionResponder;
+
     /**
+     * @param GuildModel $guild
+     * @param Bot $bot
      * @throws Exception
      */
-    public function __construct(
-        public GuildModel        $model,
-        protected Bot            $bot,
-        protected ?Discord       $discord = null,
-        private array            $settings = [],
-        private array            $logSettings = [],
-        private array            $lastMessages = [],
-        private array            $inVoice = [],
-        private ?Logger          $logger = null,
-        private array            $channels = [],
-        public ?MentionResponder $mentionResponder = null,
-    )
+    public function __construct(GuildModel $guild, Bot $bot)
     {
+        $this->model = $guild;
         $this->discord = $bot->discord;
+        $this->bot = $bot;
 
         foreach ($this->model->settings as $setting) {
             $this->settings[$setting->key] = $setting->value;
@@ -47,8 +65,8 @@ class Guild
             $this->channels[$channel->channel_id] = $channel;
         }
 
-        $this->logger ??= new Logger($this->getSetting(SettingEnum::LOG_CHANNEL), $this->discord);
-        $this->mentionResponder ??= new MentionResponder($this->model->guild_id, $this->bot);
+        $this->logger = new Logger($this->getSetting(SettingEnum::LOG_CHANNEL), $this->discord);
+        $this->mentionResponder = new MentionResponder($this->model->guild_id, $this->bot);
     }
 
     /**
