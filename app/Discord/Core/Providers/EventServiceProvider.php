@@ -34,37 +34,14 @@ use App\Discord\Moderation\Events\MessageStickerFilter;
 
 class EventServiceProvider implements ServiceProvider
 {
-    private array $messageEvents = [
-        MessageXpCounter::class,
-        MessageMediaFilter::class,
-        MessageStickerFilter::class,
-        MessageCount::class,
-        MessageReact::class,
-        MessageCommandResponse::class,
-        MessageEmoteCounter::class,
-        MessageReminder::class,
-    ];
+    private array $messageEvents;
+    private array $events;
 
-    private array $events = [
-        InteractionCreate::class,
-        MessageCreate::class,
-        VoiceStateUpdate::class,
-        VoiceXpCounter::class,
-        VoiceStateLogger::class,
-        DetectTimeout::class,
-        WelcomeUser::class,
-        BanKickCounter::class,
-        GuildBanRemove::class,
-        GuildMemberAdd::class,
-        GuildMemberRemove::class,
-        GuildMemberUpdate::class,
-        InviteCreate::class,
-        InviteDelete::class,
-        MessageDelete::class,
-        MessageUpdate::class,
-        DMLogger::class,
-        BumpCounter::class,
-    ];
+    public function __construct()
+    {
+        $this->messageEvents = config('events.message');
+        $this->events = config('events.events');
+    }
 
     public function boot(Bot $bot): void
     {

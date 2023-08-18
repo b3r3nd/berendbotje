@@ -29,7 +29,7 @@ class Bot
         private readonly bool $updateCommands,
         private readonly bool $deleteCommands,
         public ?Discord       $discord = null,
-        private array         $guilds = [],
+        public array          $guilds = [],
         public array          $messageActions = [],
         public array          $commands = [],
         private array         $services = [],
