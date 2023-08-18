@@ -11,66 +11,46 @@ use Discord\Discord;
 use Discord\Parts\Interactions\Interaction;
 use Exception;
 
-/**
- * Extendable class to easily create new Slash commands.
- *
- * @property Bot $bot                       Easy reference to the bot this guild runs in.
- * @property Discord $discord               Easy reference to the discord instance.
- * @property string $permission             Required permission level for this command.
- * @property string $trigger                Trigger for the command, both slash and text.
- * @property string $guildId                String of the Discord Guild ID
- * @property string $description            Description for the (slash) command.
- * @property array $slashCommandOptions     Array of all options @see https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-option-structure
- * @property Interaction $interaction       Set with the interaction instance which triggered the command
- */
 abstract class SlashCommand
 {
-    public Bot $bot;
-    public Discord $discord;
-    protected Permission $permission;
-    public string $trigger;
-    protected string $guildId = '';
-    public string $description;
-    public array $slashCommandOptions;
-    public Interaction $interaction;
-    public string $commandLabel;
+    public string $description = "";
+    public array $slashCommandOptions = [];
 
     /**
-     * Permissions required for using this command, you are required to use the Setting Enum
-     *
      * @return Permission
      * @see Setting
-     *
      */
     abstract public function permission(): Permission;
 
     /**
-     * The actual name/trigger of the command used by users
-     *
      * @return string
      */
     abstract public function trigger(): string;
 
     /**
-     * Execute the command and return a proper MessageBuilder to send back to discord
-     *
      * @return MessageBuilder
      */
     abstract public function action(): MessageBuilder;
 
     /**
-     * If you are using slash command options, this function will receive the input when the user is typing,
-     * so you can find options matching what the user is searching for and display them!
-     *
      * @param Interaction $interaction
      * @return array
      */
     abstract public function autoComplete(Interaction $interaction): array;
 
-    public function __construct()
+
+    public function __construct(
+        public ?Bot           $bot = null,
+        public ?Discord       $discord = null,
+        protected ?Permission $permission = null,
+        public ?string        $trigger = null,
+        protected ?string     $guildId = null,
+        public ?Interaction   $interaction = null,
+        public ?string        $commandLabel = null,
+    )
     {
-        $this->permission = $this->permission();
-        $this->trigger = $this->trigger();
+        $this->permission ??= $this->permission();
+        $this->trigger ??= $this->trigger();
     }
 
 
@@ -96,7 +76,7 @@ abstract class SlashCommand
         }
         $this->guildId = $interaction->guild_id;
         $guild = $this->bot->getGuild($interaction->guild_id);
-        if ($this->permission->value !== Permission::NONE->value && !User::hasPermission($interaction->member->id, $interaction->guild_id, $this->permission->value)) {
+        if ($this->permission !== Permission::NONE && !User::hasPermission($interaction->member->id, $interaction->guild_id, $this->permission)) {
             if ($guild->getSetting(Setting::ENABLE_CMD_LOG)) {
                 $guild->logWithMember($interaction->member, __('bot.log.failed', ['trigger' => $this->commandLabel]), 'fail');
             }

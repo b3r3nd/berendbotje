@@ -10,31 +10,15 @@ use Discord\Builders\MessageBuilder;
 use Discord\Helpers\Collection;
 use Exception;
 
-/**
- * @property Collection $options  List of options retrieved from the slash command using this action.
- * @property string $guildId            Discord guild id.
- * @property bool $attach               Attaching or detaching roles.
- * @property SlashCommand $command      Actual slash command this action was triggered in.
- */
 class SyncRolePermissionsAction
 {
-    private Collection $options;
-    private string $guildId;
-    private bool $attach;
-    private SlashCommand $command;
-
-    /**
-     * @param SlashCommand $command
-     * @param Collection $options
-     * @param string $guildId
-     * @param bool $attach
-     */
-    public function __construct(SlashCommand $command, Collection $options, string $guildId, bool $attach = true)
+    public function __construct(
+        private readonly SlashCommand $command,
+        private readonly Collection   $options,
+        private readonly string       $guildId,
+        private readonly bool         $attach = true,
+    )
     {
-        $this->command = $command;
-        $this->options = $options;
-        $this->guildId = $guildId;
-        $this->attach = $attach;
     }
 
     /**
@@ -43,7 +27,6 @@ class SyncRolePermissionsAction
      */
     public function execute(): MessageBuilder
     {
-
         $roleOption = $this->options->first()->options->get('name', 'role_name')->value;
         $permOption = $this->options->first()->options->get('name', 'permissions')->value;
 
