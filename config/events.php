@@ -67,7 +67,7 @@ return [
     |
     | Message Events trigger on MESSAGE_CREATE, because we have a lot of them
     | we use a kind of wrapper to prevent a lot of duplicate stuff
-    | make sure to implement the MessageCreateAction
+    | make sure to implement the MessageCreateAction interface
     |
     */
     'message' => $messageEvents = [
