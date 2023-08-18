@@ -227,7 +227,7 @@ return [
     | Support Guild Commands
     |--------------------------------------------------------------------------
     |
-    | Commands for the support guild only (set in the env)
+    | Commands for the support guild only (set in the env).
     |
     | 'GLOBAL' AND 'GUILD' ARE NOT PART OF THE STRUCTURE!!!!
     |
