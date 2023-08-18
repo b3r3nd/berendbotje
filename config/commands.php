@@ -193,7 +193,6 @@ return [
             CreateCommand::class,
             DeleteCommand::class,
         ],
-
         'fun' => [
             BumpStatistics::class,
             EmoteIndex::class,
@@ -221,6 +220,17 @@ return [
             Help::class,
         ],
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Support Guild Commands
+    |--------------------------------------------------------------------------
+    |
+    | Commands for the support guild only (set in the env)
+    |
+    | 'GLOBAL' AND 'GUILD' ARE NOT PART OF THE STRUCTURE!!!!
+    |
+    */
     'guild' => [
         'guilds' => [
             Guilds::class,
