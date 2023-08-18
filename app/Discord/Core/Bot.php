@@ -13,15 +13,6 @@ use Discord\Exceptions\IntentException;
 use Discord\WebSockets\Intents;
 use Exception;
 
-/**
- * @property Discord $discord               Set with the global discord instance from DiscordPHP.
- * @property array $guilds                  List of all active guilds using the bot.
- * @property bool $updateCommands           If we need to update commands.
- * @property bool $deleteCommands           If we need to delete commands.
- * @property array $messageActions          List with action instances to execute on MESSAGE_CREATE.
- * @property array $commands                List of slash command instances active in the bot.
- * @property array $services                List of active services (Service Providers)
- */
 class Bot
 {
     /**

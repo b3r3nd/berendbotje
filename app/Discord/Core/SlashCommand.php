@@ -11,9 +11,6 @@ use Discord\Discord;
 use Discord\Parts\Interactions\Interaction;
 use Exception;
 
-/**
- * Easily extendable class to create slash commands
- */
 abstract class SlashCommand
 {
     public string $description = "";
