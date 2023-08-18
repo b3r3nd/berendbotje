@@ -85,7 +85,6 @@ return [
     |   |__ subcommand
     |
     |--------------------------------------------------------------------------
-    |
     |   command
     |   |
     |   |__ subcommand-group
@@ -95,9 +94,9 @@ return [
     |   |__ subcommand-group
     |       |
     |       |__ subcommand
+    |       |__ subcommand
     |
     |--------------------------------------------------------------------------
-    |
     |   command
     |   |
     |   |__ subcommand-group
