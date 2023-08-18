@@ -17,6 +17,7 @@ use Exception;
 abstract class SlashCommand
 {
     public string $description = "";
+    public array $slashCommandOptions = [];
 
     /**
      * @return Permission
@@ -47,7 +48,6 @@ abstract class SlashCommand
         protected ?Permission $permission = null,
         public ?string        $trigger = null,
         protected ?string     $guildId = null,
-        public array          $slashCommandOptions = [],
         public ?Interaction   $interaction = null,
         public ?string        $commandLabel = null,
     )
