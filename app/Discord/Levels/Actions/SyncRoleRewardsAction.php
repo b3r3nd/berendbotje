@@ -11,19 +11,26 @@ use Discord\Http\Exceptions\NoPermissionsException;
 use Discord\Parts\Channel\Message;
 use Exception;
 
+/**
+ * @property Message $message   Message instance which triggered this event.
+ * @property string $userId     Discord User id of the user sending the message.
+ */
 class SyncRoleRewardsAction implements Action
 {
+    private Message $message;
+    private string $userId;
+    private Bot $bot;
+
     /**
      * @param Bot $bot
      * @param Message $message
-     * @param string $userId
+     * @param $userId
      */
-    public function __construct(
-        private readonly Bot     $bot,
-        private readonly Message $message,
-        private readonly string  $userId,
-    )
+    public function __construct(Bot $bot, Message $message, $userId)
     {
+        $this->bot = $bot;
+        $this->message = $message;
+        $this->userId = $userId;
     }
 
     /**
@@ -44,7 +51,7 @@ class SyncRoleRewardsAction implements Action
                 if (($messageCounter->level >= $reward->level) && !$rolesCollection->contains('id', $role)) {
                     try {
                         $this->message->member->addRole($role);
-                    } catch (NoPermissionsException) {
+                    } catch(NoPermissionsException) {
                         $this->bot->getGuild($this->message->guild_id)?->log(__('bot.exception.role'), "fail");
                     }
                 }
