@@ -80,4 +80,5 @@ return [
         MessageEmoteCounter::class,
         MessageReminder::class,
     ],
+
 ];
