@@ -9,6 +9,7 @@ use App\Domain\Fun\Models\UserXP;
 use App\Domain\Moderation\Models\BanCounter;
 use App\Domain\Moderation\Models\KickCounter;
 use App\Domain\Moderation\Models\Timeout;
+use App\Domain\Permission\Enums\Permission;
 use App\Domain\Permission\Models\Role;
 use App\Domain\Permission\Scopes\PermissionScope;
 use App\Domain\Setting\Models\UserSetting;
@@ -38,16 +39,14 @@ class User extends Model
     /**
      * @param string $userId
      * @param string $guildId
-     * @param string $permissionName
+     * @param Permission $permission
      * @return bool
      */
-    public static function hasPermission(string $userId, string $guildId, string $permissionName): bool
+    public static function hasPermission(string $userId, string $guildId, Permission $permission): bool
     {
         $guild = Guild::get($guildId);
         $user = self::get($userId);
-        $permissionName = strtolower($permissionName);
-
-        return in_array($permissionName, $user->permissionsByGuild($guild) ?? [], true);
+        return in_array($permission->value, $user->permissionsByGuild($guild) ?? [], true);
     }
 
     /**

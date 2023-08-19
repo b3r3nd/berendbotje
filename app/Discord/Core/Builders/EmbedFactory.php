@@ -6,9 +6,6 @@ use App\Discord\Core\SlashCommand;
 use Discord\Builders\MessageBuilder;
 use Exception;
 
-/**
- * Includes defined presets for easy usage throughout the code.
- */
 class EmbedFactory
 {
     /**

@@ -21,27 +21,24 @@ use Exception;
  * @property array $roleReplies     List of mention replies for this guild which require a certain role
  * @property array $noRoleReplies   List of mention replies for this guild which require NOT to have a certain role
  * @property array $userReplies     List of mention replies for this guild for specific users
- * @property array $lastMessages    List of last replies for each user to determine cooldowns
+ * @property array $lastMessages    List of last replies for each user to determine cool down
  */
 class MentionResponder
 {
-    private Discord $discord;
-    private Bot $bot;
-    private string $guildId;
-    private int $guildModelId;
-    private array $roleReplies = [];
-    private array $noRoleReplies = [];
-    private array $userReplies = [];
-    private array $lastMessages = [];
-
     /**
      * @throws Exception
      */
-    public function __construct(string $guildId, Bot $bot)
+    public function __construct(
+        private readonly string $guildId,
+        private readonly Bot    $bot,
+        private ?Discord        $discord = null,
+        private ?int            $guildModelId = null,
+        private array           $roleReplies = [],
+        private array           $noRoleReplies = [],
+        private array           $userReplies = [],
+        private array           $lastMessages = [])
     {
         $this->discord = $bot->discord;
-        $this->bot = $bot;
-        $this->guildId = $guildId;
         $this->guildModelId = \App\Domain\Discord\Guild::get($guildId)->id;
         $this->loadReplies();
         $this->registerMentionResponder();

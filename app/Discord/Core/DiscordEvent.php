@@ -4,34 +4,27 @@ namespace App\Discord\Core;
 
 use Discord\Discord;
 
-/**
- * @property Bot $bot            Bot the event belongs to.
- * @property Discord $discord    Easy to access discord instance.
- */
 abstract class DiscordEvent
 {
-    protected Bot $bot;
-    protected Discord $discord;
-
     /**
      * @param Bot $bot
+     * @param Discord|null $discord
      */
-    public function __construct(Bot $bot)
+    public function __construct(
+        protected Bot      $bot,
+        protected ?Discord $discord = null,
+    )
     {
-        $this->bot = $bot;
         $this->discord = $bot->discord;
     }
 
     /**
-     * Discord event to add listener to
-     *
-     * @see Event
      * @return string
+     * @see Event
      */
     abstract public function event(): string;
 
     /**
-     * Register the listener so it calls function directly
      * @return void
      */
     public function register(): void
