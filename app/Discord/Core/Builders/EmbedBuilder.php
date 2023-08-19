@@ -7,6 +7,11 @@ use Discord\Discord;
 use Discord\Parts\Embed\Embed;
 use Exception;
 
+/**
+ * Embeds are used in almost every response, the builder helps is abstract some code :)
+ *
+ * @property Embed $embed the actual discord embed we modify.
+ */
 class EmbedBuilder
 {
     private Embed $embed;
