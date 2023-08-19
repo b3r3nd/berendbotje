@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Discord;
+namespace App\Discord\Help\Commands;
 
 use App\Discord\Core\Builders\EmbedBuilder;
 use App\Discord\Core\SlashCommand;
@@ -126,7 +126,7 @@ class Help extends SlashCommand
      */
     public function getGeneralPage(): EmbedBuilder
     {
-        $embedBuilder = EmbedBuilder::create($this, __('bot.help.title'), "Bot uses **only** slash commands. For more information see https://github.com/b3r3nd/berendbotje.");
+        $embedBuilder = EmbedBuilder::create($this, __('bot.help.title'), "Bot uses **only** slash commands. \n **top.gg**: https://top.gg/bot/651378995245613056 \n **Github**: https://github.com/b3r3nd/berendbotje.");
         $embedBuilder->getEmbed()->setColor(2303786);
         $embedBuilder->getEmbed()->addField(
             ['name' => 'Roles', 'value' => 'Managing roles and permissions'],

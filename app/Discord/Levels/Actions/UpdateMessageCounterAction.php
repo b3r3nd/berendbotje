@@ -10,35 +10,23 @@ use App\Domain\Message\Models\CustomMessage;
 use App\Domain\Setting\Enums\Setting;
 use Discord\Http\Exceptions\NoPermissionsException;
 
-/**
- * @property string $userId     Discord user id of the user whose XP is being modified.
- * @property int $xpCount       Amount of XP to change.
- * @property bool $removeXp     If the XP should be removed instead of added to the user.
- * @property string $guildId    Discord guild id it belongs to.
- * @property Bot $bot           Main bot instance
- */
 class UpdateMessageCounterAction implements Action
 {
-    private string $userId;
-    private int $xpCount;
-    private bool $removeXp;
-    private string $guildId;
-    private Bot $bot;
-
     /**
      * @param string $guildId
-     * @param $userId
-     * @param $xpCount
-     * @param bool $removeXp
+     * @param string $userId
+     * @param int $xpCount
      * @param Bot $bot
+     * @param bool $removeXp
      */
-    public function __construct(string $guildId, $userId, $xpCount, Bot $bot, bool $removeXp = false)
+    public function __construct(
+        private readonly string $guildId,
+        private readonly string $userId,
+        private readonly int    $xpCount,
+        private readonly Bot    $bot,
+        private readonly bool   $removeXp = false,
+    )
     {
-        $this->userId = $userId;
-        $this->xpCount = $xpCount;
-        $this->removeXp = $removeXp;
-        $this->guildId = $guildId;
-        $this->bot = $bot;
     }
 
     /**
