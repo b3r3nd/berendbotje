@@ -13,8 +13,24 @@ use Discord\Exceptions\IntentException;
 use Discord\WebSockets\Intents;
 use Exception;
 
+/**
+ * @property Discord $discord               Set with the global discord instance from DiscordPHP.
+ * @property array $guilds                  List of all active guilds using the bot.
+ * @property bool $updateCommands           If we need to update commands.
+ * @property bool $deleteCommands           If we need to delete commands.
+ * @property array $messageActions          List with action instances to execute on MESSAGE_CREATE.
+ * @property array $commands                List of slash command instances active in the bot.
+ * @property array $services                List of active services (Service Providers)
+ */
 class Bot
 {
+    public Discord $discord;
+    private array $guilds;
+    private bool $updateCommands, $deleteCommands;
+    public array $messageActions = [];
+    public array $commands = [];
+    private array $services = [];
+
     /**
      * @see \App\Discord\Core\Interfaces\ServiceProvider
      * @var array|string[]
@@ -25,16 +41,16 @@ class Bot
         SlashCommandServiceProvider::class,
     ];
 
-    public function __construct(
-        private readonly bool $updateCommands,
-        private readonly bool $deleteCommands,
-        public ?Discord       $discord = null,
-        public array          $guilds = [],
-        public array          $messageActions = [],
-        public array          $commands = [],
-        private array         $services = [],
-    )
+
+    /**
+     * @param bool $updateCommands
+     * @param bool $deleteCommands
+     */
+    public function __construct(bool $updateCommands = false, bool $deleteCommands = false)
     {
+        $this->updateCommands = $updateCommands;
+        $this->deleteCommands = $deleteCommands;
+
         foreach ($this->serviceProviders as $serviceProvider) {
             $this->services[] = new $serviceProvider();
         }

@@ -11,15 +11,23 @@ use Exception;
 
 /**
  * Logger class attached to guild instances to enable logging.
+ *
+ * @property string $logChannelId   id of the channel where logs should be posted.
+ * @property Discord $discord       Main discord instance
  */
 class Logger
 {
+    private string $logChannelId;
+    private Discord $discord;
 
-    public function __construct(
-        private string           $logChannelId,
-        private readonly Discord $discord,
-    )
+    /**
+     * @param string $logChannelId
+     * @param Discord $discord
+     */
+    public function __construct(string $logChannelId, Discord $discord)
     {
+        $this->logChannelId = $logChannelId;
+        $this->discord = $discord;
     }
 
     /**
