@@ -380,6 +380,6 @@ return [
         'role' => 'Bot lacks permission to give roles..',
     ],
     'guilds' => [
-        'title' => 'Active guilds',
+        'title' => 'Active guilds: :count',
     ],
 ];

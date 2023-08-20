@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Discord\Core\Commands;
+namespace App\Discord\Setting\Commands;
 
 use App\Discord\Core\Builders\EmbedBuilder;
 use App\Discord\Core\SlashCommand;

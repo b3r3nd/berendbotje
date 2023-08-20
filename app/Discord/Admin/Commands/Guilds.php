@@ -35,7 +35,7 @@ class Guilds extends SlashIndexCommand
         foreach (Guild::skip($this->getOffset($this->getLastUser()))->limit($this->perPage)->get() as $guild) {
             $description .= "{$guild->name} - {$guild->owner->tag()} \n";
         }
-        return EmbedBuilder::create($this, __('bot.guilds.title'), $description)->getEmbed();
+        return EmbedBuilder::create($this, __('bot.guilds.title', ['count' => $this->total]), $description)->getEmbed();
 
 
     }

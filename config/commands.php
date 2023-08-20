@@ -1,10 +1,6 @@
 <?php
 
 use App\Discord\Admin\Commands\Guilds;
-use App\Discord\Core\Commands\Settings;
-use App\Discord\Core\Commands\UpdateSetting;
-use App\Discord\Core\Commands\UpdateUserSetting;
-use App\Discord\Core\Commands\UserSettings;
 use App\Discord\Fun\Commands\Ask;
 use App\Discord\Fun\Commands\BumpStatistics;
 use App\Discord\Fun\Commands\Cringe\CringeIndex;
@@ -67,6 +63,10 @@ use App\Discord\Roles\Commands\Permissions;
 use App\Discord\Roles\Commands\Roles;
 use App\Discord\Roles\Commands\UserRoles;
 use App\Discord\Roles\Commands\Users;
+use App\Discord\Setting\Commands\Settings;
+use App\Discord\Setting\Commands\UpdateSetting;
+use App\Discord\Setting\Commands\UpdateUserSetting;
+use App\Discord\Setting\Commands\UserSettings;
 
 return [
     /*
