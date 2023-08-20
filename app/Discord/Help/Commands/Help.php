@@ -337,7 +337,7 @@ class Help extends SlashCommand
      */
     public function settingsPage(EmbedBuilder $embedBuilder): EmbedBuilder
     {
-        $description = "All setting values are numeric, for booleans 0 = false, 1 = true.";
+        $description = "All setting values are numeric, 1 = enabled, 0 = disabled. For channels and Roles use their IDS!";
         $this->addCommands([
             ['cmd' => 'config guild list', 'usage' => '', 'desc' => ''],
             ['cmd' => 'config guild edit', 'usage' => '`<setting_key>` `<setting_value>`', 'desc' => ''],
