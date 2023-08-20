@@ -32,7 +32,7 @@ class Run extends Command
      */
     public function handle(): int
     {
-        $bot = new Bot($this->option('update'), $this->option('delete'));
+        $bot = new Bot(updateCommands: $this->option('update'), deleteCommands: $this->option('delete'));
         $bot->connect();
         return Command::SUCCESS;
     }
