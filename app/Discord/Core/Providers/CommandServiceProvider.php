@@ -4,9 +4,6 @@ namespace App\Discord\Core\Providers;
 
 use App\Discord\Core\Bot;
 use App\Discord\Core\Interfaces\ServiceProvider;
-use App\Discord\Core\SlashCommand;
-use Discord\Parts\Guild\Guild;
-use Discord\Parts\Interactions\Command\Command;
 use Exception;
 
 class CommandServiceProvider implements ServiceProvider
