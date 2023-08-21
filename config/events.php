@@ -3,7 +3,6 @@
 use App\Discord\Core\Events\InteractionCreate;
 use App\Discord\Core\Events\MessageCreate;
 use App\Discord\Core\Events\VoiceStateUpdate;
-use App\Discord\Fun\Events\BanKickCounter;
 use App\Discord\Fun\Events\BumpCounter;
 use App\Discord\Fun\Events\MessageCount;
 use App\Discord\Fun\Events\MessageEmoteCounter;
@@ -50,7 +49,6 @@ return [
         VoiceStateLogger::class,
         DetectTimeout::class,
         WelcomeUser::class,
-        BanKickCounter::class,
         GuildBanRemove::class,
         GuildMemberAdd::class,
         GuildMemberRemove::class,
