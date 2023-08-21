@@ -39,6 +39,8 @@ return [
     | Add an event for MESSAGE_DELETE, you implement the MESSAGE_DELETE
     | interface.
     |
+    | Some interfaces might be missing if I did not use those events (yet)!
+    |
     */
     'events' => [
         InteractionCreate::class,
