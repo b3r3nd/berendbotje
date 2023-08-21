@@ -177,7 +177,7 @@ you know what all the values mean.
     | Support Guild
     |--------------------------------------------------------------------------
     |
-    | ID of your main guild, in this guild any administrative commands
+    | ID of your main guild, register any administrative commands there!
     |
     */
 
@@ -188,7 +188,7 @@ you know what all the values mean.
     | Service Providers
     |--------------------------------------------------------------------------
     |
-    | Service providers can be used to "provide a server", basically load
+    | Service providers can be used to "provide a service", basically load
     | and setup some stuff the bot needs. The Event en Command Service
     | Provider are default, I added one for guilds since I need to
     | load all the guilds on boot.
