@@ -6,7 +6,7 @@ use App\Discord\Core;
 use App\Discord\Core\Interfaces\MessageCreateAction;
 use App\Discord\Core\Providers\EventServiceProvider;
 use App\Discord\Core\Providers\GuildServiceProvider;
-use App\Discord\Core\Providers\SlashCommandServiceProvider;
+use App\Discord\Core\Providers\CommandServiceProvider;
 use App\Domain\Discord\Guild;
 use Discord\Discord;
 use Discord\Exceptions\IntentException;
@@ -15,19 +15,7 @@ use Exception;
 
 class Bot
 {
-    /**
-     * @see \App\Discord\Core\Interfaces\ServiceProvider
-     * @var array|string[]
-     */
-    private array $serviceProviders = [
-        EventServiceProvider::class,
-        GuildServiceProvider::class,
-        SlashCommandServiceProvider::class,
-    ];
-
     public function __construct(
-        private readonly bool $updateCommands,
-        private readonly bool $deleteCommands,
         public ?Discord       $discord = null,
         public array          $guilds = [],
         public array          $messageActions = [],
@@ -35,7 +23,7 @@ class Bot
         private array         $services = [],
     )
     {
-        foreach ($this->serviceProviders as $serviceProvider) {
+        foreach (config('discord.providers') as $serviceProvider) {
             $this->services[] = new $serviceProvider();
         }
     }
@@ -75,13 +63,22 @@ class Bot
     }
 
     /**
-     * @param SlashCommand $command
-     * @param string $trigger
+     * @param $mainCommand
+     * @param $command
+     * @param $subGroup
      * @return void
      */
-    public function addSlashCommand(SlashCommand $command, string $trigger): void
+    public function addCommand($mainCommand, $command, $subGroup): void
     {
-        $this->commands[$trigger] = $command;
+        $instance = new $command();
+        $instance->setBot($this);
+        $commandLabel = "{$subGroup}_{$instance->trigger}";
+        if ($mainCommand === $subGroup) {
+            $instance->setCommandLabel($commandLabel);
+        } else {
+            $instance->setCommandLabel("{$mainCommand}_{$commandLabel}");
+        }
+        $this->commands[$commandLabel] = $instance;
     }
 
     /**
@@ -111,21 +108,5 @@ class Bot
     public function getGuilds(): array
     {
         return $this->guilds;
-    }
-
-    /**
-     * @return bool
-     */
-    public function needsCommandUpdate(): bool
-    {
-        return $this->updateCommands;
-    }
-
-    /**
-     * @return bool
-     */
-    public function needCommandDeletion(): bool
-    {
-        return $this->deleteCommands;
     }
 }
