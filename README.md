@@ -111,7 +111,7 @@ of commands you will be rate limited. Meaning it takes while before everything i
 commands the console output will tell you the progress, however when adding commands the output it only send when 
 everything is done (will change in the future), dont ctrl + c!
 
-- `php artisan bot:slash` - Shows current available slash commands in **discord**!
+- `php artisan bot:slash` - Shows current available slash commands in **discord**! Not your config!
 - `php artisan bot:slash --update` - Creates/updates all slash commands.
 - `php artisan bot:slash --delete` - Delete all slash commands.
 
@@ -308,12 +308,13 @@ Events are all defined in the events.php file, with the comments below should be
 ```
 
 # Functions
-Now on to what the bot actually does..
+Now on to what the bot actually does.. 
 
 I will try to update this readme with new functionality as I add it. The bot uses only slash commands!
 The slash commands all use sub commands to group them together and autocomplete is on where possible for all inputs!
 
 ## Permissions
+Permission required when this bot gets added to the server.
 - View audit log
 - Read messages
 - Send messages
