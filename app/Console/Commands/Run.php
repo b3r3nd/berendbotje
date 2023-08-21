@@ -13,9 +13,7 @@ class Run extends Command
      *
      * @var string
      */
-    protected $signature = 'bot:run
-    {--update : Update all slash commands}
-    {--delete : Delete all slash commands}';
+    protected $signature = 'bot:run';
 
     /**
      * The console command description.
@@ -32,8 +30,7 @@ class Run extends Command
      */
     public function handle(): int
     {
-        $bot = new Bot(updateCommands: $this->option('update'), deleteCommands: $this->option('delete'));
-        $bot->connect();
+        (new Bot())->connect();
         return Command::SUCCESS;
     }
 }

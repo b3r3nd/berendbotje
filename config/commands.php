@@ -107,6 +107,7 @@ return [
     |   |__ subcommand
     |
     */
+
     'global' => [
         'users' => [
             Users::class,
