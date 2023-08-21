@@ -2,14 +2,18 @@
 
 namespace App\Discord\Core\Events;
 
+use App\Discord\Core\Builders\EmbedBuilder;
+use App\Discord\Core\Builders\EmbedFactory;
 use App\Discord\Core\DiscordEvent;
 use App\Discord\Core\Interfaces\Events\GUILD_CREATE;
 use App\Domain\Discord\Guild as GuildModel;
 use App\Domain\Discord\User;
+use App\Domain\Setting\Enums\Setting;
 use Database\Seeders\LogSettingsSeeder;
 use Database\Seeders\MentionResponderSeeder;
 use Database\Seeders\RoleSeeder;
 use Database\Seeders\SettingsSeeder;
+use Discord\Builders\MessageBuilder;
 use Discord\Discord;
 use Discord\Parts\Guild\Guild;
 use Discord\WebSockets\Event;
@@ -51,6 +55,15 @@ class GuildCreate extends DiscordEvent implements GUILD_CREATE
             (new MentionResponderSeeder())->processMentionGroups($guildModel);
 
             $this->bot->addGuild($guildModel);
+
+            /**
+             * Temp hardcoded log to keep track of server count until we reach verification
+             */
+            $count = \App\Domain\Discord\Guild::all()->count();
+            $embed = EmbedBuilder::createForLog($this->bot->discord);
+            $embed->setTitle("Joined new guild");
+            $embed->setDescription("**Name**: {$guild->name} \n **ID**: {$guild->id} \n **Owner**: {$owner->tag()} \n **Total Guilds: {$count}");
+            $this->bot->discord->getChannel(1121480252829470781)?->sendMessage(MessageBuilder::new()->addEmbed($embed));
         }
     }
 }
