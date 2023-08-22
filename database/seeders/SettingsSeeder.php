@@ -22,7 +22,7 @@ class SettingsSeeder extends Seeder
         'enable_commands' => false,
         'enable_logging' => false,
         'enable_count' => false,
-        'enable_mention_responder' => false,
+        'enable_mention_responder' => true,
         'enable_qotd_reminder' => false,
         'enable_lvl_msg' => false,
         'enable_join_role' => false,

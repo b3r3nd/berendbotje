@@ -71,6 +71,22 @@ return [
         GuildServiceProvider::class,
     ],
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | Top.gg
+    |--------------------------------------------------------------------------
+    |
+    | If you have your bot listed on top.gg you can use their api to update
+    | the server count on the website. So people know your bot is being
+    | used!
+    |
+    */
+
+    'topgg-host' => env('TOPGG_HOST', ' '),
+    'topgg-token' => env('TOPGG_TOKEN', 'https://top.gg/api/'),
+
+
     /*
     |--------------------------------------------------------------------------
     | Other Settings
