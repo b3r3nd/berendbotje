@@ -62,8 +62,8 @@ class GuildCreate extends DiscordEvent implements GUILD_CREATE
             $count = \App\Domain\Discord\Guild::all()->count();
             $embed = EmbedBuilder::createForLog($this->bot->discord);
             $embed->setTitle("Joined new guild");
-            $embed->setDescription("**Name**: {$guild->name} \n **ID**: {$guild->id} \n **Owner**: {$owner->tag()} \n **Total Guilds: {$count}");
-            $this->bot->discord->getChannel(1121480252829470781)?->sendMessage(MessageBuilder::new()->addEmbed($embed));
+            $embed->setDescription("**Name**: {$guild->name} \n **ID**: {$guild->id} \n **Owner**: {$owner->tag()} \n **Total Guilds**: {$count}");
+            $this->bot->discord->getChannel(1143550163265269760)?->sendMessage(MessageBuilder::new()->addEmbed($embed));
         }
     }
 }
