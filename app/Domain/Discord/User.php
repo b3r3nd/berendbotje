@@ -56,7 +56,10 @@ class User extends Model
      */
     public function enabledSetting(string $settingKey, string $guildId): bool
     {
-        $setting = $this->settings()->where(['key' => $settingKey], ['guild_id' => $guildId])->first();
+        $setting = $this->settings()->where([
+            ['key', '=', $settingKey],
+            ['guild_id', '=', $guildId]
+        ])->first();
         return $setting && $setting->value === "1";
     }
 
@@ -64,7 +67,7 @@ class User extends Model
     public static function get(Member|string $member): mixed
     {
         if ($member instanceof Member) {
-            if($member->user->discriminator !== "0") {
+            if ($member->user->discriminator !== "0") {
                 $username = "{$member->username}#{$member->user->discriminator}";
             } else {
                 $username = $member->username;
