@@ -1,6 +1,7 @@
 <?php
 
-use App\Discord\Admin\Commands\Guilds;
+use App\Discord\Admin\Commands\DatabaseGuilds;
+use App\Discord\Admin\Commands\UpdateTopGG;
 use App\Discord\Fun\Commands\Ask;
 use App\Discord\Fun\Commands\BumpStatistics;
 use App\Discord\Fun\Commands\Cringe\CringeIndex;
@@ -237,7 +238,10 @@ return [
     */
     'guild' => [
         'guilds' => [
-            Guilds::class,
+            DatabaseGuilds::class,
         ],
+        'topgg' => [
+            UpdateTopGG::class
+        ]
     ],
 ];

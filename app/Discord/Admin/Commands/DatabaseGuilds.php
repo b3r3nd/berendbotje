@@ -9,7 +9,7 @@ use App\Domain\Permission\Enums\Permission;
 use Discord\Parts\Embed\Embed;
 use Discord\Parts\Interactions\Interaction;
 
-class Guilds extends SlashIndexCommand
+class DatabaseGuilds extends SlashIndexCommand
 {
 
     public function permission(): Permission
@@ -36,8 +36,6 @@ class Guilds extends SlashIndexCommand
             $description .= "{$guild->name} - {$guild->owner->tag()} \n";
         }
         return EmbedBuilder::create($this, __('bot.guilds.title', ['count' => $this->total]), $description)->getEmbed();
-
-
     }
 
     public function autoComplete(Interaction $interaction): array

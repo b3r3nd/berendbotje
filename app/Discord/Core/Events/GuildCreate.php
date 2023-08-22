@@ -56,12 +56,10 @@ class GuildCreate extends DiscordEvent implements GUILD_CREATE
 
             $this->bot->addGuild($guildModel);
 
-            /**
-             * Temp hardcoded log to keep track of server count until we reach verification
-             */
             $count = \App\Domain\Discord\Guild::all()->count();
             $embed = EmbedBuilder::createForLog($this->bot->discord);
             $embed->setTitle("Joined new guild");
+            $embed->setColor(2067276);
             $embed->setDescription("**Name**: {$guild->name} \n **ID**: {$guild->id} \n **Owner**: {$owner->tag()} \n **Total Guilds**: {$count}");
             $this->bot->discord->getChannel(1143550163265269760)?->sendMessage(MessageBuilder::new()->addEmbed($embed));
         }

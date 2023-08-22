@@ -45,7 +45,7 @@ class Settings extends SlashIndexCommand
 
             if (str_contains($setting->key, 'channel')) {
                 $value = "<#{$setting->value}>";
-            } elseif (str_contains($setting->key, 'role')) {
+            } elseif (str_contains($setting->key, 'role') && !str_contains($setting->key, 'rewards')) {
                 $value = "<@&{$setting->value}>";
             } elseif (str_contains($setting->key, 'enable')) {
                 $value = $setting->value ? "On" : "Off";
