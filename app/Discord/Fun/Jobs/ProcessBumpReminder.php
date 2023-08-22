@@ -4,7 +4,6 @@ namespace App\Discord\Fun\Jobs;
 
 use App\Domain\Discord\Guild;
 use Discord\Discord;
-use Discord\WebSockets\Intents;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -12,10 +11,6 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Http;
 
-/**
- * @property Discord $discord Global Discord instance.
- * @property string $guildId  Discord Guild id the reminder belongs to.
- */
 class ProcessBumpReminder implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
