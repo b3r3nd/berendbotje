@@ -343,7 +343,7 @@ class Help extends SlashCommand
             ['cmd' => 'config guild edit', 'usage' => '`<setting_key>` `<setting_value>`', 'desc' => ''],
         ], $embedBuilder);
         $field = "`xp_count`  - Amount of xp you gain per message
-`xp_cooldown` - Amount of xp you gain per message
+`xp_cooldown` - Cooldown between messages in seconds
 `xp_voice_count` - Amount of xp you gain in voice
 `xp_voice_cooldown` - Over how much time the XP is given.
 `current_count` - Current counter in count channel";
