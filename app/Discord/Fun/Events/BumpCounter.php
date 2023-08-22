@@ -30,7 +30,6 @@ class BumpCounter extends DiscordEvent implements MESSAGE_CREATE
     public function execute(Message $message, Discord $discord): void
     {
         if ($message->type === 20 && $message->interaction->name === 'bump') {
-
             $guild = $this->bot->getGuild($message->guild_id);
             if (!$guild) {
                 return;
@@ -43,7 +42,7 @@ class BumpCounter extends DiscordEvent implements MESSAGE_CREATE
             $user->bumpCounters()->save($bumpCounter);
             $user->refresh();
             $count = $user->bumpCounters()->where('guild_id', $guild->model->id)->sum('count');
-            $message->channel->sendMessage(__('bot.bump.inc', ['name' => $message->interaction->user->username, 'count' => $count ?? 0]));
+            $message->channel->sendMessage(__('bot.bump.inc', ['name' => $user->username, 'count' => $count ?? 0]));
             if ($guild->getSetting(Setting::ENABLE_BUMP_REMINDER)) {
                 ProcessBumpReminder::dispatch($message->guild_id)->delay(now()->addHours(2));
             }
