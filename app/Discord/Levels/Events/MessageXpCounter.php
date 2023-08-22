@@ -31,7 +31,7 @@ class MessageXpCounter implements MessageCreateAction
             (new UpdateMessageCounterAction($message->guild_id, $message->author->id, $guildModel->getSetting(Setting::XP_COUNT), $bot))->execute();
 
             $user = User::get($message->author->id);
-            if ($guildModel->getSetting(Setting::ENABLE_ROLE_REWARDS) && !$user->enabledSetting(UserSetting::NO_ROLE_REWARDS->value, $message->guild_id)) {
+            if ($guildModel->getSetting(Setting::ENABLE_ROLE_REWARDS) && !$user->enabledSetting(UserSetting::NO_ROLE_REWARDS->value, $guildModel->model->id)) {
                 (new SyncRoleRewardsAction($bot, $message, $message->author->id))->execute();
             }
         }
