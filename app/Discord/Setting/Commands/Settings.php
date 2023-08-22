@@ -43,12 +43,12 @@ class Settings extends SlashIndexCommand
         foreach (Setting::byDiscordGuildId($this->guildId)->orderBy('key', 'desc')->skip($this->getOffset($this->getLastUser()))->limit($this->perPage)->get() as $setting) {
             $value = $setting->value;
 
-            if (str_contains($setting->key, 'channel')) {
-                $value = "<#{$setting->value}>";
-            } elseif (str_contains($setting->key, 'role') && !str_contains($setting->key, 'rewards')) {
-                $value = "<@&{$setting->value}>";
-            } elseif (str_contains($setting->key, 'enable')) {
+            if (str_contains($setting->key, 'enable')) {
                 $value = $setting->value ? "On" : "Off";
+            } else if (str_contains($setting->key, 'channel')) {
+                $value = "<#{$setting->value}>";
+            } elseif (str_contains($setting->key, 'role')) {
+                $value = "<@&{$setting->value}>";
             }
 
             $description .= "**{$setting->key}** = {$value}\n";
