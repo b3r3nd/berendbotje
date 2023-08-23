@@ -51,6 +51,9 @@ return [
     'timeout-reason' => 'Timeout Reason',
     'message' => 'Message',
     'levelup' => 'Congrats <@:user> you are now level :level!',
+    'date' => 'Date',
+    'invalid-date' => 'Date format is invalid, please provide a valid format',
+    'process' => 'All users who joined the server before :date will be given <@&:role>. This process might take a while!',
 
     'permissions-enum' => [
         'roles' => 'View Roles',
@@ -152,7 +155,8 @@ return [
         'guilds' => 'Overview of all guilds',
         'vote' => 'Vote for Berend Botje on top.gg',
         'support' => 'Support Server for Berend Botje',
-        'topgg' => 'Update the server count in topgg.'
+        'topgg' => 'Update the server count in topgg.',
+        'give-role' => 'Give a role to all members who joined after a certain date',
     ],
 
     'msg' => [

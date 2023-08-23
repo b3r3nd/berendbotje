@@ -50,6 +50,7 @@ use App\Discord\Moderation\Commands\Channel\UnmarkChannel;
 use App\Discord\Moderation\Commands\Command\CommandIndex;
 use App\Discord\Moderation\Commands\Command\CreateCommand;
 use App\Discord\Moderation\Commands\Command\DeleteCommand;
+use App\Discord\Moderation\Commands\GiveRole;
 use App\Discord\Moderation\Commands\Timeout\RemoveTimeout;
 use App\Discord\Moderation\Commands\Timeout\Timeouts;
 use App\Discord\Moderation\Commands\Timeout\UpdateTimeoutReason;
@@ -120,6 +121,7 @@ return [
             Roles::class,
             CreateRole::class,
             DeleteRole::class,
+            GiveRole::class
         ],
         'permissions' => [
             Permissions::class,
