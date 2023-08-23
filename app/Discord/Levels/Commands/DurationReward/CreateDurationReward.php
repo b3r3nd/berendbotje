@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Discord\Levels\Commands\RoleReward;
+namespace App\Discord\Levels\Commands\DurationReward;
 
 use App\Discord\Core\Builders\EmbedFactory;
 use App\Discord\Core\SlashCommand;
@@ -11,7 +11,7 @@ use Discord\Parts\Interactions\Command\Option;
 use Discord\Parts\Interactions\Interaction;
 use Exception;
 
-class CreateRoleReward extends SlashCommand
+class CreateDurationReward extends SlashCommand
 {
 
     public function permission(): Permission
@@ -26,12 +26,12 @@ class CreateRoleReward extends SlashCommand
 
     public function __construct()
     {
-        $this->description = __('bot.slash.add-role-reward');
+        $this->description = __('bot.slash.add-duration-reward');
         $this->slashCommandOptions = [
             [
-                'name' => 'level',
-                'description' => __('bot.level'),
-                'type' => Option::INTEGER,
+                'name' => 'duration',
+                'description' => __('bot.duration'),
+                'type' => Option::STRING,
                 'required' => true,
             ],
             [
@@ -50,9 +50,9 @@ class CreateRoleReward extends SlashCommand
      */
     public function action(): MessageBuilder
     {
-        $roleReward = RoleReward::create(['level' => $this->getOption('level'), 'role' => $this->getOption('role'), 'guild_id' => \App\Domain\Discord\Guild::get($this->guildId)->id]);
+        $roleReward = RoleReward::create(['duration' => $this->getOption('duration'), 'role' => $this->getOption('role'), 'guild_id' => \App\Domain\Discord\Guild::get($this->guildId)->id]);
         $roleReward->save();
-        return EmbedFactory::successEmbed($this, __('bot.rewards.added', ['level' => $this->getOption('level'), 'role' => $roleReward->roleTag()]));
+        return EmbedFactory::successEmbed($this, __('bot.duration-reward.added', ['duration' => $this->getOption('duration'), 'role' => $roleReward->roleTag()]));
     }
 
     /**

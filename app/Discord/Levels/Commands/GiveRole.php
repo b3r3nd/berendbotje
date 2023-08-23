@@ -1,17 +1,15 @@
 <?php
 
-namespace App\Discord\Moderation\Commands;
+namespace App\Discord\Levels\Commands;
 
-use App\Discord\Core\Builders\EmbedBuilder;
 use App\Discord\Core\Builders\EmbedFactory;
 use App\Discord\Core\SlashCommand;
-use App\Discord\Moderation\Jobs\ProcessRoles;
+use App\Discord\Levels\Jobs\ProcessRoles;
 use App\Domain\Permission\Enums\Permission;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Command\Option;
 use Discord\Parts\Interactions\Interaction;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Http;
 
 class GiveRole extends SlashCommand
 {

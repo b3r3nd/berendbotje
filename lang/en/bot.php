@@ -114,6 +114,9 @@ return [
         'rewards' => 'Show role rewards based on levels',
         'add-role-reward' => 'Add role reward to a level',
         'del-role-reward' => 'Remove role rewards from a level',
+        'duration-reward' => 'Show role rewards based on how long you they in the server',
+        'add-duration-reward' => 'Add role reward based on how long someone is in the server',
+        'del-duration-reward' => 'Remove role rewards based on how long someone is in the server',
         'give-xp' => 'Give xp to a user',
         'remove-xp' => 'Remove xp from a user',
         'reset-xp' => 'Reset xp for a user',
@@ -246,11 +249,18 @@ return [
     ],
 
     'rewards' => [
-        'title' => 'Role Rewards',
+        'title' => 'Level Role Rewards',
         'description' => "Level • Role Reward\n\n:rewards",
         'added' => 'Role reward :role added for level :level.',
         'deleted' => 'All role rewards for :level deleted.',
         'number' => 'Both level and role ID need to be numeric.'
+    ],
+
+    'duration-reward' => [
+        'title' => 'Duration Role Rewards',
+        'description' => "Duration • Role Reward\n\n:rewards",
+        'added' => 'Role reward :role added with duration :duration.',
+        'deleted' => 'All role rewards for :duration deleted.',
     ],
 
     'xp' => [

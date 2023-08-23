@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Discord\Levels\Commands\RoleReward;
+namespace App\Discord\Levels\Commands\LevelReward;
 
 use App\Discord\Core\Builders\EmbedFactory;
 use App\Discord\Core\SlashCommand;

@@ -18,13 +18,17 @@ use App\Discord\Fun\Commands\UrbanDictionary;
 use App\Discord\Help\Commands\Help;
 use App\Discord\Help\Commands\Support;
 use App\Discord\Help\Commands\Vote;
+use App\Discord\Levels\Commands\DurationReward\CreateDurationReward;
+use App\Discord\Levels\Commands\DurationReward\DeleteDurationReward;
+use App\Discord\Levels\Commands\DurationReward\DurationRewards;
+use App\Discord\Levels\Commands\GiveRole;
 use App\Discord\Levels\Commands\GiveXp;
 use App\Discord\Levels\Commands\Leaderboard;
 use App\Discord\Levels\Commands\RemoveXp;
 use App\Discord\Levels\Commands\ResetXp;
-use App\Discord\Levels\Commands\RoleReward\CreateRoleReward;
-use App\Discord\Levels\Commands\RoleReward\DeleteRoleReward;
-use App\Discord\Levels\Commands\RoleReward\RoleRewards;
+use App\Discord\Levels\Commands\LevelReward\CreateRoleReward;
+use App\Discord\Levels\Commands\LevelReward\DeleteRoleReward;
+use App\Discord\Levels\Commands\LevelReward\RoleRewards;
 use App\Discord\Levels\Commands\UserRank;
 use App\Discord\Logger\Commands\LogSettings;
 use App\Discord\Logger\Commands\UpdateLogSetting;
@@ -50,7 +54,6 @@ use App\Discord\Moderation\Commands\Channel\UnmarkChannel;
 use App\Discord\Moderation\Commands\Command\CommandIndex;
 use App\Discord\Moderation\Commands\Command\CreateCommand;
 use App\Discord\Moderation\Commands\Command\DeleteCommand;
-use App\Discord\Moderation\Commands\GiveRole;
 use App\Discord\Moderation\Commands\Timeout\RemoveTimeout;
 use App\Discord\Moderation\Commands\Timeout\Timeouts;
 use App\Discord\Moderation\Commands\Timeout\UpdateTimeoutReason;
@@ -158,9 +161,16 @@ return [
             Block::class,
         ],
         'rolerewards' => [
-            RoleRewards::class,
-            CreateRoleReward::class,
-            DeleteRoleReward::class,
+            'level' => [
+                RoleRewards::class,
+                CreateRoleReward::class,
+                DeleteRoleReward::class,
+            ],
+            'duration' => [
+                DurationRewards::class,
+                CreateDurationReward::class,
+                DeleteDurationReward::class
+            ]
         ],
         'xp' => [
             GiveXp::class,

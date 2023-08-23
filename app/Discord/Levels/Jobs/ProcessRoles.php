@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Discord\Moderation\Jobs;
+namespace App\Discord\Levels\Jobs;
 
-use Discord\Discord;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
