@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Discord\Levels\Commands;
+namespace App\Discord\Levels\Commands\DurationReward;
 
 use App\Discord\Core\Builders\EmbedFactory;
 use App\Discord\Core\SlashCommand;
