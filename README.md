@@ -53,6 +53,10 @@ APPLICATION_ID=
 SUPPORT_GUILD=
 DISCORD_API=
 
+TOPGG_TOKEN=
+TOPGG_HOST=
+TOPGG_ID=
+
 URB_TOKEN=
 URB_HOST=
 OPENAI_API_KEY=
@@ -201,6 +205,22 @@ you know what all the values mean.
         CommandServiceProvider::class,
         GuildServiceProvider::class,
     ],
+    
+    /*
+    |--------------------------------------------------------------------------
+    | Top.gg
+    |--------------------------------------------------------------------------
+    |
+    | If you have your bot listed on top.gg you can use their api to update
+    | the server count on the website. So people know your bot is being
+    | used!
+    |
+    */
+
+    'topgg-host' => env('TOPGG_HOST', 'https://top.gg/api/'),
+    'topgg-id' => env('TOPGG_ID', ' '),
+    'topgg-token' => env('TOPGG_TOKEN', ' '),
+
 
     /*
     |--------------------------------------------------------------------------
