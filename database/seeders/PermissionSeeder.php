@@ -20,7 +20,7 @@ class PermissionSeeder extends Seeder
             'config', 'timeouts', 'media-filter', 'add-cringe', 'delete-cringe',
             'commands', 'reactions', 'role-rewards', 'manage-xp', 'channels',
             'logs', 'add-mention', 'delete-mention', 'manage-mention-groups', 'openai', 'abusers', 'invites',
-            'messages'
+            'messages', 'reminders'
         ];
 
         foreach ($permissions as $permission) {
