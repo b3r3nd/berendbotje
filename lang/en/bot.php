@@ -82,6 +82,7 @@ return [
         'abusers' => 'Manage blacklist',
         'invites' => 'Manage server invites',
         'messages' => 'Manage custom messages',
+        'reminders' => "Manage reminders",
     ],
 
     'reminders' => [
