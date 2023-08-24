@@ -16,7 +16,7 @@ class SyncDurationRewards extends SlashCommand
 
     public function permission(): Permission
     {
-        return Permission::CONFIG;
+        return Permission::ROLE_REWARDS;
     }
 
     public function trigger(): string
