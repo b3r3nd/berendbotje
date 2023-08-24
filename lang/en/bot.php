@@ -261,6 +261,7 @@ return [
         'description' => "Duration • Role Reward\n\n:rewards",
         'added' => 'Role reward :role added with duration :duration.',
         'deleted' => 'All role rewards for :duration deleted.',
+        'invalid' => "Please provide a valid format, examples: \n\n **1y2m3d** - 1 year, 2 months and 3 days \n **1y** - 1 year \n **2m5d** - 2 months and 5 days",
     ],
 
     'xp' => [
@@ -279,6 +280,7 @@ return [
         'not-exist' => 'Setting :key does not exist.',
         'updated' => 'Setting :key is updated to value :value.',
         'not-numeric' => 'Setting values must be numeric, :value is not a numeric value.',
+        'min-cooldown' => 'The xp cooldown cannot be lower than 20 seconds.'
     ],
 
     'messages' => [

@@ -2,6 +2,7 @@
 
 namespace App\Discord\Levels\Jobs;
 
+use App\Discord\Levels\Helpers\Helper;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -52,11 +53,7 @@ class ProcessRoles implements ShouldQueue
         }
         $next = 0;
         foreach ($response->json() as $member) {
-            try {
-                $joinedAt = Carbon::parse($member['joined_at']);
-            } catch (\Carbon\Exceptions\InvalidFormatException $e) {
-                return;
-            }
+            $joinedAt = Helper::parse($member['joined_at']);
             if ($joinedAt->lt($date)) {
                 $this->giveRole($member['user']['id'], $this->roleId);
             }

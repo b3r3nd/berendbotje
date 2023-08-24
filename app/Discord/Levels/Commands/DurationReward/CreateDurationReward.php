@@ -4,6 +4,7 @@ namespace App\Discord\Levels\Commands\DurationReward;
 
 use App\Discord\Core\Builders\EmbedFactory;
 use App\Discord\Core\SlashCommand;
+use App\Discord\Levels\Helpers\Helper;
 use App\Domain\Fun\Models\RoleReward;
 use App\Domain\Permission\Enums\Permission;
 use Discord\Builders\MessageBuilder;
@@ -50,8 +51,15 @@ class CreateDurationReward extends SlashCommand
      */
     public function action(): MessageBuilder
     {
+        $matches = Helper::match($this->getOption('duration'));
+
+        if (!isset($matches['year']) && !isset($matches['month']) && !isset($matches['day'])) {
+            return EmbedFactory::failedEmbed($this, __('bot.duration-reward.invalid'));
+        }
+
         $roleReward = RoleReward::create(['duration' => $this->getOption('duration'), 'role' => $this->getOption('role'), 'guild_id' => \App\Domain\Discord\Guild::get($this->guildId)->id]);
         $roleReward->save();
+
         return EmbedFactory::successEmbed($this, __('bot.duration-reward.added', ['duration' => $this->getOption('duration'), 'role' => $roleReward->roleTag()]));
     }
 

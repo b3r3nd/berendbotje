@@ -4,12 +4,14 @@ namespace App\Discord\Levels\Actions;
 
 use App\Discord\Core\Bot;
 use App\Discord\Core\Interfaces\Action;
+use App\Discord\Levels\Helpers\Helper;
 use App\Domain\Discord\Guild;
 use App\Domain\Discord\User;
 use App\Domain\Fun\Models\RoleReward;
 use Discord\Http\Exceptions\NoPermissionsException;
 use Discord\Parts\Channel\Message;
 use Exception;
+use Illuminate\Support\Carbon;
 
 class SyncRoleRewardsAction implements Action
 {
@@ -24,6 +26,27 @@ class SyncRoleRewardsAction implements Action
         private readonly string  $userId,
     )
     {
+    }
+
+
+    /**
+     * @param string $role
+     * @return void
+     * @throws Exception
+     */
+    private function giveRole(string $role): void
+    {
+        try {
+            $this->message->member->addRole($role);
+        } catch (NoPermissionsException) {
+            $this->bot->getGuild($this->message->guild_id)?->log(__('bot.exception.role'), "fail");
+        }
+    }
+
+
+    private function cast(string $string): int
+    {
+        return (int)substr($string, 0, -1);
     }
 
     /**
@@ -41,11 +64,31 @@ class SyncRoleRewardsAction implements Action
             foreach ($roleRewards as $reward) {
                 $role = $reward->role;
                 $rolesCollection = collect($this->message->member->roles);
-                if (($messageCounter->level >= $reward->level) && !$rolesCollection->contains('id', $role)) {
-                    try {
-                        $this->message->member->addRole($role);
-                    } catch (NoPermissionsException) {
-                        $this->bot->getGuild($this->message->guild_id)?->log(__('bot.exception.role'), "fail");
+
+                if (!$rolesCollection->contains('id', $role)) {
+                    if ($reward->level && ($messageCounter->level >= $reward->level)) {
+                        $this->giveRole($role);
+                    }
+                    if ($reward->duration) {
+                        $matches = Helper::match($reward->duration);
+                        $date = now();
+
+
+                        if (isset($matches['year'])) {
+                            $date->subYears($this->cast($matches['year']));
+                        }
+                        if (isset($matches['month'])) {
+                            $date->subMonths($this->cast($matches['month']));
+                        }
+                        if (isset($matches['day'])) {
+                            $date->subDays($this->cast($matches['day']));
+                        }
+
+                        $joinedAt = Helper::parse($this->message->member->joined_at);
+
+                        if ($joinedAt->lt($date)) {
+                            $this->giveRole($role);
+                        }
                     }
                 }
             }
