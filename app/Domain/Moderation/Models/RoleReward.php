@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Fun\Models;
+namespace App\Domain\Moderation\Models;
 
 use App\Domain\Discord\Guild;
 use Illuminate\Database\Eloquent\Model;

@@ -4,14 +4,13 @@ namespace App\Discord\Levels\Actions;
 
 use App\Discord\Core\Bot;
 use App\Discord\Core\Interfaces\Action;
-use App\Discord\Levels\Helpers\Helper;
 use App\Domain\Discord\Guild;
 use App\Domain\Discord\User;
-use App\Domain\Fun\Models\RoleReward;
+use App\Domain\Moderation\Helpers\DurationHelper;
+use App\Domain\Moderation\Models\RoleReward;
 use Discord\Http\Exceptions\NoPermissionsException;
 use Discord\Parts\Channel\Message;
 use Exception;
-use Illuminate\Support\Carbon;
 
 class SyncRoleRewardsAction implements Action
 {
@@ -64,9 +63,9 @@ class SyncRoleRewardsAction implements Action
                         $this->giveRole($role);
                     }
                     if ($reward->duration) {
-                        $matches = Helper::match($reward->duration);
-                        $date = Helper::getDate($matches);
-                        $joinedAt = Helper::parse($this->message->member->joined_at);
+                        $matches = DurationHelper::match($reward->duration);
+                        $date = DurationHelper::getDate($matches);
+                        $joinedAt = DurationHelper::parse($this->message->member->joined_at);
                         if ($joinedAt->lt($date)) {
                             $this->giveRole($role);
                         }

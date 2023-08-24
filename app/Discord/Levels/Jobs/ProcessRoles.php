@@ -2,8 +2,8 @@
 
 namespace App\Discord\Levels\Jobs;
 
-use App\Discord\Levels\Helpers\Helper;
-use App\Domain\Fun\Models\RoleReward;
+use App\Domain\Moderation\Helpers\DurationHelper;
+use App\Domain\Moderation\Models\RoleReward;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -49,13 +49,13 @@ class ProcessRoles implements ShouldQueue
         $next = 0;
         $rewards = RoleReward::duration($this->guildId)->get();
         foreach ($response->json() as $member) {
-            $joinedAt = Helper::parse($member['joined_at']);
+            $joinedAt = DurationHelper::parse($member['joined_at']);
 
 
             foreach ($rewards as $reward) {
                 if ($reward->duration) {
-                    $matches = Helper::match($reward->duration);
-                    $date = Helper::getDate($matches);
+                    $matches = DurationHelper::match($reward->duration);
+                    $date = DurationHelper::getDate($matches);
                     if ($joinedAt->lt($date)) {
                         $this->giveRole($member['user']['id'], $reward->role);
                     } else if (in_array($reward->role, $member['roles'], true)) {
