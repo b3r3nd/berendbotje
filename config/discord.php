@@ -83,8 +83,9 @@ return [
     |
     */
 
-    'topgg-host' => env('TOPGG_HOST', ' '),
-    'topgg-token' => env('TOPGG_TOKEN', 'https://top.gg/api/'),
+    'topgg-host' => env('TOPGG_HOST', 'https://top.gg/api/'),
+    'topgg-id' => env('TOPGG_ID', ' '),
+    'topgg-token' => env('TOPGG_TOKEN', ' '),
 
 
     /*

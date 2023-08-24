@@ -10,11 +10,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
-/**
- * @property Discord $discord   Global Discord instance.
- * @property string $channelId  Channel ID the image most be posted in.
- * @property string $prompt     User prompt used to generate the image.
- */
+
 class ProcessImageGeneration implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;

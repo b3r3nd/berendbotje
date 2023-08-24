@@ -53,6 +53,10 @@ class UpdateSetting extends SlashCommand
         $key = $this->getOption('setting_key');
         $value = $this->getOption('setting_value');
 
+        if ($key === \App\Domain\Setting\Enums\Setting::XP_COOLDOWN->value && $value < 21) {
+            return EmbedFactory::failedEmbed($this, __('bot.set.min-cooldown'));
+        }
+
         if (!Setting::hasSetting($key, $this->guildId)) {
             return EmbedFactory::failedEmbed($this, __('bot.set.not-exist', ['key' => $key]));
         }

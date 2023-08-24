@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Discord\Levels\Commands\RoleReward;
+namespace App\Discord\Levels\Commands\DurationReward;
 
 use App\Discord\Core\Builders\EmbedFactory;
 use App\Discord\Core\SlashCommand;
@@ -12,7 +12,7 @@ use Discord\Parts\Interactions\Command\Option;
 use Discord\Parts\Interactions\Interaction;
 use Exception;
 
-class DeleteRoleReward extends SlashCommand
+class DeleteDurationReward extends SlashCommand
 {
 
     public function permission(): Permission
@@ -27,12 +27,12 @@ class DeleteRoleReward extends SlashCommand
 
     public function __construct()
     {
-        $this->description = __('bot.slash.del-role-reward');
+        $this->description = __('bot.slash.del-duration-reward');
         $this->slashCommandOptions = [
             [
-                'name' => 'level',
-                'description' => __('bot.level'),
-                'type' => Option::INTEGER,
+                'name' => 'duration',
+                'description' => __('bot.duration'),
+                'type' => Option::STRING,
                 'required' => true,
                 'autocomplete' => 'true',
             ],
@@ -47,8 +47,8 @@ class DeleteRoleReward extends SlashCommand
      */
     public function action(): MessageBuilder
     {
-        RoleReward::where(['level' => $this->getOption('level'), 'guild_id' => Guild::get($this->guildId)->id])->delete();
-        return EmbedFactory::successEmbed($this, __('bot.rewards.deleted', ['level' => $this->getOption('level')]));
+        RoleReward::where(['duration' => $this->getOption('duration'), 'guild_id' => Guild::get($this->guildId)->id])->delete();
+        return EmbedFactory::successEmbed($this, __('bot.duration-reward.deleted', ['duration' => $this->getOption('duration')]));
     }
 
     /**
@@ -57,6 +57,6 @@ class DeleteRoleReward extends SlashCommand
      */
     public function autoComplete(Interaction $interaction): array
     {
-        return $this->getAutoComplete(RoleReward::class, $interaction->guild_id, 'level', $this->getOption('level'));
+        return $this->getAutoComplete(RoleReward::class, $interaction->guild_id, 'duration', $this->getOption('duration'));
     }
 }

@@ -51,6 +51,9 @@ return [
     'timeout-reason' => 'Timeout Reason',
     'message' => 'Message',
     'levelup' => 'Congrats <@:user> you are now level :level!',
+    'date' => 'Date',
+    'invalid-date' => 'Date format is invalid, please provide a valid format',
+    'process' => 'All rewards will be synced in the background, this might take some time!',
 
     'permissions-enum' => [
         'roles' => 'View Roles',
@@ -111,6 +114,9 @@ return [
         'rewards' => 'Show role rewards based on levels',
         'add-role-reward' => 'Add role reward to a level',
         'del-role-reward' => 'Remove role rewards from a level',
+        'duration-reward' => 'Show role rewards based on how long you they in the server',
+        'add-duration-reward' => 'Add role reward based on how long someone is in the server',
+        'del-duration-reward' => 'Remove role rewards based on how long someone is in the server',
         'give-xp' => 'Give xp to a user',
         'remove-xp' => 'Remove xp from a user',
         'reset-xp' => 'Reset xp for a user',
@@ -152,7 +158,8 @@ return [
         'guilds' => 'Overview of all guilds',
         'vote' => 'Vote for Berend Botje on top.gg',
         'support' => 'Support Server for Berend Botje',
-        'topgg' => 'Update the server count in topgg.'
+        'topgg' => 'Update the server count in topgg.',
+        'give-role' => 'Sync the duration role rewards.',
     ],
 
     'msg' => [
@@ -242,11 +249,19 @@ return [
     ],
 
     'rewards' => [
-        'title' => 'Role Rewards',
+        'title' => 'Level Role Rewards',
         'description' => "Level • Role Reward\n\n:rewards",
         'added' => 'Role reward :role added for level :level.',
         'deleted' => 'All role rewards for :level deleted.',
         'number' => 'Both level and role ID need to be numeric.'
+    ],
+
+    'duration-reward' => [
+        'title' => 'Duration Role Rewards',
+        'description' => "Duration • Role Reward\n\n:rewards",
+        'added' => 'Role reward :role added with duration :duration.',
+        'deleted' => 'All role rewards for :duration deleted.',
+        'invalid' => "Please provide a valid format, examples: \n\n **1y2m3d** - 1 year, 2 months and 3 days \n **1y** - 1 year \n **2m5d** - 2 months and 5 days",
     ],
 
     'xp' => [
@@ -265,6 +280,7 @@ return [
         'not-exist' => 'Setting :key does not exist.',
         'updated' => 'Setting :key is updated to value :value.',
         'not-numeric' => 'Setting values must be numeric, :value is not a numeric value.',
+        'min-cooldown' => 'The xp cooldown cannot be lower than 20 seconds.'
     ],
 
     'messages' => [

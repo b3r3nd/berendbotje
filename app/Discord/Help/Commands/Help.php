@@ -43,6 +43,7 @@ class Help extends SlashCommand
             ->addOption(Option::new("Roles"))
             ->addOption(Option::new("Moderation"))
             ->addOption(Option::new("Levels"))
+            ->addOption(Option::new("Duration Rewards"))
             ->addOption(Option::new("Fun"))
             ->addOption(Option::new("MentionResponder"))
             ->addOption(Option::new("Settings"))
@@ -72,6 +73,9 @@ class Help extends SlashCommand
             }
             if ($option->getLabel() === "Levels") {
                 $embedBuilder = $this->levelsPage($embedBuilder);
+            }
+            if ($option->getLabel() === "Duration Rewards") {
+                $embedBuilder = $this->durationRewards($embedBuilder);
             }
             if ($option->getLabel() === "Settings") {
                 $embedBuilder = $this->settingsPage($embedBuilder);
@@ -133,11 +137,24 @@ class Help extends SlashCommand
             ['name' => 'Settings', 'value' => 'Explains all the settings and values'],
             ['name' => 'User Settings', 'value' => 'All user settings'],
             ['name' => 'Moderation', 'value' => 'Moderator actions'],
-            ['name' => 'Levels', 'value' => 'Levels and XP'],
+            ['name' => 'Levels', 'value' => 'Levels, XP and rewards based on levels'],
+            ['name' => 'Duration Rewards', 'value' => 'Rewards based on how long you are in the server'],
             ['name' => 'Logs', 'value' => 'Which events are logged'],
             ['name' => 'MentionResponder', 'value' => 'Manage the responses when you tag the bot'],
             ['name' => 'Fun', 'value' => 'Fun commands'],
         );
+        return $embedBuilder;
+    }
+
+    public function durationRewards(EmbedBuilder $embedBuilder)
+    {
+        $embedBuilder->setDescription("You can add role rewards based on how long people are in the server. Some examples:\n\n **1y2m3d** - One year, two months and three days\n **4m** - Four months \n **1y1d** - One year and one day");
+        $this->addCommands([
+            ['cmd' => 'rewards duration list', 'usage' => '', 'desc' => 'Show all the rewards for different durations in the server'],
+            ['cmd' => 'rewards duration add', 'usage' => '`<duration>` `<role>`', 'desc' => 'Adda new role reward'],
+            ['cmd' => 'rewards duration delete', 'usage' => '`<duration>`', 'desc' => 'Delete a role reward'],
+            ['cmd' => 'rewards duration sync', 'usage' => '', 'desc' => 'Sync all rewards by adding and removing roles'],
+        ], $embedBuilder);
         return $embedBuilder;
     }
 
@@ -324,9 +341,9 @@ class Help extends SlashCommand
             ['cmd' => 'xp give', 'usage' => '`<user_mention>` `<xp_amount>`', 'desc' => 'Give user xp'],
             ['cmd' => 'xp remove', 'usage' => '`<user_mention>` `<xp_amount>`', 'desc' => 'Remove user xp'],
             ['cmd' => 'xp reset', 'usage' => '`<user_mention>`', 'desc' => 'Reset XP for user'],
-            ['cmd' => 'rolerewards list', 'usage' => '', 'desc' => 'Show the role rewards for different levels'],
-            ['cmd' => 'rolerewards add', 'usage' => '`<level>` `<role_id>`', 'desc' => 'Add a role reward to a level'],
-            ['cmd' => 'rolerewards delete', 'usage' => '`<level>`', 'desc' => 'Delete role rewards from this level'],
+            ['cmd' => 'rewards level list', 'usage' => '', 'desc' => 'Show the role rewards for different levels'],
+            ['cmd' => 'rewards level add', 'usage' => '`<level>` `<role_id>`', 'desc' => 'Add a role reward to a level'],
+            ['cmd' => 'rewards level delete', 'usage' => '`<level>`', 'desc' => 'Delete role rewards from this level'],
         ], $embedBuilder);
         return $embedBuilder;
     }

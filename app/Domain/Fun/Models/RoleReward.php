@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class RoleReward extends Model
 {
     protected $table = 'rewards';
-    protected $fillable = ['level', 'role', 'guild_id'];
+    protected $fillable = ['level', 'duration', 'role', 'guild_id'];
 
     /**
      * @return BelongsTo
@@ -26,6 +26,24 @@ class RoleReward extends Model
     public static function byGuild($guildId): mixed
     {
         return self::where(['guild_id' => Guild::get($guildId)->id]);
+    }
+
+    /**
+     * @param $guildId
+     * @return mixed
+     */
+    public static function level($guildId): mixed
+    {
+        return self::where(['guild_id' => Guild::get($guildId)->id])->where(['duration' => null]);
+    }
+
+    /**
+     * @param $guildId
+     * @return mixed
+     */
+    public static function duration($guildId): mixed
+    {
+        return self::where(['guild_id' => Guild::get($guildId)->id])->where(['level' => null]);
     }
 
     /**

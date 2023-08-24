@@ -18,13 +18,17 @@ use App\Discord\Fun\Commands\UrbanDictionary;
 use App\Discord\Help\Commands\Help;
 use App\Discord\Help\Commands\Support;
 use App\Discord\Help\Commands\Vote;
+use App\Discord\Levels\Commands\DurationReward\CreateDurationReward;
+use App\Discord\Levels\Commands\DurationReward\DeleteDurationReward;
+use App\Discord\Levels\Commands\DurationReward\DurationRewards;
+use App\Discord\Levels\Commands\DurationReward\SyncDurationRewards;
 use App\Discord\Levels\Commands\GiveXp;
 use App\Discord\Levels\Commands\Leaderboard;
+use App\Discord\Levels\Commands\LevelReward\CreateRoleReward;
+use App\Discord\Levels\Commands\LevelReward\DeleteRoleReward;
+use App\Discord\Levels\Commands\LevelReward\RoleRewards;
 use App\Discord\Levels\Commands\RemoveXp;
 use App\Discord\Levels\Commands\ResetXp;
-use App\Discord\Levels\Commands\RoleReward\CreateRoleReward;
-use App\Discord\Levels\Commands\RoleReward\DeleteRoleReward;
-use App\Discord\Levels\Commands\RoleReward\RoleRewards;
 use App\Discord\Levels\Commands\UserRank;
 use App\Discord\Logger\Commands\LogSettings;
 use App\Discord\Logger\Commands\UpdateLogSetting;
@@ -155,10 +159,18 @@ return [
             Unblock::class,
             Block::class,
         ],
-        'rolerewards' => [
-            RoleRewards::class,
-            CreateRoleReward::class,
-            DeleteRoleReward::class,
+        'rewards' => [
+            'level' => [
+                RoleRewards::class,
+                CreateRoleReward::class,
+                DeleteRoleReward::class,
+            ],
+            'duration' => [
+                DurationRewards::class,
+                CreateDurationReward::class,
+                DeleteDurationReward::class,
+                SyncDurationRewards::class,
+            ]
         ],
         'xp' => [
             GiveXp::class,

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Discord\Levels\Commands\RoleReward;
+namespace App\Discord\Levels\Commands\DurationReward;
 
 use App\Discord\Core\Builders\EmbedBuilder;
 use App\Discord\Core\SlashIndexCommand;
@@ -10,7 +10,7 @@ use Discord\Parts\Embed\Embed;
 use Discord\Parts\Interactions\Interaction;
 use Exception;
 
-class RoleRewards extends SlashIndexCommand
+class DurationRewards extends SlashIndexCommand
 {
 
     public function permission(): Permission
@@ -25,7 +25,7 @@ class RoleRewards extends SlashIndexCommand
 
     public function __construct()
     {
-        $this->description = __('bot.slash.rewards');
+        $this->description = __('bot.slash.duration-rewards');
         parent::__construct();
     }
 
@@ -38,10 +38,10 @@ class RoleRewards extends SlashIndexCommand
         $this->total = RoleReward::byGuild($this->guildId)->count();
 
         $description = "";
-        foreach (RoleReward::byGuild($this->guildId)->orderBy('level', 'desc')->skip($this->getOffset($this->getLastUser()))->limit($this->perPage)->get() as $index => $roleReward) {
-            $description .= "**Level {$roleReward->level}** • {$roleReward->roleTag()} \n";
+        foreach (RoleReward::duration($this->guildId)->orderBy('level', 'desc')->skip($this->getOffset($this->getLastUser()))->limit($this->perPage)->get() as $index => $roleReward) {
+            $description .= "**{$roleReward->duration}** • {$roleReward->roleTag()} \n";
         }
-        return EmbedBuilder::create($this, __('bot.rewards.title'), __('bot.rewards.description', ['rewards' => $description]))->getEmbed();
+        return EmbedBuilder::create($this, __('bot.duration-reward.title'), __('bot.duration-reward.description', ['rewards' => $description]))->getEmbed();
     }
 
     /**

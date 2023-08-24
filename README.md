@@ -1,4 +1,14 @@
-# Introduction
+# Berend Botje
+<p align="center">
+ <a href="https://top.gg/bot/651378995245613056">
+  <img src="https://top.gg/api/widget/651378995245613056.svg">
+</a>
+<a href="https://discord.gg/6vbxgfaUz6">
+<img src="https://discordapp.com/api/guilds/1034615413725736970/widget.png?style=banner1" alt="Discord Banner 1"/>
+</a>
+</p>
+
+
 
 Discord bot written in PHP using laravel and the DiscordPHP package. Initially created just for our own server but
 is now able to run on multiple servers. This project is still a work in progress and not everything might be
@@ -9,10 +19,13 @@ completely user-friendly. Check the `/help` command in discord for more informat
 - Top gg link -> https://top.gg/bot/651378995245613056
 
 ### Special thanks to
+
 - Justin & Stefan for ideas and mental support.
 - Angel for writing most of the Skyrim lines used in the MentionResponder.
 - Richard & Ricardo for bug testing and working out ideas.
+
 ## Functionality
+
 Short list of what this bot can do:
 
 - Everything is based on guild, can run on multiple servers with its own data
@@ -52,6 +65,10 @@ BOT_TOKEN=
 APPLICATION_ID=
 SUPPORT_GUILD=
 DISCORD_API=
+
+TOPGG_TOKEN=
+TOPGG_HOST=
+TOPGG_ID=
 
 URB_TOKEN=
 URB_HOST=
@@ -108,7 +125,7 @@ class GuildSeeder extends Seeder
 
 Managing slash commands is done through a separate cmd app using php artisan. When updating and deleting a bunch
 of commands you will be rate limited. Meaning it takes while before everything is registered. When deleting
-commands the console output will tell you the progress, however when adding commands the output it only send when 
+commands the console output will tell you the progress, however when adding commands the output it only send when
 everything is done (will change in the future), dont ctrl + c!
 
 - `php artisan bot:slash` - Shows current available slash commands in **discord**! Not your config!
@@ -201,6 +218,22 @@ you know what all the values mean.
         CommandServiceProvider::class,
         GuildServiceProvider::class,
     ],
+    
+    /*
+    |--------------------------------------------------------------------------
+    | Top.gg
+    |--------------------------------------------------------------------------
+    |
+    | If you have your bot listed on top.gg you can use their api to update
+    | the server count on the website. So people know your bot is being
+    | used!
+    |
+    */
+
+    'topgg-host' => env('TOPGG_HOST', 'https://top.gg/api/'),
+    'topgg-id' => env('TOPGG_ID', ' '),
+    'topgg-token' => env('TOPGG_TOKEN', ' '),
+
 
     /*
     |--------------------------------------------------------------------------
@@ -220,6 +253,7 @@ you know what all the values mean.
 ```
 
 ### commands.php
+
 I don't like to autoload my commands. I use the subcommand structure for everything and I want complete freedom
 to say which command is in which category without being restricted by a certain directory structure, or go into
 each command class to define the command group there, this gives you a nice overview.
@@ -269,7 +303,9 @@ added the command sub-command structure as described by discord below. Define th
  ```
 
 ### events.php
+
 Events are all defined in the events.php file, with the comments below should be clear.
+
 ```PHP
  /*
     |--------------------------------------------------------------------------
@@ -308,13 +344,16 @@ Events are all defined in the events.php file, with the comments below should be
 ```
 
 # Functions
-Now on to what the bot actually does.. 
+
+Now on to what the bot actually does..
 
 I will try to update this readme with new functionality as I add it. The bot uses only slash commands!
 The slash commands all use sub commands to group them together and autocomplete is on where possible for all inputs!
 
 ## Permissions
+
 Permission required when this bot gets added to the server.
+
 - View audit log
 - Read messages
 - Send messages
@@ -332,8 +371,9 @@ roles.
 
 ### Permissions
 
-`View Roles` `Create role`, `Delete role`, `Update role`, `Permissions`, `Update permission from role`, `Update roles from user`,
-`Manage the config`, `Manage timeouts`, `Media filter`, `Increase cringe counter`, `Decrease cringe counter`, 
+`View Roles` `Create role`, `Delete role`, `Update role`, `Permissions`, `Update permission from role`
+, `Update roles from user`,
+`Manage the config`, `Manage timeouts`, `Media filter`, `Increase cringe counter`, `Decrease cringe counter`,
 `Manage custom commands`, `Manage reactions`, `Manage rewards`, `Manage xp for users`, `Manage channel flags`,
 `Manage log config`, `Add mention replies`, `Remove mention replies`, `Manage reply groups`,
 `Manage blacklist`, `Manage server invites`, `Manage custom messages`
@@ -341,18 +381,19 @@ roles.
 ### Default Roles
 
 - **Admin**
-`View Roles` `Create role`, `Delete role`, `Update role`, `Permissions`, `Update permission from role`, `Update roles from user`,
-`Manage the config`, `Manage timeouts`, `Media filter`, `Increase cringe counter`, `Decrease cringe counter`,
-`Manage custom commands`, `Manage reactions`, `Manage rewards`, `Manage xp for users`, `Manage channel flags`,
-`Manage log config`, `Add mention replies`, `Remove mention replies`, `Manage reply groups`,
-`Manage blacklist`, `Manage server invites`, `Manage custom messages`.
+  `View Roles` `Create role`, `Delete role`, `Update role`, `Permissions`, `Update permission from role`
+  , `Update roles from user`,
+  `Manage the config`, `Manage timeouts`, `Media filter`, `Increase cringe counter`, `Decrease cringe counter`,
+  `Manage custom commands`, `Manage reactions`, `Manage rewards`, `Manage xp for users`, `Manage channel flags`,
+  `Manage log config`, `Add mention replies`, `Remove mention replies`, `Manage reply groups`,
+  `Manage blacklist`, `Manage server invites`, `Manage custom messages`.
 
 
 - **Moderator**
-`Manage timeouts`, `Media filter`, `Increase cringe counter`, `Decrease cringe counter`,
-`Manage custom commands`, `Manage reactions`, `Manage channel flags`,
-`Add mention replies`, `Remove mention replies`, `Manage reply groups`,
-`Manage blacklist`, `Manage custom messages`.
+  `Manage timeouts`, `Media filter`, `Increase cringe counter`, `Decrease cringe counter`,
+  `Manage custom commands`, `Manage reactions`, `Manage channel flags`,
+  `Add mention replies`, `Remove mention replies`, `Manage reply groups`,
+  `Manage blacklist`, `Manage custom messages`.
 
 ### Commands
 
@@ -393,9 +434,24 @@ XP system as MEE6 uses. You can read more here
 * **xp give** `user_mention` `xp_amount` • Give user xp
 * **xp remove** `user_mention` `xp_amount` • Remove user xp
 * **xp reset** `user_mention` • Reset XP for user
-* **rolerewards list** • Show the role rewards for different levels
-* **rolerewards add** `level` `role_id` • Add a role reward to a level
-* **rolerewards delete** `level` • Delete role rewards from this level";
+* **rewards level list** • Show the role rewards for different levels
+* **rewards level add** `level` `role_id` • Add a role reward to a level
+* **rewards level delete** `level` • Delete role rewards from this level";
+
+## Role rewards based on how long you are in the server
+
+You can add role rewards based on how long people are in the server. Some duration examples:
+
+* **1y2m3d** - One year, two months and three days
+* **4m** - Four months
+* **1y1d** - One year and one day
+
+### Commands
+
+* **rewards duration list**
+* **rewards duration add** `<duration>` `<role>`
+* **rewards duration delete** `<duration>`
+* **rewards duration sync**
 
 ## Bot Config
 
