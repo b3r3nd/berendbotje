@@ -3,12 +3,12 @@
 namespace App\Discord\Levels\Jobs;
 
 use App\Discord\Levels\Helpers\Helper;
+use App\Domain\Fun\Models\RoleReward;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Http;
 
 class ProcessRoles implements ShouldQueue
@@ -16,25 +16,20 @@ class ProcessRoles implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     private string $guildId;
-    private int $roleId;
-    private \DateTime $dateTime;
 
-    public function __construct(string $guildId, int $roleId, \DateTime $dateTime)
+    public function __construct(string $guildId)
     {
         $this->guildId = $guildId;
-        $this->roleId = $roleId;
-        $this->dateTime = $dateTime;
     }
 
     /**
      * @param int $chunk
-     * @param \DateTime $date
      * @param $after
      * @return void
      *
      * @see https://discord.com/developers/docs/resources/guild#list-guild-members
      */
-    public function processMembers(int $chunk, \DateTime $date, $after = null): void
+    public function processMembers(int $chunk, $after = null): void
     {
         $url = config('discord.api') . "guilds/{$this->guildId}/members?limit={$chunk}";
         // if we get 0 from the api it means there are no more members to process
@@ -48,18 +43,28 @@ class ProcessRoles implements ShouldQueue
         if ($response->status() === 429) {
             $result = $response->json();
             sleep($result['retry_after']);
-            $this->processMembers($chunk, $date, $after);
+            $this->processMembers($chunk, $after);
             return;
         }
         $next = 0;
+        $rewards = RoleReward::duration($this->guildId)->get();
         foreach ($response->json() as $member) {
             $joinedAt = Helper::parse($member['joined_at']);
-            if ($joinedAt->lt($date)) {
-                $this->giveRole($member['user']['id'], $this->roleId);
+
+
+            foreach($rewards as $reward) {
+                if ($reward->duration) {
+                    $matches = Helper::match($reward->duration);
+                    $date = Helper::getDate($matches);
+                    if ($joinedAt->lt($date)) {
+                        $this->giveRole($member['user']['id'], $reward->role);
+                    }
+                }
             }
+
             $next = $member['user']['id'];
         }
-        $this->processMembers($chunk, $date, $next);
+        $this->processMembers($chunk, $next);
     }
 
     /**
@@ -86,7 +91,7 @@ class ProcessRoles implements ShouldQueue
      */
     public function handle(): void
     {
-        $this->processMembers(1000, $this->dateTime);
+        $this->processMembers(1000);
     }
 
 }

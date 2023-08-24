@@ -53,7 +53,7 @@ return [
     'levelup' => 'Congrats <@:user> you are now level :level!',
     'date' => 'Date',
     'invalid-date' => 'Date format is invalid, please provide a valid format',
-    'process' => 'All users who joined the server before :date will be given <@&:role>. This process might take a while!',
+    'process' => 'All rewards will be synced in the background, this might take some time!',
 
     'permissions-enum' => [
         'roles' => 'View Roles',
@@ -159,7 +159,7 @@ return [
         'vote' => 'Vote for Berend Botje on top.gg',
         'support' => 'Support Server for Berend Botje',
         'topgg' => 'Update the server count in topgg.',
-        'give-role' => 'Give a role to all members who joined after a certain date',
+        'give-role' => 'Sync the duration role rewards.',
     ],
 
     'msg' => [

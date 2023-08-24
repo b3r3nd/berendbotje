@@ -29,5 +29,29 @@ class Helper
         }
     }
 
+    public static function cast(string $string): int
+    {
+        return (int)substr($string, 0, -1);
+    }
 
+    /**
+     * @param $matches
+     * @return Carbon
+     */
+    public static function getDate($matches): Carbon
+    {
+        $date = now();
+
+        if (isset($matches['year'])) {
+            $date->subYears(self::cast($matches['year']));
+        }
+        if (isset($matches['month'])) {
+            $date->subMonths(self::cast($matches['month']));
+        }
+        if (isset($matches['day'])) {
+            $date->subDays(self::cast($matches['day']));
+        }
+
+        return $date;
+    }
 }

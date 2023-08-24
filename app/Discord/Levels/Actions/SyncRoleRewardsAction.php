@@ -28,7 +28,6 @@ class SyncRoleRewardsAction implements Action
     {
     }
 
-
     /**
      * @param string $role
      * @return void
@@ -43,11 +42,6 @@ class SyncRoleRewardsAction implements Action
         }
     }
 
-
-    private function cast(string $string): int
-    {
-        return (int)substr($string, 0, -1);
-    }
 
     /**
      * @return void
@@ -71,21 +65,8 @@ class SyncRoleRewardsAction implements Action
                     }
                     if ($reward->duration) {
                         $matches = Helper::match($reward->duration);
-                        $date = now();
-
-
-                        if (isset($matches['year'])) {
-                            $date->subYears($this->cast($matches['year']));
-                        }
-                        if (isset($matches['month'])) {
-                            $date->subMonths($this->cast($matches['month']));
-                        }
-                        if (isset($matches['day'])) {
-                            $date->subDays($this->cast($matches['day']));
-                        }
-
+                        $date = Helper::getDate($matches);
                         $joinedAt = Helper::parse($this->message->member->joined_at);
-
                         if ($joinedAt->lt($date)) {
                             $this->giveRole($role);
                         }

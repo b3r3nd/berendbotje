@@ -21,7 +21,7 @@ use App\Discord\Help\Commands\Vote;
 use App\Discord\Levels\Commands\DurationReward\CreateDurationReward;
 use App\Discord\Levels\Commands\DurationReward\DeleteDurationReward;
 use App\Discord\Levels\Commands\DurationReward\DurationRewards;
-use App\Discord\Levels\Commands\DurationReward\GiveRole;
+use App\Discord\Levels\Commands\DurationReward\SyncDurationRewards;
 use App\Discord\Levels\Commands\GiveXp;
 use App\Discord\Levels\Commands\Leaderboard;
 use App\Discord\Levels\Commands\LevelReward\CreateRoleReward;
@@ -124,7 +124,6 @@ return [
             Roles::class,
             CreateRole::class,
             DeleteRole::class,
-            GiveRole::class
         ],
         'permissions' => [
             Permissions::class,
@@ -160,7 +159,7 @@ return [
             Unblock::class,
             Block::class,
         ],
-        'rolerewards' => [
+        'rewards' => [
             'level' => [
                 RoleRewards::class,
                 CreateRoleReward::class,
@@ -169,7 +168,8 @@ return [
             'duration' => [
                 DurationRewards::class,
                 CreateDurationReward::class,
-                DeleteDurationReward::class
+                DeleteDurationReward::class,
+                SyncDurationRewards::class,
             ]
         ],
         'xp' => [
