@@ -44,6 +44,7 @@ class Help extends SlashCommand
             ->addOption(Option::new("Moderation"))
             ->addOption(Option::new("Levels"))
             ->addOption(Option::new("Duration Rewards"))
+            ->addOption(Option::new("Reminders"))
             ->addOption(Option::new("Fun"))
             ->addOption(Option::new("MentionResponder"))
             ->addOption(Option::new("Settings"))
@@ -73,6 +74,9 @@ class Help extends SlashCommand
             }
             if ($option->getLabel() === "Levels") {
                 $embedBuilder = $this->levelsPage($embedBuilder);
+            }
+            if ($option->getLabel() === "Reminders") {
+                $embedBuilder = $this->remindersPage($embedBuilder);
             }
             if ($option->getLabel() === "Duration Rewards") {
                 $embedBuilder = $this->durationRewards($embedBuilder);
@@ -154,6 +158,17 @@ class Help extends SlashCommand
             ['cmd' => 'rewards duration add', 'usage' => '`<duration>` `<role>`', 'desc' => 'Adda new role reward'],
             ['cmd' => 'rewards duration delete', 'usage' => '`<duration>`', 'desc' => 'Delete a role reward'],
             ['cmd' => 'rewards duration sync', 'usage' => '', 'desc' => 'Sync all rewards by adding and removing roles'],
+        ], $embedBuilder);
+        return $embedBuilder;
+    }
+
+    public function remindersPage(EmbedBuilder $embedBuilder)
+    {
+        $embedBuilder->setDescription("You can set reminders in a specific channel with a custom message! For now the reminder interval is in minutes!");
+        $this->addCommands([
+            ['cmd' => 'reminders create', 'usage' => '`<interval>` `<channel>` `<message>`', 'desc' => 'Create a new reminder'],
+            ['cmd' => 'reminders delete', 'usage' => '`<id>`', 'desc' => 'Delete a reminder'],
+            ['cmd' => 'reminders list', 'usage' => '', 'desc' => 'Show all the reminders'],
         ], $embedBuilder);
         return $embedBuilder;
     }

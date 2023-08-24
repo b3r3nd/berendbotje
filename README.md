@@ -566,6 +566,44 @@ You can set flags for channels, the no_xp flag can also be used for voice channe
 * **channels flag** `channel` `flag` - add flag to a channel
 * **channels unflag** `channel` `flag` - remove flag from a channel
 
+### Reminders
+You can set reminders in a specific channel with a custom message! For now the reminder interval is in minutes!
+
+* **reminders list** 
+* **reminders create** `interval` `channel` `message`
+* **reminders delete** `id`
+
+
+### Custom messages
+
+When adding custom messages you can use the `:user` parameter in you message to be replaced with a tag of the user,
+for level up messages you can also use `:level`. Example:
+
+* `Welcome :user!`
+* `Congrats :user you are now :level!`
+
+#### Welcome
+
+You can add custom welcome messages to the bot. It wil pick one of the random messages and sends it in the channel
+set in the config.
+
+* **messages welcome list** - Show list of custom level up messages
+* **messages welcome add**  `<message>` - Add new level up message
+* **messages welcome delete** `<message>` - Delete level up message (Message is autocompleted)
+
+#### Levels
+
+You can set custom messages when users level up to a certain level. If you don't set any, a default message will
+be used if level up messages are enabled. When a user levels up, it checks for the highest message in the list
+which is not higher than that users level. Meaning if you set 2 messages, one for level 1 and one for level 10.
+The level 1 message will be used until that user reached level 10.
+
+* **messages levels list** - Show list of custom level up messages
+* **messages levels add** `<level>` `<message>` - Add new level up message
+* **messages levels delete** `<level>` - Delete level up message
+
+
+
 ### Timeout detection
 
 We are not satisfied with the audit log and how timeouts are displayed and
@@ -600,34 +638,6 @@ Since discord requires a "Mange server" permission to pause invites I added a si
 do it with the bot:
 
 - **invites toggle** - Enable/disable invites
-
-### Custom messages
-
-When adding custom messages you can use the `:user` parameter in you message to be replaced with a tag of the user,
-for level up messages you can also use `:level`. Example:
-
-* `Welcome :user!`
-* `Congrats :user you are now :level!`
-
-#### Welcome
-
-You can add custom welcome messages to the bot. It wil pick one of the random messages and sends it in the channel
-set in the config.
-
-* **messages welcome list** - Show list of custom level up messages
-* **messages welcome add**  `<message>` - Add new level up message
-* **messages welcome delete** `<message>` - Delete level up message (Message is autocompleted)
-
-#### Levels
-
-You can set custom messages when users level up to a certain level. If you don't set any, a default message will
-be used if level up messages are enabled. When a user levels up, it checks for the highest message in the list
-which is not higher than that users level. Meaning if you set 2 messages, one for level 1 and one for level 10.
-The level 1 message will be used until that user reached level 10.
-
-* **messages levels list** - Show list of custom level up messages
-* **messages levels add** `<level>` `<message>` - Add new level up message
-* **messages levels delete** `<level>` - Delete level up message
 
 ## Mention Responder
 
