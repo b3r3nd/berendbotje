@@ -52,15 +52,18 @@ class ProcessRoles implements ShouldQueue
             $joinedAt = Helper::parse($member['joined_at']);
 
 
-            foreach($rewards as $reward) {
+            foreach ($rewards as $reward) {
                 if ($reward->duration) {
                     $matches = Helper::match($reward->duration);
                     $date = Helper::getDate($matches);
                     if ($joinedAt->lt($date)) {
                         $this->giveRole($member['user']['id'], $reward->role);
+                    } else if (in_array($reward->role, $member['roles'], true)) {
+                        $this->removeRole($member['user']['id'], $reward->role);
                     }
                 }
             }
+
 
             $next = $member['user']['id'];
         }
@@ -83,6 +86,25 @@ class ProcessRoles implements ShouldQueue
             $result = $response->json();
             sleep($result['retry_after']);
             $this->giveRole($userId, $roleId);
+        }
+    }
+
+    /**
+     * @param $userId
+     * @param $roleId
+     * @return void
+     *
+     * @see https://discord.com/developers/docs/resources/guild#remove-guild-member-role
+     */
+    public function removeRole($userId, $roleId): void
+    {
+        $url = config('discord.api') . "guilds/{$this->guildId}/members/{$userId}/roles/{$roleId}";
+        $response = Http::withHeaders(['Authorization' => "Bot " . config('discord.token')])->delete($url);
+
+        if ($response->status() === 429) {
+            $result = $response->json();
+            sleep($result['retry_after']);
+            $this->removeRole($userId, $roleId);
         }
     }
 
