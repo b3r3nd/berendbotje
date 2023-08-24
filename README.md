@@ -2,6 +2,8 @@
 <p align="center">
  <a href="https://top.gg/bot/651378995245613056">
   <img src="https://top.gg/api/widget/651378995245613056.svg">
+</a>
+<a href="https://discord.gg/6vbxgfaUz6">
 <img src="https://discordapp.com/api/guilds/1034615413725736970/widget.png?style=banner1" alt="Discord Banner 1"/>
 </a>
 </p>
