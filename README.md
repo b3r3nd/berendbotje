@@ -413,9 +413,22 @@ XP system as MEE6 uses. You can read more here
 * **xp give** `user_mention` `xp_amount` • Give user xp
 * **xp remove** `user_mention` `xp_amount` • Remove user xp
 * **xp reset** `user_mention` • Reset XP for user
-* **rolerewards list** • Show the role rewards for different levels
-* **rolerewards add** `level` `role_id` • Add a role reward to a level
-* **rolerewards delete** `level` • Delete role rewards from this level";
+* **rewards level list** • Show the role rewards for different levels
+* **rewards level add** `level` `role_id` • Add a role reward to a level
+* **rewards level delete** `level` • Delete role rewards from this level";
+
+
+## Role rewards based on how long you are in the server
+You can add role rewards based on how long people are in the server. Some duration examples:
+* **1y2m3d** - One year, two months and three days
+* **4m** - Four months 
+* **1y1d** - One year and one day
+
+### Commands
+* **rewards duration list** 
+* **rewards duration add** `<duration>` `<role>`
+* **rewards duration delete** `<duration>`
+* **rewards duration sync** 
 
 ## Bot Config
 
