@@ -54,6 +54,7 @@ return [
     'date' => 'Date',
     'invalid-date' => 'Date format is invalid, please provide a valid format',
     'process' => 'All rewards will be synced in the background, this might take some time!',
+    'interval' => 'Interval in minutes',
 
     'permissions-enum' => [
         'roles' => 'View Roles',
@@ -81,6 +82,12 @@ return [
         'abusers' => 'Manage blacklist',
         'invites' => 'Manage server invites',
         'messages' => 'Manage custom messages',
+    ],
+
+    'reminders' => [
+        'title' => 'Reminders',
+        'created' => "Reminder for channel <#:channel> created with interval :interval and message: \n\n :message",
+        'deleted' => 'Reminder deleted',
     ],
 
     'slash' => [
@@ -160,6 +167,9 @@ return [
         'support' => 'Support Server for Berend Botje',
         'topgg' => 'Update the server count in topgg.',
         'give-role' => 'Sync the duration role rewards.',
+        'create-reminder' => 'Create a new reminder in a channel',
+        'delete-reminder' => 'Delete a reminder from a channel',
+        'reminders' => 'Show all reminders',
     ],
 
     'msg' => [

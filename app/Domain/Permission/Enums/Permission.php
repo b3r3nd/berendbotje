@@ -30,4 +30,5 @@ enum Permission: string
     case BLACKLIST = 'abusers';
     case INVITES = 'invites';
     case MESSAGES = 'messages';
+    case REMINDERS = 'reminders';
 }

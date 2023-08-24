@@ -58,6 +58,9 @@ use App\Discord\Moderation\Commands\Timeout\RemoveTimeout;
 use App\Discord\Moderation\Commands\Timeout\Timeouts;
 use App\Discord\Moderation\Commands\Timeout\UpdateTimeoutReason;
 use App\Discord\Moderation\Commands\ToggleInvites;
+use App\Discord\Reminder\Commands\CreateReminder;
+use App\Discord\Reminder\Commands\DeleteReminder;
+use App\Discord\Reminder\Commands\Reminders;
 use App\Discord\Roles\Commands\AttachRolePermission;
 use App\Discord\Roles\Commands\AttachUserRole;
 use App\Discord\Roles\Commands\CreateRole;
@@ -230,6 +233,11 @@ return [
                 AddLevelMessage::class,
                 DeleteLevelMessage::class,
             ]
+        ],
+        'reminders' => [
+            CreateReminder::class,
+            DeleteReminder::class,
+            Reminders::class,
         ],
         'help' => [
             Help::class,
