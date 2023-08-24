@@ -72,7 +72,7 @@ class UpdateUserSetting extends SlashCommand
         $user = User::get($this->interaction->member);
         $guild = $this->bot->getGuild($this->guildId);
 
-        $setting = $user->settings()->where('key', $key)->first();
+        $setting = $user->settings()->where('key', $key)->where('guild_id', $guild->model->id)->first();
 
         if ($setting) {
             $setting->value = $value;
