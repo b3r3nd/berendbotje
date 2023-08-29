@@ -55,7 +55,7 @@ return [
         GuildMemberUpdate::class,
         InviteCreate::class,
         InviteDelete::class,
-        MessageDelete::class,
+     //   MessageDelete::class,
         MessageUpdate::class,
         DMLogger::class,
         BumpCounter::class,
