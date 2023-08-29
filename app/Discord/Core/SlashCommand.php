@@ -99,7 +99,7 @@ abstract class SlashCommand
         $option = $this->interaction->data->options->first();
         if ($option->options->get('name', $key) === null) {
             if ($option->options->first()) {
-                return $option->options->first()->options->get('name', $key)->value;
+                return $option->options->first()->options?->get('name', $key)->value;
             }
             return null;
         }

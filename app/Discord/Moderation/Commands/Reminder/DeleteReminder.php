@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Discord\Reminder\Commands;
+namespace App\Discord\Moderation\Commands\Reminder;
 
 use App\Discord\Core\Builders\EmbedFactory;
 use App\Discord\Core\SlashCommand;

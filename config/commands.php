@@ -54,13 +54,13 @@ use App\Discord\Moderation\Commands\Channel\UnmarkChannel;
 use App\Discord\Moderation\Commands\Command\CommandIndex;
 use App\Discord\Moderation\Commands\Command\CreateCommand;
 use App\Discord\Moderation\Commands\Command\DeleteCommand;
+use App\Discord\Moderation\Commands\Reminder\CreateReminder;
+use App\Discord\Moderation\Commands\Reminder\DeleteReminder;
+use App\Discord\Moderation\Commands\Reminder\Reminders;
 use App\Discord\Moderation\Commands\Timeout\RemoveTimeout;
 use App\Discord\Moderation\Commands\Timeout\Timeouts;
 use App\Discord\Moderation\Commands\Timeout\UpdateTimeoutReason;
 use App\Discord\Moderation\Commands\ToggleInvites;
-use App\Discord\Reminder\Commands\CreateReminder;
-use App\Discord\Reminder\Commands\DeleteReminder;
-use App\Discord\Reminder\Commands\Reminders;
 use App\Discord\Roles\Commands\AttachRolePermission;
 use App\Discord\Roles\Commands\AttachUserRole;
 use App\Discord\Roles\Commands\CreateRole;
@@ -147,11 +147,6 @@ return [
                 UpdateLogSetting::class,
             ],
         ],
-        'channels' => [
-            ChannelIndex::class,
-            MarkChannel::class,
-            UnmarkChannel::class,
-        ],
         'timeouts' => [
             Timeouts::class,
             UpdateTimeoutReason::class,
@@ -201,19 +196,8 @@ return [
             DecreaseCringe::class,
             ResetCringe::class,
         ],
-        'reactions' => [
-            ReactionIndex::class,
-            CreateReaction::class,
-            DeleteReaction::class,
-        ],
-        'commands' => [
-            CommandIndex::class,
-            CreateCommand::class,
-            DeleteCommand::class,
-        ],
         'fun' => [
             BumpStatistics::class,
-            EmoteIndex::class,
             EightBall::class,
             Ask::class,
             UrbanDictionary::class,
@@ -262,6 +246,24 @@ return [
         ],
         'topgg' => [
             UpdateTopGG::class
-        ]
+        ],
+//        'fun' => [
+//            EmoteIndex::class,
+//        ],
+//        'reactions' => [
+//            ReactionIndex::class,
+//            CreateReaction::class,
+//            DeleteReaction::class,
+//        ],
+//        'commands' => [
+//            CommandIndex::class,
+//            CreateCommand::class,
+//            DeleteCommand::class,
+//        ],
+//        'channels' => [
+//            ChannelIndex::class,
+//            MarkChannel::class,
+//            UnmarkChannel::class,
+//        ],
     ],
 ];

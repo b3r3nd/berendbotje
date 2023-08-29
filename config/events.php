@@ -72,12 +72,12 @@ return [
     */
     'message' => $messageEvents = [
         MessageXpCounter::class,
-        MessageMediaFilter::class,
-        MessageStickerFilter::class,
-        MessageCount::class,
-        MessageReact::class,
-        MessageCommandResponse::class,
-        MessageEmoteCounter::class,
+     //   MessageMediaFilter::class,
+      //  MessageStickerFilter::class,
+      //  MessageCount::class,
+      //  MessageReact::class,
+      //  MessageCommandResponse::class,
+       // MessageEmoteCounter::class,
         MessageReminder::class,
     ],
 

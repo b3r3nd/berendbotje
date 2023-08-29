@@ -62,7 +62,7 @@ return [
         'delete-role' => 'Delete role',
         'update-role' => 'Update role',
         'permissions' => 'Permissions',
-        'attach-permission' => 'Update permission from role',
+        'attach-permission' => 'Give permission',
         'attach-role' => 'Update roles from user',
         'config' => 'Manage the config',
         'timeouts' => 'Manage timeouts',

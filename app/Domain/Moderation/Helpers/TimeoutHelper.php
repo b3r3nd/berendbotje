@@ -2,17 +2,13 @@
 
 namespace App\Domain\Moderation\Helpers;
 
-/**
- * Helper class for Timeouts to abstract some code.
- */
 class TimeoutHelper
 {
     /**
-     * Yeah.. well.. I got nothing to say. <_<
      * @param $timeout
      * @return string
      */
-    public static function timeoutLength($timeout)
+    public static function timeoutLength($timeout): string
     {
         $length = (int) $timeout->length;
         $units = 'seconds';

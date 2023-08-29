@@ -63,7 +63,7 @@ class Help extends SlashCommand
                 $embedBuilder = $this->getGeneralPage();
             }
             if ($option->getLabel() === "Fun") {
-                $embedBuilder = $this->funReactionsPage($embedBuilder);
+                $embedBuilder = $this->funExtraPage($embedBuilder);
                 $messageBuilder->addComponent($select)->addComponent($this->funSubSelect());
             }
             if ($option->getLabel() === "Roles") {
@@ -179,9 +179,9 @@ class Help extends SlashCommand
     public function funSubSelect(): StringSelect
     {
         $subSelect = StringSelect::new()
-            ->addOption(Option::new("Reactions"))
+          //  ->addOption(Option::new("Reactions"))
             ->addOption(Option::new("Cringe Counter"))
-            ->addOption(Option::new("Custom Commands"))
+          //  ->addOption(Option::new("Custom Commands"))
             ->addOption(Option::new("Extra"));
 
         $subSelect->setListener(function (Interaction $interaction, Collection $options) {
@@ -189,18 +189,18 @@ class Help extends SlashCommand
             $embedBuilder = EmbedBuilder::create($this, $option->getLabel());
             $embedBuilder->setDescription($option->getLabel());
 
-            if ($option->getLabel() === 'Reactions') {
-                $embedBuilder = $this->funReactionsPage($embedBuilder);
-            }
+          //  if ($option->getLabel() === 'Reactions') {
+         //       $embedBuilder = $this->funReactionsPage($embedBuilder);
+         //   }
             if ($option->getLabel() === 'Cringe Counter') {
                 $embedBuilder = $this->funCringePage($embedBuilder);
             }
             if ($option->getLabel() === 'Extra') {
                 $embedBuilder = $this->funExtraPage($embedBuilder);
             }
-            if ($option->getLabel() === 'Custom Commands') {
-                $embedBuilder = $this->funCommandsPage($embedBuilder);
-            }
+          //  if ($option->getLabel() === 'Custom Commands') {
+         //       $embedBuilder = $this->funCommandsPage($embedBuilder);
+          //  }
 
             $interaction->message->edit(MessageBuilder::new()->addEmbed($embedBuilder->getEmbed()));
         }, $this->discord);
@@ -231,7 +231,7 @@ class Help extends SlashCommand
     {
         $embedBuilder->setDescription("List of other small fun commands");
         $this->addCommands([
-            ['cmd' => 'fun emotes', 'usage' => '', 'desc' => 'Shows scoreboard of most used emotes'],
+        //    ['cmd' => 'fun emotes', 'usage' => '', 'desc' => 'Shows scoreboard of most used emotes'],
             ['cmd' => 'fun urb', 'usage' => '`<search_term>`', 'desc' => 'Search something on urban dictionary'],
             ['cmd' => 'fun 8ball', 'usage' => '`<question>`', 'desc' => 'Ask the magic 8ball'],
             ['cmd' => 'fun ask', 'usage' => '`<question>`', 'desc' => 'Yes? No? Hmm..?'],
@@ -327,17 +327,17 @@ class Help extends SlashCommand
             ['cmd' => 'timeouts list', 'usage' => '`<user_mention>`', 'desc' => 'Show given timeout history or from a specific user'],
             ['cmd' => 'timeouts edit', 'usage' => '`<timeout_id>` `<reason>`', 'desc' => 'Update the reason for a given timeout'],
             ['cmd' => 'timeouts remove', 'usage' => '`<timeout_id>`', 'desc' => 'Remove a timeout from the log only'],
-            ['cmd' => 'channels list', 'usage' => '', 'desc' => 'Shows a list of channels with their configured flags'],
-            ['cmd' => 'channels flag', 'usage' => '`<channel>` `<flag>`', 'desc' => 'Mark a channel with one of the available flags'],
-            ['cmd' => 'channels unflag', 'usage' => '`<channel>` `<flag>`', 'desc' => 'Unmark a channel with one of the available flags'],
+       //     ['cmd' => 'channels list', 'usage' => '', 'desc' => 'Shows a list of channels with their configured flags'],
+         //   ['cmd' => 'channels flag', 'usage' => '`<channel>` `<flag>`', 'desc' => 'Mark a channel with one of the available flags'],
+       //     ['cmd' => 'channels unflag', 'usage' => '`<channel>` `<flag>`', 'desc' => 'Unmark a channel with one of the available flags'],
             ['cmd' => 'blacklist list', 'usage' => '', 'desc' => 'Shows the abusers on the blacklist'],
             ['cmd' => 'blacklist block', 'usage' => '`<user_mention>`', 'desc' => 'Add someone to the blacklist'],
             ['cmd' => 'blacklist unblock', 'usage' => '`<user_mention>`', 'desc' => 'Remove someone from the blacklist'],
 
         ], $embedBuilder);
-        $embedBuilder->getEmbed()->addField(
-            ['name' => 'Channel flags', 'value' => "`no_xp` Users gain no XP in this channel \n `media_only` Channel allows only media and URLS. \n `no_stickers` Stickers will be removed from the chat \n `no_log` Message logging is disabled for this channel"],
-        );
+      //  $embedBuilder->getEmbed()->addField(
+   //         ['name' => 'Channel flags', 'value' => "`no_xp` Users gain no XP in this channel \n `media_only` Channel allows only media and URLS. \n `no_stickers` Stickers will be removed from the chat \n `no_log` Message logging is disabled for this channel"],
+    //    );
         return $embedBuilder;
     }
 
@@ -384,16 +384,12 @@ class Help extends SlashCommand
 
         $field = "`enable_xp` - Enable the message XP system
 `enable_voice_xp` - Enable the voice XP system
-`enable_emote_counter` - Counts used emotes
 `enable_role_rewards` - Gives roles based on gained levels
 `enable_bump_counter` - Counts people bumping the server
-`enable_reactions` - Enable emoji reactions
-`enable_commands` - Enable custom commands
 `enable_logging` - Enable general logs
 `enable_mention_responder` - Enable the mention responder
 `enable_bump_reminder` - Enable 2 hour bump reminder tag
 `enable_qotd_reminder` - Enable tag when message is posted in qotd channel
-`enable_count` - Enable counting channel
 `enable_join_role` - Give a role when a new user joins the server
         ";
         $embedBuilder->getEmbed()->addField(['name' => 'Enable/Disable', 'value' => $field]);
@@ -401,7 +397,6 @@ class Help extends SlashCommand
         $field = "`log_channel` - channel where to post logs
 `bump_channel` - Channel where to tag the bump role
 `qotd_channel` - Channel to tag qotd role
-`count_channel` - Channel where counting is enabled
         ";
         $embedBuilder->getEmbed()->addField(['name' => 'Channels', 'value' => $field]);
 
@@ -434,9 +429,9 @@ class Help extends SlashCommand
                 Switched voice call
                 Muted in voice by moderator
                 Unmuted in voice by moderator
-                Updated username (old and new username)
-                Message updated (show old and new message)
-                Message deleted (show deleted message)
+                Updated username
+                Message updated
+                Message deleted
                 Invite created
                 Invite removed
                 Started streaming in voice

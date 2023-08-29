@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Discord\Levels\Helpers;
+namespace App\Domain\Moderation\Helpers;
 
 use Illuminate\Support\Carbon;
 
-class Helper
+class DurationHelper
 {
     /**
      * @param string $duration
@@ -12,7 +12,7 @@ class Helper
      */
     public static function match(string $duration): mixed
     {
-        preg_match('/(?<year>\d+y)?\/?(?<month>\d+m)?\/?(?<day>\d+d)?/', $duration, $matches);
+        preg_match('/(?<year>\d+y)?\/?(?<month>\d+m)?\/?(?<day>\d+d)?/i', $duration, $matches);
         return $matches;
     }
 
@@ -29,6 +29,10 @@ class Helper
         }
     }
 
+    /**
+     * @param string $string
+     * @return int
+     */
     public static function cast(string $string): int
     {
         return (int)substr($string, 0, -1);

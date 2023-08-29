@@ -5,15 +5,16 @@ namespace App\Discord\Roles\Commands;
 use App\Discord\Core\Builders\EmbedBuilder;
 use App\Discord\Core\SlashIndexCommand;
 use App\Domain\Permission\Models\Permission;
+use App\Domain\Permission\Enums\Permission as PermissionEnum;
 use Discord\Parts\Embed\Embed;
 use Discord\Parts\Interactions\Interaction;
 use Exception;
 
 class Permissions extends SlashIndexCommand
 {
-    public function permission(): \App\Domain\Permission\Enums\Permission
+    public function permission(): PermissionEnum
     {
-        return \App\Domain\Permission\Enums\Permission::PERMISSIONS;
+        return PermissionEnum::PERMISSIONS;
     }
 
     public function trigger(): string

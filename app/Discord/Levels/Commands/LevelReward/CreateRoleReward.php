@@ -4,7 +4,7 @@ namespace App\Discord\Levels\Commands\LevelReward;
 
 use App\Discord\Core\Builders\EmbedFactory;
 use App\Discord\Core\SlashCommand;
-use App\Domain\Fun\Models\RoleReward;
+use App\Domain\Moderation\Models\RoleReward;
 use App\Domain\Permission\Enums\Permission;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Command\Option;
