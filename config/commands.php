@@ -147,11 +147,6 @@ return [
                 UpdateLogSetting::class,
             ],
         ],
-        'channels' => [
-            ChannelIndex::class,
-            MarkChannel::class,
-            UnmarkChannel::class,
-        ],
         'timeouts' => [
             Timeouts::class,
             UpdateTimeoutReason::class,
@@ -201,19 +196,8 @@ return [
             DecreaseCringe::class,
             ResetCringe::class,
         ],
-        'reactions' => [
-            ReactionIndex::class,
-            CreateReaction::class,
-            DeleteReaction::class,
-        ],
-        'commands' => [
-            CommandIndex::class,
-            CreateCommand::class,
-            DeleteCommand::class,
-        ],
         'fun' => [
             BumpStatistics::class,
-            EmoteIndex::class,
             EightBall::class,
             Ask::class,
             UrbanDictionary::class,
@@ -262,6 +246,24 @@ return [
         ],
         'topgg' => [
             UpdateTopGG::class
-        ]
+        ],
+//        'fun' => [
+//            EmoteIndex::class,
+//        ],
+//        'reactions' => [
+//            ReactionIndex::class,
+//            CreateReaction::class,
+//            DeleteReaction::class,
+//        ],
+//        'commands' => [
+//            CommandIndex::class,
+//            CreateCommand::class,
+//            DeleteCommand::class,
+//        ],
+//        'channels' => [
+//            ChannelIndex::class,
+//            MarkChannel::class,
+//            UnmarkChannel::class,
+//        ],
     ],
 ];
