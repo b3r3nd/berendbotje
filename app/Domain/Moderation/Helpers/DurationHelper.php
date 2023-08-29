@@ -12,7 +12,7 @@ class DurationHelper
      */
     public static function match(string $duration): mixed
     {
-        preg_match('/(?<year>\d+y)?\/?(?<month>\d+m)?\/?(?<day>\d+d)?/', $duration, $matches);
+        preg_match('/(?<year>\d+y)?\/?(?<month>\d+m)?\/?(?<day>\d+d)?/i', $duration, $matches);
         return $matches;
     }
 
