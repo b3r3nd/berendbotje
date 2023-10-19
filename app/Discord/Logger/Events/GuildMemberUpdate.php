@@ -40,7 +40,7 @@ class GuildMemberUpdate extends DiscordEvent implements GUILD_MEMBER_UPDATE
             }
             $localGuild = $this->bot->getGuild($member->guild_id);
             if ($localGuild->getLogSetting(LogSetting::TIMEOUT)) {
-                $localGuild->logWithMember($member, __('bot.log.timeout', ['user' => $member->id]), 'fail');
+             //   $localGuild->logWithMember($member, __('bot.log.timeout', ['user' => $member->id]), 'fail');
             }
         }
     }
