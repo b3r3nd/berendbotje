@@ -32,7 +32,7 @@ class LevelMessagesIndex extends SlashIndexCommand
     {
         $this->total = CustomMessage::byGuild($this->guildId)->count();
         $description = "";
-        foreach (CustomMessage::byGuild($this->guildId)->where('type', CustomMessageEnum::LEVEL->value)->skip($this->getOffset($this->getLastUser()))->limit($this->perPage)->get() as $message) {
+        foreach (CustomMessage::byGuild($this->guildId)->where('type', CustomMessageEnum::LEVEL->value)->orderBy('level')->skip($this->getOffset($this->getLastUser()))->limit($this->perPage)->get() as $message) {
             $description .= "**{$message->level}** • {$message->message} \n";
         }
         return EmbedBuilder::create($this)
