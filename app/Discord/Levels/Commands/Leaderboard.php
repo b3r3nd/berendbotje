@@ -59,14 +59,14 @@ class Leaderboard extends SlashIndexCommand
                 $voice = Helper::getVoiceLabel($messageCounter->voice_seconds);
                 $description .= "Level **{$messageCounter->level}** • {$messageCounter->user->tag()} • {$voice} \n";
             }
-            return EmbedBuilder::create($this, __('bot.messages.title'), __('bot.messages.description', ['users' => $description]))->getEmbed();
+            return EmbedBuilder::create($this, __('bot.messages.voice-title'), __('bot.messages.description', ['users' => $description]))->getEmbed();
         }
         if (strtolower($this->getOption('type')) === 'msg') {
             foreach (UserXP::byGuild($this->guildId)->orderBy('count', 'desc')->skip($this->getOffset($this->getLastUser()))->limit($this->perPage)->get() as $index => $messageCounter) {
                 $description .= Helper::indexPrefix($index, $this->getOffset($this->getLastUser()));
                 $description .= "Level **{$messageCounter->level}** • {$messageCounter->user->tag()} • {$messageCounter->count} \n";
             }
-            return EmbedBuilder::create($this, __('bot.messages.title'), __('bot.messages.description', ['users' => $description]))->getEmbed();
+            return EmbedBuilder::create($this, __('bot.messages.msg-title'), __('bot.messages.description', ['users' => $description]))->getEmbed();
         }
 
         foreach (UserXP::byGuild($this->guildId)->orderBy('xp', 'desc')->skip($this->getOffset($this->getLastUser()))->limit($this->perPage)->get() as $index => $messageCounter) {
@@ -74,7 +74,7 @@ class Leaderboard extends SlashIndexCommand
             $xp = Helper::format($messageCounter->xp);
             $description .= "Level **{$messageCounter->level}** • {$messageCounter->user->tag()} • {$xp} xp \n";
         }
-        return EmbedBuilder::create($this, __('bot.messages.title'), __('bot.messages.description', ['users' => $description]))->getEmbed();
+        return EmbedBuilder::create($this, __('bot.messages.xp-title'), __('bot.messages.description', ['users' => $description]))->getEmbed();
 
     }
 
