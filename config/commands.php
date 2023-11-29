@@ -202,7 +202,7 @@ return [
             Ask::class,
             UrbanDictionary::class,
             ModeratorStatistics::class,
-            EmoteIndex::class,
+      //      EmoteIndex::class,
         ],
         'invites' => [
             ToggleInvites::class,
@@ -229,21 +229,21 @@ return [
             Vote::class,
             Support::class
         ],
-        'reactions' => [
-            ReactionIndex::class,
-            CreateReaction::class,
-            DeleteReaction::class,
-        ],
-        'commands' => [
-            CommandIndex::class,
-            CreateCommand::class,
-            DeleteCommand::class,
-        ],
-        'channels' => [
-            ChannelIndex::class,
-            MarkChannel::class,
-            UnmarkChannel::class,
-        ],
+//        'reactions' => [
+//            ReactionIndex::class,
+//            CreateReaction::class,
+//            DeleteReaction::class,
+//        ],
+//        'commands' => [
+//            CommandIndex::class,
+//            CreateCommand::class,
+//            DeleteCommand::class,
+//        ],
+//        'channels' => [
+//            ChannelIndex::class,
+//            MarkChannel::class,
+//            UnmarkChannel::class,
+//        ],
     ],
 
     /*
