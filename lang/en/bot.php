@@ -55,6 +55,10 @@ return [
     'invalid-date' => 'Date format is invalid, please provide a valid format',
     'process' => 'All rewards will be synced in the background, this might take some time!',
     'interval' => 'Interval in minutes',
+    'type' => 'Type',
+    'lxp' => 'XP',
+    'lvoice' => 'Voice',
+    'lmsg' => 'Messages',
 
     'permissions-enum' => [
         'roles' => 'View Roles',
@@ -295,7 +299,9 @@ return [
     ],
 
     'messages' => [
-        'title' => 'XP Leaderboard',
+        'xp-title' => 'XP Leaderboard',
+        'voice-title' => 'Voice Leaderboard',
+        'msg-title' => 'Messages Leaderboard',
         'description' => "List of messages and xp for users.\n\n:users",
     ],
 
