@@ -7,6 +7,7 @@ use App\Discord\Core\Builders\EmbedFactory;
 use App\Discord\Core\SlashCommand;
 use App\Domain\Discord\Guild;
 use App\Domain\Discord\User;
+use App\Domain\Fun\Helpers\Helper;
 use App\Domain\Permission\Enums\Permission;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Interactions\Command\Option;
@@ -69,8 +70,14 @@ class UserRank extends SlashCommand
             $voice = "{$voice} minutes";
         }
 
+        $nextLevelXp = Helper::getXpForLevel($messageCounter->level);
+        $xpForNextRank = $nextLevelXp;
+        $currentXp = $messageCounter->xp - Helper::calcRequiredXp($messageCounter->level);
+
         return MessageBuilder::new()->addEmbed(EmbedBuilder::create($this)
-            ->setDescription(__('bot.xp.description', ['user' => $user->tag(), 'messages' => $messageCounter->count, 'xp' => $messageCounter->xp, 'voice' => $voice, 'level' => $messageCounter->level]))
+            ->setDescription(__('bot.xp.description', ['user' => $user->tag(), 'messages' => $messageCounter->count,
+                'xp' => Helper::format($messageCounter->xp), 'voice' => $voice, 'level' => $messageCounter->level,
+                'xpNextRank' => Helper::format($xpForNextRank), 'currentXp' => Helper::format($currentXp)]))
             ->setTitle(__('bot.xp.title', ['level' => $messageCounter->level, 'xp' => $messageCounter->xp]))
             ->getEmbed());
     }
