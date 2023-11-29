@@ -117,119 +117,117 @@ return [
     */
 
     'global' => [
-//        'users' => [
-//            Users::class,
-//            UserRoles::class,
-//            DetachUserRole::class,
-//            AttachUserRole::class,
-//        ],
-//        'roles' => [
-//            Roles::class,
-//            CreateRole::class,
-//            DeleteRole::class,
-//        ],
-//        'permissions' => [
-//            Permissions::class,
-//            AttachRolePermission::class,
-//            DetachRolePermission::class,
-//        ],
-//        'config' => [
-//            'guild' => [
-//                Settings::class,
-//                UpdateSetting::class,
-//            ],
-//            'user' => [
-//                UserSettings::class,
-//                UpdateUserSetting::class
-//            ],
-//            'log' => [
-//                LogSettings::class,
-//                UpdateLogSetting::class,
-//            ],
-//        ],
-//        'timeouts' => [
-//            Timeouts::class,
-//            UpdateTimeoutReason::class,
-//            RemoveTimeout::class,
-//        ],
-//        'blacklist' => [
-//            Blacklist::class,
-//            Unblock::class,
-//            Block::class,
-//        ],
-//        'rewards' => [
-//            'level' => [
-//                RoleRewards::class,
-//                CreateRoleReward::class,
-//                DeleteRoleReward::class,
-//            ],
-//            'duration' => [
-//                DurationRewards::class,
-//                CreateDurationReward::class,
-//                DeleteDurationReward::class,
-//                SyncDurationRewards::class,
-//            ]
-//        ],
-//        'xp' => [
-//            GiveXp::class,
-//            RemoveXp::class,
-//            ResetXp::class,
-//            Leaderboard::class,
-//            UserRank::class,
-//        ],
-//        'mention' => [
-//            'replies' => [
-//                MentionIndex::class,
-//                AddMentionReply::class,
-//                DelMentionReply::class,
-//            ],
-//            'groups' => [
-//                MentionGroupIndex::class,
-//                AddMentionGroup::class,
-//                DelMentionGroup::class,
-//                UpdateMentionGroup::class,
-//            ],
-//        ],
-//        'cringe' => [
-//            CringeIndex::class,
-//            IncreaseCringe::class,
-//            DecreaseCringe::class,
-//            ResetCringe::class,
-//        ],
-//        'fun' => [
-//            BumpStatistics::class,
-//            EightBall::class,
-//            Ask::class,
-//            UrbanDictionary::class,
-//            ModeratorStatistics::class,
-//        ],
-//        'invites' => [
-//            ToggleInvites::class,
-//        ],
-//        'messages' => [
-//            'welcome' => [
-//                WelcomeMessagesIndex::class,
-//                AddWelcomeMessage::class,
-//                DeleteWelcomeMessage::class,
-//            ],
-//            'levels' => [
-//                LevelMessagesIndex::class,
-//                AddLevelMessage::class,
-//                DeleteLevelMessage::class,
-//            ]
-//        ],
-//        'reminders' => [
-//            CreateReminder::class,
-//            DeleteReminder::class,
-//            Reminders::class,
-//        ],
-//        'help' => [
-//            Help::class,
-//            Vote::class,
-//            Support::class
-//        ],
+        'users' => [
+            Users::class,
+            UserRoles::class,
+            DetachUserRole::class,
+            AttachUserRole::class,
+        ],
+        'roles' => [
+            Roles::class,
+            CreateRole::class,
+            DeleteRole::class,
+        ],
+        'permissions' => [
+            Permissions::class,
+            AttachRolePermission::class,
+            DetachRolePermission::class,
+        ],
+        'config' => [
+            'guild' => [
+                Settings::class,
+                UpdateSetting::class,
+            ],
+            'user' => [
+                UserSettings::class,
+                UpdateUserSetting::class
+            ],
+            'log' => [
+                LogSettings::class,
+                UpdateLogSetting::class,
+            ],
+        ],
+        'timeouts' => [
+            Timeouts::class,
+            UpdateTimeoutReason::class,
+            RemoveTimeout::class,
+        ],
+        'blacklist' => [
+            Blacklist::class,
+            Unblock::class,
+            Block::class,
+        ],
+        'rewards' => [
+            'level' => [
+                RoleRewards::class,
+                CreateRoleReward::class,
+                DeleteRoleReward::class,
+            ],
+            'duration' => [
+                DurationRewards::class,
+                CreateDurationReward::class,
+                DeleteDurationReward::class,
+                SyncDurationRewards::class,
+            ]
+        ],
+        'xp' => [
+            GiveXp::class,
+            RemoveXp::class,
+            ResetXp::class,
+            Leaderboard::class,
+            UserRank::class,
+        ],
+        'mention' => [
+            'replies' => [
+                MentionIndex::class,
+                AddMentionReply::class,
+                DelMentionReply::class,
+            ],
+            'groups' => [
+                MentionGroupIndex::class,
+                AddMentionGroup::class,
+                DelMentionGroup::class,
+                UpdateMentionGroup::class,
+            ],
+        ],
+        'cringe' => [
+            CringeIndex::class,
+            IncreaseCringe::class,
+            DecreaseCringe::class,
+            ResetCringe::class,
+        ],
         'fun' => [
+            BumpStatistics::class,
+            EightBall::class,
+            Ask::class,
+            UrbanDictionary::class,
+            ModeratorStatistics::class,
             EmoteIndex::class,
+        ],
+        'invites' => [
+            ToggleInvites::class,
+        ],
+        'messages' => [
+            'welcome' => [
+                WelcomeMessagesIndex::class,
+                AddWelcomeMessage::class,
+                DeleteWelcomeMessage::class,
+            ],
+            'levels' => [
+                LevelMessagesIndex::class,
+                AddLevelMessage::class,
+                DeleteLevelMessage::class,
+            ]
+        ],
+        'reminders' => [
+            CreateReminder::class,
+            DeleteReminder::class,
+            Reminders::class,
+        ],
+        'help' => [
+            Help::class,
+            Vote::class,
+            Support::class
         ],
         'reactions' => [
             ReactionIndex::class,
