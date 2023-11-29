@@ -302,7 +302,7 @@ return [
         'xp-title' => 'XP Leaderboard',
         'voice-title' => 'Voice Leaderboard',
         'msg-title' => 'Messages Leaderboard',
-        'description' => "List of messages and xp for users.\n\n:users",
+        'description' => ":users",
     ],
 
     'buttons' => [
