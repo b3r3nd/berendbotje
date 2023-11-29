@@ -279,7 +279,7 @@ return [
         'not-found' => ':user does not have any messages.',
         'count' => 'You have :messages.',
         'title' => 'Level :level',
-        'description' => "User: :user\nLevel: :level \nXP: :xp\nMessages: :messages \nVoice: :voice",
+        'description' => "**User**: :user\n**Level**: :level \n**XP**: :xp\n**Progression**: :currentXp/:xpNextRank\n**Messages**: :messages \n**Voice**: :voice",
         'given' => ':xp xp given to <@:user>.',
         'removed' => ':xp xp removed from <@:user>.',
         'reset' => 'xp for <@:user> is reset.',
