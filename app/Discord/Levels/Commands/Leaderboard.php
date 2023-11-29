@@ -40,7 +40,8 @@ class Leaderboard extends SlashIndexCommand
         $description = "";
         foreach (UserXP::byGuild($this->guildId)->orderBy('xp', 'desc')->skip($this->getOffset($this->getLastUser()))->limit($this->perPage)->get() as $index => $messageCounter) {
             $description .= Helper::indexPrefix($index, $this->getOffset($this->getLastUser()));
-            $description .= "Level **{$messageCounter->level}** • {$messageCounter->user->tag()} • {$messageCounter->xp} xp \n";
+            $xp = Helper::format($messageCounter->xp);
+            $description .= "Level **{$messageCounter->level}** • {$messageCounter->user->tag()} • {$xp} xp \n";
         }
         return EmbedBuilder::create($this, __('bot.messages.title'), __('bot.messages.description', ['users' => $description]))->getEmbed();
     }
