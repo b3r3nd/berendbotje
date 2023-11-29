@@ -82,6 +82,7 @@ class Helper
 
     public static function getVoiceLabel($voice): string
     {
+        $voice /= 60;
         if ($voice >= 60) {
             $voice = round($voice / 60);
             $voice = "{$voice} hours";
