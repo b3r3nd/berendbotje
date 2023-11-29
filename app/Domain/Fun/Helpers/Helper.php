@@ -80,11 +80,24 @@ class Helper
     }
 
 
+    public static function getVoiceLabel($voice): string
+    {
+        if ($voice >= 60) {
+            $voice = round($voice / 60);
+            $voice = "{$voice} hours";
+        } else {
+            $voice = round($voice);
+            $voice = "{$voice} minutes";
+        }
+
+        return $voice;
+    }
+
     /**
      * @param int $number
      * @return string
      */
-    public static function format(int $number)
+    public static function format(int $number): string
     {
         return number_format($number, 0, ',', '.');
     }
