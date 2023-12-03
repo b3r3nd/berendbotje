@@ -5,6 +5,7 @@ namespace App\Domain\Discord;
 
 use App\Domain\Fun\Models\Bump;
 use App\Domain\Fun\Models\CringeCounter;
+use App\Domain\Fun\Models\UserCounter;
 use App\Domain\Fun\Models\UserXP;
 use App\Domain\Moderation\Models\BanCounter;
 use App\Domain\Moderation\Models\KickCounter;
@@ -123,6 +124,14 @@ class User extends Model
     public function roles(): BelongsToMany
     {
         return $this->belongsToMany(Role::class, 'discord_user_roles', 'user_id');
+    }
+
+    /**
+     * @return hasMany
+     */
+    public function counters(): hasMany
+    {
+        return $this->hasMany(UserCounter::class, 'user_id', 'id');
     }
 
     /**

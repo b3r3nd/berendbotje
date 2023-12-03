@@ -6,8 +6,11 @@ use App\Discord\Core\Bot;
 use App\Discord\Core\Guild;
 use App\Discord\Core\Interfaces\MessageCreateAction;
 use App\Domain\Discord\Channel;
+use App\Domain\Discord\User;
+use App\Domain\Fun\Models\UserCounter;
 use App\Domain\Moderation\Models\Abuser;
 use App\Domain\Setting\Enums\Setting as SettingEnum;
+use App\Models\DiscordUser;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Channel\Message;
 
@@ -33,7 +36,8 @@ class MessageCount implements MessageCreateAction
             }
 
             if ($this->lastCount === $message->author->id) {
-                $message->react("❌");
+                $message->delete();
+                //  $message->react("❌");
                 return;
             }
 
@@ -43,12 +47,29 @@ class MessageCount implements MessageCreateAction
                 return;
             }
 
+            $user = User::get($message->author->id);
+
+            $guild = $bot->getGuild($message->guild_id);
+            $counter = $user->counters()->where('guild_id', $guild->model->id)->first();
+
+            if (!$counter) {
+                $user->counters()->save(new UserCounter(['guild_id' => $guild->model->id, 'count' => 0, 'highest_count' => 0]));
+                $counter = $user->counters()->where('guild_id', $guild->model->id)->first();
+            }
+
+
             if ($number !== $newCount) {
                 $count = 0;
                 $this->lastCount = "";
                 $guildModel->setSetting(SettingEnum::CURRENT_COUNT->value, $count);
                 $message->react("❌");
                 Abuser::create(['discord_id' => $message->author->id, 'guild_id' => $message->guild_id, 'reason' => __('bot.cannot-count')]);
+
+
+                $counter->fail_count++;
+                $counter->save();
+
+
                 $message->channel->sendMessage(MessageBuilder::new()->setContent(__('bot.wrong-number', ['count' => $count])));
                 return;
             }
@@ -56,6 +77,13 @@ class MessageCount implements MessageCreateAction
             $this->lastCount = $message->author->id;
             $count++;
             $guildModel->setSetting(SettingEnum::CURRENT_COUNT->value, $count);
+
+            // user counter
+            $counter->count++;
+            if ($count > $counter->highest_count) {
+                $counter->highest_count = $count;
+            }
+            $counter->save();
 
             $message->react("✅");
         } else {

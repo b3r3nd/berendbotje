@@ -62,9 +62,10 @@ class BumpStatistics extends SlashIndexCommand
             }
             $builder->setDescription(__('bot.bump.description', ['bumpers' => $description]));
         } else {
-            $this->total = Bump::byGuild($this->guildId)->whereMonth('created_at', date('m'))->groupBy('user_id')->get()->count();
+            $this->total = Bump::byGuild($this->guildId)->whereMonth('created_at', date('m'))->whereYear('created_at', date('Y'))->groupBy('user_id')->get()->count();
             foreach (Bump::byGuild($this->guildId)
                          ->whereMonth('created_at', date('m'))
+                         ->whereYear('created_at', date('Y'))
                          ->groupBy('user_id')
                          ->orderBy('total', 'desc')
                          ->skip($this->getOffset($this->getLastUser()))

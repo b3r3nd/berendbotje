@@ -16,11 +16,11 @@ use Exception;
 class Bot
 {
     public function __construct(
-        public ?Discord       $discord = null,
-        public array          $guilds = [],
-        public array          $messageActions = [],
-        public array          $commands = [],
-        private array         $services = [],
+        public ?Discord $discord = null,
+        public array    $guilds = [],
+        public array    $messageActions = [],
+        public array    $commands = [],
+        private array   $services = [],
     )
     {
         foreach (config('discord.providers') as $serviceProvider) {
@@ -39,7 +39,7 @@ class Bot
                 'loadAllMembers' => true,
                 'storeMessages' => true,
                 'intents' => Intents::getDefaultIntents() | Intents::GUILD_VOICE_STATES | Intents::GUILD_MEMBERS |
-                   Intents::MESSAGE_CONTENT | Intents::GUILDS | Intents::GUILD_INVITES | Intents::GUILD_EMOJIS_AND_STICKERS
+                    Intents::MESSAGE_CONTENT | Intents::GUILDS | Intents::GUILD_INVITES | Intents::GUILD_EMOJIS_AND_STICKERS
             ]
         );
         $this->discord->on('init', function (Discord $discord) {

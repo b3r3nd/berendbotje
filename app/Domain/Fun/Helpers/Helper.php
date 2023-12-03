@@ -56,6 +56,52 @@ class Helper
         return 0;
     }
 
+    /**
+     * @param int $levelArg
+     * @return int
+     */
+    public static function calcRequiredXp(int $levelArg): int
+    {
+        $totalRequiredXp = 0;
+        for ($level = 0; $level < $levelArg; $level++) {
+            $xpRequired = 5 * ($level ** 2) + (50 * $level) + 100;
+            $totalRequiredXp += $xpRequired;
+        }
+        return $totalRequiredXp;
+    }
+
+    /**
+     * @param int $level
+     * @return int
+     */
+    public static function getXpForLevel(int $level): int
+    {
+        return 5 * ($level ** 2) + (50 * $level) + 100;
+    }
+
+
+    public static function getVoiceLabel($voice): string
+    {
+        $voice /= 60;
+        if ($voice >= 60) {
+            $voice = round($voice / 60);
+            $voice = "{$voice} hours";
+        } else {
+            $voice = round($voice);
+            $voice = "{$voice} minutes";
+        }
+
+        return $voice;
+    }
+
+    /**
+     * @param int $number
+     * @return string
+     */
+    public static function format(int $number): string
+    {
+        return number_format($number, 0, ',', '.');
+    }
 
     /**
      * @param MentionGroup|null $mentionGroup

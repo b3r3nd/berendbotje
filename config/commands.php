@@ -1,9 +1,9 @@
 <?php
 
-use App\Discord\Admin\Commands\DatabaseGuilds;
-use App\Discord\Admin\Commands\UpdateTopGG;
-use App\Discord\Fun\Commands\Ask;
 use App\Discord\Fun\Commands\BumpStatistics;
+use App\Discord\Fun\Commands\Count\CountStats;
+use App\Discord\Fun\Commands\Count\CountUserStats;
+use App\Discord\Fun\Commands\Ask;
 use App\Discord\Fun\Commands\Cringe\CringeIndex;
 use App\Discord\Fun\Commands\Cringe\DecreaseCringe;
 use App\Discord\Fun\Commands\Cringe\IncreaseCringe;
@@ -15,8 +15,8 @@ use App\Discord\Fun\Commands\Reaction\CreateReaction;
 use App\Discord\Fun\Commands\Reaction\DeleteReaction;
 use App\Discord\Fun\Commands\Reaction\ReactionIndex;
 use App\Discord\Fun\Commands\UrbanDictionary;
-use App\Discord\Help\Commands\Help;
 use App\Discord\Help\Commands\Support;
+use App\Discord\Help\Commands\Help;
 use App\Discord\Help\Commands\Vote;
 use App\Discord\Levels\Commands\DurationReward\CreateDurationReward;
 use App\Discord\Levels\Commands\DurationReward\DeleteDurationReward;
@@ -45,7 +45,6 @@ use App\Discord\Message\Commands\Mention\UpdateMentionGroup;
 use App\Discord\Message\Commands\Welcome\AddWelcomeMessage;
 use App\Discord\Message\Commands\Welcome\DeleteWelcomeMessage;
 use App\Discord\Message\Commands\Welcome\WelcomeMessagesIndex;
-use App\Discord\Moderation\Commands\Blacklist\Blacklist;
 use App\Discord\Moderation\Commands\Blacklist\Block;
 use App\Discord\Moderation\Commands\Blacklist\Unblock;
 use App\Discord\Moderation\Commands\Channel\ChannelIndex;
@@ -54,13 +53,14 @@ use App\Discord\Moderation\Commands\Channel\UnmarkChannel;
 use App\Discord\Moderation\Commands\Command\CommandIndex;
 use App\Discord\Moderation\Commands\Command\CreateCommand;
 use App\Discord\Moderation\Commands\Command\DeleteCommand;
+use App\Discord\Moderation\Commands\ToggleInvites;
+use App\Discord\Moderation\Commands\Blacklist\Blacklist;
 use App\Discord\Moderation\Commands\Reminder\CreateReminder;
 use App\Discord\Moderation\Commands\Reminder\DeleteReminder;
 use App\Discord\Moderation\Commands\Reminder\Reminders;
 use App\Discord\Moderation\Commands\Timeout\RemoveTimeout;
 use App\Discord\Moderation\Commands\Timeout\Timeouts;
 use App\Discord\Moderation\Commands\Timeout\UpdateTimeoutReason;
-use App\Discord\Moderation\Commands\ToggleInvites;
 use App\Discord\Roles\Commands\AttachRolePermission;
 use App\Discord\Roles\Commands\AttachUserRole;
 use App\Discord\Roles\Commands\CreateRole;
@@ -75,6 +75,7 @@ use App\Discord\Setting\Commands\Settings;
 use App\Discord\Setting\Commands\UpdateSetting;
 use App\Discord\Setting\Commands\UpdateUserSetting;
 use App\Discord\Setting\Commands\UserSettings;
+use  App\Discord\Fun\Commands\Count\Leaderboard as CountLeaderboard;
 
 return [
     /*
@@ -196,13 +197,19 @@ return [
 //            DecreaseCringe::class,
 //            ResetCringe::class,
 //        ],
-//        'fun' => [
+        'fun' => [
+//            'count' => [
+//                CountStats::class,
+//                CountLeaderboard::class,
+//                CountUserStats::class
+//            ],
 //            BumpStatistics::class,
 //            EightBall::class,
 //            Ask::class,
 //            UrbanDictionary::class,
 //            ModeratorStatistics::class,
-//        ],
+            EmoteIndex::class,
+        ],
 //        'invites' => [
 //            ToggleInvites::class,
 //        ],
@@ -228,9 +235,6 @@ return [
 //            Vote::class,
 //            Support::class
 //        ],
-        'fun' => [
-            EmoteIndex::class,
-        ],
         'reactions' => [
             ReactionIndex::class,
             CreateReaction::class,
