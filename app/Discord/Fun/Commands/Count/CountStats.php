@@ -25,9 +25,6 @@ class CountStats extends SlashCommand
     public function __construct()
     {
         $this->description = __('bot.slash.countstats');
-
-        // hoi richard
-
         parent::__construct();
     }
 
