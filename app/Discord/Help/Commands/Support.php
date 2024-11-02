@@ -28,7 +28,7 @@ class Support extends SlashCommand
 
     public function action(): MessageBuilder
     {
-        return MessageBuilder::new()->setContent("https://discord.gg/6vbxgfaUz6");
+        return MessageBuilder::new()->setContent("https://discord.gg/netherlands");
     }
 
     public function autoComplete(Interaction $interaction): array

@@ -50,7 +50,6 @@ class UrbanDictionary extends SlashCommand
             'X-RapidAPI-Host' => config('discord.urb-host'),
         ])->get("https://" . config('discord.urb-host') . "/define", ['term' => $this->getOption('search_term')]);
 
-
         if (empty($response->json()['list'])) {
             return EmbedFactory::failedEmbed($this, __('bot.no-valid-term', ['term' => $this->getOption('search_term')]));
         }

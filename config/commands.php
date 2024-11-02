@@ -143,11 +143,11 @@ return [
             UpdateTimeoutReason::class,
             RemoveTimeout::class,
         ],
-        'blacklist' => [
-            Blacklist::class,
-            Unblock::class,
-            Block::class,
-        ],
+        // 'blacklist' => [
+        //     Blacklist::class,
+        //     Unblock::class,
+        //     Block::class,
+        // ],
         'rewards' => [
             'level' => [
                 RoleRewards::class,
@@ -161,13 +161,13 @@ return [
                 SyncDurationRewards::class,
             ]
         ],
-        'xp' => [
-            GiveXp::class,
-            RemoveXp::class,
-            ResetXp::class,
-            Leaderboard::class,
-            UserRank::class,
-        ],
+         'xp' => [
+        //     GiveXp::class,
+        //     RemoveXp::class,
+        //     ResetXp::class,
+             Leaderboard::class,
+             UserRank::class,
+         ],
         'mention' => [
             'replies' => [
                 MentionIndex::class,
@@ -181,25 +181,25 @@ return [
                 UpdateMentionGroup::class,
             ],
         ],
-        'cringe' => [
-            CringeIndex::class,
-            IncreaseCringe::class,
-            DecreaseCringe::class,
-            ResetCringe::class,
-        ],
-        'fun' => [
-            'count' => [
-                CountStats::class,
-                CountLeaderboard::class,
-                CountUserStats::class
-            ],
-            BumpStatistics::class,
-            EightBall::class,
-            Ask::class,
-            UrbanDictionary::class,
-            ModeratorStatistics::class,
-            //      EmoteIndex::class,
-        ],
+        // 'cringe' => [
+        //     CringeIndex::class,
+        //     IncreaseCringe::class,
+        //     DecreaseCringe::class,
+        //     ResetCringe::class,
+        // ],
+         'fun' => [
+        //     'count' => [
+        //         CountStats::class,
+        //         CountLeaderboard::class,
+        //         CountUserStats::class
+        //     ],
+             BumpStatistics::class,
+             EightBall::class,
+             Ask::class,
+             UrbanDictionary::class,
+        //     ModeratorStatistics::class,
+        //     //      EmoteIndex::class,
+         ],
         'invites' => [
             ToggleInvites::class,
         ],
@@ -222,7 +222,7 @@ return [
         ],
         'help' => [
             Help::class,
-            Vote::class,
+       //     Vote::class,
             Support::class
         ],
 //        'reactions' => [

@@ -44,20 +44,20 @@ return [
     'events' => [
         InteractionCreate::class,
         MessageCreate::class,
-        VoiceStateUpdate::class,
-        VoiceXpCounter::class,
-        VoiceStateLogger::class,
+      //  VoiceStateUpdate::class,
+      //  VoiceXpCounter::class,
+      //  VoiceStateLogger::class, 
         DetectTimeout::class,
         WelcomeUser::class,
         GuildBanRemove::class,
-        GuildMemberAdd::class,
+      //  GuildMemberAdd::class,
         GuildMemberRemove::class,
         GuildMemberUpdate::class,
-        InviteCreate::class,
-        InviteDelete::class,
+     //   InviteCreate::class,
+     //   InviteDelete::class,
        // MessageDelete::class,
-        MessageUpdate::class,
-        DMLogger::class,
+    //    MessageUpdate::class,
+    //    DMLogger::class,
         BumpCounter::class,
     ],
     /*
@@ -71,7 +71,7 @@ return [
     |
     */
     'message' => $messageEvents = [
-        MessageXpCounter::class,
+  //      MessageXpCounter::class,
 //        MessageMediaFilter::class,
 //        MessageStickerFilter::class,
 //        MessageCount::class,

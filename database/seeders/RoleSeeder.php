@@ -50,7 +50,7 @@ class RoleSeeder extends Seeder
     {
         $modRole = Role::factory()->create(['name' => 'Moderator', 'guild_id' => $guild->id,]);
         foreach ($this->modPerms as $permName) {
-            $modRole->permissions()->attach(Permission::get($permName)->id);
+            $modRole->permissions()->attach(Permission::get($permName)?->id);
         }
     }
 
